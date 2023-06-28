@@ -4,13 +4,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import { useWeb3ModalTheme, Web3NetworkSwitch, Web3Button } from '@web3modal/react'
+import { useNetwork, useAccount } from 'wagmi'
+
 
 const Header = () => {
+  const { chain, chains } = useNetwork()
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const [isChainWrong, setIsChainWrong] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
+
+  const { theme, setTheme } = useWeb3ModalTheme()
+
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
@@ -23,6 +31,19 @@ const Header = () => {
   };
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
+    if (chain && (chain.name !== 'Polygon Mumbai')) {
+      setIsChainWrong(true)
+      setTheme({themeMode: "dark",   themeVariables: {
+        '--w3m-accent-color': `${isChainWrong ? '#bf0d0d' : '' }`
+        // ...
+      }}) 
+    } else {
+      setIsChainWrong(false)
+      setTheme({themeMode: "dark",   themeVariables: {
+        '--w3m-accent-color': ''
+        // ...
+      }}) 
+    }
   });
 
   // submenu handler
@@ -60,7 +81,7 @@ const Header = () => {
                   height={30}
                   className="w-full dark:hidden"
                 /> */}
-                <h1> DeepLink</h1>
+                <h1> DeepLink </h1>
                 {/* <Image
                   src="/images/logo/logo.svg"
                   alt="logo"
@@ -151,18 +172,21 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <Link
+                {/* <Link
                   href="/signin"
                   className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
                 >
                   Sign In
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   href="/signup"
                   className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
                 >
-                  Sign Up
-                </Link>
+                  Connect wallet
+                </Link> */}
+                <div><Web3Button /></div>
+                <div className="ml-3">{isChainWrong && <Web3NetworkSwitch />}</div>
+
                 <div>
                   <ThemeToggler />
                 </div>
