@@ -1,4 +1,4 @@
-import NewsLatterBox from "./NewsLatterBox";
+import NewsLatterBox from './NewsLatterBox'
 
 const Contact = () => {
   return (
@@ -80,7 +80,7 @@ const Contact = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

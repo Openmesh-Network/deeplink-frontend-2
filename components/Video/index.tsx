@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { useState } from "react";
-import SectionTitle from "../Common/SectionTitle";
+import Image from 'next/image'
+import { useState } from 'react'
+import SectionTitle from '../Common/SectionTitle'
 
-import ModalVideo from "react-modal-video";
+import ModalVideo from 'react-modal-video'
 
 const Video = () => {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false)
 
   return (
     <section className="relative z-10 py-16 md:py-20 lg:py-28">
@@ -61,7 +61,7 @@ const Video = () => {
         <img src="/images/video/shape.svg" alt="shape" className="w-full" />
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Video;
+export default Video

@@ -36,7 +36,7 @@ const SharePost = () => {
         </svg>
       </a>
     </>
-  );
-};
+  )
+}
 
-export default SharePost;
+export default SharePost

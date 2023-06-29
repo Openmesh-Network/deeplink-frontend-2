@@ -1,11 +1,11 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 const Breadcrumb = ({
   pageName,
   description,
 }: {
-  pageName: string;
-  description: string;
+  pageName: string
+  description: string
 }) => {
   return (
     <>
@@ -119,7 +119,7 @@ const Breadcrumb = ({
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default Breadcrumb;
+export default Breadcrumb

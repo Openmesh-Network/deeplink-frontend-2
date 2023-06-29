@@ -1,11 +1,12 @@
+/* eslint-disable no-undef */
 const PricingBox = (props: {
-  price: string;
-  duration: string;
-  packageName: string;
-  subtitle: string;
-  children: React.ReactNode;
+  price: string
+  duration: string
+  packageName: string
+  subtitle: string
+  children: React.ReactNode
 }) => {
-  const { price, duration, packageName, subtitle, children } = props;
+  const { price, duration, packageName, subtitle, children } = props
 
   return (
     <div className="w-full">
@@ -75,7 +76,7 @@ const PricingBox = (props: {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PricingBox;
+export default PricingBox

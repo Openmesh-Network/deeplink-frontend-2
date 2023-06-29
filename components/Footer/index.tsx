@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
 const Footer = () => {
   return (
@@ -104,8 +104,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Blog{" "}
+                      {' '}
+                      Blog{' '}
                     </a>
                   </li>
                   <li>
@@ -113,8 +113,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Pricing{" "}
+                      {' '}
+                      Pricing{' '}
                     </a>
                   </li>
                   <li>
@@ -122,8 +122,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      About{" "}
+                      {' '}
+                      About{' '}
                     </a>
                   </li>
                 </ul>
@@ -141,8 +141,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      TOS{" "}
+                      {' '}
+                      TOS{' '}
                     </a>
                   </li>
                   <li>
@@ -150,8 +150,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Privacy Policy{" "}
+                      {' '}
+                      Privacy Policy{' '}
                     </a>
                   </li>
                   <li>
@@ -159,8 +159,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Refund Policy{" "}
+                      {' '}
+                      Refund Policy{' '}
                     </a>
                   </li>
                 </ul>
@@ -178,8 +178,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Open Support Ticket{" "}
+                      {' '}
+                      Open Support Ticket{' '}
                     </a>
                   </li>
                   <li>
@@ -187,8 +187,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      Terms of Use{" "}
+                      {' '}
+                      Terms of Use{' '}
                     </a>
                   </li>
                   <li>
@@ -196,8 +196,8 @@ const Footer = () => {
                       href="/"
                       className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
                     >
-                      {" "}
-                      About{" "}
+                      {' '}
+                      About{' '}
                     </a>
                   </li>
                 </ul>
@@ -208,7 +208,10 @@ const Footer = () => {
         <div className="bg-primary/10 py-8">
           <div className="container">
             <p className="text-center text-base text-body-color dark:text-white">
-              Template by UIdeck and <a href="https://nextjstemplates.com" rel="nofollow noopener">Next.js Templates</a>
+              Template by UIdeck and{' '}
+              <a href="https://nextjstemplates.com" rel="nofollow noopener">
+                Next.js Templates
+              </a>
             </p>
           </div>
         </div>
@@ -223,7 +226,7 @@ const Footer = () => {
             <circle opacity="0.8" cx="49.5" cy="49.5" r="49.5" fill="#959CB1" />
             <mask
               id="mask0_94:899"
-              style={{ maskType: "alpha" }}
+              style={{ maskType: 'alpha' }}
               maskUnits="userSpaceOnUse"
               x="0"
               y="0"
@@ -404,7 +407,7 @@ const Footer = () => {
         </div>
       </footer>
     </>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

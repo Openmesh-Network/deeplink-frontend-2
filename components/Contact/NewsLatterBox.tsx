@@ -43,7 +43,7 @@ const NewsLatterBox = () => {
         >
           <mask
             id="mask0_88:141"
-            style={{ maskType: "alpha" }}
+            style={{ maskType: 'alpha' }}
             maskUnits="userSpaceOnUse"
             x="0"
             y="0"
@@ -169,7 +169,7 @@ const NewsLatterBox = () => {
         </svg>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NewsLatterBox;
+export default NewsLatterBox

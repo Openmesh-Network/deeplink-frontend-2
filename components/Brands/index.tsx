@@ -1,38 +1,38 @@
-import { Brand } from "@/types/brand";
-import Image from "next/image";
+import { Brand } from '@/types/brand'
+import Image from 'next/image'
 
 const brandsData: Brand[] = [
   {
     id: 1,
-    name: "UIdeck",
-    href: "https://uideck.com",
-    image: "/images/brands/uideck.svg",
+    name: 'UIdeck',
+    href: 'https://uideck.com',
+    image: '/images/br ands/uideck.svg',
   },
   {
     id: 2,
-    name: "Tailgrids",
-    href: "https://tailgrids.com",
-    image: "/images/brands/tailgrids.svg",
+    name: 'Tailgrids',
+    href: 'https://tailgrids.com',
+    image: '/images/brands/tailgrids.svg',
   },
   {
     id: 3,
-    name: "Lineicons",
-    href: "https://lineicons.com",
-    image: "/images/brands/lineicons.svg",
+    name: 'Lineicons',
+    href: 'https://lineicons.com',
+    image: '/images/brands/lineicons.svg',
   },
   {
     id: 4,
-    name: "GrayGrids",
-    href: "https://graygrids.com",
-    image: "/images/brands/graygrids.svg",
+    name: 'GrayGrids',
+    href: 'https://graygrids.com',
+    image: '/images/brands/graygrids.svg',
   },
   {
     id: 5,
-    name: "TailAdmin",
-    href: "https://tailadmin.com",
-    image: "/images/brands/tailadmin.svg",
+    name: 'TailAdmin',
+    href: 'https://tailadmin.com',
+    image: '/images/brands/tailadmin.svg',
   },
-];
+]
 
 const Brands = () => {
   return (
@@ -53,13 +53,13 @@ const Brands = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Brands;
+export default Brands
 
 const SingleBrand = ({ brand }: { brand: Brand }) => {
-  const { href, image, name } = brand;
+  const { href, image, name } = brand
 
   return (
     <div className="mx-3 flex w-full max-w-[160px] items-center justify-center py-[15px] sm:mx-4 lg:max-w-[130px] xl:mx-6 xl:max-w-[150px] 2xl:mx-8 2xl:max-w-[160px]">
@@ -72,5 +72,5 @@ const SingleBrand = ({ brand }: { brand: Brand }) => {
         <Image src={image} alt={name} fill />
       </a>
     </div>
-  );
-};
+  )
+}

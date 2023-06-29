@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
 const RelatedPost = ({
   image,
@@ -7,10 +7,10 @@ const RelatedPost = ({
   title,
   date,
 }: {
-  image: string;
-  slug: string;
-  title: string;
-  date: string;
+  image: string
+  slug: string
+  title: string
+  date: string
 }) => {
   return (
     <div className="flex items-center lg:block xl:flex">
@@ -31,7 +31,7 @@ const RelatedPost = ({
         <p className="text-xs font-medium text-body-color">{date}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RelatedPost;
+export default RelatedPost
