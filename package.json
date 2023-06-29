@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@rocketseat/eslint-config": "^1.2.0",
     "@web3modal/ethereum": "^2.6.1",
     "@web3modal/react": "^2.6.1",
     "eslint": "8.33.0",
