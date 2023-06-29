@@ -10,6 +10,7 @@ import Pricing from '@/components/Pricing'
 import Testimonials from '@/components/Testimonials'
 import Video from '@/components/Video'
 import { Inter } from '@next/font/google'
+import EmblaCarousel from '@/components/Carousel'
 
 // eslint-disable-next-line no-unused-vars
 const inter = Inter({ subsets: ['latin'] })
@@ -19,6 +20,7 @@ export default function Home() {
     <>
       <ScrollUp />
       <Hero />
+      <EmblaCarousel />
       <Features />
       <Video />
       <Brands />
