@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import AboutSectionOne from '@/components/About/AboutSectionOne'
 import AboutSectionTwo from '@/components/About/AboutSectionTwo'
 import Blog from '@/components/Blog'
@@ -22,14 +23,14 @@ export default function Home() {
       <Hero />
       <EmblaCarousel />
       <Features />
-      <Video />
+      {/* <Video />
       <Brands />
       <AboutSectionOne />
       <AboutSectionTwo />
       <Testimonials />
       <Pricing />
       <Blog />
-      <Contact />
+      <Contact /> */}
     </>
   )
 }
