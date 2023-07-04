@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable prettier/prettier */
 import { useState } from 'react'
 import TransactionModal from './TransactionModal'
 

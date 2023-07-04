@@ -1,3 +1,4 @@
+'use client'
 import { TextField, Autocomplete } from '@mui/material'
 import { useState, ChangeEvent, useEffect } from 'react'
 
@@ -55,21 +56,23 @@ const SearchModal = () => {
   }
 
   useEffect(() => {
-    const url = new URL(window.location.href)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
 
-    const status = url.searchParams.get('status')
-    if (status && statusOptions.includes(status)) setTasksStatus(status)
+      const status = url.searchParams.get('status')
+      if (status && statusOptions.includes(status)) setTasksStatus(status)
 
-    const departament = url.searchParams.get('departament')
-    if (departament && departamentOptions.includes(departament))
-      setTasksDepartament(departament)
+      const departament = url.searchParams.get('departament')
+      if (departament && departamentOptions.includes(departament))
+        setTasksDepartament(departament)
 
-    const orderBy = url.searchParams.get('orderBy')
-    if (orderBy && orderByOptions.includes(orderBy)) setTasksOrderBy(orderBy)
+      const orderBy = url.searchParams.get('orderBy')
+      if (orderBy && orderByOptions.includes(orderBy)) setTasksOrderBy(orderBy)
 
-    const searchBar = url.searchParams.get('searchBar')
-    if (searchBar && searchBar.length <= 100) setTasksSearchBar(searchBar)
-  }, [window.location.href])
+      const searchBar = url.searchParams.get('searchBar')
+      if (searchBar && searchBar.length <= 100) setTasksSearchBar(searchBar)
+    }
+  }, [])
 
   return (
     <div className="mb-5 ml-4 mr-1 items-start justify-between rounded-md bg-[#121A4D] p-4 text-xs lg:flex lg:text-sm">

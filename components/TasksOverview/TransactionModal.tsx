@@ -1,3 +1,4 @@
+'use client'
 import { FormOutlined } from '@ant-design/icons'
 
 const TransactionModal = ({ transaction }) => {
