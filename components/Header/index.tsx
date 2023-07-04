@@ -200,9 +200,7 @@ const Header = () => {
                   {isChainWrong && <Web3NetworkSwitch />}
                 </div>
 
-                <div>
-                  <ThemeToggler />
-                </div>
+                <div>{/* <ThemeToggler /> */}</div>
               </div>
             </div>
           </div>
