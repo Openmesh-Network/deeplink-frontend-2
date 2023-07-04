@@ -12,6 +12,7 @@ import Testimonials from '@/components/Testimonials'
 import Video from '@/components/Video'
 import { Inter } from '@next/font/google'
 import EmblaCarousel from '@/components/Carousel'
+import TransactionList from '@/components/TransactionList'
 
 // eslint-disable-next-line no-unused-vars
 const inter = Inter({ subsets: ['latin'] })
@@ -23,6 +24,7 @@ export default function Home() {
       <Hero />
       <EmblaCarousel />
       <Features />
+      <TransactionList />
       {/* <Video />
       <Brands />
       <AboutSectionOne />

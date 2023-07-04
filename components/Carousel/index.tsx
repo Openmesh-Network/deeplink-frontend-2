@@ -41,7 +41,7 @@ function EmblaCarousel() {
     <>
       {/* <h1 className="text-center">Trending tasks</h1> */}
       <Carousel
-        maw={600}
+        maw={800}
         mx="auto"
         controlsOffset="5xs"
         withIndicators
@@ -55,15 +55,21 @@ function EmblaCarousel() {
             color: 'white',
           },
         }}
-        className="mt-28 mb-44"
+        className="mx-4 mt-28 mb-44 items-center lg:mx-auto"
       >
         {slides.map((slide, index) => (
           <Carousel.Slide key={index}>
             <div className="flex">
-              <img className="ml-10 w-1/2" src={slide.src} alt={slide.alt} />
-              <div className="ml-5 mr-5 w-1/2 ">
+              <img
+                className="ml-10 hidden w-1/2 lg:inline-block"
+                src={slide.src}
+                alt={slide.alt}
+              />
+              <div className="ml-8 mr-7 lg:w-1/2">
                 <div className="max-h-[180px] overflow-hidden ">
-                  <p className="text-xl font-semibold">{slide.text}</p>
+                  <p className="text-xl font-semibold lg:text-2xl">
+                    {slide.text}
+                  </p>
                   <div className="mb-2 flex space-x-2">
                     {slide.categories.map((category, index) => (
                       <span
@@ -75,7 +81,7 @@ function EmblaCarousel() {
                     ))}
                   </div>
                   <p
-                    className="mt-5 overflow-hidden text-xs line-clamp-5"
+                    className="mt-5 overflow-hidden text-xs line-clamp-5 lg:text-base lg:line-clamp-3"
                     title={slide.description}
                   >
                     {slide.description}{' '}
