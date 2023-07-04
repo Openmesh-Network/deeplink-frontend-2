@@ -1,61 +1,95 @@
 'use client'
-import { useState } from 'react'
-import TransactionModal from './TransactionModal'
+// import { useState } from 'react'
+import TasksModal from './TasksModal'
 import SearchModal from './SearchModal'
 
 const TransactionList = () => {
-  const [transactions] = useState([
+  const tasks = [
     {
       id: 1,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task created',
-      transactionHash:
-        '0x3D75507A8AdcD2F83bd71029a9a8fDcBaaaadf6393C2131236fdfssfssfffsfsffs',
-      transactionDate: '2023-07-01 09:32:01',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Trading research',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Open',
+      budget: ['250 USDT'],
     },
     {
       id: 2,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C32137',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Create a website for a social media plataform',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['FRONTEND', 'BLOCKCHAIN'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'On going',
+      budget: ['500 USDC', '50 LINK'],
     },
     {
       id: 3,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213217',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'LLM development',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['AI'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Open',
+      budget: ['500 USDC', '50 LINK', '700 USDC'],
     },
     {
       id: 4,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213217',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Crypto research',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['BLOCKCHAIN'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Finished',
+      budget: ['1500 USDC', '50 LINK', '700 USDC'],
     },
     {
       id: 5,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213127',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Rust backend development',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['BACKEND', 'BLOCKCHAIN'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Open',
+      budget: ['500 USDC', '50 LINK'],
     },
     {
       id: 6,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213127',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'LLM development',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['AI'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Finished',
+      budget: ['500 USDC', '50 LINK', '700 USDC'],
     },
     {
       id: 7,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C32137',
-      transactionDate: '2023-07-01 10:14:52',
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Marketing managment',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['COMMUNITY'],
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '210203921930',
+      status: 'Open',
+      budget: ['50 LINK', '700 USDC'],
     },
-  ])
+  ]
 
   return (
     <div className="mx-auto mt-44 max-w-6xl items-center justify-center py-6">
@@ -68,9 +102,9 @@ const TransactionList = () => {
         </button>
       </div>
       <SearchModal />
-      <div className="h-[400px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
-        {transactions.map((transaction) => (
-          <TransactionModal key={transaction.id} transaction={transaction} />
+      <div className="h-[1200px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
+        {tasks.map((task) => (
+          <TasksModal key={task.id} {...task} />
         ))}
       </div>
     </div>

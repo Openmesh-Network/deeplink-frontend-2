@@ -10,7 +10,7 @@ function EmblaCarousel() {
       text: 'Task title',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      categories: ['IA', 'BLOCKCHAIN', 'SCIENCE'],
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
     },
     {
@@ -19,7 +19,7 @@ function EmblaCarousel() {
       text: 'Task title',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      categories: ['Frontend'],
+      categories: ['FRONTEND'],
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
     },
     {
@@ -28,7 +28,7 @@ function EmblaCarousel() {
       text: 'Task title',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      categories: ['Backend'],
+      categories: ['BACKEND'],
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
     },
   ]
@@ -67,7 +67,10 @@ function EmblaCarousel() {
               />
               <div className="ml-8 mr-7 lg:w-1/2">
                 <div className="max-h-[180px] overflow-hidden ">
-                  <p className="text-xl font-semibold lg:text-2xl">
+                  <p
+                    title={slide.text}
+                    className="text-xl font-semibold line-clamp-1 lg:text-2xl"
+                  >
                     {slide.text}
                   </p>
                   <div className="mb-2 flex space-x-2">

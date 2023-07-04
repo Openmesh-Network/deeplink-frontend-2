@@ -10,7 +10,13 @@ const SearchModal = () => {
 
   const statusOptions = ['Open', 'On going', 'Finished']
 
-  const departamentOptions = ['Blockchain', 'AI', 'Backend', 'Frontend']
+  const departamentOptions = [
+    'Blockchain',
+    'AI',
+    'Backend',
+    'Frontend',
+    'Community',
+  ]
 
   const orderByOptions = ['Newest', 'Oldest']
 
