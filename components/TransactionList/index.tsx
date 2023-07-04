@@ -58,7 +58,7 @@ const TransactionList = () => {
 
   return (
     <div className="my-4 mx-auto max-w-3xl items-center justify-center py-6">
-      <h2 className="ml-4  mb-2 text-left text-lg lg:text-xl font-semibold text-white">
+      <h2 className="ml-4  mb-2 text-left text-lg font-semibold text-white lg:text-xl">
         Latest DAO Transactions
       </h2>
       <div className="h-[400px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
