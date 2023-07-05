@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
@@ -98,7 +99,7 @@ const TransactionList = () => {
   const handleUpdate = () => {
     const filterTasks = () => {
       setFilteredTasks(tasks)
-      setIsLoading(true)
+      // setIsLoading(true)
       let newFilteredTasks = tasks
       if (typeof window !== 'undefined') {
         const url = new URL(window.location.href)
@@ -165,7 +166,7 @@ const TransactionList = () => {
       <SearchModal onUpdate={handleUpdate} />
       <div className="h-[1200px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
         {filteredTasks.map((task) => (
-          <TasksModal key={task.id} {...task} isLoading={isLoading} />
+          <TasksModal key={task.id} {...task} isLoading={false} />
         ))}
       </div>
     </div>

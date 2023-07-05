@@ -17,11 +17,6 @@ const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
   function formatAddress(address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
-  if (isLoading) {
-    return (
-      <div className="relative mb-8 ml-4 mr-1 h-40 animate-pulse items-start justify-between rounded-md bg-[#121A4D] p-4 text-xs lg:flex lg:text-sm"></div>
-    )
-  }
   return (
     <div className="relative mb-8 ml-4 mr-1 items-start justify-between rounded-md bg-[#121A4D] p-4 text-xs lg:flex lg:text-sm">
       <img
