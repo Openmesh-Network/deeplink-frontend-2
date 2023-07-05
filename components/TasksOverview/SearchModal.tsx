@@ -2,7 +2,11 @@
 import { TextField, Autocomplete } from '@mui/material'
 import { useState, ChangeEvent, useEffect } from 'react'
 
-const SearchModal = () => {
+interface ModalProps {
+  onUpdate(): void
+}
+
+const SearchModal = ({ onUpdate }: ModalProps) => {
   const [tasksStatus, setTasksStatus] = useState('')
   const [tasksDepartament, setTasksDepartament] = useState('')
   const [tasksOrderBy, setTasksOrderBy] = useState('')
@@ -58,6 +62,7 @@ const SearchModal = () => {
       }
 
       window.history.pushState({}, '', url.toString())
+      onUpdate()
     }
   }
 

@@ -1,9 +1,12 @@
 'use client'
 // import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TasksModal from './TasksModal'
 import SearchModal from './SearchModal'
 
 const TransactionList = () => {
+  const [filteredTasks, setFilteredTasks] = useState([])
+
   const tasks = [
     {
       id: 1,
@@ -91,6 +94,60 @@ const TransactionList = () => {
     },
   ]
 
+  const handleUpdate = () => {
+    const filterTasks = () => {
+      let newFilteredTasks = tasks
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+
+        const status = url.searchParams.get('status')
+        if (status) {
+          newFilteredTasks = newFilteredTasks.filter(
+            (task) => task.status === status,
+          )
+        }
+
+        const departament = url.searchParams.get('departament')
+        if (departament) {
+          const departamentValue = Array.isArray(departament)
+            ? departament[0]
+            : departament
+          newFilteredTasks = newFilteredTasks.filter((task) =>
+            task.categories.includes(departamentValue),
+          )
+        }
+
+        const orderBy = url.searchParams.get('orderBy')
+        if (orderBy === 'Oldest') {
+          newFilteredTasks.sort((a, b) => a.id - b.id)
+        } else if (orderBy === 'Newest') {
+          newFilteredTasks.sort((a, b) => b.id - a.id)
+        }
+
+        const searchBar = url.searchParams.get('searchBar')
+        if (searchBar) {
+          const searchPhrase = Array.isArray(searchBar)
+            ? searchBar[0]
+            : searchBar // se searchBar for array, usamos o primeiro elemento
+          newFilteredTasks = newFilteredTasks.filter(
+            (task) =>
+              task.name.toLowerCase().includes(searchPhrase.toLowerCase()) ||
+              task.description
+                .toLowerCase()
+                .includes(searchPhrase.toLowerCase()),
+          )
+        }
+        setFilteredTasks(newFilteredTasks)
+      }
+    }
+
+    filterTasks()
+  }
+
+  useEffect(() => {
+    handleUpdate()
+  }, [])
+
   return (
     <div className="mx-auto mt-44 max-w-6xl items-center justify-center py-6">
       <div className="mb-5 ml-4 flex justify-between border-b border-body-color border-opacity-50 pb-2">
@@ -101,9 +158,9 @@ const TransactionList = () => {
           New task
         </button>
       </div>
-      <SearchModal />
+      <SearchModal onUpdate={handleUpdate} />
       <div className="h-[1200px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <TasksModal key={task.id} {...task} />
         ))}
       </div>
