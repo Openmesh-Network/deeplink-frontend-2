@@ -6,7 +6,7 @@ import SearchModal from './SearchModal'
 
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const tasks = [
     {
