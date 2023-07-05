@@ -6,6 +6,7 @@ import SearchModal from './SearchModal'
 
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const tasks = [
     {
@@ -96,6 +97,8 @@ const TransactionList = () => {
 
   const handleUpdate = () => {
     const filterTasks = () => {
+      setFilteredTasks(tasks)
+      setIsLoading(true)
       let newFilteredTasks = tasks
       if (typeof window !== 'undefined') {
         const url = new URL(window.location.href)
@@ -138,6 +141,7 @@ const TransactionList = () => {
           )
         }
         setFilteredTasks(newFilteredTasks)
+        setIsLoading(false)
       }
     }
 
@@ -161,7 +165,7 @@ const TransactionList = () => {
       <SearchModal onUpdate={handleUpdate} />
       <div className="h-[1200px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark">
         {filteredTasks.map((task) => (
-          <TasksModal key={task.id} {...task} />
+          <TasksModal key={task.id} {...task} isLoading={isLoading} />
         ))}
       </div>
     </div>
