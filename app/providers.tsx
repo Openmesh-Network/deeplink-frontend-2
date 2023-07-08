@@ -32,7 +32,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </ThemeProvider>
       </WagmiConfig>
 
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+      <Web3Modal
+        projectId={projectId}
+        ethereumClient={ethereumClient}
+        themeMode="dark"
+      />
     </>
   )
 }
