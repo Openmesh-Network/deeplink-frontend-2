@@ -1,5 +1,4 @@
 'use client'
-import { UserOutlined } from '@ant-design/icons'
 
 interface TasksModalProps {
   id: number

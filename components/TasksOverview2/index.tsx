@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react'
 import TasksModal from './TasksModal'
 import SearchModal from './SearchModal'
-import TableInfo from './tableInfo'
 import { usePathname } from 'next/navigation'
 
 const TransactionList = () => {
