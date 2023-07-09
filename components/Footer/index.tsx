@@ -11,10 +11,10 @@ const Footer = () => {
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
               <div className="mb-12 max-w-[360px] lg:mb-16">
-                <Link href="/" className="mb-8 inline-block">
+                <Link href="/" className="mb-8 inline-block text-[#000000]">
                   <h1>DeepLink</h1>
                 </Link>
-                <p className="mb-9 text-base font-medium leading-relaxed text-body-color">
+                <p className="mb-9 text-base font-medium leading-relaxed text-[#000000]">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Integer lobortis.
                 </p>
@@ -22,7 +22,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="mr-6 text-[#CED3F6] hover:text-primary"
+                    className="mr-6 text-[#000000] hover:text-primary"
                   >
                     <svg
                       width="9"
@@ -36,7 +36,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="mr-6 text-[#CED3F6] hover:text-primary"
+                    className="mr-6 text-[#000000] hover:text-primary"
                   >
                     <svg
                       width="19"
@@ -50,7 +50,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="mr-6 text-[#CED3F6] hover:text-primary"
+                    className="mr-6 text-[#000000] hover:text-primary"
                   >
                     <svg
                       width="18"
@@ -64,7 +64,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="mr-6 text-[#CED3F6] hover:text-primary"
+                    className="mr-6 text-[#000000] hover:text-primary"
                   >
                     <svg
                       width="17"
@@ -81,14 +81,14 @@ const Footer = () => {
 
             <div className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
               <div className="mb-12 lg:mb-16">
-                <h2 className="mb-10 text-xl font-bold text-black dark:text-white">
+                <h2 className="mb-10 text-xl font-bold text-black">
                   Useful Links
                 </h2>
                 <ul>
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
@@ -97,7 +97,7 @@ const Footer = () => {
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
@@ -106,7 +106,7 @@ const Footer = () => {
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
@@ -118,14 +118,14 @@ const Footer = () => {
 
             <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-3/12">
               <div className="mb-12 lg:mb-16">
-                <h2 className="mb-10 text-xl font-bold text-black dark:text-white">
+                <h2 className="mb-10 text-xl font-bold text-[#000000]">
                   Support & Help
                 </h2>
                 <ul>
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
@@ -134,7 +134,7 @@ const Footer = () => {
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
@@ -143,7 +143,7 @@ const Footer = () => {
                   <li>
                     <a
                       href="/"
-                      className="mb-4 inline-block text-base font-medium text-body-color hover:text-primary"
+                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
                     >
                       {' '}
                       Docs{' '}
