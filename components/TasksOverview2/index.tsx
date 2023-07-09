@@ -5,10 +5,13 @@ import { useEffect, useState } from 'react'
 import TasksModal from './TasksModal'
 import SearchModal from './SearchModal'
 import TableInfo from './tableInfo'
+import { usePathname } from 'next/navigation'
 
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
+  const [departament, setDepartament] = useState('All')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const pathname = usePathname()
 
   const tasks = [
     {
@@ -18,7 +21,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Ai', 'Blockchain', 'Science'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -31,7 +34,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Frontend', 'Blockchain'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'On going',
@@ -41,7 +44,7 @@ const TransactionList = () => {
       id: 3,
       logo: '/images/carousel/blockchainLogo.svg',
       name: 'LLM development',
-      description:
+      departament:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Ai'],
       departaments: 'Data and analytics',
@@ -57,7 +60,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Blockchain'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Finished',
@@ -70,7 +73,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Backend', 'Blockchain'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -83,7 +86,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Ai'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Finished',
@@ -96,7 +99,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -109,7 +112,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -122,7 +125,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -135,7 +138,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -148,7 +151,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -161,7 +164,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Data and analytics',
+      departament: 'Data and analytics',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -174,7 +177,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Smart-contracts and DLTs',
+      departament: 'Smart-contracts and DLTs',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -187,7 +190,7 @@ const TransactionList = () => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Community'],
-      departaments: 'Cloud and DevOps',
+      departament: 'Cloud and DevOps',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '210203921930',
       status: 'Open',
@@ -195,9 +198,30 @@ const TransactionList = () => {
     },
   ]
 
+  const handleDepartamentSelection = (value: string) => {
+    updateUrl('departament', value)
+  }
+
+  // Função para atualizar a URL
+  const updateUrl = (param: string, value: string | null) => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+
+      if (value) {
+        url.searchParams.set(param, value)
+      } else {
+        url.searchParams.delete(param)
+      }
+
+      window.history.pushState({}, '', url.toString())
+      handleUpdate()
+    }
+  }
+
   const handleUpdate = () => {
     const filterTasks = () => {
       setFilteredTasks(tasks)
+      setDepartament('All')
       // setIsLoading(true)
       let newFilteredTasks = tasks
       if (typeof window !== 'undefined') {
@@ -211,13 +235,14 @@ const TransactionList = () => {
         }
 
         const departament = url.searchParams.get('departament')
-        if (departament) {
+        if (departament && departament !== 'All') {
           const departamentValue = Array.isArray(departament)
             ? departament[0]
             : departament
           newFilteredTasks = newFilteredTasks.filter((task) =>
-            task.categories.includes(departamentValue),
+            task.departament.includes(departamentValue),
           )
+          setDepartament(departament)
         }
 
         const orderBy = url.searchParams.get('orderBy')
@@ -227,19 +252,17 @@ const TransactionList = () => {
           newFilteredTasks.sort((a, b) => b.id - a.id)
         }
 
-        const searchBar = url.searchParams.get('searchBar')
-        if (searchBar) {
-          const searchPhrase = Array.isArray(searchBar)
-            ? searchBar[0]
-            : searchBar // se searchBar for array, usamos o primeiro elemento
-          newFilteredTasks = newFilteredTasks.filter(
-            (task) =>
-              task.name.toLowerCase().includes(searchPhrase.toLowerCase()) ||
-              task.description
-                .toLowerCase()
-                .includes(searchPhrase.toLowerCase()),
-          )
-        }
+        // const searchBar = url.searchParams.get('searchBar')
+        // if (searchBar) {
+        //   const searchPhrase = Array.isArray(searchBar)
+        //     ? searchBar[0]
+        //     : searchBar // se searchBar for array, usamos o primeiro elemento
+        //   console.log('a search bar' + searchPhrase)
+        //   newFilteredTasks = newFilteredTasks.filter((task) =>
+        //     task.name.toLowerCase().includes(searchPhrase),
+        //   )
+        //   console.log('filtro realizado')
+        // }
         setFilteredTasks(newFilteredTasks)
         setIsLoading(false)
       }
@@ -250,23 +273,68 @@ const TransactionList = () => {
 
   useEffect(() => {
     handleUpdate()
-  }, [])
+  }, [pathname])
 
   return (
     <section className="py-16 px-32 text-black md:py-20 lg:pt-32">
       <div className="container">
         <div className="mx-auto mb-10 flex justify-center text-center">
-          <span className="border-b border-[#cecece] px-5 pb-2">All</span>
-          <span className="border-b border-[#cecece] px-5 pb-2">
+          <span
+            onClick={() => {
+              handleDepartamentSelection('All')
+            }}
+            className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
+              departament === 'All' || !departament
+                ? 'text-lg font-extrabold'
+                : ''
+            }`}
+          >
+            All
+          </span>
+          <span
+            onClick={() => {
+              handleDepartamentSelection('Data and analytics')
+            }}
+            className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
+              departament === 'Data and analytics'
+                ? 'text-lg font-extrabold'
+                : ''
+            }`}
+          >
             Data and analytics
           </span>
-          <span className="border-b border-[#cecece] px-5 pb-2">
+          <span
+            onClick={() => {
+              handleDepartamentSelection('Smart-contracts and DLTs')
+            }}
+            className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
+              departament === 'Smart-contracts and DLTs'
+                ? 'text-lg font-extrabold'
+                : ''
+            }`}
+          >
             Smart-contracts and DLTs
           </span>
-          <span className="border-b border-[#cecece] px-5 pb-2">
+          <span
+            onClick={() => {
+              handleDepartamentSelection('Cloud and DevOps')
+            }}
+            className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
+              departament === 'Cloud and DevOps' ? 'text-lg font-extrabold' : ''
+            }`}
+          >
             Cloud and DevOps
           </span>
-          <span className="border-b border-[#cecece] px-5 pb-2">
+          <span
+            onClick={() => {
+              handleDepartamentSelection('Admin and Operations')
+            }}
+            className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
+              departament === 'Admin and Operations'
+                ? 'text-lg font-extrabold'
+                : ''
+            }`}
+          >
             Admin and Operations
           </span>
         </div>

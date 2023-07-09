@@ -87,7 +87,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
 
   return (
     <div className="mb-5 mr-1 items-start justify-between rounded-md border border-[#F8FAFC] bg-[#F8FAFC] p-4 text-xs lg:flex lg:text-sm">
-      <div className="flex">
+      {/* <div className="flex">
         <input
           type="text"
           onInput={handleSearchBarInput}
@@ -117,7 +117,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             />
           </svg>
         </button>
-      </div>
+      </div> */}
       <div className="flex">
         <Autocomplete
           value={tasksStatus}
@@ -141,7 +141,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
               label="Status"
               variant="outlined"
               id="margin-none"
-              sx={{ input: { color: 'black' }, color: 'white' }}
+              sx={{ input: { color: 'black' }, color: 'black' }}
             />
           )}
         />
@@ -167,7 +167,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
               label="Sort by"
               variant="outlined"
               id="margin-none"
-              sx={{ input: { color: 'white' }, color: 'white' }}
+              sx={{ input: { color: 'black' }, color: 'black' }}
             />
           )}
         />
