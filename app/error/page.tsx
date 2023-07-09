@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 const ErrorPage = () => {
   return (
@@ -37,7 +37,7 @@ const ErrorPage = () => {
                     />
                     <mask
                       id="mask0_116:1137"
-                      style={{ maskType: "alpha" }}
+                      style={{ maskType: 'alpha' }}
                       maskUnits="userSpaceOnUse"
                       x="159"
                       y="13"
@@ -524,7 +524,7 @@ const ErrorPage = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default ErrorPage;
+export default ErrorPage

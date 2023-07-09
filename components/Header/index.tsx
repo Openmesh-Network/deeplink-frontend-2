@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import ThemeToggler from './ThemeToggler'
 import menuData from './menuData'
+import { usePathname } from 'next/navigation'
 import {
   useWeb3ModalTheme,
   Web3NetworkSwitch,
@@ -14,6 +15,7 @@ import { useNetwork, useAccount } from 'wagmi'
 
 const Header = () => {
   const { chain, chains } = useNetwork()
+  const pathname = usePathname()
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [isChainWrong, setIsChainWrong] = useState(false)
@@ -46,9 +48,8 @@ const Header = () => {
     } else {
       setIsChainWrong(false)
       setTheme({
-        themeMode: 'dark',
         themeVariables: {
-          '--w3m-accent-color': '',
+          '--w3m-accent-color': '#000000',
           // ...
         },
       })
@@ -138,7 +139,11 @@ const Header = () => {
                         {menuItem.path ? (
                           <Link
                             href={menuItem.path}
-                            className={`flex py-2 text-base text-dark group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                            className={`flex py-2 text-base text-dark group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 ${
+                              pathname.includes(menuItem.path)
+                                ? 'font-bold'
+                                : ''
+                            }`}
                           >
                             {menuItem.title}
                           </Link>

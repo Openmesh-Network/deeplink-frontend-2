@@ -2,7 +2,7 @@
 'use client'
 
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Modal } from '@web3modal/react'
+import { Web3Modal, useWeb3ModalTheme } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { ThemeProvider } from 'next-themes'
@@ -32,11 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </ThemeProvider>
       </WagmiConfig>
 
-      <Web3Modal
-        projectId={projectId}
-        ethereumClient={ethereumClient}
-        themeMode="dark"
-      />
+      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   )
 }

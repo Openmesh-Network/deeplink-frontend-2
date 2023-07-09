@@ -1,74 +1,103 @@
 'use client'
-/* eslint-disable prettier/prettier */
-import { useState } from 'react'
+// import { useState } from 'react'
 import DepartamentModal from './DepartamentModal'
 
-const TransactionList = () => {
-  const [transactions] = useState([
+const DepartamentsList = () => {
+  const transactions = [
     {
       id: 1,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task created',
-      transactionHash:
-        '0x3D75507A8AdcD2F83bd71029a9a8fDcBaaaadf6393C2131236fdfssfssfffsfsffs',
-      transactionDate: '2023-07-01 09:32:01',
+      title: 'Data and analytics',
+      paragraph:
+        'Data warehousing, normalisation, collecting, analyzing, and interpreting data to derive meaningful insights.',
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
+      budget: [
+        { amount: '500', token: 'USDC' },
+        { amount: '50', token: 'USDT' },
+      ],
+      tasks: [
+        { id: 1, title: 'Amazon SageMaker optimisation' },
+        { id: 2, title: 'Smart-contract development' },
+        { id: 3, title: 'Defi Farm' },
+        { id: 4, title: 'Apache Kafka' },
+        { id: 5, title: 'EC2 config' },
+        { id: 6, title: 'GCP MPC congif' },
+      ],
     },
     {
       id: 2,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C32137',
-      transactionDate: '2023-07-01 10:14:52',
+      title: 'Smart-contracts and DLTs',
+      paragraph:
+        'Developing and implementing consensus mechanisms, responsible for DAO functions, integrations with smart contracts and public chains',
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
+      budget: [
+        { amount: '1200', token: 'LINK' },
+        { amount: '50', token: 'USDT' },
+      ],
+      tasks: [
+        { id: 1, title: 'Amazon SageMaker optimisation' },
+        { id: 2, title: 'Smart-contract development' },
+        { id: 3, title: 'Defi Farm' },
+        { id: 4, title: 'Apache Kafka' },
+        { id: 5, title: 'EC2 config' },
+        { id: 6, title: 'GCP MPC congif' },
+      ],
     },
     {
       id: 3,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213217',
-      transactionDate: '2023-07-01 10:14:52',
+      title: 'Cloud, DevOps & infrastructure',
+      paragraph:
+        'Managing the infrastructure and maintaining IaaS core services, optimize the infrastructure to enhance performance, reliability, and security',
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
+      budget: [
+        { amount: '500', token: 'USDC' },
+        { amount: '25', token: 'USDT' },
+      ],
+      tasks: [
+        { id: 1, title: 'Amazon SageMaker optimisation' },
+        { id: 2, title: 'Smart-contract development' },
+        { id: 3, title: 'Defi Farm' },
+        { id: 4, title: 'Apache Kafka' },
+        { id: 5, title: 'EC2 config' },
+        { id: 6, title: 'GCP MPC congif' },
+      ],
     },
     {
       id: 4,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213217',
-      transactionDate: '2023-07-01 10:14:52',
+      title: 'Admin, HR & Operations',
+      paragraph:
+        'Oversee operations, budgeting, manage human resources, administration, and logistics to ensure the smooth functioning of the operation.',
+      categories: ['AI', 'BLOCKCHAIN', 'SCIENCE'],
+      budget: [
+        { amount: '500', token: 'USDC' },
+        { amount: '50', token: 'USDT' },
+      ],
+      tasks: [
+        { id: 1, title: 'Amazon SageMaker optimisation' },
+        { id: 2, title: 'Smart-contract development' },
+        { id: 3, title: 'Defi Farm' },
+        { id: 4, title: 'Apache Kafka' },
+        { id: 5, title: 'EC2 config' },
+        { id: 6, title: 'GCP MPC congif' },
+      ],
     },
-    {
-      id: 5,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213127',
-      transactionDate: '2023-07-01 10:14:52',
-    },
-    {
-      id: 6,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C213127',
-      transactionDate: '2023-07-01 10:14:52',
-    },
-    {
-      id: 7,
-      actionIcon: 'FormOutlined',
-      actionName: 'Task submitted',
-      transactionHash: '0x8Cd914F504e06397952C2aaEb3Aea6cC3B5bD5C32137',
-      transactionDate: '2023-07-01 10:14:52',
-    },
-  ])
+  ]
 
   return (
-    <div className="my-4 mx-auto max-w-3xl items-center justify-center py-6">
-      <h2 className="ml-4  mb-2 text-left text-lg font-semibold text-white lg:text-xl">
-        Latest DAO Transactions
-      </h2>
-      <div className="h-[400px] overflow-auto pr-2 scrollbar scrollbar-thumb-dark grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
-        {transactions.map((transaction) => (
-          <DepartamentModal key={transaction.id} transaction={transaction} />
-        ))}
+    <section className="px-32 pb-16 md:pb-20 lg:pb-40">
+      <div className="container">
+        <div className="my-4 mx-auto items-center justify-center py-6">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+            {transactions.map((transaction) => (
+              <DepartamentModal
+                key={transaction.id}
+                departament={transaction}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
-export default TransactionList
+export default DepartamentsList
