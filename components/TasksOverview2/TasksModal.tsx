@@ -45,12 +45,12 @@ const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
             {/* 150 é o número máximo de caracteres que você quer exibir */}
           </p>
         </div>
-        <div className="flex w-[10%] items-center border-r border-[#e8e5e5] px-2">
+        <div className="flex w-[10%] items-center border-r border-[#e8e5e5] px-2 ">
           <a
             target="_blank"
             rel="noopener noreferrer"
             href={`https://mumbai.polygonscan.com/address/${task.submitter}`}
-            className="my-3 flex"
+            className="my-3 flex hover:text-primary"
           >
             <UserOutlined />
             <p
