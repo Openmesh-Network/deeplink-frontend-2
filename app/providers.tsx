@@ -6,6 +6,7 @@ import { Web3Modal, useWeb3ModalTheme } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { ThemeProvider } from 'next-themes'
+import { ToastContainer } from 'react-toastify'
 
 const chains = [polygonMumbai]
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
@@ -30,6 +31,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         >
           {children}
         </ThemeProvider>
+        <ToastContainer />
       </WagmiConfig>
 
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

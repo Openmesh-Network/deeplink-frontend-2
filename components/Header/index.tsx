@@ -34,27 +34,28 @@ const Header = () => {
       setSticky(false)
     }
   }
-  useEffect(() => {
-    window.addEventListener('scroll', handleStickyNavbar)
-    if (chain && chain.name !== 'Polygon Mumbai') {
-      setIsChainWrong(true)
-      setTheme({
-        themeMode: 'dark',
-        themeVariables: {
-          '--w3m-accent-color': `${isChainWrong ? '#bf0d0d' : ''}`,
-          // ...
-        },
-      })
-    } else {
-      setIsChainWrong(false)
-      setTheme({
-        themeVariables: {
-          '--w3m-accent-color': '#000000',
-          // ...
-        },
-      })
-    }
-  })
+  // Este useEffect está travando a aplicação, econtrar maneira de tratar isto.
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleStickyNavbar)
+  //   if (chain && chain.name !== 'Polygon Mumbai') {
+  //     setIsChainWrong(true)
+  //     setTheme({
+  //       themeMode: 'dark',
+  //       themeVariables: {
+  //         '--w3m-accent-color': `${isChainWrong ? '#bf0d0d' : ''}`,
+  //         // ...
+  //       },
+  //     })
+  //   } else {
+  //     setIsChainWrong(false)
+  //     setTheme({
+  //       themeVariables: {
+  //         '--w3m-accent-color': '#000000',
+  //         // ...
+  //       },
+  //     })
+  //   }
+  // })
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1)
