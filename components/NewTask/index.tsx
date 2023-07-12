@@ -13,13 +13,23 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
+import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { TextField, Autocomplete } from '@mui/material'
 
+import ethers from 'ethers'
 import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  useContractRead,
+  useAccount,
 } from 'wagmi'
+import {
+  readContract,
+  writeContract,
+  prepareWriteContract,
+  waitForTransaction,
+} from '@wagmi/core'
 
 type TaskSubmitForm = {
   title: string
@@ -66,6 +76,11 @@ const NewTask = () => {
   const [links, setLinks] = useState<Link[]>([])
   const departamentOptions = ['Ai', 'Frontend', 'Smart-contracts', 'Backend']
   const typeOptions = ['Individual', 'Group']
+  const { pathname, push } = useRouter()
+
+  const [erc20AddressReadAllowance, setErc20AddressReadAllowance] =
+    useState<String>('')
+  const { address, isConnecting, isDisconnected } = useAccount()
 
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
 
@@ -212,7 +227,9 @@ const NewTask = () => {
               {file.name}
             </span>
             <button
+              type="button"
               onClick={() => onRemove(index)}
+              disabled={isLoading}
               className="ml-2 rounded px-1 py-0.5 text-sm  text-[#ff0000]"
             >
               X
@@ -302,9 +319,74 @@ const NewTask = () => {
     return ipfsHash
   }
 
+  async function handleAllowanceFromTokens() {
+    for (let i = 0; i < payments.length; i++) {
+      const data = await readContract({
+        address: `0x${payments[i].tokenContract.substring(2)}`,
+        abi: erc20ContractABI,
+        args: [address, '0x95a7CC5a3E9D16626169267780096f2C0db896E1'],
+        functionName: 'allowance',
+      })
+      console.log('o valor q recebi')
+      console.log(data)
+      if (Number(data) < Number(payments[i].amount)) {
+        console.log('required to increase allowance')
+        const { request } = await prepareWriteContract({
+          address: `0x${payments[i].tokenContract.substring(2)}`,
+          abi: erc20ContractABI,
+          args: [
+            '0x95a7CC5a3E9D16626169267780096f2C0db896E1',
+            Number(payments[i].amount) * 100,
+          ],
+          functionName: 'approve',
+        })
+        const { hash } = await writeContract(request)
+        const data = await waitForTransaction({
+          hash,
+        })
+        console.log('the data')
+        console.log(data)
+        await new Promise((resolve) => setTimeout(resolve, 2500))
+        if (data.status !== 'success') {
+          throw data
+        }
+      }
+    }
+  }
+
+  async function handleCreateTask(
+    metadata: string,
+    deadline: number,
+    budget: Payment[],
+  ) {
+    const { request } = await prepareWriteContract({
+      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      abi: taskContractABI,
+      args: [metadata, deadline, budget],
+      functionName: 'createTask',
+    })
+    const { hash } = await writeContract(request)
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
+  async function handleSendUserToNewlyCreatedTask() {
+    const data = await readContract({
+      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      abi: taskContractABI,
+      functionName: 'taskCount',
+    })
+    push(`/task/${Number(data) - 1}`)
+  }
+
   async function onSubmit(data: TaskSubmitForm) {
-    write?.()
-    return
     setIsLoading(true)
     console.log('starting upload')
 
@@ -324,30 +406,35 @@ const NewTask = () => {
       file: fileIPFSHash,
     }
 
+    let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
       console.log('a resposta:')
       console.log(res)
+      ipfsHashData = res
       await setIpfsHashTaskData(res)
       setIsLoading(false)
     } catch (err) {
       toast.error('something ocurred')
       setIsLoading(false)
     }
+
+    try {
+      await handleAllowanceFromTokens()
+    } catch (err) {
+      toast.error('Something happened, please try again')
+    }
+    try {
+      await handleCreateTask(
+        ipfsHashData,
+        Math.floor(data.deadline.getTime() / 1000),
+        payments,
+      )
+      toast.success('Task created succesfully!')
+    } catch (err) {
+      toast.error('Something happened, please try again')
+    }
   }
-
-  const { config } = usePrepareContractWrite({
-    address: '0xa63d6B9A570CBB6e98023b2e7527f6383136e062',
-    abi: taskContractABI,
-    functionName: 'createTask',
-    args: [
-      '0x08ADb3400E48cACb7d5a5CB386877B3A159d525C000000000000000000000000',
-      10000000000,
-      payments,
-    ],
-  })
-
-  const { data, write } = useContractWrite(config)
 
   return (
     <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
@@ -377,6 +464,7 @@ const NewTask = () => {
                     </p>
                   </span>
                   <input
+                    disabled={isLoading}
                     className="mt-[8px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
                     type="text"
                     maxLength={50}
@@ -392,6 +480,7 @@ const NewTask = () => {
                     </p>
                   </span>
                   <textarea
+                    disabled={isLoading}
                     style={{ resize: 'none' }}
                     className="mt-[8px] h-[160px] w-full rounded-md   border border-[#bcbaba] bg-white pt-2 pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
                     maxLength={200}
@@ -416,6 +505,7 @@ const NewTask = () => {
                     render={({ field }) => (
                       <Autocomplete
                         {...field}
+                        disabled={isLoading}
                         value={departament}
                         onChange={(e, newValue) => {
                           field.onChange(newValue)
@@ -467,6 +557,7 @@ const NewTask = () => {
                       <Autocomplete
                         {...field}
                         multiple
+                        disabled={isLoading}
                         className="mt-2"
                         options={skillOptions}
                         size="small"
@@ -520,6 +611,7 @@ const NewTask = () => {
                       <Autocomplete
                         {...field}
                         value={type}
+                        disabled={isLoading}
                         onChange={(e, newValue) => {
                           field.onChange(newValue)
                           setType(newValue)
@@ -566,6 +658,8 @@ const NewTask = () => {
                         <h3>Payment {index + 1}</h3>
                         {index === payments.length - 1 && (
                           <button
+                            type="button"
+                            disabled={isLoading}
                             onClick={() => handleDeletePayment(index)}
                             className="ml-2 font-extrabold text-[#ff0000]"
                           >
@@ -583,6 +677,7 @@ const NewTask = () => {
                           </label>
                           <input
                             type="text"
+                            disabled={isLoading}
                             id={`payment-${index}-erc20Address`}
                             value={pagamento.tokenContract}
                             onChange={(e) =>
@@ -604,6 +699,7 @@ const NewTask = () => {
                           </label>
                           <input
                             type="text"
+                            disabled={isLoading}
                             id={`payment-${index}-amount`}
                             value={pagamento.amount}
                             onChange={(e) =>
@@ -620,6 +716,8 @@ const NewTask = () => {
                     </div>
                   ))}
                   <button
+                    type="button"
+                    disabled={isLoading}
                     onClick={addPayments}
                     className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
                   >
@@ -636,6 +734,8 @@ const NewTask = () => {
                         <h3>Link {index + 1}</h3>
                         {index === links.length - 1 && (
                           <button
+                            type="button"
+                            disabled={isLoading}
                             onClick={() => handleDeleteLinks(index)}
                             className="ml-2 font-extrabold text-[#ff0000]"
                           >
@@ -653,6 +753,7 @@ const NewTask = () => {
                           </label>
                           <input
                             type="text"
+                            disabled={isLoading}
                             id={`link-${index}-title`}
                             value={link.title}
                             onChange={(e) =>
@@ -669,6 +770,7 @@ const NewTask = () => {
                             URL
                           </label>
                           <input
+                            disabled={isLoading}
                             type="text"
                             id={`link-${index}-url`}
                             value={link.url}
@@ -682,6 +784,8 @@ const NewTask = () => {
                     </div>
                   ))}
                   <button
+                    type="button"
+                    disabled={isLoading}
                     onClick={addLinks}
                     className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
                   >
@@ -698,6 +802,7 @@ const NewTask = () => {
                         <span className="font-normal">Select a file</span>
                         <input
                           type="file"
+                          disabled={isLoading}
                           multiple
                           onChange={handleFileChange}
                           className="hidden"
@@ -718,6 +823,7 @@ const NewTask = () => {
                   </p>
                 </span>
                 <input
+                  disabled={isLoading}
                   className="mt-[8px] h-[30px] w-[150px] rounded-md  border border-[#bcbaba] bg-[#d1caca] pl-2 text-[17px] font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
                   type="date"
                   {...register('deadline')}
@@ -728,7 +834,7 @@ const NewTask = () => {
 
           {isLoading ? (
             <button
-              type="submit"
+              type="button"
               className="mt-20 flex w-[120px] rounded bg-[#8a8a8b] p-1 font-bold  text-white"
               onClick={handleSubmit(onSubmit)}
               disabled={true}
