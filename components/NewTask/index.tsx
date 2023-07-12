@@ -12,7 +12,14 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import taskContractABI from '@/utils/abi/taskContractABI.json'
 import { TextField, Autocomplete } from '@mui/material'
+
+import {
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 
 type TaskSubmitForm = {
   title: string
@@ -24,7 +31,7 @@ type TaskSubmitForm = {
 }
 
 type Payment = {
-  erc20Address: string
+  tokenContract: string
   amount: string
 }
 
@@ -59,6 +66,9 @@ const NewTask = () => {
   const [links, setLinks] = useState<Link[]>([])
   const departamentOptions = ['Ai', 'Frontend', 'Smart-contracts', 'Backend']
   const typeOptions = ['Individual', 'Group']
+
+  const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
+
   const skillOptions = [
     'Backend',
     'Frontend',
@@ -144,7 +154,7 @@ const NewTask = () => {
     setPayments([
       ...payments,
       {
-        erc20Address: '',
+        tokenContract: '',
         amount: '',
       },
     ])
@@ -293,6 +303,8 @@ const NewTask = () => {
   }
 
   async function onSubmit(data: TaskSubmitForm) {
+    write?.()
+    return
     setIsLoading(true)
     console.log('starting upload')
 
@@ -316,13 +328,26 @@ const NewTask = () => {
       const res = await formsUploadIPFS(finalData)
       console.log('a resposta:')
       console.log(res)
-      toast.success(`Uploaded to ipfs: ${res}`)
+      await setIpfsHashTaskData(res)
       setIsLoading(false)
     } catch (err) {
       toast.error('something ocurred')
       setIsLoading(false)
     }
   }
+
+  const { config } = usePrepareContractWrite({
+    address: '0xa63d6B9A570CBB6e98023b2e7527f6383136e062',
+    abi: taskContractABI,
+    functionName: 'createTask',
+    args: [
+      '0x08ADb3400E48cACb7d5a5CB386877B3A159d525C000000000000000000000000',
+      10000000000,
+      payments,
+    ],
+  })
+
+  const { data, write } = useContractWrite(config)
 
   return (
     <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
@@ -559,11 +584,11 @@ const NewTask = () => {
                           <input
                             type="text"
                             id={`payment-${index}-erc20Address`}
-                            value={pagamento.erc20Address}
+                            value={pagamento.tokenContract}
                             onChange={(e) =>
                               handleERC20AddressPayment(
                                 index,
-                                'erc20Address',
+                                'tokenContract',
                                 e.target.value,
                               )
                             }
