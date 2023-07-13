@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 'use client'
@@ -46,9 +45,8 @@ const TaskView = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
   const [departament, setDepartament] = useState('All')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [imgTaskIPFS, setImgTaskIPFS] = useState('')
+  const [imgTaskIPFS, setImgTaskIPFS] = useState<String>('')
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
-  const [taskChainData, setTaskChainData] = useState<any>()
 
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
@@ -61,14 +59,6 @@ const TaskView = (id: any) => {
     })
     console.log('the data:')
     console.log(data)
-    setTaskChainData(data)
-    await getDataFromIPFS(data['metadata'])
-  }
-
-  function truncateHash(hash) {
-    const start = hash.slice(0, 10)
-    const end = hash.slice(-10)
-    return `${start}...${end}`
   }
 
   async function getDataFromIPFS(hash: string) {
@@ -130,22 +120,12 @@ const TaskView = (id: any) => {
                 <div className="mt-10 flex text-[#595959]">
                   <p>Available funds</p>{' '}
                   <div className="ml-4 flex items-start justify-start px-2">
-                    {taskMetadata.payments.map((payment, index) => (
-                      <div
-                        key={index}
-                        className="flex text-base text-[#000000]"
-                      >
-                        <p>{Number(payment.amount) / 10 ** 18}</p>
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
-                          className="my-3 flex hover:text-primary"
-                        >
-                          {truncateHash(payment.tokenContract)}
-                        </a>
-                      </div>
-                    ))}
+                    <img
+                      src="/images/tokens/usd-coin-usdc-logo.svg"
+                      alt="image"
+                      className={`w-[22px]`}
+                    />
+                    <span className="ml-1 text-base text-[#000000]">1,200</span>
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -167,24 +147,21 @@ const TaskView = (id: any) => {
                         alt="image"
                         className={`w-[34px]`}
                       />
-                      <p className=""> {taskChainData.state}</p>
+                      <p className=""> Open</p>
                     </div>
 
-                    <p className="mt-8 text-[#595959]">
-                      {' '}
-                      Deadline: {String(taskMetadata.deadline)}
-                    </p>
+                    <p className="mt-8 text-[#595959]"> Deadline: 10-08-2023</p>
                   </div>
                 </div>
                 <div className="mt-14 flex">
                   <p className=" text-[#595959]">Project scope</p>
                   <div className="ml-16 flex space-x-2">
-                    {taskMetadata.skills.map((skill, index) => (
+                    {task[0].categories.map((category, index) => (
                       <span
                         key={index}
                         className="rounded-md bg-[#01E2AC] px-2 py-1 text-[11px] font-bold text-[#000000]"
                       >
-                        {skill}
+                        {category}
                       </span>
                     ))}
                   </div>
@@ -195,15 +172,15 @@ const TaskView = (id: any) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`https://mumbai.polygonscan.com/address/${taskChainData.proposer}`}
+                      href={`https://mumbai.polygonscan.com/address/${task[0].submitter}`}
                       className="mt-1 flex hover:text-primary"
                     >
                       <UserOutlined />
                       <p
                         className="overflow-hidden text-xs font-semibold line-clamp-5 lg:text-xs lg:line-clamp-6"
-                        title={taskChainData.proposer}
+                        title={task[0].submitter}
                       >
-                        {formatAddress(taskChainData.proposer)}
+                        {formatAddress(task[0].submitter)}
                       </p>
                     </a>
                   </div>
@@ -223,17 +200,64 @@ const TaskView = (id: any) => {
                 </p>
                 <div className="flex">
                   <div className="mt-10 w-3/4 text-sm font-light">
-                    {imgTaskIPFS ? (
-                      <img
-                        src={imgTaskIPFS}
-                        alt="project desc"
-                        className="h-[375px] w-4/5"
-                      ></img>
-                    ) : (
-                      <></>
-                    )}
-
-                    <p className="mt-16">{taskMetadata.description}</p>
+                    <iframe
+                      src="https://www.youtube-nocookie.com/embed/gBJ2QilHDXo"
+                      allowFullScreen
+                      frameBorder="0"
+                      allow="encrypted-media"
+                      className="h-[375px] w-4/5"
+                    ></iframe>
+                    <p className="mt-16">
+                      Autofarm is a one-stop DeFi suite comprising of 6 main
+                      products (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline. Autofarm is a
+                      one-stop DeFi suite comprising of 6 main products
+                      (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline.
+                    </p>
+                    <p className="mt-2">
+                      Autofarm is a one-stop DeFi suite comprising of 6 main
+                      products (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline. Autofarm is a
+                      one-stop DeFi suite comprising of 6 main products
+                      (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline. Autofarm is a
+                      one-stop DeFi suite comprising of 6 main products
+                      (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline. Autofarm is a
+                      one-stop DeFi suite comprising of 6 main products
+                      (Autofarm - yield optimizer/vaults, AutoSwap DEX
+                      Aggregator, AutoPortfolio, AutoTrade, AutoAnalytics &
+                      farmfolio - intelligent portfolio dashboard). Autofarm
+                      ecosystem is currently available on BSC, HECO, Polygon,
+                      Avalanche, Fantom, Moonriver, OKEx, Celo & Cronos with
+                      Arbitrium, xDai, Harmony in the pipeline.
+                    </p>
+                    <img
+                      src="/images/task/tech-fluxograma.png"
+                      alt="image"
+                      className={`mt-16 w-4/5`}
+                    />
                     <p className="mt-14 text-xl font-semibold">
                       Relevant links
                     </p>

@@ -3,7 +3,7 @@
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState, ChangeEvent, FC } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { UserOutlined } from '@ant-design/icons'
 import TransactionList from '../TaskTransactionsList'
 import { useForm, Controller } from 'react-hook-form'
@@ -16,14 +16,8 @@ import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { TextField, Autocomplete } from '@mui/material'
 
-import ethers from 'ethers'
-import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
-  useContractRead,
-  useAccount,
-} from 'wagmi'
+import { ethers } from 'ethers'
+import { useAccount, useNetwork } from 'wagmi'
 import {
   readContract,
   writeContract,
@@ -76,11 +70,13 @@ const NewTask = () => {
   const [links, setLinks] = useState<Link[]>([])
   const departamentOptions = ['Ai', 'Frontend', 'Smart-contracts', 'Backend']
   const typeOptions = ['Individual', 'Group']
-  const { pathname, push } = useRouter()
+  const { push } = useRouter()
 
   const [erc20AddressReadAllowance, setErc20AddressReadAllowance] =
     useState<String>('')
+
   const { address, isConnecting, isDisconnected } = useAccount()
+  const { chain, chains } = useNetwork()
 
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
 
@@ -386,9 +382,34 @@ const NewTask = () => {
     push(`/task/${Number(data) - 1}`)
   }
 
+  function handleIsPaymentsTokensValid() {
+    for (const payment of payments) {
+      if (!ethers.isAddress(payment.tokenContract)) {
+        // this is not a valid address
+        return false
+      }
+    }
+    // all addresses are valid
+    return true
+  }
+
   async function onSubmit(data: TaskSubmitForm) {
+    if (chain && chain.name !== 'Polygon Mumbai') {
+      toast.error('Please switch chain before interacting with the protocol.')
+      return
+    }
+
     setIsLoading(true)
-    console.log('starting upload')
+
+    // verifying if all the ERC20 tokens are valid:
+
+    try {
+      handleIsPaymentsTokensValid()
+    } catch (err) {
+      toast.error('All the ERC20 tokens need to have valid addresses!')
+      setIsLoading(false)
+      return
+    }
 
     let fileIPFSHash
     try {
@@ -431,6 +452,7 @@ const NewTask = () => {
         payments,
       )
       toast.success('Task created succesfully!')
+      handleSendUserToNewlyCreatedTask()
     } catch (err) {
       toast.error('Something happened, please try again')
     }
