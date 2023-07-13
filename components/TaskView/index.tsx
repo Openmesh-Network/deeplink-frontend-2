@@ -20,29 +20,7 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-type Payment = {
-  tokenContract: string
-  amount: string
-  decimals: number | 18
-}
-
-type Link = {
-  title: string
-  url: string
-}
-
-type IPFSSubmition = {
-  title: string
-  description: string
-  deadline: Date
-  departament: string
-  skills: string[]
-  type: string
-  payments: Payment[]
-  links: Link[] | null
-  file: string | null
-}
+import { IPFSSubmition } from '@/types/task'
 
 const TaskView = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
