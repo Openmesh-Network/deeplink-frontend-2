@@ -717,7 +717,7 @@ const NewTask = () => {
                             htmlFor={`payment-${index}-amount`}
                             className="mb-1 block text-xs"
                           >
-                            Amount
+                            Amount (with decimal places)
                           </label>
                           <input
                             type="text"

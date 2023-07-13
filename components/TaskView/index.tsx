@@ -4,7 +4,7 @@
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { UserOutlined } from '@ant-design/icons'
 import TransactionList from '../TaskTransactionsList'
 import { ethers } from 'ethers'
@@ -16,6 +16,7 @@ import {
   waitForTransaction,
 } from '@wagmi/core'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
+import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -23,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css'
 type Payment = {
   tokenContract: string
   amount: string
+  decimals: number | 18
 }
 
 type Link = {
@@ -50,6 +52,14 @@ const TaskView = (id: any) => {
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
   const [taskChainData, setTaskChainData] = useState<any>()
 
+  const { push } = useRouter()
+
+  const taskState = [
+    { state: 'Open', img: 'circle-green-task.svg' },
+    { state: 'Taken', img: 'circle-yellow-task.svg' },
+    { state: 'Closed', img: 'circle-gray-task.svg' },
+  ]
+
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
     console.log('getting data from task')
@@ -59,6 +69,14 @@ const TaskView = (id: any) => {
       args: [Number(id)],
       functionName: 'getTask',
     })
+
+    if (!data) {
+      toast.error(
+        'Something occurred while fetching data from the smart-contract!',
+      )
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      push('/')
+    }
     console.log('the data:')
     console.log(data)
     setTaskChainData(data)
@@ -66,8 +84,8 @@ const TaskView = (id: any) => {
   }
 
   function truncateHash(hash) {
-    const start = hash.slice(0, 10)
-    const end = hash.slice(-10)
+    const start = hash.slice(0, 5)
+    const end = hash.slice(-5)
     return `${start}...${end}`
   }
 
@@ -76,46 +94,70 @@ const TaskView = (id: any) => {
 
     await axios
       .get(url)
-      .then((response) => {
+      .then(async (response) => {
         console.log('the metadata:')
         console.log(response.data)
         if (response.data.file) {
-          setImgTaskIPFS(response.data.file)
+          setImgTaskIPFS(
+            `https://cloudflare-ipfs.com/ipfs/${response.data.file}`,
+          )
         }
-        setTaskMetadata(response.data)
+        await setTaskMetadata(response.data)
+        await getDecimalsFromPaymentsToken(response.data.payments)
+        console.log('after the validation:')
+        console.log(taskMetadata)
         setIsLoading(false)
       })
-      .catch(() => {
+      .catch(async (err) => {
         toast.error('Something occurred while fetching data from IPFS!')
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        push('/')
+        console.log(err)
       })
   }
 
+  async function getDecimalsFromPaymentsToken(payments) {
+    console.log('getting decimals')
+    console.log(payments)
+    const newPayments = [...payments] // creating a copy of the payments
+    for (let i = 0; i < payments.length; i++) {
+      const data = await readContract({
+        address: `0x${payments[i].tokenContract.substring(2)}`,
+        abi: erc20ContractABI,
+        functionName: 'decimals',
+      })
+      console.log('the decimal from token:')
+      console.log(data)
+      if (data) {
+        newPayments[i].decimals = Number(data) // modifying the copy
+      }
+    }
+    // updating the state with the modified copy
+    setTaskMetadata((prevState) => ({ ...prevState, payments: newPayments }))
+  }
   useEffect(() => {
     if (id) {
+      setIsLoading(true)
       console.log('search for the task info on blockchain')
-      console.log(id)
-      getTaskFromChain(id)
+      console.log(id.id)
+      getTaskFromChain(id.id)
     }
   }, [id])
   function formatAddress(address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
-  // mock data for task
-  const task = [
-    {
-      id: 1,
-      logo: '/images/carousel/blockchainLogo.svg',
-      name: 'Trading research',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-      categories: ['Ai', 'Blockchain', 'Science'],
-      departament: 'Data and analytics',
-      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '210203921930',
-      status: 'Open',
-      budget: ['250 USDT'],
-    },
-  ]
+
+  if (isLoading || !taskMetadata) {
+    return (
+      <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
+        <div className="container flex h-60 animate-pulse pb-12">
+          <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+          <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+        </div>
+        <div className="container h-96 animate-pulse bg-[#dfdfdf] pb-12"></div>
+      </section>
+    )
+  }
 
   return (
     <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
@@ -129,21 +171,24 @@ const TaskView = (id: any) => {
                 </h3>
                 <div className="mt-10 flex text-[#595959]">
                   <p>Available funds</p>{' '}
-                  <div className="ml-4 flex items-start justify-start px-2">
+                  <div className="ml-4 flex max-w-xl items-start justify-start px-2">
                     {taskMetadata.payments.map((payment, index) => (
                       <div
                         key={index}
                         className="flex text-base text-[#000000]"
                       >
-                        <p>{Number(payment.amount) / 10 ** 18}</p>
+                        <p>{Number(payment.amount) / 10 ** payment.decimals}</p>
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
                           href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
-                          className="my-3 flex hover:text-primary"
+                          className="mt-1 ml-1 flex text-sm hover:text-primary"
                         >
                           {truncateHash(payment.tokenContract)}
                         </a>
+                        {index < taskMetadata.payments.length - 1 && (
+                          <span className="mr-2">,</span>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -163,16 +208,26 @@ const TaskView = (id: any) => {
                     <div className="flex justify-end">
                       {' '}
                       <img
-                        src="/images/task/bola-teste.svg"
+                        src={`/images/task/${
+                          taskState[taskChainData.state].img
+                        }`}
                         alt="image"
                         className={`w-[34px]`}
                       />
-                      <p className=""> {taskChainData.state}</p>
+                      <p className="">
+                        {' '}
+                        {taskState[taskChainData.state].state}
+                      </p>
                     </div>
 
                     <p className="mt-8 text-[#595959]">
                       {' '}
-                      Deadline: {String(taskMetadata.deadline)}
+                      Deadline:{' '}
+                      {
+                        new Date(taskMetadata.deadline)
+                          .toISOString()
+                          .split('T')[0]
+                      }
                     </p>
                   </div>
                 </div>
@@ -227,7 +282,7 @@ const TaskView = (id: any) => {
                       <img
                         src={imgTaskIPFS}
                         alt="project desc"
-                        className="h-[375px] w-4/5"
+                        className="h-[375px] w-[375px]"
                       ></img>
                     ) : (
                       <></>
@@ -237,31 +292,20 @@ const TaskView = (id: any) => {
                     <p className="mt-14 text-xl font-semibold">
                       Relevant links
                     </p>
-                    <p className="mt-1">
-                      <a
-                        href="https://www.figma.com/file/AEfyqvQLZ5XxlWfi1mehzT/[Popcorn]-Website?node-id=2641%3A23948"
-                        className="mt-2"
-                      >
-                        https://www.figma.com/file/AEfyqvQLZ5XxlWfi1mehzT/[Popcorn]-Website?node-id=2641%3A23948
-                      </a>
-                    </p>
-                    <p className="mt-1">
-                      <a
-                        href="https://bayc-onboarding.netlify.app/"
-                        className=""
-                      >
-                        Site preview: https://bayc-onboarding.netlify.app/
-                      </a>
-                    </p>
-                    <p className="mt-1">
-                      <a
-                        href="https://github.com/popcorndao/bayc-onboarding"
-                        className=""
-                      >
-                        Repository:
-                        https://github.com/popcorndao/bayc-onboarding{' '}
-                      </a>
-                    </p>
+                    {taskMetadata.links.map((link, index) => (
+                      <p className="mt-1 flex" key={index}>
+                        <p className="">{link.title}</p>
+                        <p className="mr-2">:</p>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary"
+                          href={link.url}
+                        >
+                          {link.url}
+                        </a>
+                      </p>
+                    ))}
                   </div>
                   <div className="w-1/4 pl-20 text-base font-normal text-[#363636]">
                     <p>View project calendar</p>
