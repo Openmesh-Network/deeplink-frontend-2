@@ -23,6 +23,7 @@ import {
   writeContract,
   prepareWriteContract,
   waitForTransaction,
+  watchContractEvent,
 } from '@wagmi/core'
 
 type TaskSubmitForm = {
@@ -71,6 +72,8 @@ const NewTask = () => {
   const departamentOptions = ['Ai', 'Frontend', 'Smart-contracts', 'Backend']
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
+
+  const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
   const [erc20AddressReadAllowance, setErc20AddressReadAllowance] =
     useState<String>('')
@@ -320,7 +323,7 @@ const NewTask = () => {
       const data = await readContract({
         address: `0x${payments[i].tokenContract.substring(2)}`,
         abi: erc20ContractABI,
-        args: [address, '0x95a7CC5a3E9D16626169267780096f2C0db896E1'],
+        args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
       console.log('o valor q recebi')
@@ -331,7 +334,7 @@ const NewTask = () => {
           address: `0x${payments[i].tokenContract.substring(2)}`,
           abi: erc20ContractABI,
           args: [
-            '0x95a7CC5a3E9D16626169267780096f2C0db896E1',
+            `0x${taskAddress.substring(2)}`,
             Number(payments[i].amount) * 100,
           ],
           functionName: 'approve',
@@ -356,12 +359,27 @@ const NewTask = () => {
     budget: Payment[],
   ) {
     const { request } = await prepareWriteContract({
-      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
       args: [metadata, deadline, budget],
       functionName: 'createTask',
     })
     const { hash } = await writeContract(request)
+    const unwatch = watchContractEvent(
+      {
+        address: `0x${taskAddress.substring(2)}`,
+        abi: taskContractABI,
+        eventName: 'TaskCreated',
+      },
+      (log) => {
+        console.log('event')
+        console.log(log)
+        if (log[0].transactionHash === hash) {
+          push(`/task/${Number(log[0].data)}`)
+          console.log(log)
+        }
+      },
+    )
     const data = await waitForTransaction({
       hash,
     })
@@ -371,15 +389,6 @@ const NewTask = () => {
     if (data.status !== 'success') {
       throw data
     }
-  }
-
-  async function handleSendUserToNewlyCreatedTask() {
-    const data = await readContract({
-      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
-      abi: taskContractABI,
-      functionName: 'taskCount',
-    })
-    push(`/task/${Number(data) - 1}`)
   }
 
   function handleIsPaymentsTokensValid() {
@@ -411,13 +420,16 @@ const NewTask = () => {
       return
     }
 
-    let fileIPFSHash
-    try {
-      fileIPFSHash = await handleFileUploadIPFS()
-    } catch (err) {
-      toast.error('Something ocurred')
-      setIsLoading(false)
-      return
+    let fileIPFSHash = ''
+    if (selectedFiles.length > 0) {
+      try {
+        fileIPFSHash = await handleFileUploadIPFS()
+      } catch (err) {
+        toast.error('Something ocurred')
+        console.log(err)
+        setIsLoading(false)
+        return
+      }
     }
 
     const finalData = {
@@ -434,9 +446,9 @@ const NewTask = () => {
       console.log(res)
       ipfsHashData = res
       await setIpfsHashTaskData(res)
-      setIsLoading(false)
     } catch (err) {
       toast.error('something ocurred')
+      console.log(err)
       setIsLoading(false)
     }
 
@@ -444,6 +456,7 @@ const NewTask = () => {
       await handleAllowanceFromTokens()
     } catch (err) {
       toast.error('Something happened, please try again')
+      setIsLoading(false)
     }
     try {
       await handleCreateTask(
@@ -452,9 +465,12 @@ const NewTask = () => {
         payments,
       )
       toast.success('Task created succesfully!')
-      handleSendUserToNewlyCreatedTask()
     } catch (err) {
-      toast.error('Something happened, please try again')
+      toast.error(
+        'Error! Please ensure you have enough tokens in your wallet to pay for the budget',
+      )
+      console.log(err)
+      setIsLoading(false)
     }
   }
 
@@ -489,7 +505,7 @@ const NewTask = () => {
                     disabled={isLoading}
                     className="mt-[8px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
                     type="text"
-                    maxLength={50}
+                    maxLength={100}
                     placeholder="Type here"
                     {...register('title')}
                   />
@@ -505,7 +521,7 @@ const NewTask = () => {
                     disabled={isLoading}
                     style={{ resize: 'none' }}
                     className="mt-[8px] h-[160px] w-full rounded-md   border border-[#bcbaba] bg-white pt-2 pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                    maxLength={200}
+                    maxLength={2000}
                     placeholder="Type here"
                     {...register('description')}
                   />

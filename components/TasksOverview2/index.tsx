@@ -30,6 +30,8 @@ const TransactionList = () => {
   const [taskChainData, setTaskChainData] = useState<any[]>([])
   const pathname = usePathname()
 
+  const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
+
   const { push } = useRouter()
 
   const tasks = [
@@ -71,7 +73,7 @@ const TransactionList = () => {
   async function getTasks() {
     console.log('getting task count')
     const data = await readContract({
-      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
       functionName: 'taskCount',
     })
@@ -95,7 +97,7 @@ const TransactionList = () => {
   }
   async function getTaskFromChain(id: any) {
     const data = await readContract({
-      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
       args: [Number(id)],
       functionName: 'getTask',
@@ -232,9 +234,10 @@ const TransactionList = () => {
   return (
     <>
       <HeroTasks />
+      <SearchModal onUpdate={handleUpdate} />
       <section className="py-16 px-32 text-black md:py-20 lg:pt-32">
         <div className="container">
-          <div className="mx-auto mb-10 flex justify-center text-center">
+          {/* <div className="mx-auto mb-10 flex justify-center text-center">
             <span
               onClick={() => {
                 handleDepartamentSelection('All')
@@ -247,7 +250,6 @@ const TransactionList = () => {
             >
               All
             </span>
-            <button onClick={logData}>teste</button>
             <span
               onClick={() => {
                 handleDepartamentSelection('Data and analytics')
@@ -296,8 +298,7 @@ const TransactionList = () => {
             >
               Admin and Operations
             </span>
-          </div>
-          <SearchModal onUpdate={handleUpdate} />
+          </div> */}
 
           <div className="max-h-[800px] overflow-auto pr-2 text-[#000000] scrollbar-thin scrollbar-thumb-body-color">
             <div className="flex pr-1">

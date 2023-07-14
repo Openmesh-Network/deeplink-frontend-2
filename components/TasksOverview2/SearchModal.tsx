@@ -2,6 +2,7 @@
 'use client'
 import { TextField, Autocomplete } from '@mui/material'
 import { useState, ChangeEvent, useEffect } from 'react'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 
 interface ModalProps {
   onUpdate(): void
@@ -9,18 +10,35 @@ interface ModalProps {
 
 const SearchModal = ({ onUpdate }: ModalProps) => {
   const [tasksStatus, setTasksStatus] = useState('')
-  const [tasksDepartament, setTasksDepartament] = useState('')
   const [tasksOrderBy, setTasksOrderBy] = useState('')
   const [tasksSearchBar, setTasksSearchBar] = useState('')
+  const [departament, setDepartament] = useState('All')
+
+  const pathname = usePathname()
 
   const statusOptions = ['Open', 'On going', 'Finished']
 
   const departamentOptions = [
-    'Blockchain',
-    'AI',
-    'Backend',
-    'Frontend',
-    'Community',
+    {
+      name: 'Data',
+      img: '/images/departaments/data.svg',
+      imgClassName: 'mr-1 mb-1 w-[16px]',
+    },
+    {
+      name: 'Blockchain',
+      img: '/images/departaments/blockchain.svg',
+      imgClassName: 'mr-1 mb-1 w-[16px]',
+    },
+    {
+      name: 'Cloud',
+      img: '/images/departaments/cloud.svg',
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Frontend',
+      img: '/images/departaments/pointer.svg',
+      imgClassName: 'mr-1 mb-1 w-[13px]',
+    },
   ]
 
   const orderByOptions = ['Newest', 'Oldest']
@@ -28,11 +46,6 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
   const handleStatusSelection = (event: any, value: string | null) => {
     setTasksStatus(value)
     updateUrl('status', value)
-  }
-
-  const handleDepartamentSelection = (event: any, value: string | null) => {
-    setTasksDepartament(value)
-    updateUrl('departament', value)
   }
 
   const handleOrderBySelection = (event: any, value: string | null) => {
@@ -49,6 +62,11 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
     }
 
     setTasksSearchBar(value)
+  }
+
+  const handleDepartamentSelection = (value: string) => {
+    updateUrl('departament', value)
+    setDepartament(value)
   }
 
   // Função para atualizar a URL
@@ -68,6 +86,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
   }
 
   useEffect(() => {
+    setDepartament('All')
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href)
 
@@ -75,8 +94,9 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
       if (status && statusOptions.includes(status)) setTasksStatus(status)
 
       const departament = url.searchParams.get('departament')
-      if (departament && departamentOptions.includes(departament))
-        setTasksDepartament(departament)
+      if (departament && departament !== 'All') {
+        setDepartament(departament)
+      }
 
       const orderBy = url.searchParams.get('orderBy')
       if (orderBy && orderByOptions.includes(orderBy)) setTasksOrderBy(orderBy)
@@ -84,42 +104,96 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
       const searchBar = url.searchParams.get('searchBar')
       if (searchBar && searchBar.length <= 100) setTasksSearchBar(searchBar)
     }
-  }, [])
+  }, [pathname])
 
   return (
-    <div className="mb-5 mr-1 items-start justify-between rounded-md border border-[#F8FAFC] bg-[#F8FAFC] p-4 text-xs lg:flex lg:text-sm">
-      {/* <div className="flex">
-        <input
-          type="text"
-          onInput={handleSearchBarInput}
-          value={tasksSearchBar}
-          placeholder="Search here..."
-          className="mr-3 w-full max-w-[300px] rounded-md border border-[#d6d6d6] bg-white py-[6px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
-        />
-        <button
-          onClick={() => {
-            updateUrl('searchBar', tasksSearchBar)
-          }}
-          disabled={!tasksSearchBar}
-          className={`flex h-[37px] w-full max-w-[37px] items-center justify-center rounded-md  ${
-            !tasksSearchBar ? '' : 'bg-primary'
-          }`}
-        >
-          <svg
-            width="15"
-            height="13"
-            viewBox="0 0 20 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <section className="mt-10 px-32">
+      <div className="container">
+        <div className="flex">
+          <input
+            type="text"
+            onInput={handleSearchBarInput}
+            value={tasksSearchBar}
+            placeholder="Search here..."
+            className="mr-3 w-full max-w-[300px] rounded-md border border-[#0085FF] bg-white py-[6px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
+          />
+          <button
+            onClick={() => {
+              updateUrl('searchBar', tasksSearchBar)
+            }}
+            disabled={!tasksSearchBar}
+            className={`flex h-[37px] w-full max-w-[37px] items-center justify-center rounded-md  ${
+              !tasksSearchBar ? '' : 'bg-primary'
+            }`}
           >
-            <path
-              d="M19.4062 16.8125L13.9375 12.375C14.9375 11.0625 15.5 9.46875 15.5 7.78125C15.5 5.75 14.7188 3.875 13.2812 2.4375C10.3438 -0.5 5.5625 -0.5 2.59375 2.4375C1.1875 3.84375 0.40625 5.75 0.40625 7.75C0.40625 9.78125 1.1875 11.6562 2.625 13.0937C4.09375 14.5625 6.03125 15.3125 7.96875 15.3125C9.875 15.3125 11.75 14.5938 13.2188 13.1875L18.75 17.6562C18.8438 17.75 18.9688 17.7812 19.0938 17.7812C19.25 17.7812 19.4062 17.7188 19.5312 17.5938C19.6875 17.3438 19.6562 17 19.4062 16.8125ZM3.375 12.3438C2.15625 11.125 1.5 9.5 1.5 7.75C1.5 6 2.15625 4.40625 3.40625 3.1875C4.65625 1.9375 6.3125 1.3125 7.96875 1.3125C9.625 1.3125 11.2812 1.9375 12.5312 3.1875C13.75 4.40625 14.4375 6.03125 14.4375 7.75C14.4375 9.46875 13.7188 11.125 12.5 12.3438C10 14.8438 5.90625 14.8438 3.375 12.3438Z"
-              fill={`${!tasksSearchBar ? 'black' : 'white'}`}
+            <svg
+              width="15"
+              height="13"
+              viewBox="0 0 20 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19.4062 16.8125L13.9375 12.375C14.9375 11.0625 15.5 9.46875 15.5 7.78125C15.5 5.75 14.7188 3.875 13.2812 2.4375C10.3438 -0.5 5.5625 -0.5 2.59375 2.4375C1.1875 3.84375 0.40625 5.75 0.40625 7.75C0.40625 9.78125 1.1875 11.6562 2.625 13.0937C4.09375 14.5625 6.03125 15.3125 7.96875 15.3125C9.875 15.3125 11.75 14.5938 13.2188 13.1875L18.75 17.6562C18.8438 17.75 18.9688 17.7812 19.0938 17.7812C19.25 17.7812 19.4062 17.7188 19.5312 17.5938C19.6875 17.3438 19.6562 17 19.4062 16.8125ZM3.375 12.3438C2.15625 11.125 1.5 9.5 1.5 7.75C1.5 6 2.15625 4.40625 3.40625 3.1875C4.65625 1.9375 6.3125 1.3125 7.96875 1.3125C9.625 1.3125 11.2812 1.9375 12.5312 3.1875C13.75 4.40625 14.4375 6.03125 14.4375 7.75C14.4375 9.46875 13.7188 11.125 12.5 12.3438C10 14.8438 5.90625 14.8438 3.375 12.3438Z"
+                fill={`${!tasksSearchBar ? 'black' : 'white'}`}
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="mb-10 mt-10 flex  text-xl font-semibold !leading-normal text-[#0085FF]">
+          <div className="flex pr-8">
+            <img
+              src="/images/departaments/paper.svg"
+              alt="image"
+              className={`mr-1 mb-1 w-[19px]`}
             />
-          </svg>
-        </button>
-      </div> */}
-      <div className="flex">
+            <span
+              onClick={() => {
+                handleDepartamentSelection('All')
+              }}
+              className={`cursor-pointer hover:text-primary ${
+                departament === 'All' || !departament
+                  ? 'border-b-2 border-[#131212] font-extrabold'
+                  : ''
+              }`}
+            >
+              All
+            </span>
+          </div>
+          {departamentOptions.map((departamentOption, index) => (
+            <div key={index} className="flex px-8">
+              <img
+                src={`${departamentOption.img}`}
+                alt="image"
+                className={departamentOption.imgClassName}
+              />
+              <span
+                onClick={() => {
+                  handleDepartamentSelection(departamentOption.name)
+                }}
+                className={`cursor-pointer hover:text-primary ${
+                  departament === departamentOption.name
+                    ? 'border-b-2 border-[#131212] font-extrabold'
+                    : ''
+                }`}
+              >
+                {departamentOption.name}
+              </span>
+            </div>
+          ))}
+          <div className="ml-auto mr-6 flex items-end justify-end text-base">
+            <a
+              href="/new-task"
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="ml-auto cursor-pointer rounded-md bg-[#0085FF] py-1 px-4 font-semibold text-white hover:bg-primary"
+            >
+              + Add a project
+            </a>
+          </div>
+        </div>
+
+        {/* <div className="flex">
         <Autocomplete
           value={tasksStatus}
           onChange={handleStatusSelection}
@@ -172,8 +246,9 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             />
           )}
         />
+      </div> */}
       </div>
-    </div>
+    </section>
   )
 }
 

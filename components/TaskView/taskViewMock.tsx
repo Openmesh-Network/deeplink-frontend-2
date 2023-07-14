@@ -48,11 +48,13 @@ const TaskView = (id: any) => {
   const [imgTaskIPFS, setImgTaskIPFS] = useState<String>('')
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
 
+  const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
+
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
     console.log('getting data from task')
     const data = await readContract({
-      address: `0x95a7CC5a3E9D16626169267780096f2C0db896E1`,
+      address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
       args: [Number(id)],
       functionName: 'getTask',
