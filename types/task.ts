@@ -20,3 +20,10 @@ export type IPFSSubmition = {
   links: Link[] | null
   file: string | null
 }
+
+export type TransactionHistory = {
+  actionIcon: string
+  actionName: string
+  transactionHash: string
+  transactionDate: string
+}

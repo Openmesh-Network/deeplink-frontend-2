@@ -321,7 +321,7 @@ const TaskView = (id: any) => {
                   </div>
                 </div>
                 <div className="mt-20">
-                  <TransactionList />
+                  <TransactionList id={id} />
                 </div>
               </div>
             </div>
