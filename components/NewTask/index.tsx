@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 'use client'
@@ -375,7 +376,7 @@ const NewTask = () => {
         console.log('event')
         console.log(log)
         if (log[0].transactionHash === hash) {
-          push(`/task/${Number(log[0].data)}`)
+          push(`/task/${Number(log[0]['args']['taskId'])}`)
           console.log(log)
         }
       },

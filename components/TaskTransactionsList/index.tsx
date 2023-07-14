@@ -23,6 +23,9 @@ import { IPFSSubmition, TransactionHistory } from '@/types/task'
 
 const TransactionList = (id: any) => {
 
+  const provider = new ethers.JsonRpcProvider('https://polygon-mumbai.g.alchemy.com/v2/6XFcpiY-OYMhStUfVvVuYdPUMyeQOZbW')
+
+
   const [taskHistory, setTaskHistory] = useState<TransactionHistory[]>([])
 
   const [transactions] = useState([
@@ -41,7 +44,10 @@ const TransactionList = (id: any) => {
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
   const apiCovalentBase = process.env.NEXT_PUBLIC_COVALENT_API_BASE_URL
   const apiCovalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY
-  
+
+  const contract = new ethers.Contract(taskAddress, taskContractABI, provider)
+
+
   async function getEventsFromTransaction(id: any) {
     let count = 0;
     let hasMore = true;
@@ -54,18 +60,32 @@ const TransactionList = (id: any) => {
             console.log('validation')
             if (response.data.data.items && response.data.data.items.length > 0) {
                 for (const item of response.data.data.items) {
-                    // hash of the event "TaskCreate(id)" decoded
-                    if ((item['raw_log_topics'][0] === "0xba46948ae716559226cede7aac0175e8ddd11b7cb3ea0369c9f218ef908b87d5") && (Number(item['raw_log_data']) === Number(id.id))) {
-                        console.log('found an event for this task');
+
+                    // ethers reading logs:
+                    const dataEvent = item['raw_log_data']
+                    const topicsEvent = item['raw_log_topics']
+                    const parsedLog = contract.interface.parseLog({data: dataEvent, topics: topicsEvent});
+                    console.log(parsedLog)
+
+                    // hash of the event "TaskCreate()" decoded
+                    if ((parsedLog.name === "TaskCreated") && (Number(parsedLog.args[0]) === Number(id.id))) {
                         const data = {
                             actionIcon: 'FormOutlined',
                             actionName: 'Task Created',
                             transactionHash: (item['tx_hash']),
-                            transactionDate: item['block_signed_at']
+                            transactionDate: item['block_signed_at'],
+                            addressSender: parsedLog.args[1]
                         }
                         setTaskHistory((prevState) => [...prevState, data]);
-                        console.log('the data for this task:')
-                        console.log(data)
+                    } else if ((parsedLog.name === "ApplicationCreated") && (Number(parsedLog.args[0]) === Number(id.id))) {
+                      const data = {
+                        actionIcon: 'FormOutlined',
+                        actionName: 'New application',
+                        transactionHash: (item['tx_hash']),
+                        transactionDate: item['block_signed_at'],
+                        addressSender: parsedLog.args[2]
+                        }
+                        setTaskHistory((prevState) => [...prevState, data]);
                     }
                 }
             }

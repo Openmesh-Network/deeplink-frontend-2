@@ -26,4 +26,5 @@ export type TransactionHistory = {
   actionName: string
   transactionHash: string
   transactionDate: string
+  addressSender: string
 }
