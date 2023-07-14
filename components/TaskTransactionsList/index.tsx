@@ -23,7 +23,6 @@ import { IPFSSubmition, TransactionHistory } from '@/types/task'
 
 const TransactionList = (id: any) => {
 
-  const provider = new ethers.JsonRpcProvider('https://polygon-mumbai.g.alchemy.com/v2/6XFcpiY-OYMhStUfVvVuYdPUMyeQOZbW')
 
 
   const [taskHistory, setTaskHistory] = useState<TransactionHistory[]>([])
@@ -44,7 +43,9 @@ const TransactionList = (id: any) => {
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
   const apiCovalentBase = process.env.NEXT_PUBLIC_COVALENT_API_BASE_URL
   const apiCovalentKey = process.env.NEXT_PUBLIC_COVALENT_API_KEY
+  const providerEthers = process.env.NEXT_PUBLIC_JSON_RPC
 
+  const provider = new ethers.JsonRpcProvider(providerEthers)
   const contract = new ethers.Contract(taskAddress, taskContractABI, provider)
 
 
