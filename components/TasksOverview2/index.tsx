@@ -36,17 +36,30 @@ const TransactionList = () => {
 
   const tasks = [
     {
-      id: 1,
+      id: 0,
       logo: '/images/carousel/blockchainLogo.svg',
       name: 'Trading research',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
       categories: ['Ai', 'Blockchain', 'Science'],
-      departament: 'Data and analytics',
+      departament: 'Data',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '210203921930',
+      deadline: '1689813076',
       status: 'Open',
-      budget: ['250 USDT'],
+      budget: ['250'],
+    },
+    {
+      id: 1,
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'Web development',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['Ai', 'Blockchain'],
+      departament: 'Frontend',
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '1699926076',
+      status: 'Open',
+      budget: ['550'],
     },
   ]
 
@@ -300,8 +313,8 @@ const TransactionList = () => {
             </span>
           </div> */}
 
-          <div className="max-h-[800px] overflow-auto pr-2 text-[#000000] scrollbar-thin scrollbar-thumb-body-color">
-            <div className="flex pr-1">
+          <div className="pr-2 text-[#000000]">
+            {/* <div className="flex pr-1">
               <div className="-mr-[0.75px] w-[15%] border border-r-0 border-[#e8e5e5] py-1 pl-2  font-semibold">
                 <span>Title</span>
               </div>
@@ -320,6 +333,21 @@ const TransactionList = () => {
               <div className="w-[15%] border border-[#e8e5e5] py-1 pl-2 font-semibold">
                 <span>Budget</span>
               </div>
+            </div> */}
+            <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
+              <div className="mr-4 w-[35%] items-center">
+                <p>Project</p>
+              </div>
+              <div className="w-[15%] items-center">
+                <p>Dept/Tags</p>
+              </div>
+              <div className="w-[10%] items-center">
+                <p>Budget</p>
+              </div>
+              <div className="w-[8%] items-center">
+                <p>Ends</p>
+              </div>
+              <div className="w-[12%]"></div>
             </div>
             {filteredTasks.map((task) => (
               <TasksModal key={task.id} {...task} isLoading={false} />

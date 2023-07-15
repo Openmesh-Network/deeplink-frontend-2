@@ -78,10 +78,10 @@ const HeroTasks = () => {
           <div className="w-full px-4 lg:w-2/3">
             <div className="wow fadeInUp" data-wow-delay=".2s">
               <div className="mb-1">
-                <h3 className="xl:text-6xlxl mb-4 text-xl font-bold text-[#000000] sm:text-2xl lg:text-4xl">
+                <h3 className=" mb-4 text-[30px] font-bold text-[#000000]">
                   Open Research & Development
                 </h3>
-                <p className="mt-4 text-xs font-medium !leading-normal text-[#505050] sm:text-xl">
+                <p className="text-[]20px mt-4 font-medium !leading-normal text-[#505050]">
                   Introducing Pythia - our revolutionary, open-source Web3 data
                   search and product development platform. With Pythia, anyone
                   can easily search, design, build, and store their own crypto
@@ -92,14 +92,16 @@ const HeroTasks = () => {
               </div>
             </div>
           </div>
-          <div className="w-full px-4 lg:w-1/3">
+          <div className="w-full lg:w-1/3">
             <div
               className="wow fadeInUp relative mx-auto flex max-w-[500px] justify-end rounded-md p-4 text-right text-base font-normal text-black lg:m-0"
               data-wow-delay=".15s"
             >
               <div className="mb-12">
-                <p className="mb-2 text-sm text-[#2F2F2F]">Available Funding</p>{' '}
-                <span className="ml-1 text-4xl font-bold text-[#000000]">
+                <p className="mb-2 text-[14px] text-[#2F2F2F]">
+                  Available Funding
+                </p>{' '}
+                <span className="ml-1 text-[26px] font-bold text-[#000000]">
                   $1,200
                 </span>
                 <img

@@ -1,11 +1,22 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 'use client'
 import { TextField, Autocomplete } from '@mui/material'
 import { useState, ChangeEvent, useEffect } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import Jazzicon from 'react-jazzicon'
 
 interface ModalProps {
   onUpdate(): void
+}
+
+type DepartamentData = {
+  name: string
+  tags: string[]
+  funding: string
+  desc: string
+  img: string
+  imgClassName: string
 }
 
 const SearchModal = ({ onUpdate }: ModalProps) => {
@@ -13,6 +24,15 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
   const [tasksOrderBy, setTasksOrderBy] = useState('')
   const [tasksSearchBar, setTasksSearchBar] = useState('')
   const [departament, setDepartament] = useState('All')
+  const [departamentSelected, setDepartamentSelected] =
+    useState<DepartamentData>({
+      name: 'All',
+      tags: ['Data', 'Graph', 'LLM', 'Solidity', 'Rust', 'Contracts'],
+      funding: '330,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
+      img: '/images/departaments/paper.svg',
+      imgClassName: 'mr-1 mb-1 w-[16px]',
+    })
 
   const pathname = usePathname()
 
@@ -20,27 +40,46 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
 
   const departamentOptions = [
     {
+      name: 'All',
+      tags: ['Data', 'Graph', 'LLM', 'Solidity', 'Rust', 'Contracts'],
+      funding: '330,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
+      img: '/images/departaments/paper.svg',
+      imgClassName: 'mr-1 mb-1 w-[16px]',
+    },
+    {
       name: 'Data',
+      tags: ['Data', 'Graph', 'LLM'],
+      funding: '11,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
       img: '/images/departaments/data.svg',
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
       name: 'Blockchain',
+      tags: ['Solidity', 'Rust', 'Contracts'],
+      funding: '89,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
       img: '/images/departaments/blockchain.svg',
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
       name: 'Cloud',
+      tags: ['DevOps', 'AWS', 'Kubernets'],
+      funding: '151,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
       img: '/images/departaments/cloud.svg',
       imgClassName: 'mr-1 mb-1 w-[19px]',
     },
     {
       name: 'Frontend',
+      tags: ['Web', 'Mobile', 'Desktop'],
+      funding: '51,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
       img: '/images/departaments/pointer.svg',
       imgClassName: 'mr-1 mb-1 w-[13px]',
     },
   ]
-
   const orderByOptions = ['Newest', 'Oldest']
 
   const handleStatusSelection = (event: any, value: string | null) => {
@@ -67,6 +106,11 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
   const handleDepartamentSelection = (value: string) => {
     updateUrl('departament', value)
     setDepartament(value)
+    // setar setDepartamentSelected() passando o departament que tem o parametro "name" igual ao value que essa func recebe
+    const selectedDepartament = departamentOptions.find(
+      (departament) => departament.name === value,
+    )
+    setDepartamentSelected(selectedDepartament)
   }
 
   // Função para atualizar a URL
@@ -115,7 +159,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             onInput={handleSearchBarInput}
             value={tasksSearchBar}
             placeholder="Search here..."
-            className="mr-3 w-full max-w-[300px] rounded-md border border-[#0085FF] bg-white py-[6px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
+            className="mr-3 w-full max-w-[650px] rounded-md border border-[#0085FF] bg-white py-[6px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
           />
           <button
             onClick={() => {
@@ -160,28 +204,32 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
               All
             </span>
           </div>
-          {departamentOptions.map((departamentOption, index) => (
-            <div key={index} className="flex px-8">
-              <img
-                src={`${departamentOption.img}`}
-                alt="image"
-                className={departamentOption.imgClassName}
-              />
-              <span
-                onClick={() => {
-                  handleDepartamentSelection(departamentOption.name)
-                }}
-                className={`cursor-pointer hover:text-primary ${
-                  departament === departamentOption.name
-                    ? 'border-b-2 border-[#131212] font-extrabold'
-                    : ''
-                }`}
-              >
-                {departamentOption.name}
-              </span>
-            </div>
-          ))}
-          <div className="ml-auto mr-6 flex items-end justify-end text-base">
+          {departamentOptions.map((departamentOption, index) => {
+            if (departamentOption.name !== 'All') {
+              return (
+                <div key={index} className="flex px-8">
+                  <img
+                    src={`${departamentOption.img}`}
+                    alt="image"
+                    className={departamentOption.imgClassName}
+                  />
+                  <span
+                    onClick={() => {
+                      handleDepartamentSelection(departamentOption.name)
+                    }}
+                    className={`cursor-pointer hover:text-primary ${
+                      departament === departamentOption.name
+                        ? 'border-b-2 border-[#131212] font-extrabold'
+                        : ''
+                    }`}
+                  >
+                    {departamentOption.name}
+                  </span>
+                </div>
+              )
+            }
+          })}
+          <div className="ml-auto flex items-end justify-end text-base">
             <a
               href="/new-task"
               target="_blank"
@@ -190,6 +238,80 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             >
               + Add a project
             </a>
+          </div>
+        </div>
+        <div className="mt-4 mb-14 items-start justify-start rounded-md border border-[#D4D4D4] p-9 text-[14px]  font-medium text-[#505050]">
+          {departamentSelected ? (
+            <>
+              <div className="mb-6">
+                <p>{departamentSelected.desc}</p>
+              </div>
+              <div className="mb-6 flex">
+                <p className="mr-1">Tags: </p>
+                <div className="flex italic">
+                  {departamentSelected.tags.map((tag, index) => (
+                    <p className="ml-2 border-b" key={index}>
+                      {tag}
+                      {index !== departamentSelected.tags.length - 1 && ', '}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-6 flex">
+                <p className="mr-4 mt-1">Avalaible Funding </p>
+                <div className="flex">
+                  <p className="mr-1 text-[18px] font-bold text-[#000000]">
+                    ${departamentSelected.funding}
+                  </p>
+                  <img
+                    src="/images/tokens/usd-coin-usdc-logo.svg"
+                    alt="image"
+                    className={`w-[14px]`}
+                  />
+                </div>
+              </div>
+              <div className="flex">
+                <div className="mr-2">
+                  <Jazzicon diameter={30} seed={2121214554432222} />
+                </div>
+                <div className="mr-2">
+                  <Jazzicon diameter={30} seed={21212122987978} />
+                </div>
+                <div className="mr-4">
+                  <Jazzicon diameter={30} seed={212213211212122} />
+                </div>
+                <div>
+                  <p className="mb-0 border-spacing-0 border-b pb-0 text-[#000000]">
+                    12 contributors
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="flex text-[#000000]">
+          <div className="w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+            <p className="text-[18px] font-bold">Open Projects</p>
+            <p className="mb-3 text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p className="text-[32px] font-bold">35</p>
+          </div>
+          <div className="mx-4 w-1/3 cursor-pointer rounded-md border  border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+            <p className="text-[18px] font-bold">Active Projects</p>
+            <p className="mb-3 text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p className="text-[32px] font-bold">15</p>
+          </div>
+          <div className="w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+            <p className="text-[18px] font-bold">Completed projects</p>
+            <p className="mb-3 text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p className="text-[32px] font-bold">1</p>
           </div>
         </div>
 
