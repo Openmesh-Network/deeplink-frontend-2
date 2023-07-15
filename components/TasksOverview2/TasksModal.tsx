@@ -36,7 +36,7 @@ const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
       <div className="mr-4 w-[35%] items-center">
         <p
           title={task.name}
-          className="overflow-hidden font-bold text-[#1068E6] line-clamp-1"
+          className="overflow-hidden pb-2 font-bold text-[#1068E6] line-clamp-1"
         >
           {task.name}
         </p>

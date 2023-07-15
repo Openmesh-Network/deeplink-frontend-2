@@ -61,6 +61,32 @@ const TransactionList = () => {
       status: 'Open',
       budget: ['550'],
     },
+    {
+      id: 2,
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'AWS config',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['EC2'],
+      departament: 'Cloud',
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '1689926076',
+      status: 'Open',
+      budget: ['1550'],
+    },
+    {
+      id: 2,
+      logo: '/images/carousel/blockchainLogo.svg',
+      name: 'NFT development',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      categories: ['Solidity'],
+      departament: 'Blockchain',
+      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
+      deadline: '1690926076',
+      status: 'Open',
+      budget: ['2550'],
+    },
   ]
 
   const handleDepartamentSelection = (value: string) => {
@@ -335,17 +361,37 @@ const TransactionList = () => {
               </div>
             </div> */}
             <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
-              <div className="mr-4 w-[35%] items-center">
-                <p>Project</p>
+              <div className="mr-4 flex w-[35%] items-center">
+                <p className="pr-2">Project</p>
+                <img
+                  src="/images/task/vectorDown.svg"
+                  alt="image"
+                  className={`w-[14px]`}
+                />
               </div>
-              <div className="w-[15%] items-center">
-                <p>Dept/Tags</p>
+              <div className="flex w-[15%] items-center">
+                <p className="pr-2">Dept/Tags</p>
+                <img
+                  src="/images/task/vectorDown.svg"
+                  alt="image"
+                  className={`w-[14px]`}
+                />
               </div>
-              <div className="w-[10%] items-center">
-                <p>Budget</p>
+              <div className="flex w-[10%] items-center">
+                <p className="pr-2">Budget</p>
+                <img
+                  src="/images/task/vectorDown.svg"
+                  alt="image"
+                  className={`w-[14px]`}
+                />
               </div>
-              <div className="w-[8%] items-center">
-                <p>Ends</p>
+              <div className="flex w-[8%] items-center">
+                <p className="pr-2">Ends</p>
+                <img
+                  src="/images/task/vectorDown.svg"
+                  alt="image"
+                  className={`w-[14px]`}
+                />
               </div>
               <div className="w-[12%]"></div>
             </div>
