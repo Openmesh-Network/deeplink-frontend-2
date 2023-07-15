@@ -36,7 +36,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
 
   const pathname = usePathname()
 
-  const statusOptions = ['Open', 'On going', 'Finished']
+  const statusOptions = ['open', 'active', 'completed']
 
   const departamentOptions = [
     {
@@ -82,7 +82,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
   ]
   const orderByOptions = ['Newest', 'Oldest']
 
-  const handleStatusSelection = (event: any, value: string | null) => {
+  const handleStatusSelection = (value: string | null) => {
     setTasksStatus(value)
     updateUrl('status', value)
   }
@@ -292,21 +292,42 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
           )}
         </div>
         <div className="flex text-[#000000]">
-          <div className="w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+          <div
+            onClick={() => {
+              handleStatusSelection('open')
+            }}
+            className={`w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+              tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
+            }`}
+          >
             <p className="text-[18px] font-bold">Open Projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">35</p>
+            <p className="text-[32px] font-bold">2</p>
           </div>
-          <div className="mx-4 w-1/3 cursor-pointer rounded-md border  border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+          <div
+            onClick={() => {
+              handleStatusSelection('active')
+            }}
+            className={`mx-4 w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+              tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
+            }`}
+          >
             <p className="text-[18px] font-bold">Active Projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">15</p>
+            <p className="text-[32px] font-bold">1</p>
           </div>
-          <div className="w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0]">
+          <div
+            onClick={() => {
+              handleStatusSelection('completed')
+            }}
+            className={`w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+              tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
+            }`}
+          >
             <p className="text-[18px] font-bold">Completed projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning

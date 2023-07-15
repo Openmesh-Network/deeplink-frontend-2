@@ -23,6 +23,7 @@ import HeroTasks from './HeroTasks'
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
   const [departament, setDepartament] = useState('All')
+  const [orderByDeadline, setOrderByDeadline] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition[] | undefined>(
     [],
@@ -45,7 +46,7 @@ const TransactionList = () => {
       departament: 'Data',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '1689813076',
-      status: 'Open',
+      status: 'open',
       budget: ['250'],
     },
     {
@@ -58,11 +59,11 @@ const TransactionList = () => {
       departament: 'Frontend',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '1699926076',
-      status: 'Open',
+      status: 'active',
       budget: ['550'],
     },
     {
-      id: 2,
+      id: 1,
       logo: '/images/carousel/blockchainLogo.svg',
       name: 'AWS config',
       description:
@@ -71,11 +72,11 @@ const TransactionList = () => {
       departament: 'Cloud',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '1689926076',
-      status: 'Open',
+      status: 'completed',
       budget: ['1550'],
     },
     {
-      id: 2,
+      id: 1,
       logo: '/images/carousel/blockchainLogo.svg',
       name: 'NFT development',
       description:
@@ -84,13 +85,22 @@ const TransactionList = () => {
       departament: 'Blockchain',
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
       deadline: '1690926076',
-      status: 'Open',
+      status: 'open',
       budget: ['2550'],
     },
   ]
 
   const handleDepartamentSelection = (value: string) => {
     updateUrl('departament', value)
+  }
+  const handleOrderByDeadlineSelection = () => {
+    if (orderByDeadline === 'oldest') {
+      setOrderByDeadline('newest')
+      updateUrl('orderBy', 'newest')
+    } else {
+      setOrderByDeadline('oldest')
+      updateUrl('orderBy', 'oldest')
+    }
   }
 
   // Função para atualizar a URL
@@ -107,6 +117,63 @@ const TransactionList = () => {
       window.history.pushState({}, '', url.toString())
       handleUpdate()
     }
+  }
+
+  const handleUpdate = () => {
+    const filterTasks = () => {
+      setFilteredTasks(tasks)
+      setDepartament('All')
+      // setIsLoading(true)
+      let newFilteredTasks = tasks
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+
+        const status = url.searchParams.get('status')
+        if (status) {
+          newFilteredTasks = newFilteredTasks.filter(
+            (task) => task.status === status,
+          )
+        }
+
+        const departament = url.searchParams.get('departament')
+        if (departament && departament !== 'All') {
+          const departamentValue = Array.isArray(departament)
+            ? departament[0]
+            : departament
+          newFilteredTasks = newFilteredTasks.filter((task) =>
+            task.departament.includes(departamentValue),
+          )
+          setDepartament(departament)
+        }
+
+        const orderBy = url.searchParams.get('orderBy')
+        if (orderBy === 'oldest') {
+          newFilteredTasks.sort(
+            (a, b) => Number(a.deadline) - Number(b.deadline),
+          )
+        } else if (orderBy === 'newest') {
+          newFilteredTasks.sort(
+            (a, b) => Number(b.deadline) - Number(a.deadline),
+          )
+        }
+
+        // const searchBar = url.searchParams.get('searchBar')
+        // if (searchBar) {
+        //   const searchPhrase = Array.isArray(searchBar)
+        //     ? searchBar[0]
+        //     : searchBar // se searchBar for array, usamos o primeiro elemento
+        //   console.log('a search bar' + searchPhrase)
+        //   newFilteredTasks = newFilteredTasks.filter((task) =>
+        //     task.name.toLowerCase().includes(searchPhrase),
+        //   )
+        //   console.log('filtro realizado')
+        // }
+        setFilteredTasks(newFilteredTasks)
+      }
+    }
+    setIsLoading(false)
+    // getTasks()
+    filterTasks()
   }
 
   async function getTasks() {
@@ -196,59 +263,6 @@ const TransactionList = () => {
     return newPayments
   }
 
-  const handleUpdate = () => {
-    const filterTasks = () => {
-      setFilteredTasks(tasks)
-      setDepartament('All')
-      // setIsLoading(true)
-      let newFilteredTasks = tasks
-      if (typeof window !== 'undefined') {
-        const url = new URL(window.location.href)
-
-        const status = url.searchParams.get('status')
-        if (status) {
-          newFilteredTasks = newFilteredTasks.filter(
-            (task) => task.status === status,
-          )
-        }
-
-        const departament = url.searchParams.get('departament')
-        if (departament && departament !== 'All') {
-          const departamentValue = Array.isArray(departament)
-            ? departament[0]
-            : departament
-          newFilteredTasks = newFilteredTasks.filter((task) =>
-            task.departament.includes(departamentValue),
-          )
-          setDepartament(departament)
-        }
-
-        const orderBy = url.searchParams.get('orderBy')
-        if (orderBy === 'Oldest') {
-          newFilteredTasks.sort((a, b) => a.id - b.id)
-        } else if (orderBy === 'Newest') {
-          newFilteredTasks.sort((a, b) => b.id - a.id)
-        }
-
-        // const searchBar = url.searchParams.get('searchBar')
-        // if (searchBar) {
-        //   const searchPhrase = Array.isArray(searchBar)
-        //     ? searchBar[0]
-        //     : searchBar // se searchBar for array, usamos o primeiro elemento
-        //   console.log('a search bar' + searchPhrase)
-        //   newFilteredTasks = newFilteredTasks.filter((task) =>
-        //     task.name.toLowerCase().includes(searchPhrase),
-        //   )
-        //   console.log('filtro realizado')
-        // }
-        setFilteredTasks(newFilteredTasks)
-      }
-    }
-    setIsLoading(false)
-    // getTasks()
-    filterTasks()
-  }
-
   useEffect(() => {
     handleUpdate()
   }, [pathname])
@@ -276,106 +290,13 @@ const TransactionList = () => {
       <SearchModal onUpdate={handleUpdate} />
       <section className="py-16 px-32 text-black md:py-20 lg:pt-32">
         <div className="container">
-          {/* <div className="mx-auto mb-10 flex justify-center text-center">
-            <span
-              onClick={() => {
-                handleDepartamentSelection('All')
-              }}
-              className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                departament === 'All' || !departament
-                  ? 'text-lg font-extrabold'
-                  : ''
-              }`}
-            >
-              All
-            </span>
-            <span
-              onClick={() => {
-                handleDepartamentSelection('Data and analytics')
-              }}
-              className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                departament === 'Data and analytics'
-                  ? 'text-lg font-extrabold'
-                  : ''
-              }`}
-            >
-              Data and analytics
-            </span>
-            <span
-              onClick={() => {
-                handleDepartamentSelection('Smart-contracts and DLTs')
-              }}
-              className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                departament === 'Smart-contracts and DLTs'
-                  ? 'text-lg font-extrabold'
-                  : ''
-              }`}
-            >
-              Smart-contracts and DLTs
-            </span>
-            <span
-              onClick={() => {
-                handleDepartamentSelection('Cloud and DevOps')
-              }}
-              className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                departament === 'Cloud and DevOps'
-                  ? 'text-lg font-extrabold'
-                  : ''
-              }`}
-            >
-              Cloud and DevOps
-            </span>
-            <span
-              onClick={() => {
-                handleDepartamentSelection('Admin and Operations')
-              }}
-              className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                departament === 'Admin and Operations'
-                  ? 'text-lg font-extrabold'
-                  : ''
-              }`}
-            >
-              Admin and Operations
-            </span>
-          </div> */}
-
           <div className="pr-2 text-[#000000]">
-            {/* <div className="flex pr-1">
-              <div className="-mr-[0.75px] w-[15%] border border-r-0 border-[#e8e5e5] py-1 pl-2  font-semibold">
-                <span>Title</span>
-              </div>
-              <div className="w-[15%] border  border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                <span>Categories</span>
-              </div>
-              <div className="w-[35%] border  border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                <span>Description</span>
-              </div>
-              <div className="w-[10%] border border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                <span>Author</span>
-              </div>
-              <div className="w-[10%] border border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                <span>Status</span>
-              </div>
-              <div className="w-[15%] border border-[#e8e5e5] py-1 pl-2 font-semibold">
-                <span>Budget</span>
-              </div>
-            </div> */}
             <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
               <div className="mr-4 flex w-[35%] items-center">
                 <p className="pr-2">Project</p>
-                <img
-                  src="/images/task/vectorDown.svg"
-                  alt="image"
-                  className={`w-[14px]`}
-                />
               </div>
               <div className="flex w-[15%] items-center">
                 <p className="pr-2">Dept/Tags</p>
-                <img
-                  src="/images/task/vectorDown.svg"
-                  alt="image"
-                  className={`w-[14px]`}
-                />
               </div>
               <div className="flex w-[10%] items-center">
                 <p className="pr-2">Budget</p>
@@ -387,11 +308,20 @@ const TransactionList = () => {
               </div>
               <div className="flex w-[8%] items-center">
                 <p className="pr-2">Ends</p>
-                <img
-                  src="/images/task/vectorDown.svg"
-                  alt="image"
-                  className={`w-[14px]`}
-                />
+                <svg
+                  onClick={handleOrderByDeadlineSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
               </div>
               <div className="w-[12%]"></div>
             </div>
