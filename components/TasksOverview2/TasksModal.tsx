@@ -85,7 +85,7 @@ const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
           href={`/task/${task.id}`}
           target="_blank"
           rel="nofollow noreferrer"
-          className="ml-auto cursor-pointer rounded-md border border-[#0085FF] bg-white py-1 px-4 text-[#0085FF] hover:bg-[#0085FF] hover:text-white"
+          className="ml-auto cursor-pointer rounded-md border border-[#0354EC] bg-white py-1 px-4 text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
         >
           View more
         </a>
