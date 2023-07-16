@@ -2,18 +2,21 @@
 import { useEffect, useState } from 'react'
 
 interface TasksModalProps {
-  id: number
-  name: string
-  description: string
-  submitter: string
-  deadline: string
-  budget: string[]
-  status: string
-  logo: string
-  categories: string[]
+  task: {
+    id: number
+    name: string
+    description: string
+    submitter: string
+    deadline: string
+    budget: string[]
+    status: string
+    logo: string
+    categories: string[]
+  }
+  isLoading: boolean
 }
 
-const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
+const TasksModal = ({ task, isLoading }: TasksModalProps) => {
   const [daysLeft, setDaysLeft] = useState('')
 
   useEffect(() => {

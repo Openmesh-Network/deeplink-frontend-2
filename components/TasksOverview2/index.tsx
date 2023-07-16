@@ -20,8 +20,20 @@ import { IPFSSubmition } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
 
+interface TasksModalProps {
+  id: number
+  name: string
+  description: string
+  submitter: string
+  deadline: string
+  budget: string[]
+  status: string
+  logo: string
+  categories: string[]
+}
+
 const TransactionList = () => {
-  const [filteredTasks, setFilteredTasks] = useState([])
+  const [filteredTasks, setFilteredTasks] = useState<TasksModalProps[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByDeadline, setOrderByDeadline] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -120,6 +132,7 @@ const TransactionList = () => {
   }
 
   const handleUpdate = () => {
+    console.log('updated url happening')
     const filterTasks = () => {
       setFilteredTasks(tasks)
       setDepartament('All')
@@ -147,14 +160,23 @@ const TransactionList = () => {
         }
 
         const orderBy = url.searchParams.get('orderBy')
-        if (orderBy === 'oldest') {
-          newFilteredTasks.sort(
-            (a, b) => Number(a.deadline) - Number(b.deadline),
-          )
-        } else if (orderBy === 'newest') {
-          newFilteredTasks.sort(
-            (a, b) => Number(b.deadline) - Number(a.deadline),
-          )
+        console.log(orderBy)
+        if (orderBy) {
+          if (orderBy === 'newest') {
+            console.log('entrei pro newest')
+            newFilteredTasks.sort(
+              (a, b) => parseInt(a.deadline) - parseInt(b.deadline),
+            )
+            console.log(' a resposta apos')
+            console.log(newFilteredTasks)
+          } else if (orderBy === 'oldest') {
+            console.log('entrei pro oldest')
+            newFilteredTasks.sort(
+              (a, b) => parseInt(b.deadline) - parseInt(a.deadline),
+            )
+            console.log(' a resposta apos')
+            console.log(newFilteredTasks)
+          }
         }
 
         // const searchBar = url.searchParams.get('searchBar')
@@ -169,6 +191,8 @@ const TransactionList = () => {
         //   console.log('filtro realizado')
         // }
         setFilteredTasks(newFilteredTasks)
+        console.log('as new filtered task')
+        console.log(newFilteredTasks)
       }
     }
     setIsLoading(false)
@@ -326,7 +350,7 @@ const TransactionList = () => {
               <div className="w-[12%]"></div>
             </div>
             {filteredTasks.map((task) => (
-              <TasksModal key={task.id} {...task} isLoading={false} />
+              <TasksModal key={task.id} task={task} isLoading={false} />
             ))}
           </div>
         </div>
