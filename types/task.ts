@@ -22,10 +22,12 @@ export type IPFSSubmition = {
 }
 
 export type TasksOverview = {
+  id: string
   title: string
   description: string
-  deadline: Date
+  deadline: string
   departament: string
+  status: string
   skills: string[]
   type: string
   payments: Payment[]

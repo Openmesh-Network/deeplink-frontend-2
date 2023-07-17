@@ -17,7 +17,7 @@ import {
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition } from '@/types/task'
+import { IPFSSubmition, TasksOverview } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
 
@@ -34,15 +34,18 @@ interface TasksModalProps {
 }
 
 const TransactionList = () => {
-  const [filteredTasks, setFilteredTasks] = useState<TasksModalProps[]>([])
+  const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByDeadline, setOrderByDeadline] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition[] | undefined>(
     [],
   )
   const [taskChainData, setTaskChainData] = useState<any[]>([])
   const pathname = usePathname()
+
+  const statusOptions = ['open', 'active', 'completed']
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
@@ -135,10 +138,10 @@ const TransactionList = () => {
   const handleUpdate = () => {
     console.log('updated url happening')
     const filterTasks = () => {
-      setFilteredTasks(tasks)
+      setFilteredTasks(finalTasks)
       setDepartament('All')
       // setIsLoading(true)
-      let newFilteredTasks = tasks
+      let newFilteredTasks = filteredTasks
       if (typeof window !== 'undefined') {
         const url = new URL(window.location.href)
 
@@ -243,13 +246,28 @@ const TransactionList = () => {
     if (data) {
       console.log(`the chaind data`)
       console.log(data)
+      for (let i = 0; i < data.length; i++) {
+        getDataFromIPFS(
+          data[i]['result']['metadata'],
+          i,
+          Number(data[i]['result']['deadline']),
+          Number(data[i]['result']['state']),
+        )
+      }
       // await setTaskChainData((prevState) => [...prevState, data])
       // await getDataFromIPFS(data['metadata'])
     }
+    handleUpdate()
   }
 
-  async function getDataFromIPFS(hash: string) {
+  async function getDataFromIPFS(
+    hash: string,
+    taskId: number,
+    deadline: number,
+    state: number,
+  ) {
     const url = `https://cloudflare-ipfs.com/ipfs/${hash}`
+    const taskData = {}
 
     await axios
       .get(url)
@@ -260,9 +278,21 @@ const TransactionList = () => {
           response.data.payments,
         )
         response.data.payments = payments
+        response.data.id = taskId
+        response.data.deadline = String(deadline)
+        response.data.status = statusOptions[state]
         console.log(`the metadata data`)
         console.log(response.data)
-        setTaskMetadata((prevState) => [...prevState, response.data])
+        setFinalTasks((prevState) => {
+          const taskExists = prevState.find(
+            (task) => task.id === response.data.id,
+          )
+          if (!taskExists) {
+            return [...prevState, response.data]
+          } else {
+            return prevState
+          }
+        })
       })
       .catch(async (err) => {
         console.log(err)
@@ -301,11 +331,6 @@ const TransactionList = () => {
     handleUpdate()
   }, [pathname])
 
-  async function logData() {
-    console.log(taskChainData)
-    console.log(taskMetadata)
-  }
-
   if (isLoading) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
@@ -330,7 +355,7 @@ const TransactionList = () => {
                 <p
                   onClick={() => {
                     console.log('as tasks')
-                    console.log(tasks)
+                    console.log(finalTasks)
                   }}
                   className="pr-2"
                 >
@@ -367,9 +392,10 @@ const TransactionList = () => {
               </div>
               <div className="w-[12%]"></div>
             </div>
-            {filteredTasks.map((task) => (
-              <TasksModal key={task.id} task={task} isLoading={false} />
-            ))}
+            {filteredTasks.length > 0 &&
+              filteredTasks.map((task) => (
+                <TasksModal key={task.id} task={task} isLoading={false} />
+              ))}
           </div>
         </div>
       </section>
