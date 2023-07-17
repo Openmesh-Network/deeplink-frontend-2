@@ -21,6 +21,16 @@ export type IPFSSubmition = {
   file: string | null
 }
 
+export type TasksOverview = {
+  title: string
+  description: string
+  deadline: Date
+  departament: string
+  skills: string[]
+  type: string
+  payments: Payment[]
+}
+
 export type TransactionHistory = {
   actionIcon: string
   actionName: string
