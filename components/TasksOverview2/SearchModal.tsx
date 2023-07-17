@@ -8,6 +8,9 @@ import Jazzicon from 'react-jazzicon'
 
 interface ModalProps {
   onUpdate(): void
+  openProjectsNumber: number
+  activeProjectsNumber: number
+  completedProjectsNumber: number
 }
 
 type DepartamentData = {
@@ -19,7 +22,12 @@ type DepartamentData = {
   imgClassName: string
 }
 
-const SearchModal = ({ onUpdate }: ModalProps) => {
+const SearchModal = ({
+  onUpdate,
+  openProjectsNumber,
+  activeProjectsNumber,
+  completedProjectsNumber,
+}: ModalProps) => {
   const [tasksStatus, setTasksStatus] = useState('')
   const [tasksOrderBy, setTasksOrderBy] = useState('')
   const [tasksSearchBar, setTasksSearchBar] = useState('')
@@ -304,7 +312,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">2</p>
+            <p className="text-[32px] font-bold">{openProjectsNumber}</p>
           </div>
           <div
             onClick={() => {
@@ -318,7 +326,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">1</p>
+            <p className="text-[32px] font-bold">{activeProjectsNumber}</p>
           </div>
           <div
             onClick={() => {
@@ -332,7 +340,7 @@ const SearchModal = ({ onUpdate }: ModalProps) => {
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">1</p>
+            <p className="text-[32px] font-bold">{completedProjectsNumber}</p>
           </div>
         </div>
 

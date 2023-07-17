@@ -22,7 +22,7 @@ export type IPFSSubmition = {
 }
 
 export type TasksOverview = {
-  id: string
+  id: number
   title: string
   description: string
   deadline: string

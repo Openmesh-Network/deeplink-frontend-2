@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { IPFSSubmition, TasksOverview } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
+import { File, SmileySad, Info } from 'phosphor-react'
 
 interface TasksModalProps {
   id: number
@@ -50,61 +51,6 @@ const TransactionList = () => {
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
   const { push } = useRouter()
-
-  const tasks = [
-    {
-      id: 0,
-      logo: '/images/carousel/blockchainLogo.svg',
-      name: 'Trading research',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-      categories: ['Ai', 'Blockchain', 'Science'],
-      departament: 'Data',
-      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '1689813076',
-      status: 'open',
-      budget: ['250'],
-    },
-    {
-      id: 1,
-      logo: '/images/carousel/blockchainLogo.svg',
-      name: 'Web development',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-      categories: ['Ai', 'Blockchain'],
-      departament: 'Frontend',
-      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '1699926076',
-      status: 'active',
-      budget: ['550'],
-    },
-    {
-      id: 2,
-      logo: '/images/carousel/blockchainLogo.svg',
-      name: 'AWS config',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-      categories: ['EC2'],
-      departament: 'Cloud',
-      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '1689926076',
-      status: 'completed',
-      budget: ['1550'],
-    },
-    {
-      id: 3,
-      logo: '/images/carousel/blockchainLogo.svg',
-      name: 'NFT development',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-      categories: ['Solidity'],
-      departament: 'Blockchain',
-      submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
-      deadline: '1690926076',
-      status: 'open',
-      budget: ['2550'],
-    },
-  ]
 
   const handleDepartamentSelection = (value: string) => {
     updateUrl('departament', value)
@@ -137,13 +83,20 @@ const TransactionList = () => {
 
   const handleUpdate = () => {
     console.log('updated url happening')
+    if (finalTasks.length === 0) {
+      return
+    }
     const filterTasks = () => {
+      console.log(`as final tasks desse update ${finalTasks}`)
       setFilteredTasks(finalTasks)
+      console.log(`filteder tasks setadas ${finalTasks}`)
+      console.log(finalTasks)
       setDepartament('All')
       // setIsLoading(true)
-      let newFilteredTasks = filteredTasks
+      let newFilteredTasks = finalTasks
       if (typeof window !== 'undefined') {
         const url = new URL(window.location.href)
+        console.log(`pegando os filtros pela window ${finalTasks}`)
 
         const status = url.searchParams.get('status')
         if (status) {
@@ -151,6 +104,8 @@ const TransactionList = () => {
             (task) => task.status === status,
           )
         }
+        console.log('task após o status')
+        console.log(newFilteredTasks)
 
         const departament = url.searchParams.get('departament')
         if (departament && departament !== 'All') {
@@ -183,17 +138,16 @@ const TransactionList = () => {
           }
         }
 
-        // const searchBar = url.searchParams.get('searchBar')
-        // if (searchBar) {
-        //   const searchPhrase = Array.isArray(searchBar)
-        //     ? searchBar[0]
-        //     : searchBar // se searchBar for array, usamos o primeiro elemento
-        //   console.log('a search bar' + searchPhrase)
-        //   newFilteredTasks = newFilteredTasks.filter((task) =>
-        //     task.name.toLowerCase().includes(searchPhrase),
-        //   )
-        //   console.log('filtro realizado')
-        // }
+        const searchBar = url.searchParams.get('searchBar')
+        if (searchBar) {
+          const searchPhrase = Array.isArray(searchBar)
+            ? searchBar[0]
+            : searchBar
+          console.log('a search bar' + searchPhrase)
+          newFilteredTasks = newFilteredTasks.filter((task) =>
+            task.title.toLowerCase().includes(String(searchPhrase).toLowerCase),
+          )
+        }
         setFilteredTasks(newFilteredTasks)
         console.log('as new filtered task')
         console.log(newFilteredTasks)
@@ -247,7 +201,7 @@ const TransactionList = () => {
       console.log(`the chaind data`)
       console.log(data)
       for (let i = 0; i < data.length; i++) {
-        getDataFromIPFS(
+        await getDataFromIPFS(
           data[i]['result']['metadata'],
           i,
           Number(data[i]['result']['deadline']),
@@ -257,7 +211,9 @@ const TransactionList = () => {
       // await setTaskChainData((prevState) => [...prevState, data])
       // await getDataFromIPFS(data['metadata'])
     }
-    handleUpdate()
+    console.log(
+      `pegando as tasks da block e passando pro handleUpdate ${finalTasks}`,
+    )
   }
 
   async function getDataFromIPFS(
@@ -283,7 +239,7 @@ const TransactionList = () => {
         response.data.status = statusOptions[state]
         console.log(`the metadata data`)
         console.log(response.data)
-        setFinalTasks((prevState) => {
+        await setFinalTasks((prevState) => {
           const taskExists = prevState.find(
             (task) => task.id === response.data.id,
           )
@@ -325,11 +281,33 @@ const TransactionList = () => {
     return newPayments
   }
 
+  function countStatusTasks(status: string) {
+    const tasksWithStatus = filteredTasks.filter(
+      (task) => task.status === status,
+    )
+    return tasksWithStatus.length
+  }
+
+  function NoTasks() {
+    return (
+      <div className="mt-4 mb-4 flex flex-col items-center">
+        <SmileySad size={32} className="text-blue-500 mb-2" />
+        <span>No tasks found</span>
+      </div>
+    )
+  }
+
   useEffect(() => {
     console.log('useEffect chamado')
     getTasks()
     handleUpdate()
   }, [pathname])
+
+  useEffect(() => {
+    console.log('task altearada, chamando novo handle')
+    console.log(`a task nova: ${finalTasks}`)
+    handleUpdate()
+  }, [finalTasks])
 
   if (isLoading) {
     return (
@@ -346,7 +324,12 @@ const TransactionList = () => {
   return (
     <>
       <HeroTasks />
-      <SearchModal onUpdate={handleUpdate} />
+      <SearchModal
+        onUpdate={handleUpdate}
+        openProjectsNumber={countStatusTasks('open')}
+        activeProjectsNumber={countStatusTasks('active')}
+        completedProjectsNumber={countStatusTasks('completed')}
+      />
       <section className="py-16 px-32 text-black md:py-20 lg:pt-32">
         <div className="container">
           <div className="pr-2 text-[#000000]">
@@ -356,6 +339,8 @@ const TransactionList = () => {
                   onClick={() => {
                     console.log('as tasks')
                     console.log(finalTasks)
+                    console.log('filtered tasks')
+                    console.log(filteredTasks)
                   }}
                   className="pr-2"
                 >
@@ -392,6 +377,7 @@ const TransactionList = () => {
               </div>
               <div className="w-[12%]"></div>
             </div>
+            {filteredTasks.length === 0 && <NoTasks />}
             {filteredTasks.length > 0 &&
               filteredTasks.map((task) => (
                 <TasksModal key={task.id} task={task} isLoading={false} />
