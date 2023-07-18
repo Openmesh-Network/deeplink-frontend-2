@@ -17,7 +17,7 @@ import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { TextField, Autocomplete } from '@mui/material'
 
-import { ethers } from 'ethers'
+import { ethers, isAddress } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import {
   readContract,
@@ -70,7 +70,7 @@ const NewTask = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
   const [links, setLinks] = useState<Link[]>([])
-  const departamentOptions = ['Ai', 'Frontend', 'Smart-contracts', 'Backend']
+  const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
 
@@ -473,6 +473,27 @@ const NewTask = () => {
       console.log(err)
       setIsLoading(false)
     }
+  }
+
+  if (!address) {
+    return (
+      <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
+        <div className="container  border-b-4 border-[#8d8d8d] pb-5">
+          <div className="-mx-4 flex flex-wrap items-start">
+            <div className="w-full px-4">
+              <div className="wow fadeInUp" data-wow-delay=".2s">
+                <div className="mb-1">
+                  <h3 className="mb-4 text-xl font-normal  sm:text-3xl lg:text-4xl xl:text-5xl">
+                    Create a task
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container mt-8">Connect you wallet to continue</div>
+      </section>
+    )
   }
 
   return (

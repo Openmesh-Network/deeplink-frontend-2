@@ -143,9 +143,15 @@ const TransactionList = () => {
           const searchPhrase = Array.isArray(searchBar)
             ? searchBar[0]
             : searchBar
-          console.log('a search bar' + searchPhrase)
-          newFilteredTasks = newFilteredTasks.filter((task) =>
-            task.title.toLowerCase().includes(String(searchPhrase).toLowerCase),
+          console.log('a search bar ' + searchPhrase)
+          newFilteredTasks = newFilteredTasks.filter(
+            (task) =>
+              task.title
+                .toLowerCase()
+                .includes(String(searchPhrase).toLowerCase()) ||
+              task.description
+                .toLowerCase()
+                .includes(String(searchPhrase).toLowerCase()),
           )
         }
         setFilteredTasks(newFilteredTasks)

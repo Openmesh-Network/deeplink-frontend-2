@@ -167,20 +167,17 @@ const SearchModal = ({
             onInput={handleSearchBarInput}
             value={tasksSearchBar}
             placeholder="Search here..."
-            className="mr-3 w-full max-w-[650px] rounded-md border border-[#0085FF] bg-white py-[6px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
+            className="mr-3 w-full max-w-[680px] rounded-md border border-[#0085FF] bg-white py-[12px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
           />
           <button
             onClick={() => {
               updateUrl('searchBar', tasksSearchBar)
             }}
-            disabled={!tasksSearchBar}
-            className={`flex h-[37px] w-full max-w-[37px] items-center justify-center rounded-md  ${
-              !tasksSearchBar ? '' : 'bg-primary'
-            }`}
+            className={`flex h-[47px] w-full max-w-[37px] items-center justify-center rounded-md hover:bg-primary`}
           >
             <svg
-              width="15"
-              height="13"
+              width="19"
+              height="16"
               viewBox="0 0 20 18"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
