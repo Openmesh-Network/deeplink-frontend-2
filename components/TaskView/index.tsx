@@ -140,107 +140,122 @@ const TaskView = (id: any) => {
   }
 
   return (
-    <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
+    <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
       <div className="container  border-b border-[#8d8d8d] pb-12">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
             <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <h3 className="mb-4 text-xl font-normal  sm:text-3xl lg:text-4xl xl:text-5xl">
-                  {taskMetadata.title}
-                </h3>
-                <div className="mt-10 flex text-[#595959]">
-                  <p>Available funds</p>{' '}
-                  <div className="ml-4 flex max-w-xl items-start justify-start px-2">
-                    {taskMetadata.payments.map((payment, index) => (
-                      <div
-                        key={index}
-                        className="flex text-base text-[#000000]"
-                      >
-                        <p>{Number(payment.amount) / 10 ** payment.decimals}</p>
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
-                          className="mt-1 ml-1 flex text-sm hover:text-primary"
+              <div className="mb-1 flex justify-between">
+                <div className="w-4/5">
+                  <h3 className="mb-4 text-[30px] font-bold">
+                    {taskMetadata.title}
+                  </h3>
+                  <p
+                    title={taskMetadata.description}
+                    className="overflow-hidden text-[24px] font-medium !leading-tight text-[#505050] line-clamp-3"
+                  >
+                    {taskMetadata.description}
+                  </p>
+                  <div className="mt-10 flex text-[20px] font-medium text-[#505050]">
+                    <p>Available funds</p>{' '}
+                    <div className="ml-4 mt-1 flex max-w-xl items-start justify-start px-2">
+                      {taskMetadata.payments.map((payment, index) => (
+                        <div
+                          key={index}
+                          className="flex text-base text-[#000000]"
                         >
-                          {truncateHash(payment.tokenContract)}
-                        </a>
-                        {index < taskMetadata.payments.length - 1 && (
-                          <span className="mr-2">,</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex justify-between">
-                  <div className="mt-14 flex">
-                    <button className="mr-8 border border-[#0057E1] bg-[#0057E1] px-3 py-1 text-sm text-white hover:border-[#0057E1] hover:bg-white hover:text-[#0057E1]">
-                      {' '}
-                      Start working{' '}
-                    </button>
-                    <button className="border bg-white px-3 py-1 text-sm text-[#0057E1] hover:border-white hover:bg-[#0057E1] hover:text-white">
-                      {' '}
-                      View on Github{' '}
-                    </button>
-                  </div>
-                  <div className="">
-                    <div className="flex justify-end">
-                      {' '}
-                      <img
-                        src={`/images/task/${
-                          taskState[taskChainData.state].img
-                        }`}
-                        alt="image"
-                        className={`w-[34px]`}
-                      />
-                      <p className="">
-                        {' '}
-                        {taskState[taskChainData.state].state}
-                      </p>
+                          <p>
+                            {Number(payment.amount) / 10 ** payment.decimals}
+                          </p>
+                          <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
+                            className="mt-[2px] ml-1 flex text-sm hover:text-primary"
+                          >
+                            {truncateHash(payment.tokenContract)}
+                          </a>
+                          {index < taskMetadata.payments.length - 1 && (
+                            <span className="mr-2">,</span>
+                          )}
+                        </div>
+                      ))}
                     </div>
-
-                    <p className="mt-8 text-[#595959]">
-                      {' '}
-                      Deadline:{' '}
-                      {
-                        new Date(taskMetadata.deadline)
-                          .toISOString()
-                          .split('T')[0]
-                      }
+                  </div>
+                  {/* <div className="flex justify-between">
+                    <div className="mt-14 flex">
+                      <button className="mr-8 border border-[#0057E1] bg-[#0057E1] px-3 py-1 text-sm text-white hover:border-[#0057E1] hover:bg-white hover:text-[#0057E1]">
+                        {' '}
+                        Start working{' '}
+                      </button>
+                      <button className="border bg-white px-3 py-1 text-sm text-[#0057E1] hover:border-white hover:bg-[#0057E1] hover:text-white">
+                        {' '}
+                        View on Github{' '}
+                      </button>
+                    </div>
+                  </div> */}
+                  {/* <div className="mt-14 flex">
+                    <p className=" text-[#595959]">Project scope</p>
+                    <div className="ml-16 flex space-x-2">
+                      {taskMetadata.skills.map((skill, index) => (
+                        <span
+                          key={index}
+                          className="rounded-md bg-[#01E2AC] px-2 py-1 text-[11px] font-bold text-[#000000]"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div> */}
+                  {/* <div className="mt-4 flex">
+                    <p className=" text-[#595959]">Main contributors</p>
+                    <div className="ml-8 flex space-x-2">
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://mumbai.polygonscan.com/address/${taskChainData.proposer}`}
+                        className="mt-1 flex hover:text-primary"
+                      >
+                        <UserOutlined />
+                        <p
+                          className="overflow-hidden text-xs font-semibold line-clamp-5 lg:text-xs lg:line-clamp-6"
+                          title={taskChainData.proposer}
+                        >
+                          {formatAddress(taskChainData.proposer)}
+                        </p>
+                      </a>
+                    </div>
+                  </div> */}
+                </div>
+                <div className="w-[162px] pt-11">
+                  {' '}
+                  <div className="flex justify-end text-[20px] font-bold text-[#505050]">
+                    {' '}
+                    <img
+                      src={`/images/task/${taskState[taskChainData.state].img}`}
+                      alt="image"
+                      className={`w-[34px]`}
+                    />
+                    <p className="">
+                      Status: {taskState[taskChainData.state].state}
                     </p>
                   </div>
-                </div>
-                <div className="mt-14 flex">
-                  <p className=" text-[#595959]">Project scope</p>
-                  <div className="ml-16 flex space-x-2">
-                    {taskMetadata.skills.map((skill, index) => (
-                      <span
-                        key={index}
-                        className="rounded-md bg-[#01E2AC] px-2 py-1 text-[11px] font-bold text-[#000000]"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4 flex">
-                  <p className=" text-[#595959]">Main contributors</p>
-                  <div className="ml-8 flex space-x-2">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://mumbai.polygonscan.com/address/${taskChainData.proposer}`}
-                      className="mt-1 flex hover:text-primary"
-                    >
-                      <UserOutlined />
-                      <p
-                        className="overflow-hidden text-xs font-semibold line-clamp-5 lg:text-xs lg:line-clamp-6"
-                        title={taskChainData.proposer}
-                      >
-                        {formatAddress(taskChainData.proposer)}
+                  <div className="mt-4 flex justify-start pl-3 text-[20px] font-bold">
+                    <div>
+                      <p className=""> Deadline: </p>
+                      <p className="font-normal">
+                        {
+                          new Date(taskMetadata.deadline)
+                            .toISOString()
+                            .split('T')[0]
+                        }
                       </p>
-                    </a>
+                    </div>
+                  </div>
+                  <div className="mt-6 pl-3">
+                    <button className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]">
+                      Start working
+                    </button>
                   </div>
                 </div>
               </div>
@@ -253,9 +268,12 @@ const TaskView = (id: any) => {
           <div className="w-full px-4">
             <div className="wow fadeInUp" data-wow-delay=".2s">
               <div className="mb-1">
-                <p className="mb-4 text-xl font-bold  sm:text-3xl lg:text-xl">
-                  Project description
-                </p>
+                <div className="text-18 mb-4 font-bold flex">
+                  <div className='mr-4'>
+                    <p className="">Project description</p>
+                  </div>
+                  <div className="">Updates</div>
+                </div>
                 <div className="flex">
                   <div className="mt-10 w-3/4 text-sm font-light">
                     {imgTaskIPFS ? (
