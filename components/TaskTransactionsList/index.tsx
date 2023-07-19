@@ -23,8 +23,6 @@ import { IPFSSubmition, TransactionHistory } from '@/types/task'
 
 const TransactionList = (id: any) => {
 
-
-
   const [taskHistory, setTaskHistory] = useState<TransactionHistory[]>([])
 
   const [transactions] = useState([
@@ -123,7 +121,7 @@ const TransactionList = (id: any) => {
 
   if (isLoading) {
     return (
-      <div className="my-4 py-6 w-2/3">
+      <div className="my-4 py-6">
         <h2 className="mb-4 text-left text-base font-medium text-black">
         </h2>
         <div className="h-[400px] overflow-auto pr-2 animate-pulse bg-[#dfdfdf] text-[#f3f1f1] scrollbar-thin scrollbar-thumb-current">
@@ -133,10 +131,7 @@ const TransactionList = (id: any) => {
   }
 
   return (
-    <div className="my-4 py-6 w-2/3">
-      <h2 className="mb-4 text-left text-base font-medium text-black">
-        All activities
-      </h2>
+    <div>
       <div className="h-[400px] overflow-auto pr-2 text-[#f3f1f1] scrollbar-thin scrollbar-thumb-current">
         {taskHistory.map((transaction, key) => (
           <TransactionModal key={key} transaction={transaction} />

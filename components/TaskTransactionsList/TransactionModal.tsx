@@ -13,7 +13,7 @@ const TransactionModal = ({ transaction }) => {
   }
 
   return (
-    <div className="mb-2 ml-4 mr-1 items-start justify-between rounded-md bg-[#f3f1f1] p-4 text-xs text-black lg:flex lg:text-sm">
+    <div className="mb-2 mr-1 items-start justify-between rounded-md bg-[#f3f1f1] p-4 text-xs text-black lg:flex lg:text-sm">
       <span>{iconMap[transaction.actionIcon]}</span>
       <span className="ml-1 items-start justify-start lg:mr-2">
         {transaction.actionName}

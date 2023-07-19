@@ -27,8 +27,10 @@ const TaskView = (id: any) => {
   const [departament, setDepartament] = useState('All')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [imgTaskIPFS, setImgTaskIPFS] = useState('')
+  const [viewOption, setViewOption] = useState('projectDescription')
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
   const [taskChainData, setTaskChainData] = useState<any>()
+  const [transactionCount, setTransactionCount] = useState<number>(0)
 
   const { push } = useRouter()
 
@@ -253,7 +255,13 @@ const TaskView = (id: any) => {
                     </div>
                   </div>
                   <div className="mt-6 pl-3">
-                    <button className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]">
+                    <button
+                      onClick={() => {
+                        console.log('a quantidade de updates')
+                        console.log(transactionCount)
+                      }}
+                      className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]"
+                    >
                       Start working
                     </button>
                   </div>
@@ -263,83 +271,156 @@ const TaskView = (id: any) => {
           </div>
         </div>
       </div>
-      <div className="container  mt-12">
+      <div className="container  mt-12 font-medium">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
             <div className="wow fadeInUp" data-wow-delay=".2s">
               <div className="mb-1">
-                <div className="text-18 mb-4 font-bold flex">
-                  <div className='mr-4'>
-                    <p className="">Project description</p>
-                  </div>
-                  <div className="">Updates</div>
-                </div>
-                <div className="flex">
-                  <div className="mt-10 w-3/4 text-sm font-light">
-                    {imgTaskIPFS ? (
-                      <img
-                        src={imgTaskIPFS}
-                        alt="project desc"
-                        className="h-[375px] w-[375px]"
-                      ></img>
-                    ) : (
-                      <></>
-                    )}
-
-                    <p className="mt-16">{taskMetadata.description}</p>
-                    <p className="mt-14 text-xl font-semibold">
-                      Relevant links
-                    </p>
-                    {taskMetadata.links.map((link, index) => (
-                      <p className="mt-1 flex" key={index}>
-                        <p className="">{link.title}</p>
-                        <p className="mr-2">:</p>
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-primary"
-                          href={link.url}
-                        >
-                          {link.url}
-                        </a>
-                      </p>
-                    ))}
-                  </div>
-                  <div className="w-1/4 pl-20 text-base font-normal text-[#363636]">
-                    <p>View project calendar</p>
-                    <a
-                      href="https://calendar.google.com/calendar/u/0/r"
-                      target="_blank"
-                      rel="nofollow noreferrer"
+                <div className="text-18 mb-4 flex font-bold">
+                  <div
+                    className={`mr-12  pb-2 ${
+                      viewOption === 'projectDescription'
+                        ? 'border-b-[2px] border-[#000000]'
+                        : ''
+                    }`}
+                  >
+                    <p
+                      onClick={() => {
+                        setViewOption('projectDescription')
+                      }}
+                      className="cursor-pointer hover:text-[#353535]"
                     >
-                      <img
-                        src="/images/task/calendar-google-2.png"
-                        alt="image"
-                        className={`mt-4 ml-1 w-[70px] hover:z-20 hover:scale-110`}
-                      />
-                    </a>
-                    <div className="mt-12 text-sm">
-                      <p>10:30 PM UTC 23-12-2021</p>
-                      <p>Next meeting</p>
+                      Project description
+                    </p>
+                  </div>
+                  <div
+                    className={`pb-2 ${
+                      viewOption === 'updates'
+                        ? 'border-b-[2px] border-[#000000]'
+                        : ''
+                    }`}
+                  >
+                    <p
+                      onClick={() => {
+                        setViewOption('updates')
+                      }}
+                      className="cursor-pointer hover:text-[#353535]"
+                    >
+                      Updates
+                      {/* Aqui inserir o numero de updates (transactions events) que teve */}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-10 flex">
+                  {viewOption === 'projectDescription' ? (
+                    <div className="mt-8 w-[65%] text-[20px] font-normal">
+                      {imgTaskIPFS ? (
+                        <img
+                          src={imgTaskIPFS}
+                          alt="project desc"
+                          className="h-[375px] w-[375px]"
+                        ></img>
+                      ) : (
+                        <></>
+                      )}
+
+                      <p className="mt-16">{taskMetadata.description}</p>
+                      <p className="mt-14 text-xl font-semibold">
+                        Relevant links
+                      </p>
+                      {taskMetadata.links.map((link, index) => (
+                        <p className="mt-1 flex" key={index}>
+                          <p className="">{link.title}</p>
+                          <p className="mr-2">:</p>
+                          <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-primary"
+                            href={link.url}
+                          >
+                            {link.url}
+                          </a>
+                        </p>
+                      ))}
                     </div>
-                    <div className="mt-12 text-sm">
-                      <p>Talk to contributors</p>
-                      <a
-                        href="https://discord.gg/JppWPVjt"
+                  ) : (
+                    <div className="mt-8 w-[65%]">
+                      <TransactionList id={id} />
+                    </div>
+                  )}
+
+                  <div className="mt-8 w-[35%] pl-20 text-[#363636]">
+                    <div className="shadow-lg">
+                      <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
+                        <p>More details</p>
+                      </div>
+                      {/* <a
+                        href="https://calendar.google.com/calendar/u/0/r"
                         target="_blank"
                         rel="nofollow noreferrer"
                       >
                         <img
-                          src="/images/task/discord.svg"
+                          src="/images/task/calendar-google-2.png"
                           alt="image"
-                          className={`mt-4 ml-1 w-[40px] hover:z-20 hover:scale-110`}
+                          className={`mt-4 ml-1 w-[70px] hover:z-20 hover:scale-110`}
                         />
-                      </a>
+                      </a> */}
+                      <div className="mt-8 px-8 pb-8 text-[18px]">
+                        <a
+                          href="https://github.com/"
+                          target="_blank"
+                          rel="nofollow noreferrer"
+                          className="border-b border-[#0085FF] font-normal text-[#0085FF]"
+                        >
+                          View on Github
+                        </a>
+                        <div className="mt-4">
+                          <p className="font-bold text-[#505050]">
+                            Last Updated:
+                          </p>
+                          <p>3 days ago</p>
+                        </div>
+                        <div className="mt-4">
+                          <p className="font-bold text-[#505050]">
+                            Next meeting:
+                          </p>
+                          <p>10:30 PM UTC 23-12-2021</p>
+                        </div>
+                        <div className="mt-4">
+                          <p>Reacht out to a</p>
+                          <a
+                            href="https://github.com/"
+                            target="_blank"
+                            rel="nofollow noreferrer"
+                            className="border-b border-[#0085FF] text-[#0085FF]"
+                          >
+                            verified contributor
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-10 shadow-lg">
+                      <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
+                        <p>Contributors</p>
+                      </div>
+                      <div className="mt-8 px-8 pb-8 text-[18px] font-normal">
+                        Empty
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="mt-20">
-                  <TransactionList id={id} />
+                <div className=" mt-20 flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
+                  <p>
+                    | Have more questions? Reach out to{' '}
+                    <a
+                      href="https://mumbai.polygonscan.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="border-b border-[#0084FE] text-[#0084FE]"
+                    >
+                      a verified contributor
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
