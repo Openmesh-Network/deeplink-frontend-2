@@ -35,6 +35,8 @@ const TransactionList = () => {
   const pathname = usePathname()
 
   const statusOptions = ['open', 'active', 'completed']
+  const departamentsOptions = ['All', 'Data', 'Blockchain', 'Cloud', 'Frontend']
+  const orderByOptions = ['newest', 'oldest']
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
@@ -69,91 +71,57 @@ const TransactionList = () => {
     }
   }
 
-  const handleUpdate = () => {
-    return
-    console.log('updated url happening')
-    if (finalTasks.length === 0) {
-      return
-    }
-    const filterTasks = () => {
-      console.log(`as final tasks desse update ${finalTasks}`)
-      setFilteredTasks(finalTasks)
-      console.log(`filteder tasks setadas ${finalTasks}`)
-      console.log(finalTasks)
-      setDepartament('All')
-      // setIsLoading(true)
-      let newFilteredTasks = finalTasks
-      if (typeof window !== 'undefined') {
-        const url = new URL(window.location.href)
-        console.log(`pegando os filtros pela window ${finalTasks}`)
-
-        const status = url.searchParams.get('status')
-        if (status) {
-          newFilteredTasks = newFilteredTasks.filter(
-            (task) => task.status === status,
-          )
-        }
-        console.log('task após o status')
-        console.log(newFilteredTasks)
-
-        const departament = url.searchParams.get('departament')
-        if (departament && departament !== 'All') {
-          const departamentValue = Array.isArray(departament)
-            ? departament[0]
-            : departament
-          newFilteredTasks = newFilteredTasks.filter((task) =>
-            task.departament.includes(departamentValue),
-          )
-          setDepartament(departament)
-        }
-
-        const orderBy = url.searchParams.get('orderBy')
-        console.log(orderBy)
-        if (orderBy) {
-          if (orderBy === 'newest') {
-            console.log('entrei pro newest')
-            newFilteredTasks.sort(
-              (a, b) => parseInt(a.deadline) - parseInt(b.deadline),
-            )
-            console.log(' a resposta apos')
-            console.log(newFilteredTasks)
-          } else if (orderBy === 'oldest') {
-            console.log('entrei pro oldest')
-            newFilteredTasks.sort(
-              (a, b) => parseInt(b.deadline) - parseInt(a.deadline),
-            )
-            console.log(' a resposta apos')
-            console.log(newFilteredTasks)
-          }
-        }
-
-        const searchBar = url.searchParams.get('searchBar')
-        if (searchBar) {
-          const searchPhrase = Array.isArray(searchBar)
-            ? searchBar[0]
-            : searchBar
-          console.log('a search bar ' + searchPhrase)
-          newFilteredTasks = newFilteredTasks.filter(
-            (task) =>
-              task.title
-                .toLowerCase()
-                .includes(String(searchPhrase).toLowerCase()) ||
-              task.description
-                .toLowerCase()
-                .includes(String(searchPhrase).toLowerCase()),
-          )
-        }
-        setFilteredTasks(newFilteredTasks)
-        console.log('as new filtered task')
-        console.log(newFilteredTasks)
-      }
-    }
-    setIsLoading(false)
-    // getTasks()
-    filterTasks()
+  function getStatusIndex(status: string): number {
+    return statusOptions.indexOf(status)
   }
 
-  async function getTasks() {
+  const handleUpdate = () => {
+    console.log('updated url happening')
+
+    setDepartament('All')
+    // setIsLoading(true)
+    // the body that will be passed to call the getTasksFiltered() endpoint
+    const dataBody = {}
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      console.log(`pegando os filtros pela window ${finalTasks}`)
+
+      const status = url.searchParams.get('status')
+      if (status) {
+        // if it returns -1, it means that it was passed a value that is not in the array
+        if (getStatusIndex(status) >= 0) {
+          dataBody['status'] = String(getStatusIndex(status))
+        }
+      }
+
+      const departament = url.searchParams.get('departament')
+      if (
+        departament &&
+        departament !== 'All' &&
+        departamentsOptions.includes(departament)
+      ) {
+        dataBody['departament'] = departament
+        setDepartament(departament)
+      }
+
+      const orderBy = url.searchParams.get('orderBy')
+      console.log(orderBy)
+      if (orderBy && orderByOptions.includes(orderBy)) {
+        dataBody['deadlineSorting'] = orderBy
+      }
+
+      const searchBar = url.searchParams.get('searchBar')
+      if (searchBar) {
+        const searchPhrase = Array.isArray(searchBar) ? searchBar[0] : searchBar
+        console.log('a search bar ' + searchPhrase)
+        dataBody['searchBar'] = String(searchPhrase)
+      }
+    }
+
+    getTasks(dataBody)
+  }
+
+  async function getTasks(dataBody: any) {
     const config = {
       method: 'post' as 'post',
       url: `https://dpl-backend-homolog.up.railway.app/functions/getTasks`,
@@ -161,6 +129,7 @@ const TransactionList = () => {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
       },
+      data: dataBody,
     }
 
     let dado
@@ -194,7 +163,7 @@ const TransactionList = () => {
 
   useEffect(() => {
     console.log('useEffect chamado')
-    getTasks()
+    getTasks({})
     handleUpdate()
   }, [pathname])
 
