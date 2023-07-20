@@ -52,9 +52,9 @@ const TasksModal = ({ task, isLoading }: TasksModalProps) => {
       <div className="flex w-[15%] items-center">
         <p
           className="overflow-hidden line-clamp-1"
-          title={task.skills.join(' | ')}
+          title={task.skills && task.skills.join(' | ')}
         >
-          {task.skills.join(', ')}
+          {task.skills && task.skills.join(', ')}
         </p>
       </div>
       <div className="flex w-[10%] items-center overflow-hidden line-clamp-1">
@@ -64,22 +64,23 @@ const TasksModal = ({ task, isLoading }: TasksModalProps) => {
         >
           {task.budget.join(' | ')}
         </p> */}
-        {task.payments.map((budg, index) => (
-          <div key={index} className="flex">
-            <p key={index}>$</p>
-            <p className="mr-1" key={index}>
-              {Number(budg.amount) / 10 ** budg.decimals}
-              {index !== task.payments.length - 1 && ', '}
-            </p>
-            <p>{`(`}</p>
-            <img
-              src="/images/tokens/usd-coin-usdc-logo.svg"
-              alt="image"
-              className={`w-[14px]`}
-            />
-            <p>{`)`}</p>
-          </div>
-        ))}
+        {task.payments &&
+          task.payments.map((budg, index) => (
+            <div key={index} className="flex">
+              <p key={index}>$</p>
+              <p className="mr-1" key={index}>
+                {Number(budg.amount) / 10 ** budg.decimals}
+                {index !== task.payments.length - 1 && ', '}
+              </p>
+              <p>{`(`}</p>
+              <img
+                src="/images/tokens/usd-coin-usdc-logo.svg"
+                alt="image"
+                className={`w-[14px]`}
+              />
+              <p>{`)`}</p>
+            </div>
+          ))}
       </div>
       <div className="flex w-[8%] items-center">{daysLeft}</div>
       <div className="flex w-[12%]">

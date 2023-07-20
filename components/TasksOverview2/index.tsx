@@ -22,18 +22,6 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
 import { File, SmileySad, Info } from 'phosphor-react'
 
-interface TasksModalProps {
-  id: number
-  name: string
-  description: string
-  submitter: string
-  deadline: string
-  budget: string[]
-  status: string
-  logo: string
-  categories: string[]
-}
-
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [departament, setDepartament] = useState('All')
@@ -82,6 +70,7 @@ const TransactionList = () => {
   }
 
   const handleUpdate = () => {
+    return
     console.log('updated url happening')
     if (finalTasks.length === 0) {
       return
@@ -165,132 +154,32 @@ const TransactionList = () => {
   }
 
   async function getTasks() {
-    console.log('getting task count')
-    const data = await readContract({
-      address: `0x${taskAddress.substring(2)}`,
-      abi: taskContractABI,
-      functionName: 'taskCount',
-    })
-    if (!data) {
-      toast.error(
-        'Something occurred while fetching data from the smart-contract!',
-      )
-      // await new Promise((resolve) => setTimeout(resolve, 1000))
-      // push('/')
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/getTasks`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
     }
-    console.log('getting tasks data')
-    await getTaskFromChain(Number(data))
 
-    // await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log('all the result')
-    console.log(taskChainData)
-    console.log(taskMetadata)
+    let dado
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          setFinalTasks(response.data)
+        }
+      })
+    } catch (err) {
+      console.log('erro na setagem de tasks')
+      console.log(err)
+    }
+
     setIsLoading(false)
-  }
-  async function getTaskFromChain(id: number) {
-    const listTasks = []
-    for (let i = 0; i < id; i++) {
-      const objTask = {
-        address: `0x${taskAddress.substring(2)}`,
-        // eslint-disable-next-line prettier/prettier
-        abi: [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ApplicationDoesNotExist","type":"error"},{"inputs":[],"name":"ApplicationNotAccepted","type":"error"},{"inputs":[],"name":"NotExecutor","type":"error"},{"inputs":[],"name":"NotProposer","type":"error"},{"inputs":[],"name":"NotYourApplication","type":"error"},{"inputs":[],"name":"RequestAlreadyAccepted","type":"error"},{"inputs":[],"name":"RequestDoesNotExist","type":"error"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"RewardAboveBudget","type":"error"},{"inputs":[],"name":"SubmissionAlreadyJudged","type":"error"},{"inputs":[],"name":"SubmissionDoesNotExist","type":"error"},{"inputs":[],"name":"TaskClosed","type":"error"},{"inputs":[],"name":"TaskDoesNotExist","type":"error"},{"inputs":[],"name":"TaskNotClosed","type":"error"},{"inputs":[],"name":"TaskNotOpen","type":"error"},{"inputs":[],"name":"TaskNotTaken","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"uint16","name":"applicationId","type":"uint16"},{"indexed":false,"internalType":"address","name":"applicant","type":"address"},{"indexed":false,"internalType":"string","name":"metadata","type":"string"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"indexed":false,"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"name":"ApplicationCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"uint16[]","name":"applications","type":"uint16[]"},{"indexed":false,"internalType":"address","name":"proposer","type":"address"}],"name":"ApplicationsAccepted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"submissionId","type":"uint8"},{"indexed":false,"internalType":"address","name":"executor","type":"address"},{"indexed":false,"internalType":"string","name":"metadata","type":"string"}],"name":"SubmissionCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"submissionId","type":"uint8"},{"indexed":false,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"enum ITasks.SubmissionJudgement","name":"judgement","type":"uint8"},{"indexed":false,"internalType":"string","name":"feedback","type":"string"}],"name":"SubmissionReviewed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"metadata","type":"string"},{"indexed":false,"internalType":"uint64","name":"deadline","type":"uint64"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"indexed":false,"internalType":"struct ITasks.ERC20Transfer[]","name":"budget","type":"tuple[]"}],"name":"TaskCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"taskId","type":"uint256"},{"indexed":false,"internalType":"uint16","name":"applicationId","type":"uint16"},{"indexed":false,"internalType":"address","name":"applicant","type":"address"}],"name":"TaskTaken","type":"event"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"uint16[]","name":"_applications","type":"uint16[]"}],"name":"acceptApplications","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"enum ITasks.RequestType","name":"_requestType","type":"uint8"},{"internalType":"uint8","name":"_requestId","type":"uint8"}],"name":"acceptRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"string","name":"_metadata","type":"string"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"_reward","type":"tuple[]"}],"name":"applyForTask","outputs":[{"internalType":"uint16","name":"applicationId","type":"uint16"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"string","name":"_explanation","type":"string"}],"name":"cancelTask","outputs":[{"internalType":"uint8","name":"cancelTaskRequestId","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"string","name":"_newMetadata","type":"string"},{"internalType":"uint64","name":"_newDeadline","type":"uint64"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"_newReward","type":"tuple[]"}],"name":"changeScope","outputs":[{"internalType":"uint8","name":"changeTaskRequestId","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"string","name":"_metadata","type":"string"}],"name":"createSubmission","outputs":[{"internalType":"uint8","name":"submissionId","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_metadata","type":"string"},{"internalType":"uint64","name":"_deadline","type":"uint64"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"internalType":"struct ITasks.ERC20Transfer[]","name":"_budget","type":"tuple[]"}],"name":"createTask","outputs":[{"internalType":"uint256","name":"taskId","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"string","name":"_explanation","type":"string"}],"name":"dropExecutor","outputs":[{"internalType":"uint8","name":"dropExecutorRequestId","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_executor","type":"address"},{"internalType":"uint256","name":"_fromTaskId","type":"uint256"},{"internalType":"uint256","name":"_max","type":"uint256"}],"name":"getExecutingTasks","outputs":[{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"internalType":"uint64","name":"creationTimestamp","type":"uint64"},{"internalType":"uint64","name":"executorConfirmationTimestamp","type":"uint64"},{"internalType":"uint16","name":"executorApplication","type":"uint16"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"enum ITasks.TaskState","name":"state","type":"uint8"},{"internalType":"contract Escrow","name":"escrow","type":"address"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"internalType":"struct ITasks.ERC20Transfer[]","name":"budget","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"address","name":"applicant","type":"address"},{"internalType":"bool","name":"accepted","type":"bool"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainApplication[]","name":"applications","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"enum ITasks.SubmissionJudgement","name":"judgement","type":"uint8"},{"internalType":"uint64","name":"judgementTimestamp","type":"uint64"},{"internalType":"string","name":"feedback","type":"string"}],"internalType":"struct ITasks.Submission[]","name":"submissions","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainChangeScopeRequest[]","name":"changeScopeRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.DropExecutorRequest[]","name":"dropExecutorRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.CancelTaskRequest[]","name":"cancelTaskRequests","type":"tuple[]"}],"internalType":"struct ITasks.OffChainTask[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_proposer","type":"address"},{"internalType":"uint256","name":"_fromTaskId","type":"uint256"},{"internalType":"uint256","name":"_max","type":"uint256"}],"name":"getProposingTasks","outputs":[{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"internalType":"uint64","name":"creationTimestamp","type":"uint64"},{"internalType":"uint64","name":"executorConfirmationTimestamp","type":"uint64"},{"internalType":"uint16","name":"executorApplication","type":"uint16"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"enum ITasks.TaskState","name":"state","type":"uint8"},{"internalType":"contract Escrow","name":"escrow","type":"address"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"internalType":"struct ITasks.ERC20Transfer[]","name":"budget","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"address","name":"applicant","type":"address"},{"internalType":"bool","name":"accepted","type":"bool"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainApplication[]","name":"applications","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"enum ITasks.SubmissionJudgement","name":"judgement","type":"uint8"},{"internalType":"uint64","name":"judgementTimestamp","type":"uint64"},{"internalType":"string","name":"feedback","type":"string"}],"internalType":"struct ITasks.Submission[]","name":"submissions","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainChangeScopeRequest[]","name":"changeScopeRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.DropExecutorRequest[]","name":"dropExecutorRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.CancelTaskRequest[]","name":"cancelTaskRequests","type":"tuple[]"}],"internalType":"struct ITasks.OffChainTask[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"}],"name":"getTask","outputs":[{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"internalType":"uint64","name":"creationTimestamp","type":"uint64"},{"internalType":"uint64","name":"executorConfirmationTimestamp","type":"uint64"},{"internalType":"uint16","name":"executorApplication","type":"uint16"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"enum ITasks.TaskState","name":"state","type":"uint8"},{"internalType":"contract Escrow","name":"escrow","type":"address"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"internalType":"struct ITasks.ERC20Transfer[]","name":"budget","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"address","name":"applicant","type":"address"},{"internalType":"bool","name":"accepted","type":"bool"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainApplication[]","name":"applications","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"enum ITasks.SubmissionJudgement","name":"judgement","type":"uint8"},{"internalType":"uint64","name":"judgementTimestamp","type":"uint64"},{"internalType":"string","name":"feedback","type":"string"}],"internalType":"struct ITasks.Submission[]","name":"submissions","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainChangeScopeRequest[]","name":"changeScopeRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.DropExecutorRequest[]","name":"dropExecutorRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.CancelTaskRequest[]","name":"cancelTaskRequests","type":"tuple[]"}],"internalType":"struct ITasks.OffChainTask","name":"offchainTask","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"_taskIds","type":"uint256[]"}],"name":"getTasks","outputs":[{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"internalType":"uint64","name":"creationTimestamp","type":"uint64"},{"internalType":"uint64","name":"executorConfirmationTimestamp","type":"uint64"},{"internalType":"uint16","name":"executorApplication","type":"uint16"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"enum ITasks.TaskState","name":"state","type":"uint8"},{"internalType":"contract Escrow","name":"escrow","type":"address"},{"components":[{"internalType":"contract IERC20","name":"tokenContract","type":"address"},{"internalType":"uint96","name":"amount","type":"uint96"}],"internalType":"struct ITasks.ERC20Transfer[]","name":"budget","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"address","name":"applicant","type":"address"},{"internalType":"bool","name":"accepted","type":"bool"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainApplication[]","name":"applications","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"enum ITasks.SubmissionJudgement","name":"judgement","type":"uint8"},{"internalType":"uint64","name":"judgementTimestamp","type":"uint64"},{"internalType":"string","name":"feedback","type":"string"}],"internalType":"struct ITasks.Submission[]","name":"submissions","type":"tuple[]"},{"components":[{"internalType":"string","name":"metadata","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"},{"internalType":"uint64","name":"deadline","type":"uint64"},{"components":[{"internalType":"bool","name":"nextToken","type":"bool"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint88","name":"amount","type":"uint88"}],"internalType":"struct ITasks.Reward[]","name":"reward","type":"tuple[]"}],"internalType":"struct ITasks.OffChainChangeScopeRequest[]","name":"changeScopeRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.DropExecutorRequest[]","name":"dropExecutorRequests","type":"tuple[]"},{"components":[{"internalType":"string","name":"explanation","type":"string"},{"internalType":"uint64","name":"timestamp","type":"uint64"},{"internalType":"uint64","name":"accepted","type":"uint64"}],"internalType":"struct ITasks.CancelTaskRequest[]","name":"cancelTaskRequests","type":"tuple[]"}],"internalType":"struct ITasks.OffChainTask[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"uint8","name":"_submission","type":"uint8"},{"internalType":"enum ITasks.SubmissionJudgement","name":"_judgement","type":"uint8"},{"internalType":"string","name":"_feedback","type":"string"}],"name":"reviewSubmission","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_taskId","type":"uint256"},{"internalType":"uint16","name":"_application","type":"uint16"}],"name":"takeTask","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"taskCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"taskStatistics","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}],
-        functionName: 'getTask',
-        args: [i],
-      }
-      listTasks.push(objTask)
-    }
-    const data = await readContracts({
-      // eslint-disable-next-line prettier/prettier
-      contracts: listTasks
-    })
-    if (data) {
-      console.log(`the chaind data`)
-      console.log(data)
-      for (let i = 0; i < data.length; i++) {
-        await getDataFromIPFS(
-          data[i]['result']['metadata'],
-          i,
-          Number(data[i]['result']['deadline']),
-          Number(data[i]['result']['state']),
-        )
-      }
-      // await setTaskChainData((prevState) => [...prevState, data])
-      // await getDataFromIPFS(data['metadata'])
-    }
-    console.log(
-      `pegando as tasks da block e passando pro handleUpdate ${finalTasks}`,
-    )
-  }
-
-  async function getDataFromIPFS(
-    hash: string,
-    taskId: number,
-    deadline: number,
-    state: number,
-  ) {
-    const url = `https://cloudflare-ipfs.com/ipfs/${hash}`
-    const taskData = {}
-
-    await axios
-      .get(url)
-      .then(async (response) => {
-        console.log('the metadata:')
-        console.log(response.data)
-        const payments = await getDecimalsFromPaymentsToken(
-          response.data.payments,
-        )
-        response.data.payments = payments
-        response.data.id = taskId
-        response.data.deadline = String(deadline)
-        response.data.status = statusOptions[state]
-        console.log(`the metadata data`)
-        console.log(response.data)
-        await setFinalTasks((prevState) => {
-          const taskExists = prevState.find(
-            (task) => task.id === response.data.id,
-          )
-          if (!taskExists) {
-            return [...prevState, response.data]
-          } else {
-            return prevState
-          }
-        })
-      })
-      .catch(async (err) => {
-        console.log(err)
-      })
-  }
-
-  function truncateHash(hash) {
-    const start = hash.slice(0, 5)
-    const end = hash.slice(-5)
-    return `${start}...${end}`
-  }
-
-  async function getDecimalsFromPaymentsToken(payments) {
-    console.log('getting decimals')
-    console.log(payments)
-    const newPayments = [...payments] // creating a copy of the payments
-    for (let i = 0; i < payments.length; i++) {
-      const data = await readContract({
-        address: `0x${payments[i].tokenContract.substring(2)}`,
-        abi: erc20ContractABI,
-        functionName: 'decimals',
-      })
-      console.log('the decimal from token:')
-      console.log(data)
-      if (data) {
-        newPayments[i].decimals = Number(data) // modifying the copy
-      }
-    }
-    // returning the state with the correctly decimals
-    return newPayments
   }
 
   function countStatusTasks(status: string) {
-    const tasksWithStatus = filteredTasks.filter(
-      (task) => task.status === status,
-    )
+    const tasksWithStatus = finalTasks.filter((task) => task.status === status)
     return tasksWithStatus.length
   }
 
@@ -383,9 +272,9 @@ const TransactionList = () => {
               </div>
               <div className="w-[12%]"></div>
             </div>
-            {filteredTasks.length === 0 && <NoTasks />}
-            {filteredTasks.length > 0 &&
-              filteredTasks.map((task) => (
+            {finalTasks.length === 0 && <NoTasks />}
+            {finalTasks.length > 0 &&
+              finalTasks.map((task) => (
                 <TasksModal key={task.id} task={task} isLoading={false} />
               ))}
           </div>
