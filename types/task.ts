@@ -26,6 +26,7 @@ export type TasksOverview = {
   title: string
   description: string
   deadline: string
+  daysLeft: string
   departament: string
   status: string
   skills: string[]
@@ -39,4 +40,17 @@ export type TransactionHistory = {
   transactionHash: string
   transactionDate: string
   addressSender: string
+}
+
+export type TasksPagination = {
+  currentPage: number
+  totalPages: number
+  totalTasks: number
+  limit: number
+}
+
+export type TasksCounting = {
+  open: number
+  active: number
+  completed: number
 }

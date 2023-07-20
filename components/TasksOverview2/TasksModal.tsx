@@ -1,5 +1,4 @@
 'use client'
-import { useEffect, useState } from 'react'
 import { Payment } from '@/types/task'
 
 interface TasksModalProps {
@@ -8,6 +7,7 @@ interface TasksModalProps {
     title: string
     description: string
     deadline: string
+    daysLeft: string
     payments: Payment[]
     status: string
     skills: string[]
@@ -16,23 +16,6 @@ interface TasksModalProps {
 }
 
 const TasksModal = ({ task, isLoading }: TasksModalProps) => {
-  const [daysLeft, setDaysLeft] = useState('')
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = Date.now()
-      const deadline = Number(task.deadline) * 1000
-      const distance = deadline - now
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-
-      setDaysLeft(days <= 1 ? `${days} day left` : `${days} days left`)
-    }, 1000)
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [task.deadline])
-
   return (
     <div className="relative mr-1 mb-8 flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal">
       <div className="mr-4 w-[35%] items-center">
@@ -69,7 +52,7 @@ const TasksModal = ({ task, isLoading }: TasksModalProps) => {
             <div key={index} className="flex">
               <p key={index}>$</p>
               <p className="mr-1" key={index}>
-                {Number(budg.amount) / 10 ** budg.decimals}
+                {Math.round(Number(budg.amount) / 10 ** budg.decimals)}
                 {index !== task.payments.length - 1 && ', '}
               </p>
               <p>{`(`}</p>
@@ -82,7 +65,7 @@ const TasksModal = ({ task, isLoading }: TasksModalProps) => {
             </div>
           ))}
       </div>
-      <div className="flex w-[8%] items-center">{daysLeft}</div>
+      <div className="flex w-[8%] items-center">{task.daysLeft}</div>
       <div className="flex w-[12%]">
         <a
           href={`/task/${task.id}`}

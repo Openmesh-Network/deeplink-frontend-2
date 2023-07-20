@@ -8,6 +8,7 @@ import Jazzicon from 'react-jazzicon'
 
 interface ModalProps {
   onUpdate(): void
+  scrollManually(): void
   openProjectsNumber: number
   activeProjectsNumber: number
   completedProjectsNumber: number
@@ -24,6 +25,7 @@ type DepartamentData = {
 
 const SearchModal = ({
   onUpdate,
+  scrollManually,
   openProjectsNumber,
   activeProjectsNumber,
   completedProjectsNumber,
@@ -123,6 +125,16 @@ const SearchModal = ({
 
   // Função para atualizar a URL
   const updateUrl = (param: string, value: string | null) => {
+    console.log('update chamado com sucesso')
+    if (param !== 'page') {
+      console.log('nao é page')
+      if (typeof window !== 'undefined') {
+        console.log('nao é page2')
+        const url = new URL(window.location.href)
+        url.searchParams.delete('page')
+        window.history.pushState({}, '', url.toString())
+      }
+    }
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href)
 
@@ -165,6 +177,12 @@ const SearchModal = ({
           <input
             type="text"
             onInput={handleSearchBarInput}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                updateUrl('searchBar', tasksSearchBar)
+                scrollManually()
+              }
+            }}
             value={tasksSearchBar}
             placeholder="Search here..."
             className="mr-3 w-full max-w-[680px] rounded-md border border-[#0085FF] bg-white py-[12px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
@@ -172,8 +190,9 @@ const SearchModal = ({
           <button
             onClick={() => {
               updateUrl('searchBar', tasksSearchBar)
+              scrollManually()
             }}
-            className={`flex h-[47px] w-full max-w-[37px] items-center justify-center rounded-md hover:bg-primary`}
+            className={`flex h-[47px] w-full max-w-[37px] items-center justify-center rounded-md`}
           >
             <svg
               width="19"
@@ -184,7 +203,7 @@ const SearchModal = ({
             >
               <path
                 d="M19.4062 16.8125L13.9375 12.375C14.9375 11.0625 15.5 9.46875 15.5 7.78125C15.5 5.75 14.7188 3.875 13.2812 2.4375C10.3438 -0.5 5.5625 -0.5 2.59375 2.4375C1.1875 3.84375 0.40625 5.75 0.40625 7.75C0.40625 9.78125 1.1875 11.6562 2.625 13.0937C4.09375 14.5625 6.03125 15.3125 7.96875 15.3125C9.875 15.3125 11.75 14.5938 13.2188 13.1875L18.75 17.6562C18.8438 17.75 18.9688 17.7812 19.0938 17.7812C19.25 17.7812 19.4062 17.7188 19.5312 17.5938C19.6875 17.3438 19.6562 17 19.4062 16.8125ZM3.375 12.3438C2.15625 11.125 1.5 9.5 1.5 7.75C1.5 6 2.15625 4.40625 3.40625 3.1875C4.65625 1.9375 6.3125 1.3125 7.96875 1.3125C9.625 1.3125 11.2812 1.9375 12.5312 3.1875C13.75 4.40625 14.4375 6.03125 14.4375 7.75C14.4375 9.46875 13.7188 11.125 12.5 12.3438C10 14.8438 5.90625 14.8438 3.375 12.3438Z"
-                fill={`${!tasksSearchBar ? 'black' : 'white'}`}
+                fill={`black`}
               />
             </svg>
           </button>

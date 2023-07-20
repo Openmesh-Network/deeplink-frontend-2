@@ -17,7 +17,12 @@ import {
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition, TasksOverview } from '@/types/task'
+import {
+  IPFSSubmition,
+  TasksOverview,
+  TasksPagination,
+  TasksCounting,
+} from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
 import { File, SmileySad, Info } from 'phosphor-react'
@@ -28,6 +33,8 @@ const TransactionList = () => {
   const [orderByDeadline, setOrderByDeadline] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
+  const [pagination, setPagination] = useState<TasksPagination>()
+  const [counting, setCounting] = useState<TasksCounting>()
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition[] | undefined>(
     [],
   )
@@ -55,8 +62,24 @@ const TransactionList = () => {
     }
   }
 
+  const handlePaginationSelectionNext = () => {
+    updateUrl('page', String(pagination.currentPage + 1))
+    scrollManually()
+  }
+  const handlePaginationSelectionPrev = () => {
+    updateUrl('page', String(pagination.currentPage - 1))
+    scrollManually()
+  }
+
   // Função para atualizar a URL
   const updateUrl = (param: string, value: string | null) => {
+    if (param !== 'page') {
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+        url.searchParams.delete('page')
+        window.history.pushState({}, '', url.toString())
+      }
+    }
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href)
 
@@ -75,10 +98,17 @@ const TransactionList = () => {
     return statusOptions.indexOf(status)
   }
 
+  // When I want to scroll manually to the tasks
+  const scrollManually = () => {
+    const taskStartElement = document.getElementById('taskStart')
+    taskStartElement.scrollIntoView({ behavior: 'smooth' })
+  }
+
   const handleUpdate = () => {
     console.log('updated url happening')
-
     setDepartament('All')
+
+    let urlHasAllParamDepartament = false
     // setIsLoading(true)
     // the body that will be passed to call the getTasksFiltered() endpoint
     const dataBody = {}
@@ -103,6 +133,9 @@ const TransactionList = () => {
         dataBody['departament'] = departament
         setDepartament(departament)
       }
+      if (departament === 'All') {
+        urlHasAllParamDepartament = true
+      }
 
       const orderBy = url.searchParams.get('orderBy')
       console.log(orderBy)
@@ -116,12 +149,23 @@ const TransactionList = () => {
         console.log('a search bar ' + searchPhrase)
         dataBody['searchBar'] = String(searchPhrase)
       }
+
+      const pageNumber = url.searchParams.get('page')
+      if (pageNumber && !isNaN(Number(pageNumber))) {
+        dataBody['page'] = Number(pageNumber)
+      }
+    }
+
+    if (Object.keys(dataBody).length !== 0 || urlHasAllParamDepartament) {
+      const taskStartElement = document.getElementById('taskStart')
+      taskStartElement.scrollIntoView({ behavior: 'smooth' })
     }
 
     getTasks(dataBody)
   }
 
   async function getTasks(dataBody: any) {
+    setIsLoading(true)
     const config = {
       method: 'post' as 'post',
       url: `https://dpl-backend-homolog.up.railway.app/functions/getTasks`,
@@ -136,7 +180,9 @@ const TransactionList = () => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          setFinalTasks(response.data)
+          setFinalTasks(response.data.tasks)
+          setPagination(response.data.pagination)
+          setCounting(response.data.counting)
         }
       })
     } catch (err) {
@@ -145,11 +191,6 @@ const TransactionList = () => {
     }
 
     setIsLoading(false)
-  }
-
-  function countStatusTasks(status: string) {
-    const tasksWithStatus = finalTasks.filter((task) => task.status === status)
-    return tasksWithStatus.length
   }
 
   function NoTasks() {
@@ -163,38 +204,20 @@ const TransactionList = () => {
 
   useEffect(() => {
     console.log('useEffect chamado')
-    getTasks({})
     handleUpdate()
   }, [pathname])
-
-  useEffect(() => {
-    console.log('task altearada, chamando novo handle')
-    console.log(`a task nova: ${finalTasks}`)
-    handleUpdate()
-  }, [finalTasks])
-
-  if (isLoading) {
-    return (
-      <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="container flex h-60 animate-pulse pb-12">
-          <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
-          <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
-        </div>
-        <div className="container h-96 animate-pulse bg-[#dfdfdf] pb-12"></div>
-      </section>
-    )
-  }
 
   return (
     <>
       <HeroTasks />
       <SearchModal
         onUpdate={handleUpdate}
-        openProjectsNumber={countStatusTasks('open')}
-        activeProjectsNumber={countStatusTasks('active')}
-        completedProjectsNumber={countStatusTasks('completed')}
+        scrollManually={scrollManually}
+        openProjectsNumber={counting ? counting.open : 0}
+        activeProjectsNumber={counting ? counting.active : 0}
+        completedProjectsNumber={counting ? counting.completed : 0}
       />
-      <section className="py-16 px-32 text-black md:py-20 lg:pt-32">
+      <section className="py-16 px-32 md:py-20 lg:pt-32" id={'taskStart'}>
         <div className="container">
           <div className="pr-2 text-[#000000]">
             <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
@@ -216,11 +239,11 @@ const TransactionList = () => {
               </div>
               <div className="flex w-[10%] items-center">
                 <p className="pr-2">Budget</p>
-                <img
+                {/* <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
                   className={`w-[14px]`}
-                />
+                /> */}
               </div>
               <div className="flex w-[8%] items-center">
                 <p className="pr-2">Ends</p>
@@ -241,11 +264,51 @@ const TransactionList = () => {
               </div>
               <div className="w-[12%]"></div>
             </div>
-            {finalTasks.length === 0 && <NoTasks />}
-            {finalTasks.length > 0 &&
+            {isLoading && (
+              <>
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                </div>
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                </div>
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                </div>
+              </>
+            )}
+            {!isLoading && finalTasks.length === 0 && <NoTasks />}
+            {!isLoading &&
+              finalTasks.length > 0 &&
               finalTasks.map((task) => (
                 <TasksModal key={task.id} task={task} isLoading={false} />
               ))}
+            {!isLoading && finalTasks.length > 0 && pagination && (
+              <div className="flex items-center justify-center pt-16 pb-2 text-[18px] font-normal">
+                {pagination.currentPage !== 1 && (
+                  <p
+                    onClick={handlePaginationSelectionPrev}
+                    className="cursor-pointer hover:text-[#1068E6]"
+                  >
+                    Prev
+                  </p>
+                )}
+                <p className="mx-14">
+                  Page {pagination.currentPage} of {pagination.totalPages}
+                </p>
+                {pagination.totalPages > pagination.currentPage && (
+                  <p
+                    onClick={handlePaginationSelectionNext}
+                    className="cursor-pointer hover:text-[#1068E6]"
+                  >
+                    Next
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
