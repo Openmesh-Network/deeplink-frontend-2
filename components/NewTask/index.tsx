@@ -15,8 +15,11 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import { TextField, Autocomplete } from '@mui/material'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+
+import { TextField, Autocomplete } from '@mui/material'
 import { ethers, isAddress } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import {
@@ -26,6 +29,7 @@ import {
   waitForTransaction,
   watchContractEvent,
 } from '@wagmi/core'
+import HeroNewTasks from './HeroNewTask'
 
 type TaskSubmitForm = {
   title: string
@@ -34,6 +38,7 @@ type TaskSubmitForm = {
   departament: string
   skills: string[]
   type: string
+  projectLength: string
 }
 
 type Payment = {
@@ -66,11 +71,18 @@ type IPFSSubmition = {
 const NewTask = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [departament, setDepartament] = useState('')
+  const [projectLength, setProjectLength] = useState('')
   const [type, setType] = useState('Individual')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
   const [links, setLinks] = useState<Link[]>([])
   const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
+  const projectLengthOptions = [
+    'Less than 1 week',
+    '1 to 2 weeks',
+    '2 to 4 weeks',
+    'More than 4 weeks',
+  ]
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
 
@@ -106,8 +118,9 @@ const NewTask = () => {
     departament: Yup.string().required('Department is required'),
     skills: Yup.array()
       .of(Yup.string())
-      .min(1, 'At least one skill is required')
+      .min(2, 'At least two tags are required')
       .max(3, 'You can select up to 3 skills'),
+    projectLength: Yup.string().required('Project length is required'),
     type: Yup.string().required('Type is required'),
   })
   const {
@@ -475,455 +488,488 @@ const NewTask = () => {
     }
   }
 
-  if (!address) {
-    return (
-      <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
-        <div className="container  border-b-4 border-[#8d8d8d] pb-5">
-          <div className="-mx-4 flex flex-wrap items-start">
-            <div className="w-full px-4">
-              <div className="wow fadeInUp" data-wow-delay=".2s">
-                <div className="mb-1">
-                  <h3 className="mb-4 text-xl font-normal  sm:text-3xl lg:text-4xl xl:text-5xl">
-                    Create a task
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="container mt-8">Connect you wallet to continue</div>
-      </section>
-    )
-  }
-
   return (
-    <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
-      <div className="container  border-b-4 border-[#8d8d8d] pb-5">
-        <div className="-mx-4 flex flex-wrap items-start">
-          <div className="w-full px-4">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <h3 className="mb-4 text-xl font-normal  sm:text-3xl lg:text-4xl xl:text-5xl">
-                  Create a task
-                </h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container mt-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="">
-          <div className="">
-            <div>
-              <div className="">
+    <>
+      <HeroNewTasks />
+      <section className="mt-12 mb-24  px-32 text-[18px] font-medium text-[#000000]">
+        <div className="container">
+          <form onSubmit={handleSubmit(onSubmit)} className="">
+            <div className="">
+              <div>
                 <div className="">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Title
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.title?.message}
-                    </p>
-                  </span>
-                  <input
-                    disabled={isLoading}
-                    className="mt-[8px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                    type="text"
-                    maxLength={100}
-                    placeholder="Type here"
-                    {...register('title')}
-                  />
-                </div>
-                <div className="mt-7">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Description
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.description?.message}
-                    </p>
-                  </span>
-                  <textarea
-                    disabled={isLoading}
-                    style={{ resize: 'none' }}
-                    className="mt-[8px] h-[160px] w-full rounded-md   border border-[#bcbaba] bg-white pt-2 pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                    maxLength={2000}
-                    placeholder="Type here"
-                    {...register('description')}
-                  />
-                </div>
-              </div>
-              <div className="mt-7 flex">
-                <div className="w-1/3">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Departament
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.departament?.message}
-                    </p>
-                  </span>
-                  <Controller
-                    name="departament"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: 'Department is required' }}
-                    render={({ field }) => (
-                      <Autocomplete
-                        {...field}
-                        disabled={isLoading}
-                        value={departament}
-                        onChange={(e, newValue) => {
-                          field.onChange(newValue)
-                          setDepartament(newValue)
-                        }}
-                        className="mt-2 text-body-color"
-                        options={departamentOptions}
-                        getOptionLabel={(option) => `${option}`}
-                        sx={{
-                          color: 'white',
-                        }}
-                        size="small"
-                        filterOptions={(options, state) =>
-                          options.filter((option) =>
-                            option
-                              .toLowerCase()
-                              .includes(state.inputValue.toLowerCase()),
-                          )
-                        }
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Departament"
-                            variant="outlined"
-                            id="margin-none"
-                            sx={{
-                              input: { color: 'black' },
-                              color: 'black',
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="mx-8 w-1/3">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Tags
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.skills?.message}
-                    </p>
-                  </span>
-                  <Controller
-                    name="skills"
-                    control={control}
-                    defaultValue={[]}
-                    rules={{ required: 'At least one skill is required' }}
-                    render={({ field }) => (
-                      <Autocomplete
-                        {...field}
-                        multiple
-                        disabled={isLoading}
-                        className="mt-2"
-                        options={skillOptions}
-                        size="small"
-                        getOptionLabel={(option) => `${option}`}
-                        filterOptions={(options, state) =>
-                          options.filter((option) =>
-                            option
-                              .toLowerCase()
-                              .includes(state.inputValue.toLowerCase()),
-                          )
-                        }
-                        onChange={(e, newValue) => {
-                          if (newValue.length <= 3) {
-                            field.onChange(newValue)
-                          } else {
-                            console.log('not aloweed')
-                            toast.error('Only 3 tags per task', {
-                              position: toast.POSITION.TOP_RIGHT,
-                            })
-                          }
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Tags"
-                            variant="outlined"
-                            id="margin-none"
-                            sx={{
-                              input: { color: 'black' },
-                              color: 'black',
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="w-1/3">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Type
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.type?.message}
-                    </p>
-                  </span>
-                  <Controller
-                    name="type"
-                    control={control}
-                    defaultValue="Individual"
-                    rules={{ required: 'Type is required' }}
-                    render={({ field }) => (
-                      <Autocomplete
-                        {...field}
-                        value={type}
-                        disabled={isLoading}
-                        onChange={(e, newValue) => {
-                          field.onChange(newValue)
-                          setType(newValue)
-                        }}
-                        className="mt-2  text-body-color"
-                        options={typeOptions}
-                        getOptionLabel={(option) => `${option}`}
-                        sx={{
-                          color: 'white',
-                        }}
-                        size="small"
-                        filterOptions={(options, state) =>
-                          options.filter((option) =>
-                            option
-                              .toLowerCase()
-                              .includes(state.inputValue.toLowerCase()),
-                          )
-                        }
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Type"
-                            variant="outlined"
-                            id="margin-none"
-                            sx={{
-                              input: { color: 'black' },
-                              color: 'black',
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="flex">
-                <div className="link-group mt-7 max-h-[300px] w-1/3  overflow-auto bg-white">
-                  <span className="flex flex-row text-[16px] font-bold leading-[20px]">
-                    Budget
-                  </span>
-                  {payments.map((pagamento, index) => (
-                    <div key={index} className="payment mb-2">
-                      <div className="mb-1 mt-4 flex items-center text-sm font-medium">
-                        <h3>Payment {index + 1}</h3>
-                        {index === payments.length - 1 && (
-                          <button
-                            type="button"
-                            disabled={isLoading}
-                            onClick={() => handleDeletePayment(index)}
-                            className="ml-2 font-extrabold text-[#ff0000]"
-                          >
-                            X
-                          </button>
-                        )}
-                      </div>
-                      <div className="flex justify-start">
-                        <div className="">
-                          <label
-                            htmlFor={`payment-${index}-erc20Address`}
-                            className="mb-1 block text-xs"
-                          >
-                            ERC20 Token
-                          </label>
-                          <input
-                            type="text"
-                            disabled={isLoading}
-                            id={`payment-${index}-erc20Address`}
-                            value={pagamento.tokenContract}
-                            onChange={(e) =>
-                              handleERC20AddressPayment(
-                                index,
-                                'tokenContract',
-                                e.target.value,
-                              )
-                            }
-                            className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                          />
-                        </div>
-                        <div className="ml-2">
-                          <label
-                            htmlFor={`payment-${index}-amount`}
-                            className="mb-1 block text-xs"
-                          >
-                            Amount (with decimal places)
-                          </label>
-                          <input
-                            type="text"
-                            disabled={isLoading}
-                            id={`payment-${index}-amount`}
-                            value={pagamento.amount}
-                            onChange={(e) =>
-                              handleAmountPayment(
-                                index,
-                                'amount',
-                                e.target.value,
-                              )
-                            }
-                            className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    disabled={isLoading}
-                    onClick={addPayments}
-                    className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
-                  >
-                    Add payment
-                  </button>
-                </div>
-                <div className="link-group mx-8 mt-7 max-h-[300px]  w-1/3 overflow-auto bg-white">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    Links
-                  </span>
-                  {links.map((link, index) => (
-                    <div key={index} className="payment mb-2">
-                      <div className="mb-1 mt-4 flex items-center text-sm font-medium">
-                        <h3>Link {index + 1}</h3>
-                        {index === links.length - 1 && (
-                          <button
-                            type="button"
-                            disabled={isLoading}
-                            onClick={() => handleDeleteLinks(index)}
-                            className="ml-2 font-extrabold text-[#ff0000]"
-                          >
-                            X
-                          </button>
-                        )}
-                      </div>
-                      <div className="flex justify-start">
-                        <div className="">
-                          <label
-                            htmlFor={`link-${index}-title`}
-                            className="mb-1 block text-xs"
-                          >
-                            Title{' '}
-                          </label>
-                          <input
-                            type="text"
-                            disabled={isLoading}
-                            id={`link-${index}-title`}
-                            value={link.title}
-                            onChange={(e) =>
-                              handleLink(index, 'title', e.target.value)
-                            }
-                            className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                          />
-                        </div>
-                        <div className="ml-2">
-                          <label
-                            htmlFor={`link-${index}-url`}
-                            className="mb-1 block text-xs"
-                          >
-                            URL
-                          </label>
-                          <input
-                            disabled={isLoading}
-                            type="text"
-                            id={`link-${index}-url`}
-                            value={link.url}
-                            onChange={(e) =>
-                              handleLink(index, 'url', e.target.value)
-                            }
-                            className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    disabled={isLoading}
-                    onClick={addLinks}
-                    className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
-                  >
-                    Add link
-                  </button>
-                </div>
-                <div className="mt-7 w-1/3">
-                  <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                    File
-                  </span>
-                  {selectedFiles.length === 0 ? (
-                    <label className="h-[50px] w-full cursor-pointer">
-                      <div className="mt-2 rounded border border-[#707070] bg-white p-1 px-2 text-center text-[#000000] hover:bg-[#707070] hover:text-white">
-                        <span className="font-normal">Select a file</span>
-                        <input
-                          type="file"
-                          disabled={isLoading}
+                  <div className="">
+                    <span className="flex flex-row">
+                      Project Title
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.title?.message}
+                      </p>
+                    </span>
+                    <input
+                      disabled={isLoading}
+                      className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[25px] text-[17px] font-normal outline-0"
+                      type="text"
+                      maxLength={100}
+                      placeholder=""
+                      {...register('title')}
+                    />
+                  </div>
+                  <div className="mt-[25px]">
+                    <span className="flex flex-row">
+                      Tag the project for easier discovery
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.skills?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="skills"
+                      control={control}
+                      defaultValue={[]}
+                      rules={{
+                        required: 'At least two tags are required',
+                        validate: (value) =>
+                          value.length >= 2 || 'At least two tags are required',
+                      }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
                           multiple
-                          onChange={handleFileChange}
-                          className="hidden"
+                          disabled={isLoading}
+                          className="mt-2"
+                          options={skillOptions}
+                          size="small"
+                          getOptionLabel={(option) => `${option}`}
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          onChange={(e, newValue) => {
+                            if (newValue.length <= 8) {
+                              field.onChange(newValue)
+                            } else {
+                              console.log('not aloweed')
+                              toast.error('Only 8 tags per task', {
+                                position: toast.POSITION.TOP_RIGHT,
+                              })
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '46px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
                         />
-                      </div>
-                    </label>
-                  ) : (
-                    <FileList files={selectedFiles} onRemove={removeFile} />
-                  )}
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[25px]">
+                    <span className="flex flex-row">
+                      Project length
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.departament?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="projectLength"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: 'Project length is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disabled={isLoading}
+                          value={projectLength}
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setProjectLength(newValue)
+                          }}
+                          className="mt-2 text-body-color"
+                          options={projectLengthOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            color: 'white',
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label=""
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '46px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[25px]">
+                    <span className="flex flex-row">
+                      Deadline
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.deadline?.message}
+                      </p>
+                    </span>
+                    <input
+                      disabled={isLoading}
+                      className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[25px] text-[17px] font-normal outline-0"
+                      type="date"
+                      {...register('deadline')}
+                    />
+                  </div>
+                  <div className="mt-7">
+                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                      Description
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.description?.message}
+                      </p>
+                    </span>
+                    <textarea
+                      disabled={isLoading}
+                      style={{ resize: 'none' }}
+                      className="mt-[8px] h-[160px] w-full rounded-md   border border-[#bcbaba] bg-white pt-2 pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                      maxLength={2000}
+                      placeholder="Type here"
+                      {...register('description')}
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="mt-7 flex">
+                  <div className="w-1/3">
+                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                      Departament
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.departament?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="departament"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: 'Department is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disabled={isLoading}
+                          value={departament}
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setDepartament(newValue)
+                          }}
+                          className="mt-2 text-body-color"
+                          options={departamentOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            color: 'white',
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Departament"
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                input: { color: 'black' },
+                                color: 'black',
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
 
-              <div className="mt-7">
-                <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                  Deadline
-                  <p className="text-red-500 ml-[8px] text-[13px] ">
-                    {errors.deadline?.message}
-                  </p>
-                </span>
-                <input
-                  disabled={isLoading}
-                  className="mt-[8px] h-[30px] w-[150px] rounded-md  border border-[#bcbaba] bg-[#d1caca] pl-2 text-[17px] font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                  type="date"
-                  {...register('deadline')}
-                />
+                  <div className="w-1/3">
+                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                      Type
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.type?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="type"
+                      control={control}
+                      defaultValue="Individual"
+                      rules={{ required: 'Type is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          value={type}
+                          disabled={isLoading}
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setType(newValue)
+                          }}
+                          className="mt-2  text-body-color"
+                          options={typeOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            color: 'white',
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Type"
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                input: { color: 'black' },
+                                color: 'black',
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="link-group mt-7 max-h-[300px] w-1/3  overflow-auto bg-white">
+                    <span className="flex flex-row text-[16px] font-bold leading-[20px]">
+                      Budget
+                    </span>
+                    {payments.map((pagamento, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Payment {index + 1}</h3>
+                          {index === payments.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeletePayment(index)}
+                              className="ml-2 font-extrabold text-[#ff0000]"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`payment-${index}-erc20Address`}
+                              className="mb-1 block text-xs"
+                            >
+                              ERC20 Token
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-erc20Address`}
+                              value={pagamento.tokenContract}
+                              onChange={(e) =>
+                                handleERC20AddressPayment(
+                                  index,
+                                  'tokenContract',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`payment-${index}-amount`}
+                              className="mb-1 block text-xs"
+                            >
+                              Amount (with decimal places)
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-amount`}
+                              value={pagamento.amount}
+                              onChange={(e) =>
+                                handleAmountPayment(
+                                  index,
+                                  'amount',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={addPayments}
+                      className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
+                    >
+                      Add payment
+                    </button>
+                  </div>
+                  <div className="link-group mx-8 mt-7 max-h-[300px]  w-1/3 overflow-auto bg-white">
+                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                      Links
+                    </span>
+                    {links.map((link, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Link {index + 1}</h3>
+                          {index === links.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeleteLinks(index)}
+                              className="ml-2 font-extrabold text-[#ff0000]"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`link-${index}-title`}
+                              className="mb-1 block text-xs"
+                            >
+                              Title{' '}
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`link-${index}-title`}
+                              value={link.title}
+                              onChange={(e) =>
+                                handleLink(index, 'title', e.target.value)
+                              }
+                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`link-${index}-url`}
+                              className="mb-1 block text-xs"
+                            >
+                              URL
+                            </label>
+                            <input
+                              disabled={isLoading}
+                              type="text"
+                              id={`link-${index}-url`}
+                              value={link.url}
+                              onChange={(e) =>
+                                handleLink(index, 'url', e.target.value)
+                              }
+                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={addLinks}
+                      className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
+                    >
+                      Add link
+                    </button>
+                  </div>
+                  <div className="mt-7 w-1/3">
+                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                      File
+                    </span>
+                    {selectedFiles.length === 0 ? (
+                      <label className="h-[50px] w-full cursor-pointer">
+                        <div className="mt-2 rounded border border-[#707070] bg-white p-1 px-2 text-center text-[#000000] hover:bg-[#707070] hover:text-white">
+                          <span className="font-normal">Select a file</span>
+                          <input
+                            type="file"
+                            disabled={isLoading}
+                            multiple
+                            onChange={handleFileChange}
+                            className="hidden"
+                          />
+                        </div>
+                      </label>
+                    ) : (
+                      <FileList files={selectedFiles} onRemove={removeFile} />
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {isLoading ? (
-            <button
-              type="button"
-              className="mt-20 flex w-[120px] rounded bg-[#8a8a8b] p-1 font-bold  text-white"
-              onClick={handleSubmit(onSubmit)}
-              disabled={true}
-            >
-              <svg
-                className="animate-spin"
-                height="40px"
-                id="Icons"
-                version="1.1"
-                viewBox="0 0 80 80"
-                width="40px"
-                xmlns="http://www.w3.org/2000/svg"
+            {isLoading ? (
+              <button
+                type="button"
+                className="mt-20 flex w-[120px] rounded bg-[#8a8a8b] p-1 font-bold  text-white"
+                onClick={handleSubmit(onSubmit)}
+                disabled={true}
               >
-                <path d="M58.385,34.343V21.615L53.77,26.23C50.244,22.694,45.377,20.5,40,20.5c-10.752,0-19.5,8.748-19.5,19.5S29.248,59.5,40,59.5  c7.205,0,13.496-3.939,16.871-9.767l-4.326-2.496C50.035,51.571,45.358,54.5,40,54.5c-7.995,0-14.5-6.505-14.5-14.5  S32.005,25.5,40,25.5c3.998,0,7.617,1.632,10.239,4.261l-4.583,4.583H58.385z" />
-              </svg>
-              <span className="pt-2 pr-4">Loading</span>
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="mt-20  w-[120px] rounded bg-[#0c0ca3] p-1 font-bold text-white  hover:bg-[#2f2fd3]"
-              onClick={handleSubmit(onSubmit)}
-            >
-              <span className="">Create task</span>
-            </button>
-          )}
-        </form>
-      </div>
-    </section>
+                <svg
+                  className="animate-spin"
+                  height="40px"
+                  id="Icons"
+                  version="1.1"
+                  viewBox="0 0 80 80"
+                  width="40px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M58.385,34.343V21.615L53.77,26.23C50.244,22.694,45.377,20.5,40,20.5c-10.752,0-19.5,8.748-19.5,19.5S29.248,59.5,40,59.5  c7.205,0,13.496-3.939,16.871-9.767l-4.326-2.496C50.035,51.571,45.358,54.5,40,54.5c-7.995,0-14.5-6.505-14.5-14.5  S32.005,25.5,40,25.5c3.998,0,7.617,1.632,10.239,4.261l-4.583,4.583H58.385z" />
+                </svg>
+                <span className="pt-2 pr-4">Loading</span>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="mt-20  w-[120px] rounded bg-[#0c0ca3] p-1 font-bold text-white  hover:bg-[#2f2fd3]"
+                onClick={handleSubmit(onSubmit)}
+              >
+                <span className="">Create task</span>
+              </button>
+            )}
+          </form>
+        </div>
+      </section>
+    </>
   )
 }
 
