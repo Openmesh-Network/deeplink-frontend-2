@@ -39,6 +39,7 @@ type TaskSubmitForm = {
   skills: string[]
   type: string
   projectLength: string
+  numberOfApplicants: string
 }
 
 type Payment = {
@@ -72,6 +73,7 @@ const NewTask = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [departament, setDepartament] = useState('')
   const [projectLength, setProjectLength] = useState('')
+  const [numberOfApplicants, setNumberOfApplicants] = useState('')
   const [type, setType] = useState('Individual')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
@@ -82,6 +84,12 @@ const NewTask = () => {
     '1 to 2 weeks',
     '2 to 4 weeks',
     'More than 4 weeks',
+  ]
+  const numberOfApplicantsOptions = [
+    'Only 1',
+    '1 to 3',
+    '4 to 7',
+    'More than 7',
   ]
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
@@ -121,6 +129,9 @@ const NewTask = () => {
       .min(2, 'At least two tags are required')
       .max(3, 'You can select up to 3 skills'),
     projectLength: Yup.string().required('Project length is required'),
+    numberOfApplicants: Yup.string().required(
+      'Number of applicants is required',
+    ),
     type: Yup.string().required('Type is required'),
   })
   const {
@@ -205,7 +216,7 @@ const NewTask = () => {
       return
     }
 
-    const value = valueReceived.replace(/[^0-9,]/g, '')
+    const value = valueReceived.replace(/[^0-9]/g, '')
 
     newPayment[index][field] = value
     setPayments(newPayment)
@@ -506,14 +517,14 @@ const NewTask = () => {
                     </span>
                     <input
                       disabled={isLoading}
-                      className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[25px] text-[17px] font-normal outline-0"
+                      className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                       type="text"
                       maxLength={100}
                       placeholder=""
                       {...register('title')}
                     />
                   </div>
-                  <div className="mt-[25px]">
+                  <div className="mt-[30px]">
                     <span className="flex flex-row">
                       Tag the project for easier discovery
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
@@ -575,7 +586,7 @@ const NewTask = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-[25px]">
+                  <div className="mt-[30px]">
                     <span className="flex flex-row">
                       Project length
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
@@ -600,7 +611,13 @@ const NewTask = () => {
                           options={projectLengthOptions}
                           getOptionLabel={(option) => `${option}`}
                           sx={{
-                            color: 'white',
+                            width: '500px',
+                            fieldset: {
+                              height: '46px',
+                              borderColor: '#D4D4D4',
+                              borderRadius: '10px',
+                            },
+                            input: { color: 'black' },
                           }}
                           size="small"
                           filterOptions={(options, state) =>
@@ -631,18 +648,167 @@ const NewTask = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-[25px]">
+                  <div className="mt-[30px]">
                     <span className="flex flex-row">
                       Deadline
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
                         {errors.deadline?.message}
                       </p>
                     </span>
-                    <input
+                    <Controller
+                      control={control}
+                      name="deadline"
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <DatePicker
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          selected={value}
+                          dateFormat="yyyy-MM-dd"
+                          disabled={isLoading}
+                          className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                    <span className="flex flex-row">
+                      Budget
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.title?.message}
+                      </p>
+                    </span>
+                    {payments.map((pagamento, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Payment {index + 1}</h3>
+                          {index === payments.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeletePayment(index)}
+                              className="ml-2 font-extrabold text-[#707070]"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`payment-${index}-erc20Address`}
+                              className="mb-1 block text-xs"
+                            >
+                              ERC20 Token
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-erc20Address`}
+                              value={pagamento.tokenContract}
+                              onChange={(e) =>
+                                handleERC20AddressPayment(
+                                  index,
+                                  'tokenContract',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`payment-${index}-amount`}
+                              className="mb-1 block text-xs"
+                            >
+                              Amount (with decimal places)
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-amount`}
+                              value={pagamento.amount}
+                              onChange={(e) =>
+                                handleAmountPayment(
+                                  index,
+                                  'amount',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
                       disabled={isLoading}
-                      className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[25px] text-[17px] font-normal outline-0"
-                      type="date"
-                      {...register('deadline')}
+                      onClick={addPayments}
+                      className="mt-2 h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[17px]  font-normal text-[#000000] hover:bg-[#707070] hover:text-white"
+                    >
+                      Add payment
+                    </button>
+                  </div>
+                  <div className="mt-[30px]">
+                    <span className="flex flex-row">
+                      Number of applicants/contributors needed
+                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                        {errors.numberOfApplicants?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="numberOfApplicants"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: 'Number of applicants is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disabled={isLoading}
+                          value={numberOfApplicants}
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setNumberOfApplicants(newValue)
+                          }}
+                          className="mt-2 text-body-color"
+                          options={numberOfApplicantsOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            width: '500px',
+                            fieldset: {
+                              height: '46px',
+                              borderColor: '#D4D4D4',
+                              borderRadius: '10px',
+                            },
+                            input: { color: 'black' },
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label=""
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '46px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
+                        />
+                      )}
                     />
                   </div>
                   <div className="mt-7">

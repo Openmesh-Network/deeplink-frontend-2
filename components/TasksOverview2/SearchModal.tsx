@@ -111,6 +111,10 @@ const SearchModal = ({
     }
 
     setTasksSearchBar(value)
+
+    if (value === '') {
+      updateUrl('searchBar', value)
+    }
   }
 
   const handleDepartamentSelection = (value: string) => {
