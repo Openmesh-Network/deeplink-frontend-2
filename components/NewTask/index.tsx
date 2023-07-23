@@ -40,11 +40,19 @@ type TaskSubmitForm = {
   type: string
   projectLength: string
   numberOfApplicants: string
+  githubLink: string
+  calendarLink: string
+  reachOutLink: string
 }
 
 type Payment = {
   tokenContract: string
   amount: string
+}
+
+type Contributor = {
+  walletAddress: string
+  budgetPercentage: number
 }
 
 type Link = {
@@ -64,6 +72,9 @@ type IPFSSubmition = {
   departament: string
   skills: string[]
   type: string
+  projectLength: string
+  numberOfApplicants: string | null
+  contributors: Contributor[] | null
   payments: Payment[]
   links: Link[] | null
   file: string | null
@@ -77,19 +88,26 @@ const NewTask = () => {
   const [type, setType] = useState('Individual')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
-  const [links, setLinks] = useState<Link[]>([])
-  const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
+  const [contributors, setContributors] = useState<Contributor[]>([])
+  const [links, setLinks] = useState<Link[]>([
+    { title: 'githubLink', url: '' },
+    { title: 'calendarLink', url: '' },
+    { title: 'reachOutLink', url: '' },
+  ])
+  const departamentOptions = ['', 'Data', 'Frontend', 'Blockchain', 'Cloud']
   const projectLengthOptions = [
+    '',
     'Less than 1 week',
     '1 to 2 weeks',
     '2 to 4 weeks',
     'More than 4 weeks',
   ]
   const numberOfApplicantsOptions = [
+    '',
     'Only 1',
-    '1 to 3',
-    '4 to 7',
-    'More than 7',
+    '2 to 4',
+    '5 to 8',
+    'More than 8',
   ]
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
@@ -105,6 +123,7 @@ const NewTask = () => {
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
 
   const skillOptions = [
+    '',
     'Backend',
     'Frontend',
     'Web development',
@@ -132,7 +151,9 @@ const NewTask = () => {
     numberOfApplicants: Yup.string().required(
       'Number of applicants is required',
     ),
-    type: Yup.string().required('Type is required'),
+    githubLink: Yup.string().required('Github repo is required'),
+    calendarLink: Yup.string().required('Calendar link is required'),
+    reachOutLink: Yup.string().required('Reach out link is required'),
   })
   const {
     register,
@@ -173,7 +194,7 @@ const NewTask = () => {
   ) => {
     const newLink = [...links]
 
-    if (newLink[index][field].length > 200) {
+    if (newLink[index][field].length >= 200) {
       return
     }
 
@@ -184,7 +205,7 @@ const NewTask = () => {
   }
 
   const addPayments = () => {
-    if (links.length > 5) {
+    if (payments.length > 5) {
       toast.error('Only 5 payments per task', {
         position: toast.POSITION.TOP_RIGHT,
       })
@@ -199,8 +220,28 @@ const NewTask = () => {
     ])
   }
 
+  const addContributors = () => {
+    if (contributors.length > 15) {
+      toast.error('Maximum of 15', {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+      return
+    }
+    setContributors([
+      ...contributors,
+      {
+        walletAddress: '',
+        budgetPercentage: 0,
+      },
+    ])
+  }
+
   const handleDeletePayment = (index: number) => {
     setPayments(payments.filter((_, i) => i !== index))
+  }
+
+  const handleDeleteContributors = (index: number) => {
+    setContributors(contributors.filter((_, i) => i !== index))
   }
 
   const handleAmountPayment = (
@@ -237,6 +278,43 @@ const NewTask = () => {
 
     newPagamentos[index][field] = value
     setPayments(newPagamentos)
+  }
+
+  const handleWalletAddressContributor = (
+    index: number,
+    field: keyof Contributor,
+    valueReceived: string,
+  ) => {
+    const newContributors = [...contributors]
+
+    if (newContributors[index]['walletAddress'].length > 100) {
+      return
+    }
+
+    const value = valueReceived
+
+    newContributors[index]['walletAddress'] = value
+    setContributors(newContributors)
+  }
+
+  const handleBudgetPercentage = (
+    index: number,
+    field: keyof Contributor,
+    valueReceived: string,
+  ) => {
+    const newContributors = [...contributors]
+
+    if (
+      Number(newContributors[index][field]) &&
+      Number(newContributors[index][field]) >= 100
+    ) {
+      return
+    }
+
+    const value = valueReceived.replace(/[^0-9]/g, '')
+
+    newContributors[index]['budgetPercentage'] = Number(value)
+    setContributors(newContributors)
   }
 
   const FileList: FC<FileListProps> = ({ files, onRemove }) => {
@@ -324,23 +402,26 @@ const NewTask = () => {
   }
 
   async function formsUploadIPFS(data: IPFSSubmition) {
-    const pinataAxios = axios.create({
-      baseURL: 'https://api.pinata.cloud/pinning/',
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadata`,
       headers: {
-        pinata_api_key: '7b27a531082e163ee9ae',
-        pinata_secret_api_key:
-          '0397c0df5cc360ed98cf81f8435569775b0763aa004c00f470146911138475db',
-        'Content-Type': 'application/json',
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
       },
+      data,
+    }
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
     })
 
-    const response = await pinataAxios.post('pinJSONToIPFS', data)
-
-    const ipfsHash = response.data.IpfsHash
-
-    console.log('JSON uploaded to IPFS with hash', ipfsHash)
-
-    return ipfsHash
+    return dado
   }
 
   async function handleAllowanceFromTokens() {
@@ -420,6 +501,7 @@ const NewTask = () => {
     for (const payment of payments) {
       if (!ethers.isAddress(payment.tokenContract)) {
         // this is not a valid address
+        console.log('invalid address here')
         return false
       }
     }
@@ -432,15 +514,34 @@ const NewTask = () => {
       toast.error('Please switch chain before interacting with the protocol.')
       return
     }
+    if (payments.length === 0) {
+      toast.error('Please set a payment.')
+      const element = document.getElementById('budgetId')
+      element.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    if (contributors.length > 0) {
+      let totalSumBudgetPercentage = 0
+      for (let i = 0; i < contributors.length; i++) {
+        totalSumBudgetPercentage += contributors[i].budgetPercentage
+      }
+      if (totalSumBudgetPercentage !== 100) {
+        toast.error('Total sum of budget percentage needs to be 100.')
+        const element = document.getElementById('contributorsId')
+        element.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+    }
 
     setIsLoading(true)
 
     // verifying if all the ERC20 tokens are valid:
 
-    try {
-      handleIsPaymentsTokensValid()
-    } catch (err) {
+    const addressesValidPayment = await handleIsPaymentsTokensValid()
+    if (!addressesValidPayment) {
       toast.error('All the ERC20 tokens need to have valid addresses!')
+      const element = document.getElementById('budgetId')
+      element.scrollIntoView({ behavior: 'smooth' })
       setIsLoading(false)
       return
     }
@@ -459,6 +560,9 @@ const NewTask = () => {
 
     const finalData = {
       ...data,
+      projectLength,
+      numberOfApplicants,
+      contributors,
       payments,
       links,
       file: fileIPFSHash,
@@ -497,6 +601,14 @@ const NewTask = () => {
       console.log(err)
       setIsLoading(false)
     }
+  }
+
+  if (!address) {
+    return (
+      <div className="pb-[500px]">
+        <HeroNewTasks />
+      </div>
+    )
   }
 
   return (
@@ -590,13 +702,12 @@ const NewTask = () => {
                     <span className="flex flex-row">
                       Project length
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.departament?.message}
+                        {errors.projectLength?.message}
                       </p>
                     </span>
                     <Controller
                       name="projectLength"
                       control={control}
-                      defaultValue=""
                       rules={{ required: 'Project length is required' }}
                       render={({ field }) => (
                         <Autocomplete
@@ -648,7 +759,7 @@ const NewTask = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-[30px]">
+                  <div className="mt-[30px]" id="budgetId">
                     <span className="flex flex-row">
                       Deadline
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
@@ -671,12 +782,7 @@ const NewTask = () => {
                     />
                   </div>
                   <div className="mt-[30px] max-h-[500px]  overflow-auto">
-                    <span className="flex flex-row">
-                      Budget
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.title?.message}
-                      </p>
-                    </span>
+                    <span className="flex flex-row">Budget</span>
                     {payments.map((pagamento, index) => (
                       <div key={index} className="payment mb-2">
                         <div className="mb-1 mt-4 flex items-center text-sm font-medium">
@@ -749,7 +855,7 @@ const NewTask = () => {
                       Add payment
                     </button>
                   </div>
-                  <div className="mt-[30px]">
+                  <div className="mt-[30px]" id="contributorsId">
                     <span className="flex flex-row">
                       Number of applicants/contributors needed
                       <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
@@ -759,7 +865,6 @@ const NewTask = () => {
                     <Controller
                       name="numberOfApplicants"
                       control={control}
-                      defaultValue=""
                       rules={{ required: 'Number of applicants is required' }}
                       render={({ field }) => (
                         <Autocomplete
@@ -811,8 +916,86 @@ const NewTask = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-7">
-                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
+                  {numberOfApplicants && numberOfApplicants !== 'Only 1' && (
+                    <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                      <span className="flex flex-row">
+                        Add contributors (optional)
+                      </span>
+                      {contributors.map((contributor, index) => (
+                        <div key={index} className="payment mb-2">
+                          <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                            <h3>Contributor {index + 1}</h3>
+                            {index === contributors.length - 1 && (
+                              <button
+                                type="button"
+                                disabled={isLoading}
+                                onClick={() => handleDeleteContributors(index)}
+                                className="ml-2 font-extrabold text-[#707070]"
+                              >
+                                X
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex justify-start">
+                            <div className="">
+                              <label
+                                htmlFor={`contributor-${index}-walletAddress`}
+                                className="mb-1 block text-xs"
+                              >
+                                Wallet address
+                              </label>
+                              <input
+                                type="text"
+                                disabled={isLoading}
+                                id={`contributor-${index}-walletAddress`}
+                                value={contributor.walletAddress}
+                                onChange={(e) =>
+                                  handleWalletAddressContributor(
+                                    index,
+                                    'walletAddress',
+                                    e.target.value,
+                                  )
+                                }
+                                className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              />
+                            </div>
+                            <div className="ml-2">
+                              <label
+                                htmlFor={`payment-${index}-amount`}
+                                className="mb-1 block text-xs"
+                              >
+                                Budget %
+                              </label>
+                              <input
+                                type="text"
+                                disabled={isLoading}
+                                id={`payment-${index}-amount`}
+                                value={contributor.budgetPercentage}
+                                onChange={(e) =>
+                                  handleBudgetPercentage(
+                                    index,
+                                    'budgetPercentage',
+                                    e.target.value,
+                                  )
+                                }
+                                className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={addContributors}
+                        className="mt-2 h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[17px]  font-normal text-[#000000] hover:bg-[#707070] hover:text-white"
+                      >
+                        Add contributor
+                      </button>
+                    </div>
+                  )}
+                  <div className="mt-[30px]">
+                    <span className="flex flex-row">
                       Description
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.description?.message}
@@ -821,292 +1004,128 @@ const NewTask = () => {
                     <textarea
                       disabled={isLoading}
                       style={{ resize: 'none' }}
-                      className="mt-[8px] h-[160px] w-full rounded-md   border border-[#bcbaba] bg-white pt-2 pl-2 text-[17px] font-normal leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
+                      className="mt-[8px] h-[190px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
                       maxLength={2000}
                       placeholder="Type here"
                       {...register('description')}
                     />
                   </div>
                 </div>
-                <div className="mt-7 flex">
-                  <div className="w-1/3">
-                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                      Departament
-                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                        {errors.departament?.message}
-                      </p>
-                    </span>
-                    <Controller
-                      name="departament"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: 'Department is required' }}
-                      render={({ field }) => (
-                        <Autocomplete
-                          {...field}
-                          disabled={isLoading}
-                          value={departament}
-                          onChange={(e, newValue) => {
-                            field.onChange(newValue)
-                            setDepartament(newValue)
-                          }}
-                          className="mt-2 text-body-color"
-                          options={departamentOptions}
-                          getOptionLabel={(option) => `${option}`}
-                          sx={{
-                            color: 'white',
-                          }}
-                          size="small"
-                          filterOptions={(options, state) =>
-                            options.filter((option) =>
-                              option
-                                .toLowerCase()
-                                .includes(state.inputValue.toLowerCase()),
-                            )
-                          }
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Departament"
-                              variant="outlined"
-                              id="margin-none"
-                              sx={{
-                                input: { color: 'black' },
-                                color: 'black',
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    />
-                  </div>
-
-                  <div className="w-1/3">
-                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                      Type
-                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                        {errors.type?.message}
-                      </p>
-                    </span>
-                    <Controller
-                      name="type"
-                      control={control}
-                      defaultValue="Individual"
-                      rules={{ required: 'Type is required' }}
-                      render={({ field }) => (
-                        <Autocomplete
-                          {...field}
-                          value={type}
-                          disabled={isLoading}
-                          onChange={(e, newValue) => {
-                            field.onChange(newValue)
-                            setType(newValue)
-                          }}
-                          className="mt-2  text-body-color"
-                          options={typeOptions}
-                          getOptionLabel={(option) => `${option}`}
-                          sx={{
-                            color: 'white',
-                          }}
-                          size="small"
-                          filterOptions={(options, state) =>
-                            options.filter((option) =>
-                              option
-                                .toLowerCase()
-                                .includes(state.inputValue.toLowerCase()),
-                            )
-                          }
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Type"
-                              variant="outlined"
-                              id="margin-none"
-                              sx={{
-                                input: { color: 'black' },
-                                color: 'black',
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="flex">
-                  <div className="link-group mt-7 max-h-[300px] w-1/3  overflow-auto bg-white">
-                    <span className="flex flex-row text-[16px] font-bold leading-[20px]">
-                      Budget
-                    </span>
-                    {payments.map((pagamento, index) => (
-                      <div key={index} className="payment mb-2">
-                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
-                          <h3>Payment {index + 1}</h3>
-                          {index === payments.length - 1 && (
-                            <button
-                              type="button"
-                              disabled={isLoading}
-                              onClick={() => handleDeletePayment(index)}
-                              className="ml-2 font-extrabold text-[#ff0000]"
-                            >
-                              X
-                            </button>
-                          )}
-                        </div>
-                        <div className="flex justify-start">
-                          <div className="">
-                            <label
-                              htmlFor={`payment-${index}-erc20Address`}
-                              className="mb-1 block text-xs"
-                            >
-                              ERC20 Token
-                            </label>
-                            <input
-                              type="text"
-                              disabled={isLoading}
-                              id={`payment-${index}-erc20Address`}
-                              value={pagamento.tokenContract}
-                              onChange={(e) =>
-                                handleERC20AddressPayment(
-                                  index,
-                                  'tokenContract',
-                                  e.target.value,
-                                )
-                              }
-                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                            />
-                          </div>
-                          <div className="ml-2">
-                            <label
-                              htmlFor={`payment-${index}-amount`}
-                              className="mb-1 block text-xs"
-                            >
-                              Amount (with decimal places)
-                            </label>
-                            <input
-                              type="text"
-                              disabled={isLoading}
-                              id={`payment-${index}-amount`}
-                              value={pagamento.amount}
-                              onChange={(e) =>
-                                handleAmountPayment(
-                                  index,
-                                  'amount',
-                                  e.target.value,
-                                )
-                              }
-                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      disabled={isLoading}
-                      onClick={addPayments}
-                      className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
-                    >
-                      Add payment
-                    </button>
-                  </div>
-                  <div className="link-group mx-8 mt-7 max-h-[300px]  w-1/3 overflow-auto bg-white">
-                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                      Links
-                    </span>
-                    {links.map((link, index) => (
-                      <div key={index} className="payment mb-2">
-                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
-                          <h3>Link {index + 1}</h3>
-                          {index === links.length - 1 && (
-                            <button
-                              type="button"
-                              disabled={isLoading}
-                              onClick={() => handleDeleteLinks(index)}
-                              className="ml-2 font-extrabold text-[#ff0000]"
-                            >
-                              X
-                            </button>
-                          )}
-                        </div>
-                        <div className="flex justify-start">
-                          <div className="">
-                            <label
-                              htmlFor={`link-${index}-title`}
-                              className="mb-1 block text-xs"
-                            >
-                              Title{' '}
-                            </label>
-                            <input
-                              type="text"
-                              disabled={isLoading}
-                              id={`link-${index}-title`}
-                              value={link.title}
-                              onChange={(e) =>
-                                handleLink(index, 'title', e.target.value)
-                              }
-                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                            />
-                          </div>
-                          <div className="ml-2">
-                            <label
-                              htmlFor={`link-${index}-url`}
-                              className="mb-1 block text-xs"
-                            >
-                              URL
-                            </label>
-                            <input
-                              disabled={isLoading}
-                              type="text"
-                              id={`link-${index}-url`}
-                              value={link.url}
-                              onChange={(e) =>
-                                handleLink(index, 'url', e.target.value)
-                              }
-                              className="mt-[1px] h-[30px] w-full rounded-md border border-[#bcbaba] bg-white pl-2 text-xs font-semibold leading-[30px] text-[#000000] placeholder-[#818181] shadow-none outline-0 focus:ring-0"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      disabled={isLoading}
-                      onClick={addLinks}
-                      className="mt-2 w-full rounded border border-[#707070] bg-white p-1 px-2 text-[#000000] hover:bg-[#707070] hover:text-white"
-                    >
-                      Add link
-                    </button>
-                  </div>
-                  <div className="mt-7 w-1/3">
-                    <span className="text-gray900 flex flex-row text-[16px] font-bold leading-[20px]">
-                      File
-                    </span>
-                    {selectedFiles.length === 0 ? (
-                      <label className="h-[50px] w-full cursor-pointer">
-                        <div className="mt-2 rounded border border-[#707070] bg-white p-1 px-2 text-center text-[#000000] hover:bg-[#707070] hover:text-white">
-                          <span className="font-normal">Select a file</span>
-                          <input
-                            type="file"
-                            disabled={isLoading}
-                            multiple
-                            onChange={handleFileChange}
-                            className="hidden"
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Departament
+                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      {errors.departament?.message}
+                    </p>
+                  </span>
+                  <Controller
+                    name="departament"
+                    control={control}
+                    rules={{ required: 'Department is required' }}
+                    render={({ field }) => (
+                      <Autocomplete
+                        {...field}
+                        disabled={isLoading}
+                        value={departament}
+                        onChange={(e, newValue) => {
+                          field.onChange(newValue)
+                          setDepartament(newValue)
+                        }}
+                        className="mt-2 text-body-color"
+                        options={departamentOptions}
+                        getOptionLabel={(option) => `${option}`}
+                        sx={{
+                          width: '500px',
+                          fieldset: {
+                            height: '46px',
+                            borderColor: '#D4D4D4',
+                            borderRadius: '10px',
+                          },
+                          input: { color: 'black' },
+                        }}
+                        size="small"
+                        filterOptions={(options, state) =>
+                          options.filter((option) =>
+                            option
+                              .toLowerCase()
+                              .includes(state.inputValue.toLowerCase()),
+                          )
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label=""
+                            variant="outlined"
+                            id="margin-none"
+                            sx={{
+                              width: '500px',
+                              fieldset: {
+                                height: '46px',
+                                borderColor: '#D4D4D4',
+                                borderRadius: '10px',
+                              },
+                              input: { color: 'black' },
+                            }}
                           />
-                        </div>
-                      </label>
-                    ) : (
-                      <FileList files={selectedFiles} onRemove={removeFile} />
+                        )}
+                      />
                     )}
-                  </div>
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Github Repository Link
+                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      {errors.githubLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('githubLink')}
+                    onChange={(e) => handleLink(0, 'url', e.target.value)}
+                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Calendar Link
+                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      {errors.calendarLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('calendarLink')}
+                    onChange={(e) => handleLink(1, 'url', e.target.value)}
+                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Reach out Link
+                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      {errors.reachOutLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('reachOutLink')}
+                    onChange={(e) => handleLink(2, 'url', e.target.value)}
+                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
                 </div>
               </div>
             </div>
-
             {isLoading ? (
               <button
                 type="button"
-                className="mt-20 flex w-[120px] rounded bg-[#8a8a8b] p-1 font-bold  text-white"
+                className="mt-[120px] pb-60 text-[18px] font-bold"
                 onClick={handleSubmit(onSubmit)}
                 disabled={true}
               >
@@ -1124,13 +1143,15 @@ const NewTask = () => {
                 <span className="pt-2 pr-4">Loading</span>
               </button>
             ) : (
-              <button
-                type="submit"
-                className="mt-20  w-[120px] rounded bg-[#0c0ca3] p-1 font-bold text-white  hover:bg-[#2f2fd3]"
-                onClick={handleSubmit(onSubmit)}
-              >
-                <span className="">Create task</span>
-              </button>
+              <div className="mt-[120px] pb-60">
+                <button
+                  type="submit"
+                  className=" w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39]"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <span className="">Submit for Review</span>
+                </button>
+              </div>
             )}
           </form>
         </div>

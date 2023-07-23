@@ -21,6 +21,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { IPFSSubmition } from '@/types/task'
+import HeroTaskApplication from './HeroTaskApplication'
 
 const TaskView = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
@@ -31,6 +32,7 @@ const TaskView = (id: any) => {
   const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
   const [taskChainData, setTaskChainData] = useState<any>()
   const [transactionCount, setTransactionCount] = useState<number>(0)
+  const { address, isConnecting, isDisconnected } = useAccount()
 
   const { push } = useRouter()
 
@@ -53,11 +55,7 @@ const TaskView = (id: any) => {
     })
 
     if (!data) {
-      toast.error(
-        'Something occurred while fetching data from the smart-contract!',
-      )
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      push('/')
+      toast.error('Task not found!')
     }
     console.log('the data:')
     console.log(data)
@@ -129,7 +127,15 @@ const TaskView = (id: any) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  if (isLoading || !taskMetadata) {
+  if (!address) {
+    return (
+      <div className="pb-[500px]">
+        <HeroTaskApplication />
+      </div>
+    )
+  }
+
+  if (isLoading) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
         <div className="container flex h-60 animate-pulse px-0 pb-12">
@@ -137,6 +143,16 @@ const TaskView = (id: any) => {
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
         <div className="container h-96 animate-pulse bg-[#dfdfdf] pb-12"></div>
+      </section>
+    )
+  }
+
+  if (!isLoading && !taskChainData) {
+    return (
+      <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
+        <div className="container flex h-60 animate-pulse px-0 pb-12">
+          Task not found
+        </div>
       </section>
     )
   }
