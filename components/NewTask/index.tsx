@@ -154,6 +154,7 @@ const NewTask = () => {
     githubLink: Yup.string().required('Github repo is required'),
     calendarLink: Yup.string().required('Calendar link is required'),
     reachOutLink: Yup.string().required('Reach out link is required'),
+    type: Yup.string().notRequired(),
   })
   const {
     register,
