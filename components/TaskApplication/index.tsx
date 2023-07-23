@@ -23,7 +23,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { IPFSSubmition } from '@/types/task'
 import HeroTaskApplication from './HeroTaskApplication'
 
-const TaskView = (id: any) => {
+const TaskApplication = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
   const [departament, setDepartament] = useState('All')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -47,16 +47,19 @@ const TaskView = (id: any) => {
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
     console.log('getting data from task')
-    const data = await readContract({
-      address: `0x${taskAddress.substring(2)}`,
-      abi: taskContractABI,
-      args: [Number(id)],
-      functionName: 'getTask',
-    })
-
-    if (!data) {
+    let data
+    try {
+      data = await readContract({
+        address: `0x${taskAddress.substring(2)}`,
+        abi: taskContractABI,
+        args: [Number(id)],
+        functionName: 'getTask',
+      })
+    } catch (err) {
       toast.error('Task not found!')
+      setIsLoading(false)
     }
+
     console.log('the data:')
     console.log(data)
     setTaskChainData(data)
@@ -150,7 +153,7 @@ const TaskView = (id: any) => {
   if (!isLoading && !taskChainData) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="container flex h-60 animate-pulse px-0 pb-12">
+        <div className="container flex h-60 px-0 pb-[700px]">
           Task not found
         </div>
       </section>
@@ -447,4 +450,4 @@ const TaskView = (id: any) => {
   )
 }
 
-export default TaskView
+export default TaskApplication

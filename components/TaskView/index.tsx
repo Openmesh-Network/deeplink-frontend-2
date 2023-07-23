@@ -45,14 +45,15 @@ const TaskView = (id: any) => {
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
     console.log('getting data from task')
-    const data = await readContract({
-      address: `0x${taskAddress.substring(2)}`,
-      abi: taskContractABI,
-      args: [Number(id)],
-      functionName: 'getTask',
-    })
-
-    if (!data) {
+    let data
+    try {
+      data = await readContract({
+        address: `0x${taskAddress.substring(2)}`,
+        abi: taskContractABI,
+        args: [Number(id)],
+        functionName: 'getTask',
+      })
+    } catch (err) {
       toast.error(
         'Something occurred while fetching data from the smart-contract!',
       )
