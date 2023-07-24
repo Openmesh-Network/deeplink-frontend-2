@@ -5,8 +5,6 @@
 // import { useState } from 'react'
 import { useEffect, useState, ChangeEvent, FC } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { UserOutlined } from '@ant-design/icons'
-import TransactionList from '../TaskTransactionsList'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -96,14 +94,12 @@ const NewTask = () => {
   ])
   const departamentOptions = ['', 'Data', 'Frontend', 'Blockchain', 'Cloud']
   const projectLengthOptions = [
-    '',
     'Less than 1 week',
     '1 to 2 weeks',
     '2 to 4 weeks',
     'More than 4 weeks',
   ]
   const numberOfApplicantsOptions = [
-    '',
     'Only 1',
     '2 to 4',
     '5 to 8',
@@ -123,7 +119,6 @@ const NewTask = () => {
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
 
   const skillOptions = [
-    '',
     'Backend',
     'Frontend',
     'Web development',
