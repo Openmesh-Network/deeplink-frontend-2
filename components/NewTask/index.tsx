@@ -400,7 +400,7 @@ const NewTask = () => {
   async function formsUploadIPFS(data: IPFSSubmition) {
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadata`,
+      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadataTaskCreation`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',

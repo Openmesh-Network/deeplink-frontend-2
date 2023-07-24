@@ -58,8 +58,8 @@ const TaskApplication = (id: any) => {
 
   const howLikelyToMeetTheDeadlineOptions = [
     'Very unlikely',
-    'A little unlikely',
-    'A little likely',
+    'Unlikely',
+    'Likely',
     'Very likely',
   ]
 
@@ -110,6 +110,8 @@ const TaskApplication = (id: any) => {
         args: [Number(id)],
         functionName: 'getTask',
       })
+      setTaskChainData(data)
+      setIsLoading(false)
     } catch (err) {
       toast.error('Task not found!')
       setIsLoading(false)
@@ -117,7 +119,6 @@ const TaskApplication = (id: any) => {
 
     console.log('the data:')
     console.log(data)
-    setTaskChainData(data)
   }
 
   async function onSubmit(data: TaskApplicationForm) {
@@ -369,7 +370,7 @@ const TaskApplication = (id: any) => {
                   className=" w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39]"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <span className="">Submit for Review</span>
+                  <span className="">Submit your interest</span>
                 </button>
               </div>
             )}
