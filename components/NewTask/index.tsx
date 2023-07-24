@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
+import { Link, Contributor } from '@/types/task'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -46,16 +47,6 @@ type TaskSubmitForm = {
 type Payment = {
   tokenContract: string
   amount: string
-}
-
-type Contributor = {
-  walletAddress: string
-  budgetPercentage: number
-}
-
-type Link = {
-  title: string
-  url: string
 }
 
 type FileListProps = {

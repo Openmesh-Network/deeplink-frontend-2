@@ -9,10 +9,17 @@ import { useForm, Controller } from 'react-hook-form'
 import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import { TextField, Autocomplete } from '@mui/material'
-import { readContract, writeContract } from '@wagmi/core'
+import {
+  readContract,
+  writeContract,
+  prepareWriteContract,
+  waitForTransaction,
+  watchContractEvent,
+} from '@wagmi/core'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
+import { Link } from '@/types/task'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import HeroTaskApplication from './HeroTaskApplication'
@@ -32,9 +39,11 @@ type Payment = {
   amount: string
 }
 
-type Link = {
-  title: string
-  url: string
+type IPFSSubmition = {
+  displayName: string
+  description: string
+  howLikelyToMeetTheDeadline: string
+  links: Link[] | null
 }
 
 const TaskApplication = (id: any) => {
@@ -43,6 +52,7 @@ const TaskApplication = (id: any) => {
   const [taskChainData, setTaskChainData] = useState<any>()
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
+  const [payments, setPayments] = useState<Payment[]>([])
 
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
@@ -99,6 +109,29 @@ const TaskApplication = (id: any) => {
     resolver: yupResolver(validSchema),
   })
 
+  async function formsUploadIPFS(data: IPFSSubmition) {
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadataTaskCreation`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
+    }
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
+    })
+
+    return dado
+  }
+
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
     console.log('getting data from task')
@@ -121,6 +154,32 @@ const TaskApplication = (id: any) => {
     console.log(data)
   }
 
+  async function handleCreateApplication(
+    taskId: number,
+    metadata: string,
+    budget: Payment[],
+  ) {
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [taskId, metadata, budget],
+      functionName: 'applyForTask',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    if (data.status !== 'success') {
+      throw data
+    } else {
+      toast.success('Applied succesfully!')
+    }
+  }
+
   async function onSubmit(data: TaskApplicationForm) {
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
@@ -134,37 +193,27 @@ const TaskApplication = (id: any) => {
       links,
     }
 
-    console.log('my final data')
-    console.log(finalData)
-
-    return
-
     // eslint-disable-next-line no-unreachable
     let ipfsHashData
-    // try {
-    //   const res = await formsUploadIPFS(finalData)
-    //   console.log('a resposta:')
-    //   console.log(res)
-    //   ipfsHashData = res
-    //   await setIpfsHashTaskData(res)
-    // } catch (err) {
-    //   toast.error('something ocurred')
-    //   console.log(err)
-    //   setIsLoading(false)
-    // }
+    try {
+      const res = await formsUploadIPFS(finalData)
+      console.log('a resposta:')
+      console.log(res)
+      ipfsHashData = res
+    } catch (err) {
+      toast.error('something ocurred')
+      console.log(err)
+      setIsLoading(false)
+    }
 
-    // try {
-    //   await handleCreateTask(
-    //     ipfsHashData,
-    //     Math.floor(data.deadline.getTime() / 1000),
-    //     payments,
-    //   )
-    //   toast.success('Application done succesfully!')
-    // } catch (err) {
-    //   toast.error('Error during the task application')
-    //   console.log(err)
-    //   setIsLoading(false)
-    // }
+    try {
+      await handleCreateApplication(id, ipfsHashData, payments)
+      toast.success('Application done succesfully!')
+    } catch (err) {
+      toast.error('Error during the task application')
+      console.log(err)
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {

@@ -49,6 +49,11 @@ export type TasksPagination = {
   limit: number
 }
 
+export type Contributor = {
+  walletAddress: string
+  budgetPercentage: number
+}
+
 export type TasksCounting = {
   open: number
   active: number
