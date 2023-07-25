@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import TasksModal from './ProfileTransactionModal'
 import SearchModal from './SearchModal'
 import { usePathname } from 'next/navigation'
-import { UserOutlined } from '@ant-design/icons'
+import {
+  UserOutlined,
+  CopyOutlined,
+  CheckOutlined,
+  ClockCircleFilled,
+} from '@ant-design/icons'
 import { useAccount, useNetwork, useEnsName } from 'wagmi'
 import {
   readContract,
@@ -14,6 +19,7 @@ import {
   waitForTransaction,
 } from '@wagmi/core'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
+import FilterModal from './FilterModal'
 
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState([])
@@ -270,6 +276,21 @@ const TransactionList = () => {
     filterTasks()
   }
 
+  function formatAddress(address) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
+  const scrollManually = () => {
+    const taskStartElement = document.getElementById('taskStart')
+    taskStartElement.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleCopyClick = useCallback(() => {
+    // Usar API de clipboard para copiar o endereço
+    navigator.clipboard.writeText(address)
+    // mensagem de erro
+  }, [address])
+
   useEffect(() => {
     handleUpdate()
   }, [pathname])
@@ -277,92 +298,211 @@ const TransactionList = () => {
   return (
     <>
       {address ? (
-        <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-          <div className="container  border-b-4 border-[#8d8d8d] pb-5">
-            <div className="-mx-4 flex flex-wrap items-start">
-              <div className="w-full px-4">
-                <div className="wow fadeInUp" data-wow-delay=".2s">
-                  <div className="mb-1 flex">
-                    <Jazzicon
-                      diameter={50}
-                      seed={jsNumberForAddress(address)}
+        <>
+          <section className="border-b border-[#CFCFCF] px-32 pb-[46px] pt-[116px] text-[18px] font-medium text-[#505050]">
+            <div className="container">
+              <div className="mb-1 ml-[70px] w-fit">
+                <span className="cursor-pointer border-b-[1px] border-[#505050]">
+                  Edit Profile
+                </span>
+              </div>
+              <div className="mt-[12px] flex">
+                <div className="flex cursor-pointer items-center">
+                  <Jazzicon diameter={50} seed={jsNumberForAddress(address)} />
+                </div>
+                <div
+                  title={address}
+                  className="mr-4 ml-[20px] flex items-center text-[30px] font-bold text-[#D4D4D4]"
+                >
+                  {ensName || formatAddress(address)}
+                </div>
+                <div
+                  onClick={handleCopyClick}
+                  className="flex cursor-pointer items-center"
+                >
+                  <img
+                    src={`/images/profile/copy.svg`}
+                    alt="image"
+                    className={`w-[17.5px]`}
+                  />
+                </div>
+                <div className="ml-auto flex cursor-pointer items-center  justify-end">
+                  <a className="flex w-[217px] justify-center rounded-[5px] bg-[#12AD50] py-1 text-[16px] font-bold  text-white hover:bg-[#0e7a39]">
+                    <img
+                      src={`/images/profile/check.svg`}
+                      alt="image"
+                      className={`mr-2 w-[20.11px]`}
                     />
-                    <h3 className="mb-4 mt-2 ml-3  text-xl font-normal sm:text-3xl lg:text-4xl">
-                      {ensName || address}
-                    </h3>
+                    <span className="">Verified Contributor</span>
+                  </a>
+                </div>
+              </div>
+              <div className="mt-[21px] ml-[70px]">
+                <p>Tags</p>
+              </div>
+              <div className="mt-[34px] ml-[70px] flex">
+                <div className="flex">
+                  <div className="mr-[60px] flex">
+                    <img
+                      src={`/images/profile/clock.svg`}
+                      alt="image"
+                      className={`mr-2 w-[18px]`}
+                    />
+                    <span className="flex items-center">
+                      Contributor since:{' '}
+                      <span className="ml-1 font-bold text-[#303030]">
+                        12 Jul 2023
+                      </span>
+                    </span>
+                  </div>
+                  <div className="mr-[60px] flex">
+                    <img
+                      src={`/images/profile/coins.svg`}
+                      alt="image"
+                      className={`mr-2 w-[18px]`}
+                    />
+                    <span className="flex items-center">Total earned:</span>
+                  </div>
+                  <div className="mr-[60px] flex">
+                    <img
+                      src={`/images/profile/people.svg`}
+                      alt="image"
+                      className={`mr-2 w-[18px]`}
+                    />
+                    <span className="flex items-center">Job success:</span>
+                  </div>
+                </div>
+                <div className="ml-auto flex w-[107px] justify-between">
+                  <div className="flex items-center">
+                    <img
+                      src={`/images/profile/github.svg`}
+                      alt="image"
+                      className={`w-[24.2px]`}
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <img
+                      src={`/images/profile/twitter.svg`}
+                      alt="image"
+                      className={`w-[25px]`}
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <img
+                      src={`/images/profile/share.svg`}
+                      alt="image"
+                      className={`w-[21.88px]`}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="container mt-10">
-            <div className="mx-auto mb-10 flex justify-center text-center">
-              <span
-                onClick={() => {
-                  handleDepartamentSelection('My tasks')
-                }}
-                className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                  departament === 'My tasks' || !departament
-                    ? 'text-lg font-extrabold'
-                    : ''
-                }`}
-              >
-                My tasks
-              </span>
-              <span
-                onClick={() => {
-                  handleDepartamentSelection('My submissions')
-                }}
-                className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                  departament === 'My submissions'
-                    ? 'text-lg font-extrabold'
-                    : ''
-                }`}
-              >
-                My submissions
-              </span>
-              <span
-                onClick={() => {
-                  handleDepartamentSelection('Transaction history')
-                }}
-                className={`cursor-pointer border-b border-[#cecece] px-5 pb-2 hover:text-primary ${
-                  departament === 'Transaction history'
-                    ? 'text-lg font-extrabold'
-                    : ''
-                }`}
-              >
-                Transaction history
-              </span>
-            </div>
-            <SearchModal onUpdate={handleUpdate} />
-
-            <div className="max-h-[800px] overflow-auto pr-2 text-[#000000] scrollbar-thin scrollbar-thumb-body-color">
-              <div className="flex pr-1">
-                <div className="-mr-[0.75px] w-[15%] border border-r-0 border-[#e8e5e5] py-1 pl-2  font-semibold">
-                  <span>Title</span>
+          </section>
+          <FilterModal
+            onUpdate={handleUpdate}
+            scrollManually={scrollManually}
+            openProjectsNumber={2}
+            activeProjectsNumber={3}
+            updatesProjectsNumber={1}
+          />
+          <section className="px-32" id={'taskStart'}>
+            <div className="container">
+              <div className="pr-2 text-[#000000]">
+                <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
+                  <div className="mr-4 flex w-[35%] items-center">
+                    <p
+                      onClick={() => {
+                        console.log('as tasks')
+                        console.log(finalTasks)
+                        console.log('filtered tasks')
+                        console.log(filteredTasks)
+                      }}
+                      className="pr-2"
+                    >
+                      Project
+                    </p>
+                  </div>
+                  <div className="flex w-[15%] items-center">
+                    <p className="pr-2">Dept/Tags</p>
+                  </div>
+                  <div className="flex w-[10%] items-center">
+                    <p className="pr-2">Budget</p>
+                    {/* <img
+                  src="/images/task/vectorDown.svg"
+                  alt="image"
+                  className={`w-[14px]`}
+                /> */}
+                  </div>
+                  <div className="flex w-[8%] items-center">
+                    <p className="pr-2">Ends</p>
+                    <svg
+                      onClick={handleOrderByDeadlineSelection}
+                      className={`w-[14px] cursor-pointer  ${
+                        orderByDeadline === 'oldest'
+                          ? 'rotate-180 transform'
+                          : ''
+                      }`}
+                      viewBox="0 0 16 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                        fill="#959595"
+                      />
+                    </svg>
+                  </div>
+                  <div className="w-[12%]"></div>
                 </div>
-                <div className="w-[15%] border  border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                  <span>Categories</span>
-                </div>
-                <div className="w-[35%] border  border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                  <span>Description</span>
-                </div>
-                <div className="w-[10%] border border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                  <span>Author</span>
-                </div>
-                <div className="w-[10%] border border-r-0 border-[#e8e5e5] py-1 pl-2 font-semibold">
-                  <span>Status</span>
-                </div>
-                <div className="w-[15%] border border-[#e8e5e5] py-1 pl-2 font-semibold">
-                  <span>Budget</span>
-                </div>
+                {isLoading && (
+                  <>
+                    <div className="flex h-32 animate-pulse pb-12">
+                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                    </div>
+                    <div className="flex h-32 animate-pulse pb-12">
+                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                    </div>
+                    <div className="flex h-32 animate-pulse pb-12">
+                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                    </div>
+                  </>
+                )}
+                {!isLoading && finalTasks.length === 0 && <NoTasks />}
+                {!isLoading &&
+                  finalTasks.length > 0 &&
+                  finalTasks.map((task) => (
+                    <TasksModal key={task.id} task={task} isLoading={false} />
+                  ))}
+                {!isLoading && finalTasks.length > 0 && pagination && (
+                  <div className="flex items-center justify-center pt-16 pb-2 text-[18px] font-normal">
+                    {pagination.currentPage !== 1 && (
+                      <p
+                        onClick={handlePaginationSelectionPrev}
+                        className="cursor-pointer hover:text-[#1068E6]"
+                      >
+                        Prev
+                      </p>
+                    )}
+                    <p className="mx-14">
+                      Page {pagination.currentPage} of {pagination.totalPages}
+                    </p>
+                    {pagination.totalPages > pagination.currentPage && (
+                      <p
+                        onClick={handlePaginationSelectionNext}
+                        className="cursor-pointer hover:text-[#1068E6]"
+                      >
+                        Next
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
-              {filteredTasks.map((task) => (
-                <TasksModal key={task.id} {...task} isLoading={false} />
-              ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </>
       ) : (
         <section className="flex items-center justify-center py-16 px-32 pb-56 text-black md:py-20 lg:pt-40">
           <h1 className="pb-96 ">Please connect your wallet</h1>
