@@ -39,12 +39,14 @@ type TaskApplicationForm = {
 
 type Payment = {
   tokenContract: string
-  amount: string
+  amount: number
+  nextToken: boolean
 }
 
 type IPFSSubmition = {
   displayName: string
   description: string
+  budgetPercentageRequested: number
   howLikelyToMeetTheDeadline: string
   links: Link[] | null
 }
@@ -52,6 +54,8 @@ type IPFSSubmition = {
 const TaskApplication = (id: any) => {
   Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isApplicationLoading, setIsApplicationLoading] =
+    useState<boolean>(false)
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
   const [budgetValue, setBudgetValue] = useState([100])
@@ -162,7 +166,7 @@ const TaskApplication = (id: any) => {
   async function formsUploadIPFS(data: IPFSSubmition) {
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadataTaskCreation`,
+      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadataTaskApplication`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -228,6 +232,22 @@ const TaskApplication = (id: any) => {
             Number(response.data.estimatedBudget).toLocaleString('en-US') ||
               '0',
           )
+          // Treating payments
+          const payments = response.data.payments.map((payment) => {
+            const amountInNumber = Number(payment.amount)
+            return {
+              to: address,
+              amount: amountInNumber,
+              nextToken: true,
+            }
+          })
+
+          // Removendo o campo 'decimals'
+          payments.forEach((payment) => {
+            delete payment.decimals
+          })
+
+          setPayments(payments)
           setIsLoading(false)
         }
       })
@@ -242,10 +262,14 @@ const TaskApplication = (id: any) => {
     metadata: string,
     budget: Payment[],
   ) {
+    console.log('value to be sent')
+    console.log(taskId['id'])
+    console.log(metadata)
+    console.log(budget)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
-      args: [taskId, metadata, budget],
+      args: [Number(taskId['id']), metadata, budget],
       functionName: 'applyForTask',
     })
     const { hash } = await writeContract(request)
@@ -264,15 +288,17 @@ const TaskApplication = (id: any) => {
   }
 
   async function onSubmit(data: TaskApplicationForm) {
+    console.log('submit called')
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
       return
     }
 
-    setIsLoading(true)
+    setIsApplicationLoading(true)
 
     const finalData = {
       ...data,
+      budgetPercentageRequested: budgetPercentage,
       links,
     }
 
@@ -280,13 +306,11 @@ const TaskApplication = (id: any) => {
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log('a resposta:')
       console.log(res)
       ipfsHashData = res
     } catch (err) {
-      toast.error('something ocurred')
       console.log(err)
-      setIsLoading(false)
+      setIsApplicationLoading(false)
     }
 
     try {
@@ -295,7 +319,7 @@ const TaskApplication = (id: any) => {
     } catch (err) {
       toast.error('Error during the task application')
       console.log(err)
-      setIsLoading(false)
+      setIsApplicationLoading(false)
     }
   }
 
@@ -355,7 +379,7 @@ const TaskApplication = (id: any) => {
                       </p>
                     </span>
                     <input
-                      disabled={isLoading}
+                      disabled={isApplicationLoading}
                       className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                       type="text"
                       maxLength={100}
@@ -372,7 +396,7 @@ const TaskApplication = (id: any) => {
                     </span>
                     <input
                       type="text"
-                      disabled={isLoading}
+                      disabled={isApplicationLoading}
                       maxLength={200}
                       {...register('githubLink')}
                       onChange={(e) => handleLink(0, 'url', e.target.value)}
@@ -393,7 +417,7 @@ const TaskApplication = (id: any) => {
                       render={({ field }) => (
                         <Autocomplete
                           {...field}
-                          disabled={isLoading}
+                          disabled={isApplicationLoading}
                           value={howLikelyToMeetTheDeadlineValue}
                           onChange={(e, newValue) => {
                             field.onChange(newValue)
@@ -448,6 +472,7 @@ const TaskApplication = (id: any) => {
                       <div className="relative w-full">
                         <Range
                           step={1}
+                          disabled={isApplicationLoading}
                           min={0}
                           max={250}
                           values={budgetValue}
@@ -465,6 +490,7 @@ const TaskApplication = (id: any) => {
                                 ).mul(new Decimal(values[0] / 100)),
                               ).toLocaleString('en-US'),
                             )
+                            setBudgetPercentage(values[0])
                           }}
                           renderTrack={({ props, children }) => (
                             <div
@@ -503,10 +529,11 @@ const TaskApplication = (id: any) => {
                         />
                         <Range
                           step={1}
+                          disabled={isApplicationLoading}
                           min={0}
                           max={250}
                           values={budgetValue}
-                          onChange={() => {}} // Não faz nada ao alterar
+                          onChange={() => {}} // Its does nothing when changing
                           renderTrack={({ props, children }) => (
                             <div
                               {...props}
@@ -560,7 +587,7 @@ const TaskApplication = (id: any) => {
                       </p>
                     </span>
                     <textarea
-                      disabled={isLoading}
+                      disabled={isApplicationLoading}
                       style={{ resize: 'none' }}
                       className="mt-[8px] h-[190px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
                       maxLength={2000}
@@ -577,7 +604,7 @@ const TaskApplication = (id: any) => {
                     </span>
                     <input
                       type="text"
-                      disabled={isLoading}
+                      disabled={isApplicationLoading}
                       maxLength={200}
                       {...register('additionalLink')}
                       onChange={(e) => handleLink(1, 'url', e.target.value)}
@@ -587,37 +614,18 @@ const TaskApplication = (id: any) => {
                 </div>
               </div>
             </div>
-            {isLoading ? (
+
+            <div className="mt-[120px] pb-60">
               <button
-                type="button"
-                className="mt-[120px] pb-60 text-[18px] font-bold"
+                type="submit"
+                className={`w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39] ${
+                  isApplicationLoading ? 'bg-[#7deba9]' : 'hover:bg-[#7deba9]'
+                }`}
                 onClick={handleSubmit(onSubmit)}
-                disabled={true}
               >
-                <svg
-                  className="animate-spin"
-                  height="40px"
-                  id="Icons"
-                  version="1.1"
-                  viewBox="0 0 80 80"
-                  width="40px"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M58.385,34.343V21.615L53.77,26.23C50.244,22.694,45.377,20.5,40,20.5c-10.752,0-19.5,8.748-19.5,19.5S29.248,59.5,40,59.5  c7.205,0,13.496-3.939,16.871-9.767l-4.326-2.496C50.035,51.571,45.358,54.5,40,54.5c-7.995,0-14.5-6.505-14.5-14.5  S32.005,25.5,40,25.5c3.998,0,7.617,1.632,10.239,4.261l-4.583,4.583H58.385z" />
-                </svg>
-                <span className="pt-2 pr-4">Loading</span>
+                <span className="">Submit your interest</span>
               </button>
-            ) : (
-              <div className="mt-[120px] pb-60">
-                <button
-                  type="submit"
-                  className=" w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39]"
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  <span className="">Submit your interest</span>
-                </button>
-              </div>
-            )}
+            </div>
           </form>
         </div>
       </section>
