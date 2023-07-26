@@ -8,7 +8,10 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
+import { Range } from 'react-range'
 import { TextField, Autocomplete } from '@mui/material'
+import { Slider } from 'rsuite'
+import Decimal from 'decimal.js'
 import {
   readContract,
   writeContract,
@@ -47,17 +50,64 @@ type IPFSSubmition = {
 }
 
 const TaskApplication = (id: any) => {
+  Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
+  const [budgetValue, setBudgetValue] = useState([100])
+  const [budgetValueInputColor, setBudgetValueInputColor] =
+    useState<String>('#009A50')
+  const [estimatedBudgetRequested, setEstimatedBudgetRequested] =
+    useState<String>('')
+  const [budgetPercentage, setBudgetPercentage] = useState(100)
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
+  const colorsBudget = [
+    '#39D303',
+    '#31ce19',
+    '#2aca24',
+    '#22c52d',
+    '#1ac033',
+    '#12bc39',
+    '#09b73e',
+    '#01b242',
+    '#00ad46',
+    '#009A50',
+    '#00a44c',
+    '#009f4e',
+    '#009a50',
+    '#32973e',
+    '#4a942b',
+    '#5d9015',
+    '#6e8c00',
+    '#7e8700',
+    '#8d8100',
+    '#9c7a00',
+    '#ab7200',
+    '#b86900',
+    '#c55e00',
+    '#d15101',
+    '#db421c',
+  ]
+
+  const rangePerColor = 250 / colorsBudget.length
+
   const [payments, setPayments] = useState<Payment[]>([])
 
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
     { title: 'additionalLink', url: '' },
   ])
+
+  const getColor = (value) => {
+    if (value < 50) {
+      return 'bg-yellow-500'
+    } else if (value > 150) {
+      return 'bg-orange-500'
+    } else {
+      return 'bg-green-500'
+    }
+  }
 
   const { address } = useAccount()
   const { chain, chains } = useNetwork()
@@ -154,6 +204,39 @@ const TaskApplication = (id: any) => {
     console.log(data)
   }
 
+  async function getTask(taskId: string) {
+    const data = {
+      id: taskId,
+    }
+    setIsLoading(true)
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/getTask`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
+    }
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          console.log('here is the task')
+          console.log(response.data)
+          setTaskChainData(response.data)
+          setEstimatedBudgetRequested(
+            Number(response.data.estimatedBudget).toLocaleString('en-US') ||
+              '0',
+          )
+          setIsLoading(false)
+        }
+      })
+    } catch (err) {
+      toast.error('Task not found!')
+      setIsLoading(false)
+    }
+  }
+
   async function handleCreateApplication(
     taskId: number,
     metadata: string,
@@ -221,7 +304,7 @@ const TaskApplication = (id: any) => {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
       console.log(id.id)
-      getTaskFromChain(id.id)
+      getTask(id.id)
     }
   }, [id])
 
@@ -358,6 +441,118 @@ const TaskApplication = (id: any) => {
                     />
                   </div>
                   <div className="mt-[30px]">
+                    <span className="flex flex-row">
+                      Are you happy with the budget or readjust
+                    </span>
+                    <div className="mt-[31px]">
+                      <div className="relative w-full">
+                        <Range
+                          step={1}
+                          min={0}
+                          max={250}
+                          values={budgetValue}
+                          onChange={(values) => {
+                            setBudgetValue(values)
+                            setBudgetValueInputColor(
+                              colorsBudget[
+                                Math.floor(values[0] / rangePerColor)
+                              ],
+                            )
+                            setEstimatedBudgetRequested(
+                              Number(
+                                new Decimal(
+                                  taskChainData['estimatedBudget'],
+                                ).mul(new Decimal(values[0] / 100)),
+                              ).toLocaleString('en-US'),
+                            )
+                          }}
+                          renderTrack={({ props, children }) => (
+                            <div
+                              {...props}
+                              style={{
+                                ...props.style,
+                                height: '9px',
+                                width: '500px',
+                                backgroundColor: '#ffffff',
+                                borderRadius: '4px',
+                                border: '1.5px solid #D4D4D4',
+                              }}
+                            >
+                              {children}
+                            </div>
+                          )}
+                          renderThumb={({ props }) => (
+                            <div
+                              {...props}
+                              style={{
+                                ...props.style,
+                                height: '31px',
+                                width: '53px',
+                                backgroundColor: `${budgetValueInputColor}`,
+                                borderRadius: '0px',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <div className="text-xs font-semibold">
+                                {budgetValue}%
+                              </div>
+                            </div>
+                          )}
+                        />
+                        <Range
+                          step={1}
+                          min={0}
+                          max={250}
+                          values={budgetValue}
+                          onChange={() => {}} // Não faz nada ao alterar
+                          renderTrack={({ props, children }) => (
+                            <div
+                              {...props}
+                              style={{
+                                ...props.style,
+                                height: '0',
+                                width: '500px',
+                                backgroundColor: 'transparent',
+                              }}
+                            >
+                              {children}
+                            </div>
+                          )}
+                          renderThumb={({ props }) => (
+                            <div
+                              {...props}
+                              style={{
+                                ...props.style,
+                                height: '0',
+                                width: '250px', // Aumente a largura conforme necessário
+                                backgroundColor: 'transparent',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                position: 'relative',
+                                top: '40px', // Ajuste conforme necessário
+                              }}
+                            >
+                              <div
+                                className={`font-regular text-[12px] ${
+                                  estimatedBudgetRequested === '0'
+                                    ? 'ml-14'
+                                    : ''
+                                }`}
+                              >
+                                {estimatedBudgetRequested === '0'
+                                  ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
+                                  : `Est. $${estimatedBudgetRequested}`}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-[100px]">
                     <span className="flex flex-row">
                       Give some details why you think you are qualified
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
