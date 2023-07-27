@@ -66,6 +66,14 @@ const SearchModal = ({
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
+      name: 'Front-end',
+      tags: ['Web', 'Mobile', 'Desktop'],
+      funding: '51,231',
+      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
+      img: '/images/departaments/pointer.svg',
+      imgClassName: 'mr-1 mb-1 w-[13px]',
+    },
+    {
       name: 'Blockchain',
       tags: ['Solidity', 'Rust', 'Contracts'],
       funding: '89,231',
@@ -74,20 +82,12 @@ const SearchModal = ({
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
-      name: 'Cloud',
+      name: 'DevOps/Cloud',
       tags: ['DevOps', 'AWS', 'Kubernets'],
       funding: '151,231',
       desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
       img: '/images/departaments/cloud.svg',
       imgClassName: 'mr-1 mb-1 w-[19px]',
-    },
-    {
-      name: 'Frontend',
-      tags: ['Web', 'Mobile', 'Desktop'],
-      funding: '51,231',
-      desc: 'Introducing Pythia - our revolutionary, open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto. open-source Web3 data search and product development platform. With Pythia, anyone can easily search, design, build, and store their own crypto.',
-      img: '/images/departaments/pointer.svg',
-      imgClassName: 'mr-1 mb-1 w-[13px]',
     },
   ]
   const orderByOptions = ['Newest', 'Oldest']
@@ -175,7 +175,7 @@ const SearchModal = ({
   }, [pathname])
 
   return (
-    <section className="mt-10 px-32">
+    <section className="mt-[34px] px-32">
       <div className="container">
         <div className="flex">
           <input
@@ -189,9 +189,9 @@ const SearchModal = ({
             }}
             value={tasksSearchBar}
             placeholder="Search here..."
-            className="mr-3 w-full max-w-[680px] rounded-md border border-[#0085FF] bg-white py-[12px] px-5 text-base  font-light text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
+            className="mr-3 h-[52px] w-[600px] rounded-[10px] border border-[#0085FF] bg-white py-[12px] px-5 text-[18px] font-normal text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
           />
-          <button
+          {/* <button
             onClick={() => {
               updateUrl('searchBar', tasksSearchBar)
               scrollManually()
@@ -210,10 +210,16 @@ const SearchModal = ({
                 fill={`black`}
               />
             </svg>
-          </button>
+          </button> */}
         </div>
-        <div className="mb-10 mt-10 flex  text-xl font-semibold !leading-normal text-[#0085FF]">
-          <div className="flex pr-8">
+        <div className="mt-[69px] flex  text-xl text-[16px] font-bold text-[#0354EC]">
+          <div
+            className={`mr-[40px] flex pr-[5px] ${
+              departament === 'All' || !departament
+                ? 'border-b-2 border-[#0354EC]'
+                : ''
+            }`}
+          >
             <img
               src="/images/departaments/paper.svg"
               alt="image"
@@ -223,10 +229,8 @@ const SearchModal = ({
               onClick={() => {
                 handleDepartamentSelection('All')
               }}
-              className={`cursor-pointer hover:text-primary ${
-                departament === 'All' || !departament
-                  ? 'border-b-2 border-[#131212] font-extrabold'
-                  : ''
+              className={`flex cursor-pointer items-center pb-[3px] hover:text-primary ${
+                departament === 'All' || !departament ? '' : ''
               }`}
             >
               All
@@ -235,7 +239,14 @@ const SearchModal = ({
           {departamentOptions.map((departamentOption, index) => {
             if (departamentOption.name !== 'All') {
               return (
-                <div key={index} className="flex px-8">
+                <div
+                  key={index}
+                  className={`mr-[5px] flex px-[35px] ${
+                    departament === departamentOption.name
+                      ? 'border-b-2 border-[#0354EC]'
+                      : ''
+                  }`}
+                >
                   <img
                     src={`${departamentOption.img}`}
                     alt="image"
@@ -245,10 +256,8 @@ const SearchModal = ({
                     onClick={() => {
                       handleDepartamentSelection(departamentOption.name)
                     }}
-                    className={`cursor-pointer hover:text-primary ${
-                      departament === departamentOption.name
-                        ? 'border-b-2 border-[#131212] font-extrabold'
-                        : ''
+                    className={`flex cursor-pointer items-center pb-[3px] hover:text-primary ${
+                      departament === departamentOption.name ? '' : ''
                     }`}
                   >
                     {departamentOption.name}
@@ -257,24 +266,24 @@ const SearchModal = ({
               )
             }
           })}
-          <div className="ml-auto flex items-end justify-end text-base">
+          <div className="ml-auto flex  items-end justify-end text-[16px] font-bold text-white">
             <a
               href="/new-task"
               target="_blank"
               rel="nofollow noreferrer"
-              className="ml-auto cursor-pointer rounded-md bg-[#0085FF] py-1 px-4 font-semibold text-white hover:bg-primary"
+              className="ml-auto flex h-[43px] w-[170px] cursor-pointer items-center  justify-center rounded-[10px] bg-[#0354EC] hover:bg-primary"
             >
               + Add a project
             </a>
           </div>
         </div>
-        <div className="mt-4 mb-14 items-start justify-start rounded-md border border-[#D4D4D4] p-9 text-[14px]  font-medium text-[#505050]">
+        <div className="mt-[39px] items-start justify-start rounded-[10px] border border-[#D4D4D4] py-[40px] px-[50px] text-[14px] font-medium text-[#505050]">
           {departamentSelected ? (
             <>
-              <div className="mb-6">
-                <p>{departamentSelected.desc}</p>
+              <div className="">
+                <p className="!leading-[17px]">{departamentSelected.desc}</p>
               </div>
-              <div className="mb-6 flex">
+              <div className="mt-[25px] flex">
                 <p className="mr-1">Tags: </p>
                 <div className="flex italic">
                   {departamentSelected.tags.map((tag, index) => (
@@ -285,20 +294,20 @@ const SearchModal = ({
                   ))}
                 </div>
               </div>
-              <div className="mb-6 flex">
-                <p className="mr-4 mt-1">Avalaible Funding </p>
+              <div className="mt-[25px] flex">
+                <p className="mr-[3px]">Avalaible Funding: </p>
                 <div className="flex">
-                  <p className="mr-1 text-[18px] font-bold text-[#000000]">
+                  <p className="mr-[22px] text-[16px] font-bold text-[#000000]">
                     ${departamentSelected.funding}
                   </p>
                   <img
-                    src="/images/tokens/usd-coin-usdc-logo.svg"
+                    src="/images/tokens/tokens-logo-2.svg"
                     alt="image"
-                    className={`w-[14px]`}
+                    className={`w-[72px]`}
                   />
                 </div>
               </div>
-              <div className="flex">
+              <div className=" mt-[25px] flex">
                 <div className="mr-2">
                   <Jazzicon diameter={30} seed={2121214554432222} />
                 </div>
@@ -319,48 +328,54 @@ const SearchModal = ({
             <></>
           )}
         </div>
-        <div className="flex text-[#000000]">
+        <div className="mt-[40px] flex text-[#000000]">
           <div
             onClick={() => {
               handleStatusSelection('open')
             }}
-            className={`w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[18px] font-bold">Open Projects</p>
+            <p className="text-[16px] font-bold">Open Projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">{openProjectsNumber}</p>
+            <p
+              className={`text-[26px] font-bold !leading-none ${
+                tasksStatus === 'open' ? 'border-b border-[#000000]' : ''
+              }`}
+            >
+              {openProjectsNumber}
+            </p>
           </div>
           <div
             onClick={() => {
               handleStatusSelection('active')
             }}
-            className={`mx-4 w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[18px] font-bold">Active Projects</p>
+            <p className="text-[16px] font-bold">Active Projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">{activeProjectsNumber}</p>
+            <p className="text-[26px] font-bold">{activeProjectsNumber}</p>
           </div>
           <div
             onClick={() => {
               handleStatusSelection('completed')
             }}
-            className={`w-1/3 cursor-pointer rounded-md border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
               tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[18px] font-bold">Completed projects</p>
+            <p className="text-[16px] font-bold">Completed projects</p>
             <p className="mb-3 text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[32px] font-bold">{completedProjectsNumber}</p>
+            <p className="text-[26px] font-bold">{completedProjectsNumber}</p>
           </div>
         </div>
 
