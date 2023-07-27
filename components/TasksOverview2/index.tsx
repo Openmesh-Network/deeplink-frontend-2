@@ -42,7 +42,13 @@ const TransactionList = () => {
   const pathname = usePathname()
 
   const statusOptions = ['open', 'active', 'completed']
-  const departamentsOptions = ['All', 'Data', 'Blockchain', 'Cloud', 'Frontend']
+  const departamentsOptions = [
+    'All',
+    'Data',
+    'Blockchain',
+    'DevOps/Cloud',
+    'Front-end',
+  ]
   const orderByOptions = ['newest', 'oldest']
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS

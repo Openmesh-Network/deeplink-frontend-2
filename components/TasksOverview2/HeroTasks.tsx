@@ -72,16 +72,13 @@ const HeroTasks = () => {
   }, [pathname])
 
   return (
-    <section className="border-b border-[#9b9a9a] py-16 px-32 md:py-10 lg:pt-40">
+    <section className="px-32 pt-[44px]">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4 lg:w-2/3">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <h3 className=" mb-4 text-[30px] font-bold text-[#000000]">
-                  Open Research & Development
-                </h3>
-                <p className="text-[]20px mt-4 font-medium !leading-normal text-[#505050]">
+            <div>
+              <div className="">
+                <p className="text-[14px] font-medium !leading-[17px] text-[#505050]">
                   Introducing Pythia - our revolutionary, open-source Web3 data
                   search and product development platform. With Pythia, anyone
                   can easily search, design, build, and store their own crypto
@@ -93,21 +90,16 @@ const HeroTasks = () => {
             </div>
           </div>
           <div className="w-full lg:w-1/3">
-            <div
-              className="wow fadeInUp relative mx-auto flex max-w-[500px] justify-end rounded-md p-4 text-right text-base font-normal text-black lg:m-0"
-              data-wow-delay=".15s"
-            >
-              <div className="mb-12">
-                <p className="mb-2 text-[14px] text-[#2F2F2F]">
-                  Available Funding
-                </p>{' '}
-                <span className="ml-1 text-[26px] font-bold text-[#000000]">
-                  $1,200
-                </span>
+            <div className="font-regular mx-auto flex max-w-[500px] justify-end rounded-md px-4 text-right text-[14px] !leading-none text-[#000000] ">
+              <div className="">
+                <p className="">Available Funding</p>
+                <p className="mt-[8px] text-[18px] font-bold text-[#0354EC]">
+                  $151,967
+                </p>
                 <img
-                  src="/images/tokens/usd-coin-usdc-logo.svg"
+                  src="/images/tokens/tokensLogo.svg"
                   alt="image"
-                  className={`ml-auto w-[16px]`}
+                  className={`ml-auto mt-[8px] w-[60px]`}
                 />
               </div>
             </div>
