@@ -454,7 +454,7 @@ const NewTask = () => {
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
-      args: [metadata, deadline, budget],
+      args: [metadata, deadline, budget, address, []],
       functionName: 'createTask',
     })
     const { hash } = await writeContract(request)
@@ -561,11 +561,12 @@ const NewTask = () => {
       console.log('a resposta:')
       console.log(res)
       ipfsHashData = res
-      await setIpfsHashTaskData(res)
+      setIpfsHashTaskData(res)
     } catch (err) {
       toast.error('something ocurred')
       console.log(err)
       setIsLoading(false)
+      return
     }
 
     try {
@@ -573,6 +574,7 @@ const NewTask = () => {
     } catch (err) {
       toast.error('Something happened, please try again')
       setIsLoading(false)
+      return
     }
     try {
       await handleCreateTask(

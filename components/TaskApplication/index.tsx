@@ -279,11 +279,9 @@ const TaskApplication = (id: any) => {
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 2500))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     if (data.status !== 'success') {
       throw data
-    } else {
-      toast.success('Applied succesfully!')
     }
   }
 
@@ -316,6 +314,8 @@ const TaskApplication = (id: any) => {
     try {
       await handleCreateApplication(id, ipfsHashData, payments)
       toast.success('Application done succesfully!')
+      push(`/task/${id.id}`)
+      setIsApplicationLoading(false)
     } catch (err) {
       toast.error('Error during the task application')
       console.log(err)
@@ -619,8 +619,9 @@ const TaskApplication = (id: any) => {
               <button
                 type="submit"
                 className={`w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39] ${
-                  isApplicationLoading ? 'bg-[#7deba9]' : 'hover:bg-[#7deba9]'
+                  isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
                 }`}
+                disabled={isApplicationLoading}
                 onClick={handleSubmit(onSubmit)}
               >
                 <span className="">Submit your interest</span>
