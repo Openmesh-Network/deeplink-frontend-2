@@ -12,16 +12,21 @@ interface TasksModalProps {
     status: string
     skills: string[]
   }
+  index: number
   isLoading: boolean
 }
 
-const TasksModal = ({ task, isLoading }: TasksModalProps) => {
+const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
   return (
-    <div className="relative mr-1 mb-8 flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal">
+    <div
+      className={`relative mr-1 ${
+        index === 0 ? 'mt-[34px]' : 'mt-[25px]'
+      } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal`}
+    >
       <div className="mr-4 w-[35%] items-center">
         <p
           title={task.title}
-          className="overflow-hidden pb-2 font-bold text-[#1068E6] line-clamp-1"
+          className="overflow-hidden pb-2 font-bold text-[#0354EC] line-clamp-1"
         >
           {task.title}
         </p>

@@ -201,7 +201,7 @@ const TransactionList = () => {
 
   function NoTasks() {
     return (
-      <div className="mt-4 mb-4 flex flex-col items-center">
+      <div className="mt-[64px] mb-[100px] flex flex-col items-center">
         <SmileySad size={32} className="text-blue-500 mb-2" />
         <span>No tasks found</span>
       </div>
@@ -223,10 +223,10 @@ const TransactionList = () => {
         activeProjectsNumber={counting ? counting.active : 0}
         completedProjectsNumber={counting ? counting.completed : 0}
       />
-      <section className="py-16 px-32 md:py-20 lg:pt-32" id={'taskStart'}>
+      <section className="px-32 pt-[40px]" id={'taskStart'}>
         <div className="container">
           <div className="pr-2 text-[#000000]">
-            <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
+            <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
               <div className="mr-4 flex w-[35%] items-center">
                 <p
                   onClick={() => {
@@ -244,15 +244,28 @@ const TransactionList = () => {
                 <p className="pr-2">Dept/Tags</p>
               </div>
               <div className="flex w-[10%] items-center">
-                <p className="pr-2">Budget</p>
+                <p className="pr-[15px]">Budget</p>
                 {/* <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
                   className={`w-[14px]`}
                 /> */}
+                <svg
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
               </div>
               <div className="flex w-[8%] items-center">
-                <p className="pr-2">Ends</p>
+                <p className="pr-[15px]">Ends</p>
                 <svg
                   onClick={handleOrderByDeadlineSelection}
                   className={`w-[14px] cursor-pointer  ${
@@ -271,7 +284,7 @@ const TransactionList = () => {
               <div className="w-[12%]"></div>
             </div>
             {isLoading && (
-              <>
+              <div className="mt-[34px]">
                 <div className="flex h-32 animate-pulse pb-12">
                   <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
                   <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
@@ -284,16 +297,21 @@ const TransactionList = () => {
                   <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
                   <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
                 </div>
-              </>
+              </div>
             )}
             {!isLoading && finalTasks.length === 0 && <NoTasks />}
             {!isLoading &&
               finalTasks.length > 0 &&
-              finalTasks.map((task) => (
-                <TasksModal key={task.id} task={task} isLoading={false} />
+              finalTasks.map((task, index) => (
+                <TasksModal
+                  key={task.id}
+                  index={index}
+                  task={task}
+                  isLoading={false}
+                />
               ))}
             {!isLoading && finalTasks.length > 0 && pagination && (
-              <div className="flex items-center justify-center pt-16 pb-2 text-[18px] font-normal">
+              <div className="flex items-center justify-center pt-16 pb-[100px] text-[18px] font-normal">
                 {pagination.currentPage !== 1 && (
                   <p
                     onClick={handlePaginationSelectionPrev}

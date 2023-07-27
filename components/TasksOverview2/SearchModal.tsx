@@ -338,12 +338,12 @@ const SearchModal = ({
             }`}
           >
             <p className="text-[16px] font-bold">Open Projects</p>
-            <p className="mb-3 text-[14px] font-normal">
+            <p className="text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
             <p
-              className={`text-[26px] font-bold !leading-none ${
-                tasksStatus === 'open' ? 'border-b border-[#000000]' : ''
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
               {openProjectsNumber}
@@ -353,29 +353,45 @@ const SearchModal = ({
             onClick={() => {
               handleStatusSelection('active')
             }}
-            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
             <p className="text-[16px] font-bold">Active Projects</p>
-            <p className="mb-3 text-[14px] font-normal">
+            <p className="text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[26px] font-bold">{activeProjectsNumber}</p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'active'
+                  ? 'border-b-[2px] border-[#000000]'
+                  : ''
+              }`}
+            >
+              {activeProjectsNumber}
+            </p>
           </div>
           <div
             onClick={() => {
               handleStatusSelection('completed')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-9 py-4 hover:bg-[#F1F0F0] ${
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Completed projects</p>
-            <p className="mb-3 text-[14px] font-normal">
+            <p className="text-[16px] font-bold">Completed Projects</p>
+            <p className="text-[14px] font-normal">
               Waiting for approval or for assigning
             </p>
-            <p className="text-[26px] font-bold">{completedProjectsNumber}</p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'completed'
+                  ? 'border-b-[2px] border-[#000000]'
+                  : ''
+              }`}
+            >
+              {completedProjectsNumber}
+            </p>
           </div>
         </div>
 
