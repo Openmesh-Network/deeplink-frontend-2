@@ -90,12 +90,7 @@ const NewTask = () => {
     '2 to 4 weeks',
     'More than 4 weeks',
   ]
-  const numberOfApplicantsOptions = [
-    'Only 1',
-    '2 to 4',
-    '5 to 8',
-    'More than 8',
-  ]
+  const numberOfApplicantsOptions = ['1', '2', '3', '4', '5']
   const typeOptions = ['Individual', 'Group']
   const { push } = useRouter()
 
@@ -192,7 +187,7 @@ const NewTask = () => {
   }
 
   const addPayments = () => {
-    if (payments.length > 5) {
+    if (payments.length > 4) {
       toast.error('Only 5 payments per task', {
         position: toast.POSITION.TOP_RIGHT,
       })
@@ -603,7 +598,7 @@ const NewTask = () => {
   return (
     <>
       <HeroNewTasks />
-      <section className="mt-12 mb-24  px-32 text-[18px] font-medium text-[#000000]">
+      <section className="mt-12 mb-24  px-32 text-[14px] font-medium !leading-[17px]  text-[#000000]">
         <div className="container">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
@@ -612,13 +607,13 @@ const NewTask = () => {
                   <div className="">
                     <span className="flex flex-row">
                       Project Title
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.title?.message}
                       </p>
                     </span>
                     <input
                       disabled={isLoading}
-                      className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                      className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                       type="text"
                       maxLength={100}
                       placeholder=""
@@ -628,7 +623,7 @@ const NewTask = () => {
                   <div className="mt-[30px]">
                     <span className="flex flex-row">
                       Tag the project for easier discovery
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.skills?.message}
                       </p>
                     </span>
@@ -646,7 +641,7 @@ const NewTask = () => {
                           {...field}
                           multiple
                           disabled={isLoading}
-                          className="mt-2"
+                          className="mt-[10px]"
                           options={skillOptions}
                           size="small"
                           getOptionLabel={(option) => `${option}`}
@@ -675,7 +670,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '46px',
+                                  height: '42px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -690,7 +685,7 @@ const NewTask = () => {
                   <div className="mt-[30px]">
                     <span className="flex flex-row">
                       Project length
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.projectLength?.message}
                       </p>
                     </span>
@@ -707,13 +702,13 @@ const NewTask = () => {
                             field.onChange(newValue)
                             setProjectLength(newValue)
                           }}
-                          className="mt-2 text-body-color"
+                          className="mt-[10px]"
                           options={projectLengthOptions}
                           getOptionLabel={(option) => `${option}`}
                           sx={{
                             width: '500px',
                             fieldset: {
-                              height: '46px',
+                              height: '42px',
                               borderColor: '#D4D4D4',
                               borderRadius: '10px',
                             },
@@ -736,7 +731,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '46px',
+                                  height: '42px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -751,7 +746,7 @@ const NewTask = () => {
                   <div className="mt-[30px]" id="budgetId">
                     <span className="flex flex-row">
                       Deadline
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.deadline?.message}
                       </p>
                     </span>
@@ -765,12 +760,12 @@ const NewTask = () => {
                           selected={value}
                           dateFormat="yyyy-MM-dd"
                           disabled={isLoading}
-                          className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                          className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                         />
                       )}
                     />
                   </div>
-                  <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                  <div className="mt-[30px] max-h-[500px] overflow-auto">
                     <span className="flex flex-row">Budget</span>
                     {payments.map((pagamento, index) => (
                       <div key={index} className="payment mb-2">
@@ -807,7 +802,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
                           <div className="ml-2">
@@ -829,25 +824,37 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] mr-[15px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
+                          {index === payments.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={addPayments}
+                              className="mt-[28px] h-[42px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                            >
+                              + Add more
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))}
-                    <button
-                      type="button"
-                      disabled={isLoading}
-                      onClick={addPayments}
-                      className="mt-2 h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[17px]  font-normal text-[#000000] hover:bg-[#707070] hover:text-white"
-                    >
-                      Add payment
-                    </button>
+                    {(!payments || payments.length === 0) && (
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={addPayments}
+                        className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                      >
+                        + Add payment
+                      </button>
+                    )}
                   </div>
                   <div className="mt-[30px]" id="contributorsId">
                     <span className="flex flex-row">
                       Number of applicants/contributors needed
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.numberOfApplicants?.message}
                       </p>
                     </span>
@@ -864,13 +871,13 @@ const NewTask = () => {
                             field.onChange(newValue)
                             setNumberOfApplicants(newValue)
                           }}
-                          className="mt-2 text-body-color"
+                          className="mt-[10px]"
                           options={numberOfApplicantsOptions}
                           getOptionLabel={(option) => `${option}`}
                           sx={{
                             width: '500px',
                             fieldset: {
-                              height: '46px',
+                              height: '42px',
                               borderColor: '#D4D4D4',
                               borderRadius: '10px',
                             },
@@ -893,7 +900,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '46px',
+                                  height: '42px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -905,87 +912,98 @@ const NewTask = () => {
                       )}
                     />
                   </div>
-                  {numberOfApplicants && numberOfApplicants !== 'Only 1' && (
-                    <div className="mt-[30px] max-h-[500px]  overflow-auto">
-                      <span className="flex flex-row">
-                        Add contributors (optional)
-                      </span>
-                      {contributors.map((contributor, index) => (
-                        <div key={index} className="payment mb-2">
-                          <div className="mb-1 mt-4 flex items-center text-sm font-medium">
-                            <h3>Contributor {index + 1}</h3>
-                            {index === contributors.length - 1 && (
-                              <button
-                                type="button"
-                                disabled={isLoading}
-                                onClick={() => handleDeleteContributors(index)}
-                                className="ml-2 font-extrabold text-[#707070]"
-                              >
-                                X
-                              </button>
-                            )}
-                          </div>
-                          <div className="flex justify-start">
-                            <div className="">
-                              <label
-                                htmlFor={`contributor-${index}-walletAddress`}
-                                className="mb-1 block text-xs"
-                              >
-                                Wallet address
-                              </label>
-                              <input
-                                type="text"
-                                disabled={isLoading}
-                                id={`contributor-${index}-walletAddress`}
-                                value={contributor.walletAddress}
-                                onChange={(e) =>
-                                  handleWalletAddressContributor(
-                                    index,
-                                    'walletAddress',
-                                    e.target.value,
-                                  )
-                                }
-                                className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                              />
-                            </div>
-                            <div className="ml-2">
-                              <label
-                                htmlFor={`payment-${index}-amount`}
-                                className="mb-1 block text-xs"
-                              >
-                                Budget %
-                              </label>
-                              <input
-                                type="text"
-                                disabled={isLoading}
-                                id={`payment-${index}-amount`}
-                                value={contributor.budgetPercentage}
-                                onChange={(e) =>
-                                  handleBudgetPercentage(
-                                    index,
-                                    'budgetPercentage',
-                                    e.target.value,
-                                  )
-                                }
-                                className="mt-[8px] h-[46px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                              />
-                            </div>
-                          </div>
+
+                  <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                    <span className="flex flex-row">
+                      Add contributors (optional)
+                    </span>
+                    {contributors.map((contributor, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Contributor {index + 1}</h3>
+                          {index === contributors.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeleteContributors(index)}
+                              className="ml-2 font-extrabold text-[#707070]"
+                            >
+                              X
+                            </button>
+                          )}
                         </div>
-                      ))}
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`contributor-${index}-walletAddress`}
+                              className="mb-1 block text-xs"
+                            >
+                              Wallet address
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`contributor-${index}-walletAddress`}
+                              value={contributor.walletAddress}
+                              onChange={(e) =>
+                                handleWalletAddressContributor(
+                                  index,
+                                  'walletAddress',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`payment-${index}-amount`}
+                              className="mb-1 block text-xs"
+                            >
+                              Budget %
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-amount`}
+                              value={contributor.budgetPercentage}
+                              onChange={(e) =>
+                                handleBudgetPercentage(
+                                  index,
+                                  'budgetPercentage',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] mr-[15px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          {index === contributors.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={addContributors}
+                              className="mt-[28px] h-[42px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                            >
+                              + Add more
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {(!contributors || contributors.length === 0) && (
                       <button
                         type="button"
                         disabled={isLoading}
                         onClick={addContributors}
-                        className="mt-2 h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[17px]  font-normal text-[#000000] hover:bg-[#707070] hover:text-white"
+                        className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                       >
-                        Add contributor
+                        + Add contributor
                       </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div className="mt-[30px]">
                     <span className="flex flex-row">
-                      Description
+                      Project Description (full)
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.description?.message}
                       </p>
@@ -993,8 +1011,8 @@ const NewTask = () => {
                     <textarea
                       disabled={isLoading}
                       style={{ resize: 'none' }}
-                      className="mt-[8px] h-[190px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
-                      maxLength={2000}
+                      className="mt-[10px] h-[574px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
+                      maxLength={5000}
                       placeholder="Type here"
                       {...register('description')}
                     />
@@ -1003,7 +1021,7 @@ const NewTask = () => {
                 <div className="mt-[30px]">
                   <span className="flex flex-row">
                     Departament
-                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                       {errors.departament?.message}
                     </p>
                   </span>
@@ -1020,7 +1038,7 @@ const NewTask = () => {
                           field.onChange(newValue)
                           setDepartament(newValue)
                         }}
-                        className="mt-2 text-body-color"
+                        className="mt-[10px]"
                         options={departamentOptions}
                         getOptionLabel={(option) => `${option}`}
                         sx={{
@@ -1064,7 +1082,7 @@ const NewTask = () => {
                 <div className="mt-[30px]">
                   <span className="flex flex-row">
                     Github Repository Link
-                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                       {errors.githubLink?.message}
                     </p>
                   </span>
@@ -1074,13 +1092,13 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('githubLink')}
                     onChange={(e) => handleLink(0, 'url', e.target.value)}
-                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
                 <div className="mt-[30px]">
                   <span className="flex flex-row">
                     Calendar Link
-                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                       {errors.calendarLink?.message}
                     </p>
                   </span>
@@ -1090,13 +1108,13 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('calendarLink')}
                     onChange={(e) => handleLink(1, 'url', e.target.value)}
-                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
                 <div className="mt-[30px]">
                   <span className="flex flex-row">
                     Reach out Link
-                    <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                       {errors.reachOutLink?.message}
                     </p>
                   </span>
@@ -1106,20 +1124,22 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('reachOutLink')}
                     onChange={(e) => handleLink(2, 'url', e.target.value)}
-                    className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
               </div>
             </div>
             {isLoading ? (
-              <button
-                type="button"
-                className="mt-[120px] pb-60 text-[18px] font-bold"
-                onClick={handleSubmit(onSubmit)}
-                disabled={true}
-              >
+              <div className="mt-[30px] flex pb-60">
+                <button
+                  disabled={true}
+                  className=" mr-[15px] h-[50px] w-[250px] rounded-[10px] bg-[#53c781] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#53c781]"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <span className="">Submit for Review</span>
+                </button>
                 <svg
-                  className="animate-spin"
+                  className="mt-1 animate-spin"
                   height="40px"
                   id="Icons"
                   version="1.1"
@@ -1129,13 +1149,12 @@ const NewTask = () => {
                 >
                   <path d="M58.385,34.343V21.615L53.77,26.23C50.244,22.694,45.377,20.5,40,20.5c-10.752,0-19.5,8.748-19.5,19.5S29.248,59.5,40,59.5  c7.205,0,13.496-3.939,16.871-9.767l-4.326-2.496C50.035,51.571,45.358,54.5,40,54.5c-7.995,0-14.5-6.505-14.5-14.5  S32.005,25.5,40,25.5c3.998,0,7.617,1.632,10.239,4.261l-4.583,4.583H58.385z" />
                 </svg>
-                <span className="pt-2 pr-4">Loading</span>
-              </button>
+              </div>
             ) : (
-              <div className="mt-[120px] pb-60">
+              <div className="mt-[30px] pb-60">
                 <button
                   type="submit"
-                  className=" w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39]"
+                  className=" h-[50px] w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#0e7a39]"
                   onClick={handleSubmit(onSubmit)}
                 >
                   <span className="">Submit for Review</span>

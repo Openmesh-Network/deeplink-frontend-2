@@ -26,35 +26,33 @@ const HeroNewTasks = () => {
 
   if (!address) {
     return (
-      <section className="border-b border-[#CFCFCF] px-32 pt-16 pb-8 lg:pt-40">
+      <section className="border-b border-[#CFCFCF] px-32 pb-[43px] pt-[40px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap items-start">
-            <div className="w-full px-4 lg:w-2/3">
-              <div className="wow fadeInUp" data-wow-delay=".2s">
-                <div className="mb-1">
-                  <h3 className=" mb-4 text-[30px] font-bold text-[#000000]">
-                    Add New Project
-                  </h3>
-                </div>
+            <div className="wow fadeInUp" data-wow-delay=".2s">
+              <div className="mb-1">
+                <h3 className="text-[20px] font-bold text-[#000000]">
+                  Add New Project
+                </h3>
               </div>
             </div>
           </div>
-          <div className="text-[#000000]">Connect you wallet to continue</div>
+          <div className="mt-4 text-[#000000]">
+            Connect you wallet to continue
+          </div>
         </div>
       </section>
     )
   }
   return (
-    <section className="border-b border-[#CFCFCF] px-32 pt-16 pb-8 lg:pt-40">
+    <section className="border-b border-[#CFCFCF] px-32 pb-[43px] pt-[40px]">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4 lg:w-2/3">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <h3 className="mb-4 text-[30px] font-bold text-[#000000]">
-                  Add New Project
-                </h3>
-              </div>
+            <div className="mb-1">
+              <h3 className="text-[20px] font-bold !leading-[150%] text-[#000000]">
+                Add New Project
+              </h3>
             </div>
           </div>
         </div>
