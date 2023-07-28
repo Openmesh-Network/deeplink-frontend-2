@@ -613,7 +613,7 @@ const NewTask = () => {
                     </span>
                     <input
                       disabled={isLoading}
-                      className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                      className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                       type="text"
                       maxLength={100}
                       placeholder=""
@@ -640,6 +640,21 @@ const NewTask = () => {
                         <Autocomplete
                           {...field}
                           multiple
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
                           disabled={isLoading}
                           className="mt-[10px]"
                           options={skillOptions}
@@ -670,7 +685,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '42px',
+                                  height: '55px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -697,6 +712,21 @@ const NewTask = () => {
                         <Autocomplete
                           {...field}
                           disabled={isLoading}
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
                           value={projectLength}
                           onChange={(e, newValue) => {
                             field.onChange(newValue)
@@ -708,7 +738,7 @@ const NewTask = () => {
                           sx={{
                             width: '500px',
                             fieldset: {
-                              height: '42px',
+                              height: '55px',
                               borderColor: '#D4D4D4',
                               borderRadius: '10px',
                             },
@@ -731,7 +761,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '42px',
+                                  height: '55px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -760,7 +790,7 @@ const NewTask = () => {
                           selected={value}
                           dateFormat="yyyy-MM-dd"
                           disabled={isLoading}
-                          className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                          className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                         />
                       )}
                     />
@@ -802,7 +832,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
                           <div className="ml-2">
@@ -824,7 +854,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] mr-[15px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
                           {index === payments.length - 1 && (
@@ -832,7 +862,7 @@ const NewTask = () => {
                               type="button"
                               disabled={isLoading}
                               onClick={addPayments}
-                              className="mt-[28px] h-[42px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                             >
                               + Add more
                             </button>
@@ -845,7 +875,7 @@ const NewTask = () => {
                         type="button"
                         disabled={isLoading}
                         onClick={addPayments}
-                        className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                       >
                         + Add payment
                       </button>
@@ -867,6 +897,21 @@ const NewTask = () => {
                           {...field}
                           disabled={isLoading}
                           value={numberOfApplicants}
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
                           onChange={(e, newValue) => {
                             field.onChange(newValue)
                             setNumberOfApplicants(newValue)
@@ -877,7 +922,7 @@ const NewTask = () => {
                           sx={{
                             width: '500px',
                             fieldset: {
-                              height: '42px',
+                              height: '55px',
                               borderColor: '#D4D4D4',
                               borderRadius: '10px',
                             },
@@ -900,7 +945,7 @@ const NewTask = () => {
                               sx={{
                                 width: '500px',
                                 fieldset: {
-                                  height: '42px',
+                                  height: '55px',
                                   borderColor: '#D4D4D4',
                                   borderRadius: '10px',
                                 },
@@ -952,7 +997,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
                           <div className="ml-2">
@@ -974,7 +1019,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] mr-[15px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
                           {index === contributors.length - 1 && (
@@ -982,7 +1027,7 @@ const NewTask = () => {
                               type="button"
                               disabled={isLoading}
                               onClick={addContributors}
-                              className="mt-[28px] h-[42px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                             >
                               + Add more
                             </button>
@@ -995,7 +1040,7 @@ const NewTask = () => {
                         type="button"
                         disabled={isLoading}
                         onClick={addContributors}
-                        className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                       >
                         + Add contributor
                       </button>
@@ -1011,7 +1056,7 @@ const NewTask = () => {
                     <textarea
                       disabled={isLoading}
                       style={{ resize: 'none' }}
-                      className="mt-[10px] h-[574px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
+                      className="mt-[10px] h-[574px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[25px] py-[25px] text-[17px] font-normal outline-0"
                       maxLength={5000}
                       placeholder="Type here"
                       {...register('description')}
@@ -1033,6 +1078,21 @@ const NewTask = () => {
                       <Autocomplete
                         {...field}
                         disabled={isLoading}
+                        popupIcon={
+                          <svg
+                            width="16"
+                            height="10"
+                            viewBox="0 0 16 10"
+                            className="mr-[15px] mt-[13px]"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                              fill="#959595"
+                            />
+                          </svg>
+                        }
                         value={departament}
                         onChange={(e, newValue) => {
                           field.onChange(newValue)
@@ -1044,7 +1104,7 @@ const NewTask = () => {
                         sx={{
                           width: '500px',
                           fieldset: {
-                            height: '46px',
+                            height: '55px',
                             borderColor: '#D4D4D4',
                             borderRadius: '10px',
                           },
@@ -1067,7 +1127,7 @@ const NewTask = () => {
                             sx={{
                               width: '500px',
                               fieldset: {
-                                height: '46px',
+                                height: '55px',
                                 borderColor: '#D4D4D4',
                                 borderRadius: '10px',
                               },
@@ -1092,7 +1152,7 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('githubLink')}
                     onChange={(e) => handleLink(0, 'url', e.target.value)}
-                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
                 <div className="mt-[30px]">
@@ -1108,7 +1168,7 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('calendarLink')}
                     onChange={(e) => handleLink(1, 'url', e.target.value)}
-                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
                 <div className="mt-[30px]">
@@ -1124,7 +1184,7 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('reachOutLink')}
                     onChange={(e) => handleLink(2, 'url', e.target.value)}
-                    className="mt-[10px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
                 </div>
               </div>
