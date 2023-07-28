@@ -10,6 +10,7 @@ interface TasksModalProps {
     daysLeft: string
     payments: Payment[]
     status: string
+    estimatedBudget: string
     skills: string[]
   }
   index: number
@@ -39,20 +40,39 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
       </div>
       <div className="flex w-[15%] items-center">
         <p
-          className="overflow-hidden line-clamp-1"
+          className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
           title={task.skills && task.skills.join(' | ')}
         >
           {task.skills && task.skills.join(', ')}
         </p>
       </div>
-      <div className="flex w-[10%] items-center overflow-hidden line-clamp-1">
+      <div className=" flex w-[10%] items-center">
         {/* <p
           className="my-3 overflow-hidden  line-clamp-5 lg:line-clamp-6"
           title={task.budget.join(' | ')}
         >
           {task.budget.join(' | ')}
         </p> */}
-        {task.payments &&
+        {task.estimatedBudget && (
+          <div className="flex">
+            <p key={index}>$</p>
+            <p
+              title={Number(task.estimatedBudget).toLocaleString('en-US')}
+              className="mr-1 max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap"
+              key={index}
+            >
+              {Number(task.estimatedBudget).toLocaleString('en-US')}
+            </p>
+            <p>{`(`}</p>
+            <img
+              src="/images/tokens/usd-coin-usdc-logo.svg"
+              alt="image"
+              className={`w-[14px]`}
+            />
+            <p>{`)`}</p>
+          </div>
+        )}
+        {/* {task.payments &&
           task.payments.map((budg, index) => (
             <div key={index} className="flex">
               <p key={index}>$</p>
@@ -68,7 +88,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
               />
               <p>{`)`}</p>
             </div>
-          ))}
+          ))} */}
       </div>
       <div className="flex w-[8%] items-center">{task.daysLeft}</div>
       <div className="flex w-[12%]">

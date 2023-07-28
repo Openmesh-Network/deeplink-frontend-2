@@ -32,6 +32,7 @@ export type TasksOverview = {
   skills: string[]
   type: string
   payments: Payment[]
+  estimatedBudget: string
 }
 
 export type TransactionHistory = {
