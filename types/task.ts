@@ -19,6 +19,7 @@ export type IPFSSubmition = {
   payments: Payment[]
   links: Link[] | null
   file: string | null
+  status: string | null
 }
 
 export type TasksOverview = {

@@ -21,6 +21,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { IPFSSubmition } from '@/types/task'
+import HeroTask from './HeroTask'
 
 const TaskView = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
@@ -143,49 +144,51 @@ const TaskView = (id: any) => {
   }
 
   return (
-    <section className="py-16 px-32 text-[#000000] md:py-20 lg:pt-40">
-      <div className="container  border-b border-[#8d8d8d] pb-12">
-        <div className="-mx-4 flex flex-wrap items-start">
-          <div className="w-full px-4">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1 flex justify-between">
-                <div className="w-4/5">
-                  <h3 className="mb-4 text-[30px] font-bold">
-                    {taskMetadata.title}
-                  </h3>
-                  <p
-                    title={taskMetadata.description}
-                    className="overflow-hidden text-[24px] font-medium !leading-tight text-[#505050] line-clamp-3"
-                  >
-                    {taskMetadata.description}
-                  </p>
-                  <div className="mt-10 flex text-[20px] font-medium text-[#505050]">
-                    <p>Available funds</p>{' '}
-                    <div className="ml-4 mt-1 flex max-w-xl items-start justify-start px-2">
-                      {taskMetadata.payments.map((payment, index) => (
-                        <div
-                          key={index}
-                          className="flex text-base text-[#000000]"
-                        >
-                          <p>
-                            {Number(payment.amount) / 10 ** payment.decimals}
-                          </p>
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
-                            className="mt-[2px] ml-1 flex text-sm hover:text-primary"
+    <>
+      <HeroTask task={taskChainData} />
+      <section className="px-32 pt-[59px]">
+        <div className="container  border-b border-[#CFCFCF] pb-[43px]">
+          <div className="-mx-4 flex flex-wrap items-start">
+            <div className="w-full px-4">
+              <div className="wow fadeInUp" data-wow-delay=".2s">
+                <div className="mb-1 flex justify-between">
+                  <div className="w-4/5">
+                    <h3 className="mb-4 text-[30px] font-bold">
+                      {taskMetadata.title}
+                    </h3>
+                    <p
+                      title={taskMetadata.description}
+                      className="overflow-hidden text-[24px] font-medium !leading-tight text-[#505050] line-clamp-3"
+                    >
+                      {taskMetadata.description}
+                    </p>
+                    <div className="mt-10 flex text-[20px] font-medium text-[#505050]">
+                      <p>Available funds</p>{' '}
+                      <div className="ml-4 mt-1 flex max-w-xl items-start justify-start px-2">
+                        {taskMetadata.payments.map((payment, index) => (
+                          <div
+                            key={index}
+                            className="flex text-base text-[#000000]"
                           >
-                            {truncateHash(payment.tokenContract)}
-                          </a>
-                          {index < taskMetadata.payments.length - 1 && (
-                            <span className="mr-2">,</span>
-                          )}
-                        </div>
-                      ))}
+                            <p>
+                              {Number(payment.amount) / 10 ** payment.decimals}
+                            </p>
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
+                              className="mt-[2px] ml-1 flex text-sm hover:text-primary"
+                            >
+                              {truncateHash(payment.tokenContract)}
+                            </a>
+                            {index < taskMetadata.payments.length - 1 && (
+                              <span className="mr-2">,</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  {/* <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                     <div className="mt-14 flex">
                       <button className="mr-8 border border-[#0057E1] bg-[#0057E1] px-3 py-1 text-sm text-white hover:border-[#0057E1] hover:bg-white hover:text-[#0057E1]">
                         {' '}
@@ -197,7 +200,7 @@ const TaskView = (id: any) => {
                       </button>
                     </div>
                   </div> */}
-                  {/* <div className="mt-14 flex">
+                    {/* <div className="mt-14 flex">
                     <p className=" text-[#595959]">Project scope</p>
                     <div className="ml-16 flex space-x-2">
                       {taskMetadata.skills.map((skill, index) => (
@@ -210,7 +213,7 @@ const TaskView = (id: any) => {
                       ))}
                     </div>
                   </div> */}
-                  {/* <div className="mt-4 flex">
+                    {/* <div className="mt-4 flex">
                     <p className=" text-[#595959]">Main contributors</p>
                     <div className="ml-8 flex space-x-2">
                       <a
@@ -229,133 +232,135 @@ const TaskView = (id: any) => {
                       </a>
                     </div>
                   </div> */}
-                </div>
-                <div className="w-[162px] pt-11">
-                  {' '}
-                  <div className="flex justify-end text-[20px] font-bold text-[#505050]">
-                    {' '}
-                    <img
-                      src={`/images/task/${taskState[taskChainData.state].img}`}
-                      alt="image"
-                      className={`w-[34px]`}
-                    />
-                    <p className="">
-                      Status: {taskState[taskChainData.state].state}
-                    </p>
                   </div>
-                  <div className="mt-4 flex justify-start pl-3 text-[20px] font-bold">
-                    <div>
-                      <p className=""> Deadline: </p>
-                      <p className="font-normal">
-                        {
-                          new Date(taskMetadata.deadline)
-                            .toISOString()
-                            .split('T')[0]
-                        }
+                  <div className="w-[162px] pt-11">
+                    {' '}
+                    <div className="flex justify-end text-[20px] font-bold text-[#505050]">
+                      {' '}
+                      <img
+                        src={`/images/task/${
+                          taskState[taskChainData.state].img
+                        }`}
+                        alt="image"
+                        className={`w-[34px]`}
+                      />
+                      <p className="">
+                        Status: {taskState[taskChainData.state].state}
                       </p>
                     </div>
-                  </div>
-                  <div className="mt-6 pl-3">
-                    <button
-                      onClick={() => {
-                        console.log('a quantidade de updates')
-                        console.log(transactionCount)
-                      }}
-                      className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]"
-                    >
-                      Start working
-                    </button>
+                    <div className="mt-4 flex justify-start pl-3 text-[20px] font-bold">
+                      <div>
+                        <p className=""> Deadline: </p>
+                        <p className="font-normal">
+                          {
+                            new Date(taskMetadata.deadline)
+                              .toISOString()
+                              .split('T')[0]
+                          }
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-6 pl-3">
+                      <button
+                        onClick={() => {
+                          console.log('a quantidade de updates')
+                          console.log(transactionCount)
+                        }}
+                        className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]"
+                      >
+                        Start working
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="container  mt-12 font-medium">
-        <div className="-mx-4 flex flex-wrap items-start">
-          <div className="w-full px-4">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <div className="text-18 mb-4 flex font-bold">
-                  <div
-                    className={`mr-12  pb-2 ${
-                      viewOption === 'projectDescription'
-                        ? 'border-b-[2px] border-[#000000]'
-                        : ''
-                    }`}
-                  >
-                    <p
-                      onClick={() => {
-                        setViewOption('projectDescription')
-                      }}
-                      className="cursor-pointer hover:text-[#353535]"
+        <div className="container  mt-12 font-medium">
+          <div className="-mx-4 flex flex-wrap items-start">
+            <div className="w-full px-4">
+              <div className="wow fadeInUp" data-wow-delay=".2s">
+                <div className="mb-1">
+                  <div className="text-18 mb-4 flex font-bold">
+                    <div
+                      className={`mr-12  pb-2 ${
+                        viewOption === 'projectDescription'
+                          ? 'border-b-[2px] border-[#000000]'
+                          : ''
+                      }`}
                     >
-                      Project description
-                    </p>
-                  </div>
-                  <div
-                    className={`pb-2 ${
-                      viewOption === 'updates'
-                        ? 'border-b-[2px] border-[#000000]'
-                        : ''
-                    }`}
-                  >
-                    <p
-                      onClick={() => {
-                        setViewOption('updates')
-                      }}
-                      className="cursor-pointer hover:text-[#353535]"
-                    >
-                      Updates
-                      {/* Aqui inserir o numero de updates (transactions events) que teve */}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-10 flex">
-                  {viewOption === 'projectDescription' ? (
-                    <div className="mt-8 w-[65%] text-[20px] font-normal">
-                      {imgTaskIPFS ? (
-                        <img
-                          src={imgTaskIPFS}
-                          alt="project desc"
-                          className="h-[375px] w-[375px]"
-                        ></img>
-                      ) : (
-                        <></>
-                      )}
-
-                      <p className="mt-16">{taskMetadata.description}</p>
-                      <p className="mt-14 text-xl font-semibold">
-                        Relevant links
+                      <p
+                        onClick={() => {
+                          setViewOption('projectDescription')
+                        }}
+                        className="cursor-pointer hover:text-[#353535]"
+                      >
+                        Project description
                       </p>
-                      {taskMetadata.links.map((link, index) => (
-                        <p className="mt-1 flex" key={index}>
-                          <p className="">{link.title}</p>
-                          <p className="mr-2">:</p>
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-primary"
-                            href={link.url}
-                          >
-                            {link.url}
-                          </a>
-                        </p>
-                      ))}
                     </div>
-                  ) : (
-                    <div className="mt-8 w-[65%]">
-                      <TransactionList id={id} />
+                    <div
+                      className={`pb-2 ${
+                        viewOption === 'updates'
+                          ? 'border-b-[2px] border-[#000000]'
+                          : ''
+                      }`}
+                    >
+                      <p
+                        onClick={() => {
+                          setViewOption('updates')
+                        }}
+                        className="cursor-pointer hover:text-[#353535]"
+                      >
+                        Updates
+                        {/* Aqui inserir o numero de updates (transactions events) que teve */}
+                      </p>
                     </div>
-                  )}
+                  </div>
+                  <div className="mt-10 flex">
+                    {viewOption === 'projectDescription' ? (
+                      <div className="mt-8 w-[65%] text-[20px] font-normal">
+                        {imgTaskIPFS ? (
+                          <img
+                            src={imgTaskIPFS}
+                            alt="project desc"
+                            className="h-[375px] w-[375px]"
+                          ></img>
+                        ) : (
+                          <></>
+                        )}
 
-                  <div className="mt-8 w-[35%] pl-20 text-[#363636]">
-                    <div className="shadow-lg">
-                      <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
-                        <p>More details</p>
+                        <p className="mt-16">{taskMetadata.description}</p>
+                        <p className="mt-14 text-xl font-semibold">
+                          Relevant links
+                        </p>
+                        {taskMetadata.links.map((link, index) => (
+                          <p className="mt-1 flex" key={index}>
+                            <p className="">{link.title}</p>
+                            <p className="mr-2">:</p>
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-primary"
+                              href={link.url}
+                            >
+                              {link.url}
+                            </a>
+                          </p>
+                        ))}
                       </div>
-                      {/* <a
+                    ) : (
+                      <div className="mt-8 w-[65%]">
+                        <TransactionList id={id} />
+                      </div>
+                    )}
+
+                    <div className="mt-8 w-[35%] pl-20 text-[#363636]">
+                      <div className="shadow-lg">
+                        <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
+                          <p>More details</p>
+                        </div>
+                        {/* <a
                         href="https://calendar.google.com/calendar/u/0/r"
                         target="_blank"
                         rel="nofollow noreferrer"
@@ -366,69 +371,70 @@ const TaskView = (id: any) => {
                           className={`mt-4 ml-1 w-[70px] hover:z-20 hover:scale-110`}
                         />
                       </a> */}
-                      <div className="mt-8 px-8 pb-8 text-[18px]">
-                        <a
-                          href="https://github.com/"
-                          target="_blank"
-                          rel="nofollow noreferrer"
-                          className="border-b border-[#0085FF] font-normal text-[#0085FF]"
-                        >
-                          View on Github
-                        </a>
-                        <div className="mt-4">
-                          <p className="font-bold text-[#505050]">
-                            Last Updated:
-                          </p>
-                          <p>3 days ago</p>
-                        </div>
-                        <div className="mt-4">
-                          <p className="font-bold text-[#505050]">
-                            Next meeting:
-                          </p>
-                          <p>10:30 PM UTC 23-12-2021</p>
-                        </div>
-                        <div className="mt-4">
-                          <p>Reacht out to a</p>
+                        <div className="mt-8 px-8 pb-8 text-[18px]">
                           <a
                             href="https://github.com/"
                             target="_blank"
                             rel="nofollow noreferrer"
-                            className="border-b border-[#0085FF] text-[#0085FF]"
+                            className="border-b border-[#0085FF] font-normal text-[#0085FF]"
                           >
-                            verified contributor
+                            View on Github
                           </a>
+                          <div className="mt-4">
+                            <p className="font-bold text-[#505050]">
+                              Last Updated:
+                            </p>
+                            <p>3 days ago</p>
+                          </div>
+                          <div className="mt-4">
+                            <p className="font-bold text-[#505050]">
+                              Next meeting:
+                            </p>
+                            <p>10:30 PM UTC 23-12-2021</p>
+                          </div>
+                          <div className="mt-4">
+                            <p>Reacht out to a</p>
+                            <a
+                              href="https://github.com/"
+                              target="_blank"
+                              rel="nofollow noreferrer"
+                              className="border-b border-[#0085FF] text-[#0085FF]"
+                            >
+                              verified contributor
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-10 shadow-lg">
+                        <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
+                          <p>Contributors</p>
+                        </div>
+                        <div className="mt-8 px-8 pb-8 text-[18px] font-normal">
+                          Empty
                         </div>
                       </div>
                     </div>
-                    <div className="mt-10 shadow-lg">
-                      <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
-                        <p>Contributors</p>
-                      </div>
-                      <div className="mt-8 px-8 pb-8 text-[18px] font-normal">
-                        Empty
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div className=" mt-20 flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
-                  <p>
-                    | Have more questions? Reach out to{' '}
-                    <a
-                      href="https://mumbai.polygonscan.com/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="border-b border-[#0084FE] text-[#0084FE]"
-                    >
-                      a verified contributor
-                    </a>
-                  </p>
+                  <div className=" mt-20 flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
+                    <p>
+                      | Have more questions? Reach out to{' '}
+                      <a
+                        href="https://mumbai.polygonscan.com/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="border-b border-[#0084FE] text-[#0084FE]"
+                      >
+                        a verified contributor
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 
