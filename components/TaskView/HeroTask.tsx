@@ -222,50 +222,6 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     </a>
                   </div>
                 </div>
-                {/* <div className="flex justify-between">
-                    <div className="mt-14 flex">
-                      <button className="mr-8 border border-[#0057E1] bg-[#0057E1] px-3 py-1 text-sm text-white hover:border-[#0057E1] hover:bg-white hover:text-[#0057E1]">
-                        {' '}
-                        Start working{' '}
-                      </button>
-                      <button className="border bg-white px-3 py-1 text-sm text-[#0057E1] hover:border-white hover:bg-[#0057E1] hover:text-white">
-                        {' '}
-                        View on Github{' '}
-                      </button>
-                    </div>
-                  </div> */}
-                {/* <div className="mt-14 flex">
-                    <p className=" text-[#595959]">Project scope</p>
-                    <div className="ml-16 flex space-x-2">
-                      {taskMetadata.skills.map((skill, index) => (
-                        <span
-                          key={index}
-                          className="rounded-md bg-[#01E2AC] px-2 py-1 text-[11px] font-bold text-[#000000]"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div> */}
-                {/* <div className="mt-4 flex">
-                    <p className=" text-[#595959]">Main contributors</p>
-                    <div className="ml-8 flex space-x-2">
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`https://mumbai.polygonscan.com/address/${taskChainData.proposer}`}
-                        className="mt-1 flex hover:text-primary"
-                      >
-                        <UserOutlined />
-                        <p
-                          className="overflow-hidden text-xs font-semibold line-clamp-5 lg:text-xs lg:line-clamp-6"
-                          title={taskChainData.proposer}
-                        >
-                          {formatAddress(taskChainData.proposer)}
-                        </p>
-                      </a>
-                    </div>
-                  </div> */}
               </div>
               <div className="w-[163px]">
                 {' '}
