@@ -407,7 +407,7 @@ const TransactionList = () => {
           />
           <section className="px-32" id={'taskStart'}>
             <div className="container">
-              <div className="pr-2 text-[#000000]">
+              {/* <div className="pr-2 text-[#000000]">
                 <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
                   <div className="mr-4 flex w-[35%] items-center">
                     <p
@@ -427,11 +427,11 @@ const TransactionList = () => {
                   </div>
                   <div className="flex w-[10%] items-center">
                     <p className="pr-2">Budget</p>
-                    {/* <img
+                    <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
                   className={`w-[14px]`}
-                /> */}
+                />
                   </div>
                   <div className="flex w-[8%] items-center">
                     <p className="pr-2">Ends</p>
@@ -499,7 +499,7 @@ const TransactionList = () => {
                     )}
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </section>
         </>

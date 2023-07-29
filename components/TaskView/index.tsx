@@ -20,22 +20,22 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition } from '@/types/task'
+import { IPFSSubmition, TasksOverview } from '@/types/task'
 import HeroTask from './HeroTask'
 
 const TaskView = (id: any) => {
-  const [filteredTasks, setFilteredTasks] = useState([])
-  const [departament, setDepartament] = useState('All')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [imgTaskIPFS, setImgTaskIPFS] = useState('')
   const [viewOption, setViewOption] = useState('projectDescription')
-  const [taskMetadata, setTaskMetadata] = useState<IPFSSubmition>()
-  const [taskChainData, setTaskChainData] = useState<any>()
-  const [transactionCount, setTransactionCount] = useState<number>(0)
+  const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
 
   const { push } = useRouter()
 
-  const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
+  const taskStateCircle = {
+    open: 'circle-green-task.svg',
+    taken: 'circle-yellow-task.svg',
+    closed: 'circle-gray-task.svg',
+  }
 
   const taskState = [
     { state: 'Open', img: 'circle-green-task.svg' },
@@ -43,88 +43,74 @@ const TaskView = (id: any) => {
     { state: 'Closed', img: 'circle-gray-task.svg' },
   ]
 
-  async function getTaskFromChain(id: any) {
-    setIsLoading(true)
-    console.log('getting data from task')
-    let data
-    try {
-      data = await readContract({
-        address: `0x${taskAddress.substring(2)}`,
-        abi: taskContractABI,
-        args: [Number(id)],
-        functionName: 'getTask',
-      })
-    } catch (err) {
-      toast.error(
-        'Something occurred while fetching data from the smart-contract!',
-      )
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      push('/')
-    }
-    console.log('the data:')
-    console.log(data)
-    setTaskChainData(data)
-    await getDataFromIPFS(data['metadata'])
-  }
-
   function truncateHash(hash) {
     const start = hash.slice(0, 5)
     const end = hash.slice(-5)
     return `${start}...${end}`
   }
 
-  async function getDataFromIPFS(hash: string) {
-    const url = `https://cloudflare-ipfs.com/ipfs/${hash}`
-
-    await axios
-      .get(url)
-      .then(async (response) => {
-        console.log('the metadata:')
-        console.log(response.data)
-        if (response.data.file) {
-          setImgTaskIPFS(
-            `https://cloudflare-ipfs.com/ipfs/${response.data.file}`,
-          )
-        }
-        await setTaskMetadata(response.data)
-        await getDecimalsFromPaymentsToken(response.data.payments)
-        console.log('after the validation:')
-        console.log(taskMetadata)
-        setIsLoading(false)
-      })
-      .catch(async (err) => {
-        toast.error('Something occurred while fetching data from IPFS!')
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        push('/')
-        console.log(err)
-      })
-  }
-
-  async function getDecimalsFromPaymentsToken(payments) {
-    console.log('getting decimals')
-    console.log(payments)
-    const newPayments = [...payments] // creating a copy of the payments
-    for (let i = 0; i < payments.length; i++) {
-      const data = await readContract({
-        address: `0x${payments[i].tokenContract.substring(2)}`,
-        abi: erc20ContractABI,
-        functionName: 'decimals',
-      })
-      console.log('the decimal from token:')
-      console.log(data)
-      if (data) {
-        newPayments[i].decimals = Number(data) // modifying the copy
-      }
+  async function getTask(id: any) {
+    const dataBody = {
+      id,
     }
-    // updating the state with the modified copy
-    setTaskMetadata((prevState) => ({ ...prevState, payments: newPayments }))
+    setIsLoading(true)
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/getTask`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data: dataBody,
+    }
+
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          setTaskMetadata(response.data)
+        }
+      })
+    } catch (err) {
+      toast.error('Task undefined!')
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      push('/')
+      console.log(err)
+    }
+
+    setIsLoading(false)
   }
+
+  function formatDate(timestamp: string) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
+
+    const date = new Date(Number(timestamp) * 1000)
+
+    const day = date.getDate()
+    const month = months[date.getMonth()]
+    const year = date.getFullYear()
+
+    return `${day} ${month} ${year}`
+  }
+
   useEffect(() => {
     if (id) {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
       console.log(id.id)
-      getTaskFromChain(id.id)
+      getTask(id.id)
     }
   }, [id])
   function formatAddress(address) {
@@ -145,7 +131,7 @@ const TaskView = (id: any) => {
 
   return (
     <>
-      <HeroTask task={taskChainData} />
+      <HeroTask task={taskMetadata} />
       <section className="px-32 pt-[59px]">
         <div className="container  border-b border-[#CFCFCF] pb-[43px]">
           <div className="-mx-4 flex flex-wrap items-start">
@@ -239,24 +225,18 @@ const TaskView = (id: any) => {
                       {' '}
                       <img
                         src={`/images/task/${
-                          taskState[taskChainData.state].img
+                          taskStateCircle[taskMetadata.status]
                         }`}
                         alt="image"
                         className={`w-[34px]`}
                       />
-                      <p className="">
-                        Status: {taskState[taskChainData.state].state}
-                      </p>
+                      <p className="">Status: {taskMetadata.status}</p>
                     </div>
                     <div className="mt-4 flex justify-start pl-3 text-[20px] font-bold">
                       <div>
                         <p className=""> Deadline: </p>
                         <p className="font-normal">
-                          {
-                            new Date(taskMetadata.deadline)
-                              .toISOString()
-                              .split('T')[0]
-                          }
+                          {formatDate(taskMetadata.deadline)}
                         </p>
                       </div>
                     </div>
@@ -264,7 +244,6 @@ const TaskView = (id: any) => {
                       <button
                         onClick={() => {
                           console.log('a quantidade de updates')
-                          console.log(transactionCount)
                         }}
                         className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]"
                       >

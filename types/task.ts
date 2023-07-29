@@ -30,6 +30,7 @@ export type TasksOverview = {
   daysLeft: string
   departament: string
   status: string
+  links: Link[] | null
   skills: string[]
   type: string
   payments: Payment[]

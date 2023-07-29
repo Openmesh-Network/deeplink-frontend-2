@@ -23,7 +23,6 @@ export default function Home() {
     <>
       <ScrollUp />
       <Hero />
-      <DepartamentsList />
       {/* <EmblaCarousel /> */}
       {/* <Features /> */}
       {/* <TransactionList /> */}
