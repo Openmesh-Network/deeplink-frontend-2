@@ -37,6 +37,8 @@ const TaskView = (id: any) => {
     closed: 'circle-gray-task.svg',
   }
 
+  const mockDataContributors = [{address: '0x0DD7167d9707faFE0837c0b1fe12348AfAabF170'}, {address: '0x0D49C384055bAe6865982e40fC811264fAA1DA17'}, {address: '0x08ADb3400E48cACb7d5a5CB386877B3A159d525C'}]
+
   const taskState = [
     { state: 'Open', img: 'circle-green-task.svg' },
     { state: 'Taken', img: 'circle-yellow-task.svg' },
@@ -78,6 +80,12 @@ const TaskView = (id: any) => {
     }
 
     setIsLoading(false)
+  }
+
+  function returnContributors() {
+    if (!taskMetadata.contributors || taskMetadata.contributors.length === 0) {
+      return 'Empty'
+    }
   }
 
   function formatDate(timestamp: string) {
@@ -132,91 +140,105 @@ const TaskView = (id: any) => {
   return (
     <>
       <HeroTask task={taskMetadata} />
-      <section className="px-32 pt-[59px] text-[#000000]">
-        <div className="container  mt-12 font-medium">
+      <section className="px-32 pt-[59px]">
+        <div className="container  mt-12 text-[16px] font-medium !leading-[19px] text-[#000000]">
           <div className="-mx-4 flex flex-wrap items-start">
             <div className="w-full px-4">
-              <div className="wow fadeInUp" data-wow-delay=".2s">
-                <div className="mb-1">
-                  <div className="text-18 mb-4 flex font-bold">
-                    <div
-                      className={`mr-12  pb-2 ${
-                        viewOption === 'projectDescription'
-                          ? 'border-b-[2px] border-[#000000]'
-                          : ''
-                      }`}
-                    >
-                      <p
-                        onClick={() => {
-                          setViewOption('projectDescription')
-                        }}
-                        className="cursor-pointer hover:text-[#353535]"
-                      >
-                        Project description
-                      </p>
-                    </div>
-                    <div
-                      className={`pb-2 ${
-                        viewOption === 'updates'
-                          ? 'border-b-[2px] border-[#000000]'
-                          : ''
-                      }`}
-                    >
-                      <p
-                        onClick={() => {
-                          setViewOption('updates')
-                        }}
-                        className="cursor-pointer hover:text-[#353535]"
-                      >
-                        Updates
-                        {/* Aqui inserir o numero de updates (transactions events) que teve */}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="mt-10 flex">
-                    {viewOption === 'projectDescription' ? (
-                      <div className="mt-8 w-[65%] text-[20px] font-normal">
-                        {imgTaskIPFS ? (
-                          <img
-                            src={imgTaskIPFS}
-                            alt="project desc"
-                            className="h-[375px] w-[375px]"
-                          ></img>
-                        ) : (
-                          <></>
-                        )}
-
-                        <p className="mt-16">{taskMetadata.description}</p>
-                        <p className="mt-14 text-xl font-semibold">
-                          Relevant links
-                        </p>
-                        {taskMetadata.links.map((link, index) => (
-                          <p className="mt-1 flex" key={index}>
-                            <p className="">{link.title}</p>
-                            <p className="mr-2">:</p>
-                            <a
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:text-primary"
-                              href={link.url}
-                            >
-                              {link.url}
-                            </a>
-                          </p>
-                        ))}
-                      </div>
+              <div className="flex font-bold !leading-[150%]">
+                <div
+                  className={`px-[17px]  pb-[14px] ${
+                    viewOption === 'projectDescription'
+                      ? 'border-b-[2px] border-[#000000]'
+                      : ''
+                  }`}
+                >
+                  <p
+                    onClick={() => {
+                      setViewOption('projectDescription')
+                    }}
+                    className="cursor-pointer hover:text-[#353535]"
+                  >
+                    Project description
+                  </p>
+                </div>
+                <div
+                  className={`mx-[57px] px-[17px]  pb-[14px] ${
+                    viewOption === 'submissions'
+                      ? 'border-b-[2px]  border-[#000000]'
+                      : ''
+                  }`}
+                >
+                  <p
+                    onClick={() => {
+                      setViewOption('submissions')
+                    }}
+                    className="cursor-pointer hover:text-[#353535]"
+                  >
+                    Applicants & submissions
+                    {/* Aqui inserir o numero de updates (transactions events) que teve */}
+                  </p>
+                </div>
+                <div
+                  className={`px-[17px]  pb-[14px] ${
+                    viewOption === 'updates'
+                      ? 'border-b-[2px]  border-[#000000]'
+                      : ''
+                  }`}
+                >
+                  <p
+                    onClick={() => {
+                      setViewOption('updates')
+                    }}
+                    className="cursor-pointer hover:text-[#353535]"
+                  >
+                    Updates
+                    {/* Aqui inserir o numero de updates (transactions events) que teve */}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-10 flex">
+                {viewOption === 'projectDescription' ? (
+                  <div className="mt-8 w-full text-[20px] font-normal">
+                    {imgTaskIPFS ? (
+                      <img
+                        src={imgTaskIPFS}
+                        alt="project desc"
+                        className="h-[375px] w-[375px]"
+                      ></img>
                     ) : (
-                      <div className="mt-8 w-[65%]">
-                        <TransactionList id={id} />
-                      </div>
+                      <></>
                     )}
 
-                    <div className="mt-8 w-[35%] pl-20 text-[#363636]">
-                      <div className="shadow-lg">
-                        <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
-                          <p>More details</p>
-                        </div>
-                        {/* <a
+                    <p className="mt-16">{taskMetadata.description}</p>
+                    <p className="mt-14 text-xl font-semibold">
+                      Relevant links
+                    </p>
+                    {taskMetadata.links.map((link, index) => (
+                      <p className="mt-1 flex" key={index}>
+                        <p className="">{link.title}</p>
+                        <p className="mr-2">:</p>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary"
+                          href={link.url}
+                        >
+                          {link.url}
+                        </a>
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mt-8 w-[65%]">
+                    <TransactionList id={id} />
+                  </div>
+                )}
+                <div className="w-[400px] text-[#505050]">
+                  <div className="shadow-lg">
+                    <div className="flex h-[79px] items-center bg-[#F7F8F9] px-[30px] font-bold">
+                      <p>More details</p>
+                    </div>
+                    {/* <a
                         href="https://calendar.google.com/calendar/u/0/r"
                         target="_blank"
                         rel="nofollow noreferrer"
@@ -227,64 +249,60 @@ const TaskView = (id: any) => {
                           className={`mt-4 ml-1 w-[70px] hover:z-20 hover:scale-110`}
                         />
                       </a> */}
-                        <div className="mt-8 px-8 pb-8 text-[18px]">
+                    <div className="flex h-[270px] items-center px-[30px]">
+                      <div>
+                        <a
+                          href="https://github.com/"
+                          target="_blank"
+                          rel="nofollow noreferrer"
+                          className="border-b border-[#0354EC] font-normal text-[#0354EC]"
+                        >
+                          View on Github
+                        </a>
+                        <div className="mt-[25px]">
+                          <p className="font-bold">Last Updated:</p>
+                          <p>3 days ago</p>
+                        </div>
+                        <div className="mt-[25px]">
+                          <p className="font-bold">Next meeting:</p>
+                          <p>10:30 PM UTC 23-12-2021</p>
+                        </div>
+                        <div className="mt-[25px]">
+                          <p>Reacht out to a</p>
                           <a
                             href="https://github.com/"
                             target="_blank"
                             rel="nofollow noreferrer"
-                            className="border-b border-[#0085FF] font-normal text-[#0085FF]"
+                            className="border-b border-[#0354EC] text-[#0354EC]"
                           >
-                            View on Github
+                            verified contributor
                           </a>
-                          <div className="mt-4">
-                            <p className="font-bold text-[#505050]">
-                              Last Updated:
-                            </p>
-                            <p>3 days ago</p>
-                          </div>
-                          <div className="mt-4">
-                            <p className="font-bold text-[#505050]">
-                              Next meeting:
-                            </p>
-                            <p>10:30 PM UTC 23-12-2021</p>
-                          </div>
-                          <div className="mt-4">
-                            <p>Reacht out to a</p>
-                            <a
-                              href="https://github.com/"
-                              target="_blank"
-                              rel="nofollow noreferrer"
-                              className="border-b border-[#0085FF] text-[#0085FF]"
-                            >
-                              verified contributor
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-10 shadow-lg">
-                        <div className="flex h-[89px] items-center bg-[#F7F8F9] px-8 text-[24px] font-medium text-[#505050]">
-                          <p>Contributors</p>
-                        </div>
-                        <div className="mt-8 px-8 pb-8 text-[18px] font-normal">
-                          Empty
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className=" mt-20 flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
-                    <p>
-                      | Have more questions? Reach out to{' '}
-                      <a
-                        href="https://mumbai.polygonscan.com/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="border-b border-[#0084FE] text-[#0084FE]"
-                      >
-                        a verified contributor
-                      </a>
-                    </p>
+                  <div className="mt-[40px] shadow-lg">
+                    <div className="flex h-[79px] items-center bg-[#F7F8F9] px-[30px] font-bold">
+                      <p>Contributors</p>
+                    </div>
+                    <div className="px-[30px] py-[40px]">
+                      {returnContributors()}
+                    </div>
                   </div>
                 </div>
+              </div>
+              <div className=" mt-20 flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
+                <p>
+                  | Have more questions? Reach out to{' '}
+                  <a
+                    href="https://mumbai.polygonscan.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="border-b border-[#0084FE] text-[#0084FE]"
+                  >
+                    a verified contributor
+                  </a>
+                </p>
               </div>
             </div>
           </div>

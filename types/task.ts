@@ -37,6 +37,7 @@ export type TasksOverview = {
   type: string
   payments: Payment[]
   estimatedBudget: string
+  contributors: string | null
 }
 
 export type TransactionHistory = {

@@ -179,7 +179,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
                       Contributors needed:
                     </p>{' '}
                     <span className="flex items-center text-[16px] font-bold text-[#303030]">
-                      ${task.contributorsNeeded}
+                      {task.contributorsNeeded}
                     </span>
                   </div>
                   <div className="mr-[50px] flex">
