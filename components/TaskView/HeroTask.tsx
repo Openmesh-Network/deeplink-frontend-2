@@ -54,6 +54,20 @@ const HeroTask = ({ task }: TasksModalProps) => {
     }
   }
 
+  function findGithubLink(array) {
+    const item = array.find((obj) => obj.title === 'githubLink')
+
+    if (item) {
+      if (item.url.startsWith('https://')) {
+        return item.url
+      } else {
+        return 'https://' + item.url
+      }
+    } else {
+      return 'https://www.github.com'
+    }
+  }
+
   function formatDate(timestamp: string) {
     const months = [
       'January',
@@ -84,12 +98,12 @@ const HeroTask = ({ task }: TasksModalProps) => {
   }
 
   return (
-    <section className="border-b border-[#CFCFCF] px-32 pt-[59px] pb-[43px]">
+    <section className="border-b border-[#CFCFCF] px-32 pt-[59px] pb-[70px]">
       <div className="container text-[16px] font-medium !leading-[19px] text-[#000000]">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
             <div className="flex justify-between">
-              <div className="w-4/5">
+              <div className="w-full">
                 <h3
                   title={task.description}
                   className="mb-[50px] overflow-hidden text-ellipsis whitespace-nowrap  text-[24px] font-bold !leading-[120%]"
@@ -164,11 +178,11 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     <p className="mr-[3px] flex items-center">
                       Contributors needed:
                     </p>{' '}
-                    <span className="flex items-center text-[16px] font-bold text-[#000000]">
+                    <span className="flex items-center text-[16px] font-bold text-[#303030]">
                       ${task.contributorsNeeded}
                     </span>
                   </div>
-                  <div className="mr-[22px] flex">
+                  <div className="mr-[50px] flex">
                     <img
                       src="/images/task/clock.svg"
                       alt="image"
@@ -177,37 +191,35 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     <p className="mr-[3px] flex items-center">
                       Project length:
                     </p>{' '}
-                    <span className="flex items-center text-[16px] font-bold text-[#000000]">
-                      ${task.estimatedBudget}
+                    <span className="flex items-center text-[16px] font-bold text-[#303030]">
+                      {task.projectLength}
                     </span>
                   </div>
-
-                  <div className="flex items-center text-[16px] font-normal">
-                    {task.payments.map((payment, index) => (
-                      <div key={index} className="flex">
-                        <img
-                          src={`/images/tokens/${getTokenLogo(
-                            payment.tokenContract,
-                          )}.svg`}
-                          alt="image"
-                          className={`mr-[1px] w-[22px]`}
-                        />
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
-                          className="mt-[2px] border-b border-[#505050] hover:text-primary"
-                        >
-                          {(
-                            Number(payment.amount) /
-                            10 ** payment.decimals
-                          ).toLocaleString('en-US')}
-                        </a>
-                        {index < task.payments.length - 1 && (
-                          <span className="mr-2">,</span>
-                        )}
-                      </div>
-                    ))}
+                  <div className="mr-[10px] flex">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${findGithubLink(task.links)}`}
+                      className="mr-[18px]  cursor-pointer hover:text-primary"
+                    >
+                      <img
+                        src="/images/task/github-logo.svg"
+                        alt="image"
+                        className={`w-[22px]`}
+                      />
+                    </a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://mumbai.polygonscan.com`}
+                      className="mr-[18px]  cursor-pointer hover:text-primary"
+                    >
+                      <img
+                        src="/images/task/share-logo.svg"
+                        alt="image"
+                        className={`w-[22px]`}
+                      />
+                    </a>
                   </div>
                 </div>
                 {/* <div className="flex justify-between">
@@ -255,27 +267,31 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     </div>
                   </div> */}
               </div>
-              <div className="w-[162px] pt-11">
+              <div className="w-[163px]">
                 {' '}
-                <div className="flex justify-end text-[20px] font-bold text-[#505050]">
-                  {' '}
-                  <img
-                    src={`/images/task/${taskStateCircle[task.status]}`}
-                    alt="image"
-                    className={`w-[34px]`}
-                  />
-                  <p className="">Status: {task.status}</p>
-                </div>
-                <div className="mt-4 flex justify-start pl-3 text-[20px] font-bold">
-                  <div>
-                    <p className=""> Deadline: </p>
-                    <p className="font-normal">{formatDate(task.deadline)}</p>
+                <div className="text-[16px] font-bold text-[#000000]">
+                  <div className="flex !leading-[150%]">Status:</div>
+                  <div className="mt-[6px] flex">
+                    <img
+                      src={`/images/task/${taskStateCircle[task.status]}`}
+                      alt="image"
+                      className={`mr-[10px] w-[20px]`}
+                    />
+                    <p className="text-[16px] font-medium text-[#303030]">
+                      {task.status}
+                    </p>
                   </div>
                 </div>
-                <div className="mt-6 pl-3">
+                <div className="mt-[25px] text-[16px] font-bold !leading-[150%] text-[#000000]">
+                  <p> Deadline: </p>
+                  <p className="font-medium text-[#303030]">
+                    {formatDate(task.deadline)}
+                  </p>
+                </div>
+                <div className="mt-[25px]">
                   <button
                     onClick={() => {}}
-                    className="ml-auto w-[150px] cursor-pointer rounded-md bg-[#12AD50] py-2 px-3 text-[18px] font-bold text-white hover:bg-[#0b9040]"
+                    className="h-[43px] w-full cursor-pointer rounded-[10px] bg-[#12AD50] text-[16px] font-bold text-white hover:bg-[#0b9040]"
                   >
                     Start working
                   </button>

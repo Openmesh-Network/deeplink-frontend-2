@@ -32,6 +32,7 @@ export type TasksOverview = {
   status: string
   links: Link[] | null
   contributorsNeeded: string
+  projectLength: string
   skills: string[]
   type: string
   payments: Payment[]
