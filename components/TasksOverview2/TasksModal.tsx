@@ -47,12 +47,6 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
         </p>
       </div>
       <div className=" flex w-[10%] items-center">
-        {/* <p
-          className="my-3 overflow-hidden  line-clamp-5 lg:line-clamp-6"
-          title={task.budget.join(' | ')}
-        >
-          {task.budget.join(' | ')}
-        </p> */}
         {task.estimatedBudget && (
           <div className="flex">
             <p key={index}>$</p>
@@ -72,23 +66,6 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
             <p>{`)`}</p>
           </div>
         )}
-        {/* {task.payments &&
-          task.payments.map((budg, index) => (
-            <div key={index} className="flex">
-              <p key={index}>$</p>
-              <p className="mr-1" key={index}>
-                {Math.round(Number(budg.amount) / 10 ** budg.decimals)}
-                {index !== task.payments.length - 1 && ', '}
-              </p>
-              <p>{`(`}</p>
-              <img
-                src="/images/tokens/usd-coin-usdc-logo.svg"
-                alt="image"
-                className={`w-[14px]`}
-              />
-              <p>{`)`}</p>
-            </div>
-          ))} */}
       </div>
       <div className="flex w-[8%] items-center">{task.daysLeft}</div>
       <div className="flex w-[12%]">

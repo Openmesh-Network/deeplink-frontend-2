@@ -9,6 +9,10 @@ export type Link = {
   url: string
 }
 
+export type ContributorInfo = {
+  address: string
+}
+
 export type IPFSSubmition = {
   title: string
   description: string
@@ -20,6 +24,17 @@ export type IPFSSubmition = {
   links: Link[] | null
   file: string | null
   status: string | null
+}
+
+export type Application = {
+  metadataDisplayName: string
+  proposer: string
+  applicant: string
+  metadataDescription: string
+  metadataProposedBudget: string
+  timestamp: string
+  totalEarned: string | null
+  jobSuccess: string | null
 }
 
 export type TasksOverview = {
@@ -37,7 +52,8 @@ export type TasksOverview = {
   type: string
   payments: Payment[]
   estimatedBudget: string
-  contributors: string | null
+  contributors: ContributorInfo[] | null
+  Application: Application[] | null
 }
 
 export type TransactionHistory = {
