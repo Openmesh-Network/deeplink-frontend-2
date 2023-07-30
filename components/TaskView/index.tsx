@@ -134,10 +134,10 @@ const TaskView = (id: any) => {
   return (
     <>
       <HeroTask task={taskMetadata} />
-      <section className="px-32 pt-[59px] pb-[250px]">
-        <div className="container  mt-12 text-[16px] font-medium !leading-[19px] text-[#000000]">
-          <div className="-mx-4 flex flex-wrap items-start">
-            <div className="w-full px-4">
+      <section className="px-[100px] pt-[59px] pb-[250px]">
+        <div className="container mt-12  px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+          <div className="flex flex-wrap items-start">
+            <div className="w-full">
               <div className="flex font-bold !leading-[150%]">
                 <div
                   className={`px-[17px]  pb-[14px] ${

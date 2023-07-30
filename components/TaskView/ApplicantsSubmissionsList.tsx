@@ -267,23 +267,10 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
           </a>
         </div>
       </div>
-      <div className="mt-[30px] pr-2 text-[#000000]">
-        <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
-          <div className="mr-4 flex w-[35%] items-center">
-            <p
-              onClick={() => {
-                console.log('as tasks')
-                console.log(finalTasks)
-                console.log('filtered tasks')
-                console.log(filteredTasks)
-              }}
-              className="pr-2"
-            >
-              Applicants
-            </p>
-          </div>
-          <div className="flex w-[10%] items-center">
-            <p className="pr-[15px]">Budget</p>
+      <div className="mt-[30px] text-[#000000]">
+        <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+          <div className="mr-[52px] flex w-[400px] pl-[25px]">
+            <p className="mr-[10px]">Applicants</p>
             <svg
               onClick={handleOrderByBudgetSelection}
               className={`w-[14px] cursor-pointer  ${
@@ -299,14 +286,53 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
               />
             </svg>
           </div>
-          <div className="flex w-[15%] items-center">
-            <p className="pr-2">Job Success</p>
+          <div className="mr-[52px] flex pl-[44px]">
+            <p className="mr-[10px]">Budget</p>
+            <svg
+              onClick={handleOrderByBudgetSelection}
+              className={`w-[14px] cursor-pointer  ${
+                orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
+              }`}
+              viewBox="0 0 16 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                fill="#959595"
+              />
+            </svg>
           </div>
-          <div className="flex w-[15%] items-center">
-            <p className="pr-2">Total Earned</p>
+          <div className="mr-[52px] flex">
+            <p className="mr-[10px]">Job Success</p>
+            <svg
+              className={`w-[14px] cursor-pointer`}
+              viewBox="0 0 16 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                fill="#959595"
+              />
+            </svg>
           </div>
-          <div className="flex w-[8%] items-center">
-            <p className="pr-[15px]">Joined</p>
+          <div className="mr-[52px] flex pl-[29px]">
+            <p className="mr-[10px]">Total Earned</p>
+            <svg
+              className={`w-[14px] cursor-pointer`}
+              viewBox="0 0 16 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                fill="#959595"
+              />
+            </svg>
+          </div>
+          <div className="mr-[177px] flex pl-[47px]">
+            <p className="mr-[10px]">Joined</p>
             <svg
               onClick={handleOrderByTimestampSelection}
               className={`w-[14px] cursor-pointer  ${
@@ -322,7 +348,6 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
               />
             </svg>
           </div>
-          <div className="w-[12%]"></div>
         </div>
         {isLoading && (
           <div className="mt-[34px]">
@@ -388,18 +413,18 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                     {application.metadataDescription}
                   </div>
                 </div>
-                <div className="mr-[52px] flex w-[125px] items-center">
+                <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
                   <p className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {returnsBudget(application.metadataProposedBudget)}
                   </p>
                 </div>
-                <div className=" mr-[52px] flex w-[125px]  items-center">
-                  {application.jobSuccess || 'Undefined'}
+                <div className="mr-[52px] flex w-[55px] items-center">
+                  <p>{application.jobSuccess || 'Undefined'}</p>
                 </div>
-                <div className="mr-[52px] flex w-[150px]  items-center">
-                  {application.totalEarned || 'Undefined'}
+                <div className="mr-[52px] flex w-[55px] items-center">
+                  <p>{application.jobSuccess || 'Undefined'}</p>
                 </div>
-                <div className="mr-[52px] flex w-[125px] items-center">
+                <div className="mr-[52px] flex w-[225px] items-center justify-center">
                   {formatDeadline(application.timestamp)}
                 </div>
                 <div className="flex">

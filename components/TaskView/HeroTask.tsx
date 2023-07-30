@@ -98,8 +98,8 @@ const HeroTask = ({ task }: TasksModalProps) => {
   }
 
   return (
-    <section className="border-b border-[#CFCFCF] px-32 pt-[59px] pb-[70px]">
-      <div className="container text-[16px] font-medium !leading-[19px] text-[#000000]">
+    <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
+      <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
             <div className="flex justify-between">
