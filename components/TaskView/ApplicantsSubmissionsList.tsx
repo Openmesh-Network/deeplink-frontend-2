@@ -3,6 +3,7 @@
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
+import { formatDistanceToNow } from 'date-fns'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import {
@@ -36,7 +37,8 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [departament, setDepartament] = useState('All')
-  const [orderByDeadline, setOrderByDeadline] = useState('')
+  const [orderByTimestamp, setOrderByTimestamp] = useState('oldest')
+  const [orderByBudget, setOrderByBudget] = useState('greater')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
@@ -59,14 +61,46 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
   const handleDepartamentSelection = (value: string) => {
     updateUrl('departament', value)
   }
-  const handleOrderByDeadlineSelection = () => {
-    if (orderByDeadline === 'oldest') {
-      setOrderByDeadline('newest')
-      updateUrl('orderBy', 'newest')
+  const handleOrderByTimestampSelection = () => {
+    let sortedApplications
+
+    if (orderByTimestamp === 'oldest') {
+      setOrderByTimestamp('newest')
+      // do here the sorting to show the most recent timestamps first
+      sortedApplications = [...applications].sort(
+        (a, b) => Number(b.timestamp) - Number(a.timestamp),
+      )
     } else {
-      setOrderByDeadline('oldest')
-      updateUrl('orderBy', 'oldest')
+      setOrderByTimestamp('oldest')
+      // do here the sorting to show the oldest timestamps first
+      sortedApplications = [...applications].sort(
+        (a, b) => Number(a.timestamp) - Number(b.timestamp),
+      )
     }
+
+    setApplications(sortedApplications)
+  }
+
+  const handleOrderByBudgetSelection = () => {
+    let sortedApplications
+
+    if (orderByBudget === 'greater') {
+      setOrderByBudget('lesser')
+      // do here the sorting to show the cheaper budgets first
+      sortedApplications = [...applications].sort(
+        (a, b) =>
+          Number(a.metadataProposedBudget) - Number(b.metadataProposedBudget),
+      )
+    } else {
+      setOrderByBudget('greater')
+      // do here the sorting to show the more expensive budgets first
+      sortedApplications = [...applications].sort(
+        (a, b) =>
+          Number(b.metadataProposedBudget) - Number(a.metadataProposedBudget),
+      )
+    }
+
+    setApplications(sortedApplications)
   }
 
   const handlePaginationSelectionNext = () => {
@@ -76,6 +110,17 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
   const handlePaginationSelectionPrev = () => {
     updateUrl('page', String(pagination.currentPage - 1))
     scrollManually()
+  }
+
+  function formatDeadline(timestamp) {
+    const date = new Date(Number(timestamp) * 1000)
+    let difference = formatDistanceToNow(date)
+
+    // Aqui estamos tratando a frase para exibir 'today' se a task foi criada no mesmo dia
+    difference = `${difference.charAt(0).toUpperCase()}${difference.slice(
+      1,
+    )} ago`
+    return difference
   }
 
   // Função para atualizar a URL
@@ -240,8 +285,9 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
           <div className="flex w-[10%] items-center">
             <p className="pr-[15px]">Budget</p>
             <svg
+              onClick={handleOrderByBudgetSelection}
               className={`w-[14px] cursor-pointer  ${
-                orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
               }`}
               viewBox="0 0 16 10"
               fill="none"
@@ -262,9 +308,9 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
           <div className="flex w-[8%] items-center">
             <p className="pr-[15px]">Joined</p>
             <svg
-              onClick={handleOrderByDeadlineSelection}
+              onClick={handleOrderByTimestampSelection}
               className={`w-[14px] cursor-pointer  ${
-                orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                orderByTimestamp === 'newest' ? 'rotate-180 transform' : ''
               }`}
               viewBox="0 0 16 10"
               fill="none"
@@ -304,9 +350,9 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                   index === 0 ? 'mt-[34px]' : 'mt-[25px]'
                 } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal text-[#000000]`}
               >
-                <div className="mr-4 w-[35%] items-center">
+                <div className="mr-[52px] w-[400px] items-center">
                   <div className="flex">
-                  <div>
+                    <div>
                       <img
                         alt="ethereum avatar"
                         src={`https://effigy.im/a/${application.applicant}.svg`}
@@ -342,41 +388,26 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                     {application.metadataDescription}
                   </div>
                 </div>
-                <div className="flex w-[15%] items-center">
+                <div className="mr-[52px] flex w-[125px] items-center">
                   <p className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {returnsBudget(application.metadataProposedBudget)}
                   </p>
                 </div>
-                <div className=" flex w-[10%] items-center">
-                  {/* {task.estimatedBudget && (
-                    <div className="flex">
-                      <p key={index}>$</p>
-                      <p
-                        title={Number(task.estimatedBudget).toLocaleString(
-                          'en-US',
-                        )}
-                        className="mr-1 max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap"
-                        key={index}
-                      >
-                        {Number(task.estimatedBudget).toLocaleString('en-US')}
-                      </p>
-                      <p>{`(`}</p>
-                      <img
-                        src="/images/tokens/usd-coin-usdc-logo.svg"
-                        alt="image"
-                        className={`w-[14px]`}
-                      />
-                      <p>{`)`}</p>
-                    </div>
-                  )} */}
+                <div className=" mr-[52px] flex w-[125px]  items-center">
+                  {application.jobSuccess || 'Undefined'}
                 </div>
-                {/* <div className="flex w-[8%] items-center">{task.daysLeft}</div> */}
-                <div className="flex w-[12%]">
+                <div className="mr-[52px] flex w-[150px]  items-center">
+                  {application.totalEarned || 'Undefined'}
+                </div>
+                <div className="mr-[52px] flex w-[125px] items-center">
+                  {formatDeadline(application.timestamp)}
+                </div>
+                <div className="flex">
                   <a
                     // href={`/task/${task.id}`}
                     target="_blank"
                     rel="nofollow noreferrer"
-                    className="ml-auto cursor-pointer rounded-md border border-[#0354EC] bg-white py-1 px-4 text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                    className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
                   >
                     View more
                   </a>
