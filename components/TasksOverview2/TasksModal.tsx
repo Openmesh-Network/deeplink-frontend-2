@@ -52,7 +52,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
             <p key={index}>$</p>
             <p
               title={Number(task.estimatedBudget).toLocaleString('en-US')}
-              className="mr-1 max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap"
+              className="mr-1 max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
               key={index}
             >
               {Number(task.estimatedBudget).toLocaleString('en-US')}

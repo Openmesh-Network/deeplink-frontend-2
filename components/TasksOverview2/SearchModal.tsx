@@ -175,8 +175,8 @@ const SearchModal = ({
   }, [pathname])
 
   return (
-    <section className="mt-[34px] px-32">
-      <div className="container">
+    <section className="mt-[34px] px-[100px]">
+      <div className="container px-0">
         <div className="flex">
           <input
             type="text"

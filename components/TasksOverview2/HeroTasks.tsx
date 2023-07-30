@@ -72,10 +72,10 @@ const HeroTasks = () => {
   }, [pathname])
 
   return (
-    <section className="px-32 pt-[44px]">
-      <div className="container">
-        <div className="-mx-4 flex flex-wrap items-start">
-          <div className="w-full px-4 lg:w-2/3">
+    <section className="px-[100px] pt-[44px]">
+      <div className="container px-0">
+        <div className="flex flex-wrap items-start">
+          <div className="w-full lg:w-2/3">
             <div>
               <div className="">
                 <p className="text-[14px] font-medium !leading-[17px] text-[#505050]">

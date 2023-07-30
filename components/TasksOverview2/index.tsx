@@ -31,6 +31,7 @@ const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByDeadline, setOrderByDeadline] = useState('')
+  const [orderByEstimatedBudget, setOrderByEstimatedBudget] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
@@ -50,6 +51,7 @@ const TransactionList = () => {
     'Front-end',
   ]
   const orderByOptions = ['newest', 'oldest']
+  const budgetOrderByOptions = ['greater', 'lesser']
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
@@ -59,12 +61,33 @@ const TransactionList = () => {
     updateUrl('departament', value)
   }
   const handleOrderByDeadlineSelection = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('budgetOrderBy')
+      window.history.pushState({}, '', url.toString())
+    }
     if (orderByDeadline === 'oldest') {
       setOrderByDeadline('newest')
       updateUrl('orderBy', 'newest')
     } else {
       setOrderByDeadline('oldest')
       updateUrl('orderBy', 'oldest')
+    }
+  }
+
+  const handleOrderByEstimatedBudgetSelection = () => {
+    if (typeof window !== 'undefined') {
+      console.log('window is undefined tn')
+      const url = new URL(window.location.href)
+      url.searchParams.delete('orderBy')
+      window.history.pushState({}, '', url.toString())
+    }
+    if (orderByEstimatedBudget === 'greater') {
+      setOrderByEstimatedBudget('lesser')
+      updateUrl('budgetOrderBy', 'lesser')
+    } else {
+      setOrderByEstimatedBudget('greater')
+      updateUrl('budgetOrderBy', 'greater')
     }
   }
 
@@ -147,6 +170,16 @@ const TransactionList = () => {
       console.log(orderBy)
       if (orderBy && orderByOptions.includes(orderBy)) {
         dataBody['deadlineSorting'] = orderBy
+        setOrderByDeadline(orderBy)
+      }
+
+      const budgetOrderBy = url.searchParams.get('budgetOrderBy')
+      console.log(budgetOrderBy)
+      if (budgetOrderBy && budgetOrderByOptions.includes(budgetOrderBy)) {
+        dataBody['estimatedBudgetSorting'] = budgetOrderBy
+        // cannot have two ordersby - so estimatedBudgetSorting has priority over deadlineSorting
+        setOrderByDeadline('')
+        setOrderByEstimatedBudget(budgetOrderBy)
       }
 
       const searchBar = url.searchParams.get('searchBar')
@@ -223,9 +256,9 @@ const TransactionList = () => {
         activeProjectsNumber={counting ? counting.active : 0}
         completedProjectsNumber={counting ? counting.completed : 0}
       />
-      <section className="px-32 pt-[40px]" id={'taskStart'}>
-        <div className="container">
-          <div className="pr-2 text-[#000000]">
+      <section className="px-[100px] pt-[40px]" id={'taskStart'}>
+        <div className="container px-0">
+          <div className=" text-[#000000]">
             <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
               <div className="mr-4 flex w-[35%] items-center">
                 <p
@@ -251,8 +284,11 @@ const TransactionList = () => {
                   className={`w-[14px]`}
                 /> */}
                 <svg
+                  onClick={handleOrderByEstimatedBudgetSelection}
                   className={`w-[14px] cursor-pointer  ${
-                    orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                    orderByEstimatedBudget === 'greater'
+                      ? 'rotate-180 transform'
+                      : ''
                   }`}
                   viewBox="0 0 16 10"
                   fill="none"

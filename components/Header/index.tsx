@@ -76,12 +76,10 @@ const Header = () => {
             : 'absolute'
         }`}
       > */}
-      <header
-        className={`header top-0 left-0 flex w-full items-center bg-[#F9F9F9]`}
-      >
-        <div className="container">
-          <div className="relative -mx-[70px] flex items-center justify-between text-black">
-            <div className="px-4">
+      <header className={`header flex w-full items-center bg-[#F9F9F9]`}>
+        <div className="container w-full px-0">
+          <div className="relative  flex items-center  text-black">
+            <div className="">
               <Link
                 href="/"
                 className={`header-logo mr-[60px] block w-full py-8 `}
@@ -200,9 +198,7 @@ const Header = () => {
                 <div>
                   <Web3Button />
                 </div>
-                <div className="ml-3">
-                  {isChainWrong && <Web3NetworkSwitch />}
-                </div>
+                <div className="">{isChainWrong && <Web3NetworkSwitch />}</div>
 
                 <div>{/* <ThemeToggler /> */}</div>
               </div>
