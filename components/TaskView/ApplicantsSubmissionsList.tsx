@@ -28,10 +28,11 @@ import { File, SmileySad, Info } from 'phosphor-react'
 type ApplicantsSubmissionsListProps = {
   data: Application[]
   taskId: string
+  budget: string
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({data, taskId}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [departament, setDepartament] = useState('All')
@@ -183,6 +184,18 @@ const ApplicantsSubmissionsList = ({data, taskId}: ApplicantsSubmissionsListProp
     )
   }
 
+  function returnsBudget(percentage: string) {
+    // eslint-disable-next-line prettier/prettier
+    const amountRequested = Number((Number(budget) * Number(percentage) / 100).toFixed(2)).toLocaleString('en-US')
+
+    return (
+      <div className="font-bold !leading-[150%]">
+        ${amountRequested}{' '}
+        <span className="font-normal !leading-[150%]">({percentage}%)</span>
+      </div>
+    )
+  }
+
   useEffect(() => {
     console.log('useEffect chamado')
     setApplications(data)
@@ -289,10 +302,17 @@ const ApplicantsSubmissionsList = ({data, taskId}: ApplicantsSubmissionsListProp
               <div
                 className={`relative mr-1 ${
                   index === 0 ? 'mt-[34px]' : 'mt-[25px]'
-                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal`}
+                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal text-[#000000]`}
               >
                 <div className="mr-4 w-[35%] items-center">
                   <div className="flex">
+                  <div>
+                      <img
+                        alt="ethereum avatar"
+                        src={`https://effigy.im/a/${application.applicant}.svg`}
+                        className="mr-[10px] w-[50px] rounded-full"
+                      ></img>
+                    </div>
                     <div>
                       <p
                         title={
@@ -306,30 +326,29 @@ const ApplicantsSubmissionsList = ({data, taskId}: ApplicantsSubmissionsListProp
                       </p>
                       <a
                         title={formatAddress(application.applicant)}
-                        className="mt-[8px] overflow-hidden text-[14px] font-normal text-[#505050]"
+                        className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://polygonscan.com/address/${application.applicant}`}
                       >
                         {formatAddress(application.applicant)}
                       </a>
                     </div>
-                    <div>
-                      <img
-                        alt="ethereum avatar"
-                        src={`https://effigy.im/a/${application.applicant}.svg`}
-                        className=" mr-[20px] w-[30px] rounded-full"
-                      ></img>
-                    </div>
+                  </div>
+                  <div
+                    title={application.metadataDescription}
+                    className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                  >
+                    {application.metadataDescription}
                   </div>
                 </div>
                 <div className="flex w-[15%] items-center">
-                  <p
-                    className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={task.skills && task.skills.join(' | ')}
-                  >
-                    {task.skills && task.skills.join(', ')}
+                  <p className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap">
+                    {returnsBudget(application.metadataProposedBudget)}
                   </p>
                 </div>
                 <div className=" flex w-[10%] items-center">
-                  {task.estimatedBudget && (
+                  {/* {task.estimatedBudget && (
                     <div className="flex">
                       <p key={index}>$</p>
                       <p
@@ -349,12 +368,12 @@ const ApplicantsSubmissionsList = ({data, taskId}: ApplicantsSubmissionsListProp
                       />
                       <p>{`)`}</p>
                     </div>
-                  )}
+                  )} */}
                 </div>
-                <div className="flex w-[8%] items-center">{task.daysLeft}</div>
+                {/* <div className="flex w-[8%] items-center">{task.daysLeft}</div> */}
                 <div className="flex w-[12%]">
                   <a
-                    href={`/task/${task.id}`}
+                    // href={`/task/${task.id}`}
                     target="_blank"
                     rel="nofollow noreferrer"
                     className="ml-auto cursor-pointer rounded-md border border-[#0354EC] bg-white py-1 px-4 text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
