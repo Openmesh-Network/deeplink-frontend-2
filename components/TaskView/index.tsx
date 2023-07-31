@@ -22,6 +22,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { IPFSSubmition, TasksOverview } from '@/types/task'
 import HeroTask from './HeroTask'
+import UpdatesList from './UpdatesList'
 import ApplicantsSubmissionsList from './ApplicantsSubmissionsList'
 
 const TaskView = (id: any) => {
@@ -184,26 +185,30 @@ const TaskView = (id: any) => {
                     }}
                     className="cursor-pointer hover:text-[#353535]"
                   >
-                    Updates
+                    Updates ({taskMetadata.updatesCount})
                     {/* Aqui inserir o numero de updates (transactions events) que teve */}
                   </p>
                 </div>
               </div>
-              {viewOption === 'projectDescription' ? (
+              {viewOption !== 'submissions' ? (
                 <div>
                   <div className="mt-[49px] flex">
-                    <div className="w-full text-[16px] font-normal !leading-[150%]">
-                      {imgTaskIPFS ? (
-                        <img
-                          src={imgTaskIPFS}
-                          alt="project desc"
-                          className="mb-[50px] h-[375px] w-[375px]"
-                        ></img>
-                      ) : (
-                        <></>
-                      )}
-                      <p className="">{taskMetadata.description}</p>
-                    </div>
+                    {viewOption === 'projectDescription' ? (
+                      <div className="mr-[50px] w-full text-[16px] font-normal !leading-[150%]">
+                        {imgTaskIPFS ? (
+                          <img
+                            src={imgTaskIPFS}
+                            alt="project desc"
+                            className="mb-[50px] h-[375px] w-[375px]"
+                          ></img>
+                        ) : (
+                          <></>
+                        )}
+                        <p className="">{taskMetadata.description}</p>
+                      </div>
+                    ) : (
+                      <UpdatesList taskId={id.id} />
+                    )}
                     <div className="w-[400px] text-[#505050]">
                       <div className="shadow-lg">
                         <div className="flex h-[79px] items-center bg-[#F7F8F9] px-[30px] font-bold">

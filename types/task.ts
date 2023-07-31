@@ -54,6 +54,14 @@ export type TasksOverview = {
   estimatedBudget: string
   contributors: ContributorInfo[] | null
   Application: Application[] | null
+  updatesCount: number | null
+}
+
+export type Event = {
+  name: string
+  transactionHash: string
+  address: string
+  timestamp: string
 }
 
 export type TransactionHistory = {
