@@ -400,7 +400,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                         className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://polygonscan.com/address/${application.applicant}`}
+                        href={`https://mumbai.polygonscan.com/address/${application.applicant}`}
                       >
                         {formatAddress(application.applicant)}
                       </a>

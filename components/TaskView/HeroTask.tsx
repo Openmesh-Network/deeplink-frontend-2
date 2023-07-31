@@ -33,6 +33,14 @@ const HeroTask = ({ task }: TasksModalProps) => {
     closed: 'circle-gray-task.svg',
   }
 
+  const taskStatusToButton = {
+    open: 'Apply now',
+  }
+
+  const taskStatusToLink = {
+    open: `/application/${task.id}`,
+  }
+
   function truncateHash(hash) {
     const start = hash.slice(0, 5)
     const end = hash.slice(-5)
@@ -248,13 +256,15 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     {formatDate(task.deadline)}
                   </p>
                 </div>
-                <div className="mt-[25px]">
-                  <button
-                    onClick={() => {}}
-                    className="h-[43px] w-full cursor-pointer rounded-[10px] bg-[#12AD50] text-[16px] font-bold text-white hover:bg-[#0b9040]"
+                <div className="mt-[25px] ">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={taskStatusToLink[task.status]}
+                    className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[16px]  font-bold text-white hover:bg-[#0b9040] "
                   >
-                    Apply now
-                  </button>
+                    {taskStatusToButton[task.status] || 'Apply now'}
+                  </a>
                 </div>
               </div>
             </div>

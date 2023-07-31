@@ -22,10 +22,10 @@ import {
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
-import { Link } from '@/types/task'
+import { Link, TasksOverview } from '@/types/task'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import HeroTaskApplication from './HeroTaskApplication'
+import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
@@ -47,7 +47,7 @@ type IPFSSubmition = {
   displayName: string
   description: string
   budgetPercentageRequested: number
-  howLikelyToMeetTheDeadline: string
+  howLikelyToMeetTheDeadline?: string | null
   links: Link[] | null
 }
 
@@ -58,6 +58,7 @@ const TaskApplication = (id: any) => {
     useState<boolean>(false)
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
+  const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
     useState<String>('#009A50')
@@ -145,10 +146,7 @@ const TaskApplication = (id: any) => {
   }
 
   const validSchema = Yup.object().shape({
-    displayName: Yup.string().required('Display name is required'),
     description: Yup.string().required('Desc is required'),
-    githubLink: Yup.string().required('Github repo is required'),
-    howLikelyToMeetTheDeadline: Yup.string().required('Required'),
     additionalLink: Yup.string().notRequired(),
   })
   const {
@@ -227,6 +225,7 @@ const TaskApplication = (id: any) => {
         if (response.data) {
           console.log('here is the task')
           console.log(response.data)
+          setTaskMetadata(response.data)
           setTaskChainData(response.data)
           setEstimatedBudgetRequested(
             Number(response.data.estimatedBudget).toLocaleString('en-US') ||
@@ -295,8 +294,13 @@ const TaskApplication = (id: any) => {
 
     setIsApplicationLoading(true)
 
+    const { additionalLink, description } = data
+
     const finalData = {
-      ...data,
+      howLikelyToMeetTheDeadline: 'Likely',
+      displayName: address,
+      additionalLink,
+      description,
       budgetPercentageRequested: budgetPercentage,
       links,
     }
@@ -308,8 +312,11 @@ const TaskApplication = (id: any) => {
       console.log(res)
       ipfsHashData = res
     } catch (err) {
+      console.log('ipfs error')
+      toast.error('Error during the task application')
       console.log(err)
       setIsApplicationLoading(false)
+      return
     }
 
     try {
@@ -340,7 +347,10 @@ const TaskApplication = (id: any) => {
   if (!address) {
     return (
       <div className="pb-[500px]">
-        <HeroTaskApplication />
+        {taskMetadata && <HeroTask task={taskMetadata} />}
+        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
+          Connect you wallet to continue
+        </div>
       </div>
     )
   }
@@ -357,7 +367,7 @@ const TaskApplication = (id: any) => {
     )
   }
 
-  if (!isLoading && !taskChainData) {
+  if (!isLoading && (!taskChainData || !taskMetadata)) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
         <div className="container flex h-60 px-0 pb-[700px]">
@@ -369,9 +379,9 @@ const TaskApplication = (id: any) => {
 
   return (
     <>
-      <HeroTaskApplication />
-      <section className="px-[100px] pt-[59px] pb-[250px]">
-        <div className="container mt-12  px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+      {taskMetadata && <HeroTask task={taskMetadata} />}
+      <section className="px-[100px] pt-[62px]  pb-[250px]">
+        <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>

@@ -97,7 +97,7 @@ const TaskView = (id: any) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary"
-                href={`https://polygonscan.com/address/${contributor.address}`}
+                href={`https://mumbai.polygonscan.com/address/${contributor.address}`}
               >
                 {formatAddress(contributor.address)}
               </a>
