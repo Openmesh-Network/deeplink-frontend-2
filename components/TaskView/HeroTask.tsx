@@ -68,6 +68,10 @@ const HeroTask = ({ task }: TasksModalProps) => {
     }
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+  }
+
   function formatDate(timestamp: string) {
     const months = [
       'January',
@@ -231,10 +235,10 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     <img
                       src={`/images/task/${taskStateCircle[task.status]}`}
                       alt="image"
-                      className={`mr-[10px] w-[20px]`}
+                      className={`mr-[2px] w-[20px]`}
                     />
                     <p className="text-[16px] font-medium text-[#303030]">
-                      {task.status}
+                      {capitalizeFirstLetter(task.status)}
                     </p>
                   </div>
                 </div>
@@ -249,7 +253,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     onClick={() => {}}
                     className="h-[43px] w-full cursor-pointer rounded-[10px] bg-[#12AD50] text-[16px] font-bold text-white hover:bg-[#0b9040]"
                   >
-                    Start working
+                    Apply now
                   </button>
                 </div>
               </div>

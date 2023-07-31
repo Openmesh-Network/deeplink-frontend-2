@@ -256,19 +256,21 @@ const TaskView = (id: any) => {
                       </div>
                     </div>
                   </div>
-                  <div className=" mt-[50px] flex w-[68%] rounded-md bg-[#F5F5F5]  py-9 pl-12 text-center text-[20px] text-[#505050]">
-                    <p>
-                      | Have more questions? Reach out to{' '}
-                      <a
-                        href="https://mumbai.polygonscan.com/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="border-b border-[#0084FE] text-[#0084FE]"
-                      >
-                        a verified contributor
-                      </a>
-                    </p>
-                  </div>
+                  {viewOption === 'projectDescription' && (
+                    <div className=" mt-[50px] mr-[400px] flex rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+                      <p>
+                        | Have more questions? Reach out to{' '}
+                        <a
+                          href="https://mumbai.polygonscan.com/"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="border-b border-[#0084FE] text-[#0084FE]"
+                        >
+                          a verified contributor
+                        </a>
+                      </p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <ApplicantsSubmissionsList

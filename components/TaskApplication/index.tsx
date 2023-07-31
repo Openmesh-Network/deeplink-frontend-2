@@ -232,6 +232,7 @@ const TaskApplication = (id: any) => {
             Number(response.data.estimatedBudget).toLocaleString('en-US') ||
               '0',
           )
+          setBudgetValue([response.data.estimatedBudget])
           // Treating payments
           const payments = response.data.payments.map((payment) => {
             const amountInNumber = Number(payment.amount)
@@ -323,6 +324,10 @@ const TaskApplication = (id: any) => {
     }
   }
 
+  function formatAddress(address) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
   useEffect(() => {
     if (id) {
       setIsLoading(true)
@@ -365,267 +370,217 @@ const TaskApplication = (id: any) => {
   return (
     <>
       <HeroTaskApplication />
-      <section className="mt-12 mb-24  px-32 text-[18px] font-medium text-[#000000]">
-        <div className="container">
+      <section className="px-[100px] pt-[59px] pb-[250px]">
+        <div className="container mt-12  px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>
-                <div className="">
-                  <div className="">
-                    <span className="flex flex-row">
-                      Display Name
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.displayName?.message}
-                      </p>
-                    </span>
-                    <input
+                <p className="text-[20px] font-bold !leading-[120%] text-[#000000]">
+                  Let’s get working!
+                </p>
+                <p className="mt-[30px] max-w-[854px] text-[16px] font-medium !leading-[140%] text-[#505050]">
+                  We're on the hunt for the absolute best candidate to lead this
+                  incredible project. We're eager to know, what makes you the
+                  perfect person to steer this ship towards resounding success?
+                </p>
+                <div className="mt-[30px]">
+                  <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    Display Name
+                  </p>
+                  <p
+                    title={address}
+                    className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
+                  >
+                    {formatAddress(address)}
+                  </p>
+                </div>
+                <div className="mt-[30px]">
+                  <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    Links
+                  </p>
+                  <p
+                    title={address}
+                    className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
+                  >
+                    www.github.com
+                  </p>
+                </div>
+              </div>
+              <div className="mt-[30px]">
+                <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                  Proposed Budget
+                </p>
+                <div className="mt-[25px]">
+                  <div className="relative w-full">
+                    <Range
+                      step={1}
                       disabled={isApplicationLoading}
-                      className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                      type="text"
-                      maxLength={100}
-                      placeholder=""
-                      {...register('displayName')}
-                    />
-                  </div>
-                  <div className="mt-[30px]">
-                    <span className="flex flex-row">
-                      Link to your Github, blog, profile
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.githubLink?.message}
-                      </p>
-                    </span>
-                    <input
-                      type="text"
-                      disabled={isApplicationLoading}
-                      maxLength={200}
-                      {...register('githubLink')}
-                      onChange={(e) => handleLink(0, 'url', e.target.value)}
-                      className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                    />
-                  </div>
-                  <div className="mt-[30px]">
-                    <span className="flex flex-row">
-                      How likely to meet the deadline
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.howLikelyToMeetTheDeadline?.message}
-                      </p>
-                    </span>
-                    <Controller
-                      name="howLikelyToMeetTheDeadline"
-                      control={control}
-                      rules={{ required: 'Required' }}
-                      render={({ field }) => (
-                        <Autocomplete
-                          {...field}
-                          disabled={isApplicationLoading}
-                          value={howLikelyToMeetTheDeadlineValue}
-                          onChange={(e, newValue) => {
-                            field.onChange(newValue)
-                            setHowLikelyToMeetTheDeadlineValue(newValue)
-                          }}
-                          className="mt-2 text-body-color"
-                          options={howLikelyToMeetTheDeadlineOptions}
-                          getOptionLabel={(option) => `${option}`}
-                          sx={{
+                      min={0}
+                      max={Number(taskChainData['estimatedBudget']) * 2.5}
+                      values={budgetValue}
+                      onChange={(values) => {
+                        // transforming value to percentage:
+                        const percentage = Number(
+                          new Decimal(values[0] * 100).div(
+                            new Decimal(taskChainData['estimatedBudget']),
+                          ),
+                        )
+                        setBudgetValue([values[0]])
+                        setBudgetValueInputColor(
+                          colorsBudget[Math.floor(percentage / rangePerColor)],
+                        )
+                        setEstimatedBudgetRequested(
+                          values[0].toLocaleString('en-US'),
+                        )
+                        setBudgetPercentage(Number(percentage.toFixed(2)))
+                      }}
+                      renderTrack={({ props, children }) => (
+                        <div
+                          {...props}
+                          style={{
+                            ...props.style,
+                            height: '9px',
                             width: '500px',
-                            fieldset: {
-                              height: '46px',
-                              borderColor: '#D4D4D4',
-                              borderRadius: '10px',
-                            },
-                            input: { color: 'black' },
+                            backgroundColor: '#ffffff',
+                            borderRadius: '4px',
+                            border: '1.5px solid #D4D4D4',
                           }}
-                          size="small"
-                          filterOptions={(options, state) =>
-                            options.filter((option) =>
-                              option
-                                .toLowerCase()
-                                .includes(state.inputValue.toLowerCase()),
-                            )
-                          }
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label=""
-                              variant="outlined"
-                              id="margin-none"
-                              sx={{
-                                width: '500px',
-                                fieldset: {
-                                  height: '46px',
-                                  borderColor: '#D4D4D4',
-                                  borderRadius: '10px',
-                                },
-                                input: { color: 'black' },
-                              }}
-                            />
-                          )}
-                        />
+                        >
+                          {children}
+                        </div>
+                      )}
+                      renderThumb={({ props }) => (
+                        <div
+                          {...props}
+                          style={{
+                            ...props.style,
+                            height: '33px',
+                            backgroundColor: `${budgetValueInputColor}`,
+                            borderRadius: '5px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <div className="px-[10px] text-[14px] font-bold text-[#ffffff]">
+                            ${estimatedBudgetRequested}
+                          </div>
+                        </div>
                       )}
                     />
-                  </div>
-                  <div className="mt-[30px]">
-                    <span className="flex flex-row">
-                      Are you happy with the budget or readjust
-                    </span>
-                    <div className="mt-[31px]">
-                      <div className="relative w-full">
-                        <Range
-                          step={1}
-                          disabled={isApplicationLoading}
-                          min={0}
-                          max={250}
-                          values={budgetValue}
-                          onChange={(values) => {
-                            setBudgetValue(values)
-                            setBudgetValueInputColor(
-                              colorsBudget[
-                                Math.floor(values[0] / rangePerColor)
-                              ],
-                            )
-                            setEstimatedBudgetRequested(
-                              Number(
-                                new Decimal(
-                                  taskChainData['estimatedBudget'],
-                                ).mul(new Decimal(values[0] / 100)),
-                              ).toLocaleString('en-US'),
-                            )
-                            setBudgetPercentage(values[0])
+                    {/* <Range
+                      step={1}
+                      disabled={isApplicationLoading}
+                      min={0}
+                      max={250}
+                      values={budgetValue}
+                      onChange={() => {}} // Its does nothing when changing
+                      renderTrack={({ props, children }) => (
+                        <div
+                          {...props}
+                          style={{
+                            ...props.style,
+                            height: '0',
+                            width: '500px',
+                            backgroundColor: 'transparent',
                           }}
-                          renderTrack={({ props, children }) => (
-                            <div
-                              {...props}
-                              style={{
-                                ...props.style,
-                                height: '9px',
-                                width: '500px',
-                                backgroundColor: '#ffffff',
-                                borderRadius: '4px',
-                                border: '1.5px solid #D4D4D4',
-                              }}
-                            >
-                              {children}
-                            </div>
-                          )}
-                          renderThumb={({ props }) => (
-                            <div
-                              {...props}
-                              style={{
-                                ...props.style,
-                                height: '31px',
-                                width: '53px',
-                                backgroundColor: `${budgetValueInputColor}`,
-                                borderRadius: '0px',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <div className="text-xs font-semibold">
-                                {budgetValue}%
-                              </div>
-                            </div>
-                          )}
-                        />
-                        <Range
-                          step={1}
-                          disabled={isApplicationLoading}
-                          min={0}
-                          max={250}
-                          values={budgetValue}
-                          onChange={() => {}} // Its does nothing when changing
-                          renderTrack={({ props, children }) => (
-                            <div
-                              {...props}
-                              style={{
-                                ...props.style,
-                                height: '0',
-                                width: '500px',
-                                backgroundColor: 'transparent',
-                              }}
-                            >
-                              {children}
-                            </div>
-                          )}
-                          renderThumb={({ props }) => (
-                            <div
-                              {...props}
-                              style={{
-                                ...props.style,
-                                height: '0',
-                                width: '250px', // Aumente a largura conforme necessário
-                                backgroundColor: 'transparent',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                position: 'relative',
-                                top: '40px', // Ajuste conforme necessário
-                              }}
-                            >
-                              <div
-                                className={`font-regular text-[12px] ${
-                                  estimatedBudgetRequested === '0'
-                                    ? 'ml-14'
-                                    : ''
-                                }`}
-                              >
-                                {estimatedBudgetRequested === '0'
-                                  ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
-                                  : `Est. $${estimatedBudgetRequested}`}
-                              </div>
-                            </div>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-[100px]">
-                    <span className="flex flex-row">
-                      Give some details why you think you are qualified
-                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                        {errors.description?.message}
-                      </p>
-                    </span>
-                    <textarea
-                      disabled={isApplicationLoading}
-                      style={{ resize: 'none' }}
-                      className="mt-[8px] h-[190px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[17px] font-normal outline-0"
-                      maxLength={2000}
-                      placeholder="Type here"
-                      {...register('description')}
-                    />
-                  </div>
-                  <div className="mt-[30px]">
-                    <span className="flex flex-row">
-                      Additional links if needed
-                      <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
-                        {errors.additionalLink?.message}
-                      </p>
-                    </span>
-                    <input
-                      type="text"
-                      disabled={isApplicationLoading}
-                      maxLength={200}
-                      {...register('additionalLink')}
-                      onChange={(e) => handleLink(1, 'url', e.target.value)}
-                      className="mt-[8px] h-[42px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                    />
+                        >
+                          {children}
+                        </div>
+                      )}
+                      renderThumb={({ props }) => (
+                        <div
+                          {...props}
+                          style={{
+                            ...props.style,
+                            height: '0',
+                            width: '250px', // Aumente a largura conforme necessário
+                            backgroundColor: 'transparent',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            position: 'relative',
+                            top: '40px', // Ajuste conforme necessário
+                          }}
+                        >
+                          <div
+                            className={`font-regular text-[12px] ${
+                              estimatedBudgetRequested === '0' ? 'ml-14' : ''
+                            }`}
+                          >
+                            {estimatedBudgetRequested === '0'
+                              ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
+                              : `Est. $${estimatedBudgetRequested}`}
+                          </div>
+                        </div>
+                      )}
+                    /> */}
                   </div>
                 </div>
+                <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
+                  Presenting a bid below the available funding can prove your
+                  ability to deliver results while being cost-effective
+                </p>
+              </div>
+              <div className="mt-[30px]">
+                <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                  What sets you apart and makes you the ideal candidate for this
+                  task?{' '}
+                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                    {errors.description?.message}
+                  </p>
+                </p>
+                <textarea
+                  disabled={isApplicationLoading}
+                  style={{ resize: 'none' }}
+                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[12px] font-normal !leading-[17px] outline-0"
+                  maxLength={2000}
+                  placeholder="Type here"
+                  {...register('description')}
+                />
+              </div>
+              <div className="mt-[30px]">
+                <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                  Additional links if needed
+                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                    {errors.additionalLink?.message}
+                  </p>
+                </span>
+                <input
+                  type="text"
+                  disabled={isApplicationLoading}
+                  maxLength={200}
+                  {...register('additionalLink')}
+                  onChange={(e) => handleLink(1, 'url', e.target.value)}
+                  className="mt-[8px] h-[41px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[12px] font-normal !leading-[17px] outline-0"
+                />
               </div>
             </div>
 
-            <div className="mt-[120px] pb-60">
+            <div className="mt-[30px]">
               <button
                 type="submit"
-                className={`w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39] ${
+                className={`rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#0e7a39] ${
                   isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
                 }`}
                 disabled={isApplicationLoading}
                 onClick={handleSubmit(onSubmit)}
               >
-                <span className="">Submit your interest</span>
+                <span className="">Apply now</span>
               </button>
+            </div>
+            <div className=" mt-[30px] flex w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+              <p>
+                | Have more questions? Reach out to{' '}
+                <a
+                  href="https://mumbai.polygonscan.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="border-b border-[#0084FE] text-[#0084FE]"
+                >
+                  a verified contributor
+                </a>
+              </p>
             </div>
           </form>
         </div>
