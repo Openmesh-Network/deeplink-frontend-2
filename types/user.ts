@@ -1,3 +1,5 @@
+import { TasksOverview } from './task'
+
 export type User = {
   id: string | null
   name: string | null
@@ -7,4 +9,5 @@ export type User = {
   links: string[] | null
   joinedSince: string | null
   updatesNonce: string | null
+  tasks: TasksOverview[]
 }

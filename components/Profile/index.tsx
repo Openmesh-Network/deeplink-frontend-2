@@ -1,8 +1,9 @@
+/* eslint-disable dot-notation */
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState, useCallback } from 'react'
-import TasksModal from './ProfileTransactionModal'
+import TasksModal from '../TasksOverview2/TasksModal'
 import SearchModal from './SearchModal'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -25,10 +26,14 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 import HeroUser from './HeroUser'
+import { TasksOverview } from '@/types/task'
+import { SmileySad } from 'phosphor-react'
 
 const ProfileView = (id: any) => {
   const [filteredTasks, setFilteredTasks] = useState([])
   const [departament, setDepartament] = useState('All')
+  const [orderByDeadline, setOrderByDeadline] = useState('')
+  const [orderByEstimatedBudget, setOrderByEstimatedBudget] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const pathname = usePathname()
   const [userProfile, setUserProfile] = useState<User | null>()
@@ -36,25 +41,79 @@ const ProfileView = (id: any) => {
 
   const { push } = useRouter()
 
+  const orderByOptions = ['newest', 'oldest']
+  const budgetOrderByOptions = ['greater', 'lesser']
+
   const { address, isConnecting, isDisconnected } = useAccount()
   const { data: ensName } = useEnsName()
   function formatAddress(address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  async function getUser(id: any) {
-    if (!ethers.isAddress(id)) {
+  const handleOrderByDeadlineSelection = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('budgetOrderBy')
+      window.history.pushState({}, '', url.toString())
+    }
+    if (orderByDeadline === 'oldest') {
+      setOrderByDeadline('newest')
+      updateUrl('orderBy', 'newest')
+    } else {
+      setOrderByDeadline('oldest')
+      updateUrl('orderBy', 'oldest')
+    }
+  }
+
+  const handleOrderByEstimatedBudgetSelection = () => {
+    if (typeof window !== 'undefined') {
+      console.log('window is undefined tn')
+      const url = new URL(window.location.href)
+      url.searchParams.delete('orderBy')
+      window.history.pushState({}, '', url.toString())
+    }
+    if (orderByEstimatedBudget === 'greater') {
+      setOrderByEstimatedBudget('lesser')
+      updateUrl('budgetOrderBy', 'lesser')
+    } else {
+      setOrderByEstimatedBudget('greater')
+      updateUrl('budgetOrderBy', 'greater')
+    }
+  }
+
+  // Função para atualizar a URL
+  const updateUrl = (param: string, value: string | null) => {
+    if (param !== 'page') {
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+        url.searchParams.delete('page')
+        window.history.pushState({}, '', url.toString())
+      }
+    }
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+
+      if (value) {
+        url.searchParams.set(param, value)
+      } else {
+        url.searchParams.delete(param)
+      }
+
+      window.history.pushState({}, '', url.toString())
+      handleUpdate()
+    }
+  }
+
+  async function getUser(dataBody: any) {
+    if (!ethers.isAddress(dataBody.address)) {
       setUserInvalidAddress(true)
       setIsLoading(false)
       return
     }
-    const dataBody = {
-      id,
-    }
     setIsLoading(true)
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/getTask`,
+      url: `https://dpl-backend-homolog.up.railway.app/functions/getUser`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -80,7 +139,59 @@ const ProfileView = (id: any) => {
     taskStartElement.scrollIntoView({ behavior: 'smooth' })
   }
 
-  function handleUpdate() {}
+  const handleUpdate = () => {
+    console.log('updated url happening')
+    setDepartament('All')
+
+    // let urlHasAllParamDepartament = false
+    // setIsLoading(true)
+    // the body that will be passed to call the getTasksFiltered() endpoint
+    const dataBody = {}
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+
+      const status = url.searchParams.get('status')
+      // if (status) {
+      //   // if it returns -1, it means that it was passed a value that is not in the array
+      //   if (getStatusIndex(status) >= 0) {
+      //     dataBody['status'] = String(getStatusIndex(status))
+      //   }
+      // }
+
+      const orderBy = url.searchParams.get('orderBy')
+      console.log(orderBy)
+      if (orderBy && orderByOptions.includes(orderBy)) {
+        dataBody['deadlineSorting'] = orderBy
+        setOrderByDeadline(orderBy)
+      }
+
+      const budgetOrderBy = url.searchParams.get('budgetOrderBy')
+      console.log(budgetOrderBy)
+      if (budgetOrderBy && budgetOrderByOptions.includes(budgetOrderBy)) {
+        dataBody['estimatedBudgetSorting'] = budgetOrderBy
+        // cannot have two ordersby - so estimatedBudgetSorting has priority over deadlineSorting
+        setOrderByDeadline('')
+        setOrderByEstimatedBudget(budgetOrderBy)
+      }
+    }
+    dataBody['address'] = id.id
+
+    // if (Object.keys(dataBody).length !== 0 || urlHasAllParamDepartament) {
+    //   const taskStartElement = document.getElementById('taskStart')
+    //   taskStartElement.scrollIntoView({ behavior: 'smooth' })
+    // }
+
+    getUser(dataBody)
+  }
+
+  function NoTasks() {
+    return (
+      <div className="mt-[64px] mb-[100px] flex flex-col items-center">
+        <SmileySad size={32} className="text-blue-500 mb-2" />
+        <span>No tasks found</span>
+      </div>
+    )
+  }
 
   const handleCopyClick = useCallback(() => {
     // Usar API de clipboard para copiar o endereço
@@ -93,7 +204,7 @@ const ProfileView = (id: any) => {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
       console.log(id.id)
-      getUser(id.id)
+      getUser({ address: id.id })
     } else if (address) {
       push(`/application/${address}`)
     }
@@ -112,105 +223,97 @@ const ProfileView = (id: any) => {
       <FilterModal
         onUpdate={handleUpdate}
         scrollManually={scrollManually}
-        openProjectsNumber={2}
-        activeProjectsNumber={3}
-        completedProjectsNumber={1}
+        openProjectsNumber={userProfile ? userProfile.tasks.length : 0}
+        activeProjectsNumber={0}
+        completedProjectsNumber={0}
       />
-      <section className="px-32" id={'taskStart'}>
-        <div className="container">
-          {/* <div className="pr-2 text-[#000000]">
-                <div className="mb-14 flex items-start justify-between text-[18px] font-bold">
-                  <div className="mr-4 flex w-[35%] items-center">
-                    <p
-                      onClick={() => {
-                        console.log('as tasks')
-                        console.log(finalTasks)
-                        console.log('filtered tasks')
-                        console.log(filteredTasks)
-                      }}
-                      className="pr-2"
-                    >
-                      Project
-                    </p>
-                  </div>
-                  <div className="flex w-[15%] items-center">
-                    <p className="pr-2">Dept/Tags</p>
-                  </div>
-                  <div className="flex w-[10%] items-center">
-                    <p className="pr-2">Budget</p>
-                    <img
+      <section className="px-[100px] pt-[40px] pb-[200px]" id={'taskStart'}>
+        <div className="container px-0">
+          <div className=" text-[#000000]">
+            <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
+              <div className="mr-4 flex w-[35%] items-center">
+                <p className="pr-2">Project</p>
+              </div>
+              <div className="flex w-[15%] items-center">
+                <p className="pr-2">Dept/Tags</p>
+              </div>
+              <div className="flex w-[10%] items-center">
+                <p className="pr-[15px]">Budget</p>
+                {/* <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
                   className={`w-[14px]`}
-                />
-                  </div>
-                  <div className="flex w-[8%] items-center">
-                    <p className="pr-2">Ends</p>
-                    <svg
-                      onClick={handleOrderByDeadlineSelection}
-                      className={`w-[14px] cursor-pointer  ${
-                        orderByDeadline === 'oldest'
-                          ? 'rotate-180 transform'
-                          : ''
-                      }`}
-                      viewBox="0 0 16 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                        fill="#959595"
-                      />
-                    </svg>
-                  </div>
-                  <div className="w-[12%]"></div>
+                /> */}
+                <svg
+                  onClick={handleOrderByEstimatedBudgetSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByEstimatedBudget === 'greater'
+                      ? 'rotate-180 transform'
+                      : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
+              </div>
+              <div className="flex w-[8%] items-center">
+                <p className="pr-[15px]">Ends</p>
+                <svg
+                  onClick={handleOrderByDeadlineSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
+              </div>
+              <div className="w-[12%]"></div>
+            </div>
+            {isLoading && (
+              <div className="mt-[34px]">
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
                 </div>
-                {isLoading && (
-                  <>
-                    <div className="flex h-32 animate-pulse pb-12">
-                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
-                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
-                    </div>
-                    <div className="flex h-32 animate-pulse pb-12">
-                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
-                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
-                    </div>
-                    <div className="flex h-32 animate-pulse pb-12">
-                      <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
-                      <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
-                    </div>
-                  </>
-                )}
-                {!isLoading && finalTasks.length === 0 && <NoTasks />}
-                {!isLoading &&
-                  finalTasks.length > 0 &&
-                  finalTasks.map((task) => (
-                    <TasksModal key={task.id} task={task} isLoading={false} />
-                  ))}
-                {!isLoading && finalTasks.length > 0 && pagination && (
-                  <div className="flex items-center justify-center pt-16 pb-2 text-[18px] font-normal">
-                    {pagination.currentPage !== 1 && (
-                      <p
-                        onClick={handlePaginationSelectionPrev}
-                        className="cursor-pointer hover:text-[#1068E6]"
-                      >
-                        Prev
-                      </p>
-                    )}
-                    <p className="mx-14">
-                      Page {pagination.currentPage} of {pagination.totalPages}
-                    </p>
-                    {pagination.totalPages > pagination.currentPage && (
-                      <p
-                        onClick={handlePaginationSelectionNext}
-                        className="cursor-pointer hover:text-[#1068E6]"
-                      >
-                        Next
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div> */}
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                </div>
+                <div className="flex h-32 animate-pulse pb-12">
+                  <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
+                  <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
+                </div>
+              </div>
+            )}
+            {!isLoading && !userProfile && <NoTasks />}
+            {!isLoading &&
+              userProfile &&
+              userProfile.tasks &&
+              userProfile.tasks.length === 0 && <NoTasks />}
+            {!isLoading &&
+              userProfile &&
+              userProfile.tasks &&
+              userProfile.tasks.length > 0 &&
+              userProfile.tasks.map((task, index) => (
+                <TasksModal
+                  key={task.id}
+                  index={index}
+                  task={task}
+                  isLoading={false}
+                />
+              ))}
+          </div>
         </div>
       </section>
     </>

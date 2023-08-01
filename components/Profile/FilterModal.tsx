@@ -200,7 +200,7 @@ const FilterModal = ({
           </div>
           <div
             onClick={() => {
-              handleStatusSelection('active')
+              // handleStatusSelection('active')
             }}
             className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
@@ -222,7 +222,7 @@ const FilterModal = ({
           </div>
           <div
             onClick={() => {
-              handleStatusSelection('completed')
+              // handleStatusSelection('completed')
             }}
             className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
