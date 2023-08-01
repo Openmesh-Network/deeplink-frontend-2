@@ -148,6 +148,9 @@ const TaskApplication = (id: any) => {
   const validSchema = Yup.object().shape({
     description: Yup.string().required('Desc is required'),
     additionalLink: Yup.string().notRequired(),
+    howLikelyToMeetTheDeadline: Yup.string().notRequired(),
+    githubLink: Yup.string().notRequired(),
+    displayName: Yup.string().notRequired(),
   })
   const {
     register,
