@@ -11,7 +11,7 @@ interface ModalProps {
   scrollManually(): void
   openProjectsNumber: number
   activeProjectsNumber: number
-  updatesProjectsNumber: number
+  completedProjectsNumber: number
 }
 
 type DepartamentData = {
@@ -28,7 +28,7 @@ const FilterModal = ({
   scrollManually,
   openProjectsNumber,
   activeProjectsNumber,
-  updatesProjectsNumber,
+  completedProjectsNumber,
 }: ModalProps) => {
   const [tasksStatus, setTasksStatus] = useState('')
   const [tasksOrderBy, setTasksOrderBy] = useState('')
@@ -175,53 +175,72 @@ const FilterModal = ({
   }, [pathname])
 
   return (
-    <section className="mt-[46px] px-32">
-      <div className="container">
-        <div className="flex text-[#000000]">
+    <section className="mt-[34px] px-[100px]">
+      <div className="container px-0">
+        <div className="mt-[40px] flex text-[#000000]">
           <div
             onClick={() => {
               handleStatusSelection('open')
             }}
-            className={`mx-4 flex h-[95px] w-1/3 cursor-pointer items-center rounded-[10px] border border-[#D4D4D4] px-9 hover:bg-[#000000] hover:text-white ${
-              tasksStatus === 'open' ? 'border-0 bg-[#000000] text-white' : ''
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+              tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <div className="">
-              <p className="text-[18px] font-bold">Open Projects</p>
-              <p className="-mb-1 text-[32px] font-bold">
-                {openProjectsNumber}
-              </p>
-            </div>
+            <p className="text-[16px] font-bold">Open Projects</p>
+            <p className="text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
+              }`}
+            >
+              {openProjectsNumber}
+            </p>
           </div>
           <div
             onClick={() => {
               handleStatusSelection('active')
             }}
-            className={`mx-4 flex h-[95px] w-1/3 cursor-pointer items-center rounded-[10px] border border-[#D4D4D4] px-9 hover:bg-[#000000] hover:text-white ${
-              tasksStatus === 'active' ? 'border-0 bg-[#000000] text-white' : ''
+            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+              tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <div className="">
-              <p className="text-[18px] font-bold">Active Projects</p>
-              <p className="-mb-1 text-[32px] font-bold">
-                {activeProjectsNumber}
-              </p>
-            </div>
+            <p className="text-[16px] font-bold">Active Projects</p>
+            <p className="text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'active'
+                  ? 'border-b-[2px] border-[#000000]'
+                  : ''
+              }`}
+            >
+              {activeProjectsNumber}
+            </p>
           </div>
           <div
             onClick={() => {
-              handleStatusSelection('update')
+              handleStatusSelection('completed')
             }}
-            className={`mx-4 flex h-[95px] w-1/3 cursor-pointer items-center rounded-[10px] border border-[#D4D4D4] px-9 hover:bg-[#000000] hover:text-white ${
-              tasksStatus === 'update' ? 'border-0 bg-[#000000] text-white' : ''
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+              tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <div className="">
-              <p className="text-[18px] font-bold">Updates</p>
-              <p className="-mb-1 text-[32px] font-bold">
-                {updatesProjectsNumber}
-              </p>
-            </div>
+            <p className="text-[16px] font-bold">Completed Projects</p>
+            <p className="text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'completed'
+                  ? 'border-b-[2px] border-[#000000]'
+                  : ''
+              }`}
+            >
+              {completedProjectsNumber}
+            </p>
           </div>
         </div>
       </div>
