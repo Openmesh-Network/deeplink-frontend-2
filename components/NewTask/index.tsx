@@ -577,6 +577,7 @@ const NewTask = () => {
         Math.floor(data.deadline.getTime() / 1000),
         payments,
       )
+      await new Promise((resolve) => setTimeout(resolve, 2500))
       toast.success('Task created succesfully!')
     } catch (err) {
       toast.error(
