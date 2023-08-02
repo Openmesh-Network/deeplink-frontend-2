@@ -262,9 +262,8 @@ const VerifiedContributor = (id: any) => {
     const pinataAxios = axios.create({
       baseURL: 'https://api.pinata.cloud/pinning/',
       headers: {
-        pinata_api_key: '7b27a531082e163ee9ae',
-        pinata_secret_api_key:
-          '0397c0df5cc360ed98cf81f8435569775b0763aa004c00f470146911138475db',
+        pinata_api_key: `${process.env.NEXT_PUBLIC_PINATA_API_KEY}`,
+        pinata_secret_api_key: `${process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY}`,
         'Content-Type': 'multipart/form-data',
       },
     })
@@ -291,7 +290,7 @@ const VerifiedContributor = (id: any) => {
     setIsLoading(true)
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/getUser`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getUser`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -321,7 +320,7 @@ const VerifiedContributor = (id: any) => {
   async function submitApplication(data: any) {
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/verifiedContributorSumission`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/verifiedContributorSumission`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -403,7 +402,7 @@ const VerifiedContributor = (id: any) => {
   async function getGithubData(code: string) {
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/githubLogin`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/githubLogin`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',

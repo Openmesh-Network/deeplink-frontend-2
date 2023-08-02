@@ -366,9 +366,8 @@ const NewTask = () => {
     const pinataAxios = axios.create({
       baseURL: 'https://api.pinata.cloud/pinning/',
       headers: {
-        pinata_api_key: '7b27a531082e163ee9ae',
-        pinata_secret_api_key:
-          '0397c0df5cc360ed98cf81f8435569775b0763aa004c00f470146911138475db',
+        pinata_api_key: `${process.env.NEXT_PUBLIC_PINATA_API_KEY}`,
+        pinata_secret_api_key: `${process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY}`,
         'Content-Type': 'multipart/form-data',
       },
     })
@@ -386,7 +385,7 @@ const NewTask = () => {
   async function formsUploadIPFS(data: IPFSSubmition) {
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/uploadIPFSMetadataTaskCreation`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskCreation`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',

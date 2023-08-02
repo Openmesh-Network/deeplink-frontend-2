@@ -59,7 +59,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
     setIsLoading(true)
     const config = {
       method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/getTaskEvents`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getTaskEvents`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
