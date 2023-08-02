@@ -113,6 +113,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
 
   if (user) {
     let githubLink = user.links.find((link) => link.includes('github.com'))
+    let twitterLink = user.links.find((link) => link.includes('twitter.com'))
 
     if (
       githubLink &&
@@ -120,6 +121,13 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
       !githubLink.startsWith('https://')
     ) {
       githubLink = 'https://' + githubLink
+    }
+    if (
+      twitterLink &&
+      !twitterLink.startsWith('http://') &&
+      !twitterLink.startsWith('https://')
+    ) {
+      twitterLink = 'https://' + twitterLink
     }
 
     return (
@@ -250,19 +258,27 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 )}
               </div>
               <div className="flex items-center">
-                <img
-                  src={`/images/profile/twitter.svg`}
-                  alt="image"
-                  className={`w-[25px]`}
-                />
+                {twitterLink && (
+                  <a
+                    href={twitterLink}
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                  >
+                    <img
+                      src={`/images/profile/twitter.svg`}
+                      alt="image"
+                      className={`w-[25px]`}
+                    />
+                  </a>
+                )}
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <img
                   src={`/images/profile/share.svg`}
                   alt="image"
                   className={`w-[21.88px]`}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

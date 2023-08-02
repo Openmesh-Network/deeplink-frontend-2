@@ -29,16 +29,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import HeroEditProfile from './HeroEditProfile'
+import HeroVerifiedContributor from './HeroVerifiedContributor'
 import { User } from '@/types/user'
 import { createHash } from 'crypto'
 
-type TaskApplicationForm = {
-  displayName: string
+type VerifiedContributorForm = {
   description: string
-  githubLink: string
-  additionalLink: string
-  howLikelyToMeetTheDeadline: string
 }
 
 type Payment = {
@@ -52,15 +48,7 @@ type FileListProps = {
   onRemove(index: number): void
 }
 
-type IPFSSubmition = {
-  displayName: string
-  description: string
-  budgetPercentageRequested: number
-  howLikelyToMeetTheDeadline?: string | null
-  links: Link[] | null
-}
-
-const EditProfile = (id: any) => {
+const VerifiedContributor = (id: any) => {
   Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isApplicationLoading, setIsApplicationLoading] =
@@ -70,6 +58,7 @@ const EditProfile = (id: any) => {
   const [ipfsFileHash, setIPFSFileHash] = useState()
   const [updatesNonce, setUpdatesNonce] = useState()
   const [taskChainData, setTaskChainData] = useState<any>()
+  const [githubData, setGithubData] = useState<any>()
   const [tagsValues, setTagsValues] = useState([])
   const [linksValues, setLinksValues] = useState([])
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
@@ -190,10 +179,6 @@ const EditProfile = (id: any) => {
 
   const validSchema = Yup.object().shape({
     description: Yup.string().required('Desc is required'),
-    additionalLink: Yup.string().notRequired(),
-    howLikelyToMeetTheDeadline: Yup.string().notRequired(),
-    githubLink: Yup.string().notRequired(),
-    displayName: Yup.string().notRequired(),
   })
   const {
     register,
@@ -203,7 +188,7 @@ const EditProfile = (id: any) => {
     // eslint-disable-next-line no-unused-vars
     reset,
     formState: { errors },
-  } = useForm<TaskApplicationForm>({
+  } = useForm<VerifiedContributorForm>({
     resolver: yupResolver(validSchema),
   })
 
@@ -389,6 +374,13 @@ const EditProfile = (id: any) => {
     }
   }
 
+  function loginWithGithub() {
+    window.location.assign(
+      'https://github.com/login/oauth/authorize?client_id=' +
+        process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+    )
+  }
+
   async function editProfile(data: any) {
     const config = {
       method: 'post' as 'post',
@@ -412,6 +404,43 @@ const EditProfile = (id: any) => {
     return dado
   }
 
+  async function onSubmit(data: VerifiedContributorForm) {}
+
+  async function getGithubData(code: string) {
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/githubLogin`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data: { code },
+    }
+
+    try {
+      await axios(config).then(function (response) {
+        console.log('data that received back')
+        console.log(response.data)
+        setGithubData(response.data)
+      })
+    } catch (err) {
+      toast.error('Error getting the github info!')
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const codeParam = urlParams.get('code')
+    console.log('my code github')
+    console.log(codeParam)
+
+    if (codeParam && !githubData) {
+      getGithubData(codeParam)
+    }
+  }, [])
+
   useEffect(() => {
     if (address) {
       getUser()
@@ -423,6 +452,9 @@ const EditProfile = (id: any) => {
       <div className="pb-[500px]">
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           Connect you wallet to continue
+        </div>
+        <div className="mt-[20px] text-[14px] text-[#505050]">
+          Why do I need to connect my Web3 wallet?
         </div>
       </div>
     )
@@ -442,172 +474,146 @@ const EditProfile = (id: any) => {
 
   return (
     <>
-      <HeroEditProfile />
+      <HeroVerifiedContributor />
       <section className="px-[100px] pt-[62px]  pb-[250px]">
         <div className="container px-[0px] text-[14px] font-medium !leading-[19px] text-[#000000]">
-          <div className="">
-            <div className="flex items-center">
-              {selectedFiles.length === 0 ? (
-                <label className="">
-                  <div className="">
-                    <img
-                      src={`/images/edit-profile/user-logo.svg`}
-                      alt="image"
-                      className={`mr-[25px] w-[107px] cursor-pointer`}
-                    />
-                    <input
-                      type="file"
-                      disabled={isLoading}
-                      multiple
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
+          <form>
+            <div className="">
+              <div className="mt-[30px]">
+                {githubData ? (
+                  <div className="flex">
+                    <div className="mr-[10px]">
+                      <div
+                        onClick={loginWithGithub}
+                        className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
+                      >
+                        <img
+                          src={githubData.avatar_url}
+                          alt="image"
+                          className={`mr-[23px] w-[20px]`}
+                        />
+                        <a className=" ">{githubData.login}</a>
+                      </div>{' '}
+                    </div>
+                    <p
+                      onClick={() => {
+                        setGithubData(null)
+                      }}
+                      className="cursor-pointer font-bold text-[#ff0000]"
+                    >
+                      x
+                    </p>
                   </div>
-                </label>
-              ) : (
-                <FileList files={selectedFiles} onRemove={removeFile} />
-              )}
-
-              <p>Upload Picture</p>
-            </div>
-            <div className="mt-[30px]">
-              <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                Display Name
-              </span>
-              <input
-                type="text"
-                disabled={isApplicationLoading}
-                value={displayName}
-                onInput={handleDisplayName}
-                className="mt-[8px] h-[41px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[12px] font-normal !leading-[17px] outline-0"
-              />
-            </div>
-            <div className="mt-[30px]">
-              <div className="flex">
-                <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Tags
-                </span>
-                <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
-                  * press "enter" to insert the item
-                </span>
-              </div>
-              <Autocomplete
-                multiple
-                freeSolo
-                options={[]} // Pode ser um array de opções predefinidas, ou vazio
-                value={tagsValues}
-                onChange={(event, newValue) => {
-                  setTagsValues(newValue)
-                }}
-                popupIcon={
-                  <svg
-                    width="16"
-                    height="10"
-                    viewBox="0 0 16 10"
-                    className="mr-[15px] mt-[13px]"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                      fill="#959595"
-                    />
-                  </svg>
-                }
-                disabled={isLoading}
-                className="mt-[10px]"
-                size="small"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    id="margin-none"
-                    sx={{
-                      width: '500px',
-                      fieldset: {
-                        height: '45px',
-                        borderColor: '#D4D4D4',
-                        borderRadius: '10px',
-                      },
-                      input: { color: 'black' },
-                    }}
-                  />
+                ) : (
+                  <div>
+                    <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                      Connect to your account for verification
+                    </span>
+                    <div
+                      onClick={loginWithGithub}
+                      className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
+                    >
+                      <img
+                        src="/images/profile/github.svg"
+                        alt="image"
+                        className={`mr-[23px] w-[20px]`}
+                      />
+                      <a className=" ">Connect to Github</a>
+                    </div>
+                  </div>
                 )}
-              />
-            </div>
-            <div className="mt-[30px]">
-              <div className="flex">
+              </div>
+              <div className="mt-[30px]">
                 <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Links
+                  Please give us some details about your qualifications to be a
+                  Verified Contributor:
+                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                    {errors.description?.message}
+                  </p>
                 </span>
-                <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
-                  * press "enter" to insert the item
-                </span>
+                <textarea
+                  disabled={isLoading}
+                  style={{ resize: 'none' }}
+                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[25px] py-[25px] text-[17px] font-normal outline-0"
+                  maxLength={2000}
+                  placeholder="Type here"
+                  {...register('description')}
+                />
               </div>
 
-              <Autocomplete
-                multiple
-                freeSolo
-                options={[]} // Pode ser um array de opções predefinidas, ou vazio
-                value={linksValues}
-                onChange={(event, newValue) => {
-                  setLinksValues(newValue)
-                }}
-                popupIcon={
-                  <svg
-                    width="16"
-                    height="10"
-                    viewBox="0 0 16 10"
-                    className="mr-[15px] mt-[13px]"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                      fill="#959595"
-                    />
-                  </svg>
-                }
-                disabled={isLoading}
-                className="mt-[10px]"
-                size="small"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    id="margin-none"
-                    sx={{
-                      width: '500px',
-                      fieldset: {
-                        height: '45px',
-                        borderColor: '#D4D4D4',
-                        borderRadius: '10px',
-                      },
-                      input: { color: 'black' },
-                    }}
-                  />
-                )}
-              />
-            </div>
-          </div>
+              <div className="mt-[30px]">
+                <div className="flex">
+                  <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    Links
+                  </span>
+                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
+                    * press "enter" to insert the item
+                  </span>
+                </div>
 
-          <div className="mt-[30px]">
-            <button
-              className={`rounded-[10px] bg-[#12AD50] py-[15px] px-[25px] text-[16px] font-bold !leading-[19px]  text-white hover:bg-[#0e7a39] ${
-                isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
-              }`}
-              //   disabled={isApplicationLoading}
-              onClick={() => {
-                handleSaveChanges()
-              }}
-            >
-              <span className="">Save changes</span>
-            </button>
-          </div>
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={[]} // Pode ser um array de opções predefinidas, ou vazio
+                  value={linksValues}
+                  onChange={(event, newValue) => {
+                    setLinksValues(newValue)
+                  }}
+                  popupIcon={
+                    <svg
+                      width="16"
+                      height="10"
+                      viewBox="0 0 16 10"
+                      className="mr-[15px] mt-[13px]"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                        fill="#959595"
+                      />
+                    </svg>
+                  }
+                  disabled={isLoading}
+                  className="mt-[10px]"
+                  size="small"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      id="margin-none"
+                      sx={{
+                        width: '500px',
+                        fieldset: {
+                          height: '45px',
+                          borderColor: '#D4D4D4',
+                          borderRadius: '10px',
+                        },
+                        input: { color: 'black' },
+                      }}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="mt-[30px]">
+              <button
+                type="submit"
+                className={`rounded-[10px] bg-[#12AD50] py-[15px] px-[25px] text-[16px] font-bold !leading-[19px]  text-white hover:bg-[#0e7a39] ${
+                  isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
+                }`}
+                //   disabled={isApplicationLoading}
+                onClick={handleSubmit(onSubmit)}
+              >
+                <span className="">Submit for Review</span>
+              </button>
+            </div>
+          </form>
         </div>
       </section>
     </>
   )
 }
 
-export default EditProfile
+export default VerifiedContributor
