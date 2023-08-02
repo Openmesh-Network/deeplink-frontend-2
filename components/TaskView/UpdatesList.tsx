@@ -70,7 +70,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          setEvents(response.data)
+          setEvents(response.data.sort((a, b) => b.timestamp - a.timestamp))
         }
       })
     } catch (err) {

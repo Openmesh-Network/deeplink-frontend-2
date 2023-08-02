@@ -30,16 +30,18 @@ type ApplicantsSubmissionsListProps = {
   data: Application[]
   taskId: string
   budget: string
+  isOpen: boolean
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByTimestamp, setOrderByTimestamp] = useState('oldest')
   const [orderByBudget, setOrderByBudget] = useState('greater')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isNominationLoading, setIsNominationLoading] = useState<boolean>(false)
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
   const pathname = usePathname()
@@ -154,6 +156,42 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
   const scrollManually = () => {
     const taskStartElement = document.getElementById('taskStart')
     taskStartElement.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  async function handleCreateNomination(taskId: string, applicationId: string) {
+    console.log('value to be sent')
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [Number(taskId), [Number(applicationId)]],
+      functionName: 'acceptApplications',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 3500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
+  async function handleNominate(applicationIdValue: string) {
+    setIsNominationLoading(true)
+    console.log('doing nomination')
+    try {
+      await handleCreateNomination(taskId, applicationIdValue)
+      window.reload()
+      toast.success('Nomination done succesfully!')
+      setIsNominationLoading(false)
+    } catch (err) {
+      toast.error('Error during the application nomination')
+      console.log(err)
+      setIsNominationLoading(false)
+    }
   }
 
   const handleUpdate = () => {
@@ -390,7 +428,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                           application.metadataDisplayName ||
                           application.applicant
                         }
-                        className="overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                        className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
                       >
                         {application.metadataDisplayName ||
                           formatAddress(application.applicant)}
@@ -427,15 +465,30 @@ const ApplicantsSubmissionsList = ({data, taskId, budget}: ApplicantsSubmissions
                 <div className="mr-[52px] flex w-[225px] items-center justify-center">
                   {formatDeadline(application.timestamp)}
                 </div>
-                <div className="flex">
-                  <a
-                    // href={`/task/${task.id}`}
-                    target="_blank"
-                    rel="nofollow noreferrer"
-                    className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
-                  >
-                    View more
-                  </a>
+                <div>
+                  <div className="flex">
+                    <a
+                      // href={`/task/${task.id}`}
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                    >
+                      View more
+                    </a>
+                  </div>
+                  {isOpen && !application.accepted && (
+                    <div className="mt-[11px] flex">
+                      <a
+                        // href={`/task/${task.id}`}
+                        onClick={() => {
+                          handleNominate(application.applicationId)
+                        }}
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]  bg-[#0354EC] py-[10px] text-[16px] font-bold text-[#fff] hover:bg-[#092353]"
+                      >
+                        Nominate
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

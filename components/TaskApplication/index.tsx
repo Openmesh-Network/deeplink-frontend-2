@@ -282,7 +282,7 @@ const TaskApplication = (id: any) => {
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 3500))
     if (data.status !== 'success') {
       throw data
     }

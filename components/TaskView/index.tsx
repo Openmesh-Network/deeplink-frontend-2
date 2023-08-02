@@ -277,6 +277,7 @@ const TaskView = (id: any) => {
                   data={taskMetadata.Application}
                   taskId={String(taskMetadata.id)}
                   budget={taskMetadata.estimatedBudget}
+                  isOpen={taskMetadata.status === 'open'}
                 />
               )}
             </div>

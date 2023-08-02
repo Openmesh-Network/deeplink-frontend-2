@@ -28,6 +28,7 @@ export type IPFSSubmition = {
 
 export type Application = {
   metadataDisplayName: string
+  applicationId: string
   proposer: string
   applicant: string
   metadataDescription: string
@@ -35,6 +36,7 @@ export type Application = {
   timestamp: string
   totalEarned: string | null
   jobSuccess: string | null
+  accepted: boolean
 }
 
 export type TasksOverview = {
