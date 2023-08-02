@@ -269,6 +269,125 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
       </section>
     )
   }
+
+  return (
+    <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
+      <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+        <div className="flex">
+          <div className="flex cursor-pointer items-center">
+            <img
+              alt="ethereum avatar"
+              src={`https://effigy.im/a/${id}.svg`}
+              className="w-[50px] rounded-full"
+            ></img>
+          </div>
+          <div
+            title={id}
+            className={`ml-[20px] flex items-center text-[30px] font-bold ${
+              ensName ? 'text-[#000000]' : 'text-[#D4D4D4]'
+            }`}
+          >
+            {ensName || formatAddress(id)}
+          </div>
+          <div
+            title={id}
+            className={`mr-4 ml-[20px] flex items-center pt-[7px] text-[16px] font-medium text-[#505050]`}
+          >
+            {formatAddressSecondType(id)}
+          </div>
+          <div
+            onClick={handleCopyClick}
+            className="flex cursor-pointer items-center"
+          >
+            <img
+              src={`/images/profile/copy.svg`}
+              alt="image"
+              className={`w-[17.5px]`}
+            />
+          </div>
+          {/* <div className="ml-auto flex cursor-pointer items-center  justify-end">
+            <a className="flex w-[217px] justify-center rounded-[5px] bg-[#12AD50] py-1 text-[16px] font-bold  text-white hover:bg-[#0e7a39]">
+              <img
+                src={`/images/profile/check.svg`}
+                alt="image"
+                className={`mr-2 w-[20.11px]`}
+              />
+              <span className="">Verified Contributor</span>
+            </a>
+          </div> */}
+        </div>
+        <div className="mt-[25px] flex">
+          <div className="flex">
+            <p>Tags:</p>
+          </div>
+          <div className="ml-auto flex cursor-pointer items-center  justify-end">
+            <a
+              href="/edit-profile"
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="flex h-[29px] w-[116px] items-center justify-center rounded-[5px] bg-[#000000] text-[16px] font-bold  text-white hover:bg-[#202020]"
+            >
+              <span className="">Edit Profile</span>
+            </a>
+          </div>
+        </div>
+        <div className="mt-[25px] flex">
+          <div className="flex">
+            <div className="mr-[60px] flex">
+              <img
+                src={`/images/profile/clock.svg`}
+                alt="image"
+                className={`mr-2 w-[18px]`}
+              />
+              <span className="flex items-center">
+                Contributor since:{' '}
+                <span className="ml-1 font-bold text-[#303030]">{'-'}</span>
+              </span>
+            </div>
+            <div className="mr-[60px] flex">
+              <img
+                src={`/images/profile/coins.svg`}
+                alt="image"
+                className={`mr-2 w-[18px]`}
+              />
+              <span className="flex items-center">Total earned:</span>
+            </div>
+            <div className="mr-[60px] flex">
+              <img
+                src={`/images/profile/people.svg`}
+                alt="image"
+                className={`mr-2 w-[18px]`}
+              />
+              <span className="flex items-center">Job success:</span>
+            </div>
+          </div>
+          <div className="ml-auto flex w-[107px] justify-between">
+            <div className="flex items-center">
+              <img
+                src={`/images/profile/github.svg`}
+                alt="image"
+                className={`w-[24.2px]`}
+              />
+            </div>
+            <div className="flex items-center">
+              <img
+                src={`/images/profile/twitter.svg`}
+                alt="image"
+                className={`w-[25px]`}
+              />
+            </div>
+            <div className="flex items-center">
+              <img
+                src={`/images/profile/share.svg`}
+                alt="image"
+                className={`w-[21.88px]`}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export default HeroUser
