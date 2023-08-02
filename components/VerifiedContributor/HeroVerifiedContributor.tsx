@@ -50,7 +50,7 @@ const HeroVerifiedContributor = () => {
             </p>
           </div>
           <div className="mt-[25px] flex !leading-[17px] text-[#505050]">
-            <div className='mr-[10px]'>
+            <div className="mr-[10px]">
               <div>✓ Approve tasks and proposals</div>
               <div className="mt-[15px]">
                 ✓ Adjust project budget and timeline{' '}

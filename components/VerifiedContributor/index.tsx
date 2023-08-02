@@ -453,7 +453,7 @@ const VerifiedContributor = (id: any) => {
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           Connect you wallet to continue
         </div>
-        <div className="mt-[20px] text-[14px] text-[#505050]">
+        <div className="mt-[20px] flex justify-center text-[14px] text-[#505050]">
           Why do I need to connect my Web3 wallet?
         </div>
       </div>
@@ -483,14 +483,11 @@ const VerifiedContributor = (id: any) => {
                 {githubData ? (
                   <div className="flex">
                     <div className="mr-[10px]">
-                      <div
-                        onClick={loginWithGithub}
-                        className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
-                      >
+                      <div className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]">
                         <img
                           src={githubData.avatar_url}
                           alt="image"
-                          className={`mr-[23px] w-[20px]`}
+                          className={`mr-[23px] h-[40px] w-[40px] rounded-[100%] `}
                         />
                         <a className=" ">{githubData.login}</a>
                       </div>{' '}
