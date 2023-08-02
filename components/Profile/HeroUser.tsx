@@ -193,7 +193,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                       href="/verified-contributor"
                       target="_blank"
                       rel="nofollow noreferrer"
-                      className=" "
+                      className="text-[16px] font-bold text-[#fff]  "
                     >
                       Verified Contributor
                     </a>
@@ -213,7 +213,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                       href="/verified-contributor"
                       target="_blank"
                       rel="nofollow noreferrer"
-                      className=" "
+                      className="text-[16px] font-bold text-[#fff] "
                     >
                       Pending Approval
                     </a>

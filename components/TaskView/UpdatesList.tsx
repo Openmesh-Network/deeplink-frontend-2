@@ -119,7 +119,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
   }
 
   return (
-    <div className="mr-[50px] max-h-[700px] w-full overflow-auto text-[14px] font-medium !leading-[19px] text-[#505050]">
+    <div className="mr-[50px] max-h-[1200px] w-full overflow-auto text-[14px] font-medium !leading-[19px] text-[#505050]">
       {!isLoading &&
         events.length > 0 &&
         events.map((event, index) => {

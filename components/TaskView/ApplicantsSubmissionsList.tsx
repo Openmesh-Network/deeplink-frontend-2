@@ -31,10 +31,11 @@ type ApplicantsSubmissionsListProps = {
   taskId: string
   budget: string
   isOpen: boolean
+  address: string
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [departament, setDepartament] = useState('All')
@@ -184,7 +185,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen}: ApplicantsSub
     console.log('doing nomination')
     try {
       await handleCreateNomination(taskId, applicationIdValue)
-      window.reload()
+      window.location.reload()
       toast.success('Nomination done succesfully!')
       setIsNominationLoading(false)
     } catch (err) {
@@ -476,19 +477,21 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen}: ApplicantsSub
                       View more
                     </a>
                   </div>
-                  {isOpen && !application.accepted && (
-                    <div className="mt-[11px] flex">
-                      <a
-                        // href={`/task/${task.id}`}
-                        onClick={() => {
-                          handleNominate(application.applicationId)
-                        }}
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]  bg-[#0354EC] py-[10px] text-[16px] font-bold text-[#fff] hover:bg-[#092353]"
-                      >
-                        Nominate
-                      </a>
-                    </div>
-                  )}
+                  {isOpen &&
+                    !application.accepted &&
+                    application.proposer === address && (
+                      <div className="mt-[11px] flex">
+                        <a
+                          // href={`/task/${task.id}`}
+                          onClick={() => {
+                            handleNominate(application.applicationId)
+                          }}
+                          className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]  bg-[#0354EC] py-[10px] text-[16px] font-bold text-[#fff] hover:bg-[#092353]"
+                        >
+                          Nominate
+                        </a>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>

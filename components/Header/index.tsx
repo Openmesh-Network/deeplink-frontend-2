@@ -160,7 +160,7 @@ const Header = () => {
                     className={`mr-[10px] w-[20px]`}
                   />
                   <a
-                    href="/new-task"
+                    href="/verified-contributor"
                     target="_blank"
                     rel="nofollow noreferrer"
                     className=" "

@@ -32,6 +32,7 @@ const TaskView = (id: any) => {
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
 
   const { push } = useRouter()
+  const { address } = useAccount()
 
   const taskStateCircle = {
     open: 'circle-green-task.svg',
@@ -278,6 +279,7 @@ const TaskView = (id: any) => {
                   taskId={String(taskMetadata.id)}
                   budget={taskMetadata.estimatedBudget}
                   isOpen={taskMetadata.status === 'open'}
+                  address={address}
                 />
               )}
             </div>
