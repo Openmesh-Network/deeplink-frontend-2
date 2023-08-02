@@ -112,6 +112,16 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
   }, [id])
 
   if (user) {
+    let githubLink = user.links.find((link) => link.includes('github.com'))
+
+    if (
+      githubLink &&
+      !githubLink.startsWith('http://') &&
+      !githubLink.startsWith('https://')
+    ) {
+      githubLink = 'https://' + githubLink
+    }
+
     return (
       <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
         <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
@@ -225,11 +235,19 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div className="ml-auto flex w-[107px] justify-between">
               <div className="flex items-center">
-                <img
-                  src={`/images/profile/github.svg`}
-                  alt="image"
-                  className={`w-[24.2px]`}
-                />
+                {githubLink && (
+                  <a
+                    href={githubLink}
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                  >
+                    <img
+                      src={`/images/profile/github.svg`}
+                      alt="image"
+                      className={`w-[24.2px]`}
+                    />
+                  </a>
+                )}
               </div>
               <div className="flex items-center">
                 <img
@@ -251,7 +269,6 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
       </section>
     )
   }
-
 }
 
 export default HeroUser
