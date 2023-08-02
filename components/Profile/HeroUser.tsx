@@ -130,6 +130,13 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
       twitterLink = 'https://' + twitterLink
     }
 
+    if (
+      user.VerifiedContributorSubmission.length > 0 &&
+      user.VerifiedContributorSubmission[0].githubHTMLUrl
+    ) {
+      githubLink = user.VerifiedContributorSubmission[0].githubHTMLUrl
+    }
+
     return (
       <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
         <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
@@ -173,16 +180,46 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 className={`w-[17.5px]`}
               />
             </div>
-            {/* <div className="ml-auto flex cursor-pointer items-center  justify-end">
-              <a className="flex w-[217px] justify-center rounded-[5px] bg-[#12AD50] py-1 text-[16px] font-bold  text-white hover:bg-[#0e7a39]">
-                <img
-                  src={`/images/profile/check.svg`}
-                  alt="image"
-                  className={`mr-2 w-[20.11px]`}
-                />
-                <span className="">Verified Contributor</span>
-              </a>
-            </div> */}
+            {user.VerifiedContributorSubmission.length > 0 &&
+              user.VerifiedContributorSubmission[0].status === 'approved' && (
+                <div className="ml-auto flex cursor-pointer items-center  justify-end">
+                  <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
+                    <img
+                      src="/images/profile/check.svg"
+                      alt="image"
+                      className={`mr-[10px] w-[20px] `}
+                    />
+                    <a
+                      href="/verified-contributor"
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className=" "
+                    >
+                      Verified Contributor
+                    </a>
+                  </div>{' '}
+                </div>
+              )}
+            {user.VerifiedContributorSubmission.length > 0 &&
+              user.VerifiedContributorSubmission[0].status === 'pending' && (
+                <div className="ml-auto flex cursor-pointer items-center  justify-end">
+                  <div className="flex h-[29px] w-[199px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#FBB816] hover:bg-[#f5c149]">
+                    <img
+                      src="/images/profile/check.svg"
+                      alt="image"
+                      className={`mr-[10px] w-[20px] `}
+                    />
+                    <a
+                      href="/verified-contributor"
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className=" "
+                    >
+                      Pending Approval
+                    </a>
+                  </div>{' '}
+                </div>
+              )}
           </div>
           <div className="mt-[25px] flex">
             <div className="flex">

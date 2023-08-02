@@ -178,7 +178,7 @@ const VerifiedContributor = (id: any) => {
   }
 
   const validSchema = Yup.object().shape({
-    description: Yup.string().required('Desc is required'),
+    description: Yup.string().required('Description is required'),
   })
   const {
     register,
@@ -302,10 +302,6 @@ const VerifiedContributor = (id: any) => {
     try {
       await axios(config).then(function (response) {
         setUserProfile(response.data)
-        setDisplayName(response.data.name)
-        setIPFSFileHash(response.data.profilePictureHash)
-        setTagsValues(response.data.tags)
-        setLinksValues(response.data.links)
         setUpdatesNonce(response.data.updatesNonce)
       })
     } catch (err) {
@@ -315,7 +311,43 @@ const VerifiedContributor = (id: any) => {
     setIsLoading(false)
   }
 
-  async function handleSaveChanges() {
+  function loginWithGithub() {
+    window.location.assign(
+      'https://github.com/login/oauth/authorize?client_id=' +
+        process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+    )
+  }
+
+  async function submitApplication(data: any) {
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/verifiedContributorSumission`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
+    }
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
+    })
+
+    return dado
+  }
+
+  async function onSubmit(data: VerifiedContributorForm) {
+    if (!githubData) {
+      toast.error('Please, conect your github account')
+      const element = document.getElementById('forms')
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -323,16 +355,10 @@ const VerifiedContributor = (id: any) => {
 
     setIsApplicationLoading(true)
 
-    let hashIpfsFile
-    if (selectedFiles.length > 0) {
-      hashIpfsFile = await handleFileUploadIPFS()
-    }
-
     const finalData = {
       address,
-      name: displayName,
-      profilePictureHash: hashIpfsFile,
-      tags: tagsValues,
+      description: data.description,
+      githubAccessToken: githubData['github_access_token'],
       links: linksValues,
       nonce: updatesNonce || '0',
     }
@@ -362,49 +388,17 @@ const VerifiedContributor = (id: any) => {
     }
 
     try {
-      await editProfile(finalData)
-      toast.success('Profile edited succesfully!')
+      await submitApplication(finalData)
+      toast.success('Application submited succesfully!')
       setIsApplicationLoading(false)
       await new Promise((resolve) => setTimeout(resolve, 2500))
       push(`/profile/${address}`)
     } catch (err) {
-      toast.error('Error during the profile edition')
+      toast.error('Error during the application submited')
       console.log(err)
       setIsApplicationLoading(false)
     }
   }
-
-  function loginWithGithub() {
-    window.location.assign(
-      'https://github.com/login/oauth/authorize?client_id=' +
-        process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
-    )
-  }
-
-  async function editProfile(data: any) {
-    const config = {
-      method: 'post' as 'post',
-      url: `https://dpl-backend-homolog.up.railway.app/functions/editUser`,
-      headers: {
-        'x-parse-application-id':
-          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
-      },
-      data,
-    }
-
-    let dado
-
-    await axios(config).then(function (response) {
-      if (response.data) {
-        dado = response.data
-        console.log(dado)
-      }
-    })
-
-    return dado
-  }
-
-  async function onSubmit(data: VerifiedContributorForm) {}
 
   async function getGithubData(code: string) {
     const config = {
@@ -462,7 +456,7 @@ const VerifiedContributor = (id: any) => {
 
   if (isLoading) {
     return (
-      <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
+      <section className="px-[100px] pb-[250px] pt-[62px] text-black ">
         <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
@@ -472,34 +466,103 @@ const VerifiedContributor = (id: any) => {
     )
   }
 
+  if (
+    userProfile &&
+    userProfile.VerifiedContributorSubmission.length > 0 &&
+    userProfile.VerifiedContributorSubmission[0].status === 'pending'
+  ) {
+    return (
+      <>
+        <div id={'forms'}>
+          <HeroVerifiedContributor />
+        </div>
+        <section className="px-[100px] pt-[40px]  pb-[450px]">
+          <div className="container px-[0px] text-[16px] font-bold !leading-[19px] text-[#ffffff]">
+            <div className="flex h-[29px] w-[199px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#FBB816] hover:bg-[#f5c149]">
+              <img
+                src="/images/profile/check.svg"
+                alt="image"
+                className={`mr-[10px] w-[20px] `}
+              />
+              <a
+                href="/verified-contributor"
+                target="_blank"
+                rel="nofollow noreferrer"
+                className=" "
+              >
+                Pending Approval
+              </a>
+            </div>{' '}
+            <div className="mt-[30px] flex  text-[14px] text-[#505050]">
+              Your submition is under revision!
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
+
+  if (
+    userProfile &&
+    userProfile.VerifiedContributorSubmission.length > 0 &&
+    userProfile.VerifiedContributorSubmission[0].status === 'approved'
+  ) {
+    return (
+      <>
+        <div id={'forms'}>
+          <HeroVerifiedContributor />
+        </div>
+        <section className="px-[100px] pt-[40px]  pb-[450px]">
+          <div className="container px-[0px] text-[16px] font-bold !leading-[19px] text-[#ffffff]">
+            <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
+              <img
+                src="/images/profile/check.svg"
+                alt="image"
+                className={`mr-[10px] w-[20px] `}
+              />
+              <a className=" ">Verified Contributor</a>
+            </div>{' '}
+          </div>
+        </section>
+      </>
+    )
+  }
+
   return (
     <>
-      <HeroVerifiedContributor />
-      <section className="px-[100px] pt-[62px]  pb-[250px]">
+      <div id={'forms'}>
+        <HeroVerifiedContributor />
+      </div>
+      <section className="px-[100px] pt-[40px]  pb-[250px]">
         <div className="container px-[0px] text-[14px] font-medium !leading-[19px] text-[#000000]">
           <form>
             <div className="">
-              <div className="mt-[30px]">
+              <div className="">
                 {githubData ? (
-                  <div className="flex">
-                    <div className="mr-[10px]">
-                      <div className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]">
-                        <img
-                          src={githubData.avatar_url}
-                          alt="image"
-                          className={`mr-[23px] h-[40px] w-[40px] rounded-[100%] `}
-                        />
-                        <a className=" ">{githubData.login}</a>
-                      </div>{' '}
+                  <div>
+                    <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                      Github
+                    </span>
+                    <div className="mt-[10px] flex">
+                      <div className="mr-[10px]">
+                        <div className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]">
+                          <img
+                            src={githubData.avatar_url}
+                            alt="image"
+                            className={`mr-[23px] h-[40px] w-[40px] rounded-[100%] `}
+                          />
+                          <a className=" ">{githubData.login}</a>
+                        </div>{' '}
+                      </div>
+                      <p
+                        onClick={() => {
+                          setGithubData(null)
+                        }}
+                        className="cursor-pointer font-bold text-[#ff0000]"
+                      >
+                        x
+                      </p>
                     </div>
-                    <p
-                      onClick={() => {
-                        setGithubData(null)
-                      }}
-                      className="cursor-pointer font-bold text-[#ff0000]"
-                    >
-                      x
-                    </p>
                   </div>
                 ) : (
                   <div>
@@ -508,12 +571,12 @@ const VerifiedContributor = (id: any) => {
                     </span>
                     <div
                       onClick={loginWithGithub}
-                      className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
+                      className="mt-[10px] flex h-[50px] w-[207px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#000000] p-[5px] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
                     >
                       <img
                         src="/images/profile/github.svg"
                         alt="image"
-                        className={`mr-[23px] w-[20px]`}
+                        className={`mr-[10px] w-[20px]`}
                       />
                       <a className=" ">Connect to Github</a>
                     </div>
@@ -524,14 +587,14 @@ const VerifiedContributor = (id: any) => {
                 <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
                   Please give us some details about your qualifications to be a
                   Verified Contributor:
-                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                  <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
                     {errors.description?.message}
                   </p>
                 </span>
                 <textarea
                   disabled={isLoading}
                   style={{ resize: 'none' }}
-                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[25px] py-[25px] text-[17px] font-normal outline-0"
+                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[15px] py-[15px] text-[14px] font-normal outline-0"
                   maxLength={2000}
                   placeholder="Type here"
                   {...register('description')}
@@ -541,7 +604,7 @@ const VerifiedContributor = (id: any) => {
               <div className="mt-[30px]">
                 <div className="flex">
                   <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                    Links
+                    Additional links that you think may help the team to review
                   </span>
                   <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
                     * press "enter" to insert the item

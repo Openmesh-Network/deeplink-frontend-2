@@ -28,7 +28,7 @@ const HeroVerifiedContributor = () => {
     <section className="border-b border-[#CFCFCF] px-32 pb-[51px] pt-[40px]">
       <div className="container px-0">
         <div className="flex flex-wrap items-start">
-          <div className="w-full lg:w-2/3">
+          <div className="w-full 2xl:w-2/3">
             <div className="mb-1 flex">
               <p className="text-[20px] font-bold !leading-[150%] text-[#000000]">
                 Become a Verified Contributor{' '}
@@ -49,16 +49,42 @@ const HeroVerifiedContributor = () => {
               in the fields and are vetted by the community.
             </p>
           </div>
-          <div className="mt-[25px] flex !leading-[17px] text-[#505050]">
-            <div className="mr-[10px]">
-              <div>✓ Approve tasks and proposals</div>
-              <div className="mt-[15px]">
-                ✓ Adjust project budget and timeline{' '}
+          <div className="mt-[25px] flex text-[14px] font-medium !leading-[17px] text-[#505050]">
+            <div className="mr-[20px]">
+              <div className="flex">
+                <img
+                  src="/images/verified-contributor/check-3.svg"
+                  alt="image"
+                  className={`mr-[4px] w-[12px]`}
+                />
+                <p>Approve tasks and proposals</p>
+              </div>
+              <div className="mt-[15px] flex">
+                <img
+                  src="/images/verified-contributor/check-3.svg"
+                  alt="image"
+                  className={`mr-[4px] w-[12px]`}
+                />
+                <p>Adjust project budget and timeline</p>
               </div>
             </div>
             <div>
-              <div>✓ Nominate applicants</div>
-              <div className="mt-[15px]">✓ Vote on governance</div>
+              <div className="flex">
+                <img
+                  src="/images/verified-contributor/check-3.svg"
+                  alt="image"
+                  className={`mr-[4px] w-[12px]`}
+                />
+                <p>Nominate applicants</p>
+              </div>
+              <div className="mt-[15px] flex">
+                <img
+                  src="/images/verified-contributor/check-3.svg"
+                  alt="image"
+                  className={`mr-[4px] w-[12px]`}
+                />
+                <p>Vote on governance</p>
+              </div>
             </div>
           </div>
         </div>
