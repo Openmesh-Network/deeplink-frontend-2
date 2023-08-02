@@ -18,6 +18,7 @@ import {
   prepareWriteContract,
   waitForTransaction,
   watchContractEvent,
+  signMessage,
 } from '@wagmi/core'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
@@ -29,6 +30,8 @@ import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import HeroEditProfile from './HeroEditProfile'
+import { User } from '@/types/user'
+import { createHash } from 'crypto'
 
 type TaskApplicationForm = {
   displayName: string
@@ -64,6 +67,8 @@ const EditProfile = (id: any) => {
     useState<boolean>(false)
   const [viewOption, setViewOption] = useState('projectDescription')
   const [displayName, setDisplayName] = useState('')
+  const [ipfsFileHash, setIPFSFileHash] = useState()
+  const [updatesNonce, setUpdatesNonce] = useState()
   const [taskChainData, setTaskChainData] = useState<any>()
   const [tagsValues, setTagsValues] = useState([])
   const [linksValues, setLinksValues] = useState([])
@@ -76,6 +81,7 @@ const EditProfile = (id: any) => {
   const [budgetPercentage, setBudgetPercentage] = useState(100)
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
+  const [userProfile, setUserProfile] = useState<User | null>()
 
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
@@ -288,8 +294,43 @@ const EditProfile = (id: any) => {
     return ipfsHash
   }
 
+  // returns a hash to be signed
+  function hashObject(obj: any) {
+    const str = JSON.stringify(obj)
+    const hash = createHash('sha256')
+    hash.update(str)
+    return hash.digest('hex')
+  }
+
+  async function getUser() {
+    setIsLoading(true)
+    const config = {
+      method: 'post' as 'post',
+      url: `https://dpl-backend-homolog.up.railway.app/functions/getUser`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data: { address },
+    }
+
+    try {
+      await axios(config).then(function (response) {
+        setUserProfile(response.data)
+        setDisplayName(response.data.name)
+        setIPFSFileHash(response.data.profilePictureHash)
+        setTagsValues(response.data.tags)
+        setLinksValues(response.data.links)
+        setUpdatesNonce(response.data.updatesNonce)
+      })
+    } catch (err) {
+      toast.error('Error getting the user info!')
+      console.log(err)
+    }
+    setIsLoading(false)
+  }
+
   async function handleSaveChanges() {
-    console.log('submit called')
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -302,38 +343,80 @@ const EditProfile = (id: any) => {
       hashIpfsFile = await handleFileUploadIPFS()
     }
 
-    // parou aquiiiiiiiiiiiiiii
-    const finalData = {}
+    const finalData = {
+      address,
+      name: displayName,
+      profilePictureHash: hashIpfsFile,
+      tags: tagsValues,
+      links: linksValues,
+      nonce: updatesNonce || '0',
+    }
 
     // eslint-disable-next-line no-unreachable
     try {
       /* empty */
+      // signing the message:
+      console.log('data to be hashed')
+      console.log(finalData)
+      console.log(JSON.stringify(finalData))
+      const hash = hashObject(finalData)
+      console.log('message to hash')
+      console.log(hash)
+      const finalHash = `0x${hash}`
+      const signature = await signMessage({
+        message: finalHash,
+      })
+      console.log(' mensagem')
+      console.log(signature)
+      finalData['signature'] = signature
     } catch (err) {
-      console.log('ipfs error')
-      toast.error('Error during the task application')
+      toast.error('Error during the message signing')
       console.log(err)
       setIsApplicationLoading(false)
       return
     }
 
     try {
-      toast.success('Application done succesfully!')
-      push(`/task/${id.id}`)
+      await editProfile(finalData)
+      toast.success('Profile edited succesfully!')
       setIsApplicationLoading(false)
+      await new Promise((resolve) => setTimeout(resolve, 2500))
+      push(`/profile/${address}`)
     } catch (err) {
-      toast.error('Error during the task application')
+      toast.error('Error during the profile edition')
       console.log(err)
       setIsApplicationLoading(false)
     }
   }
 
-  useEffect(() => {
-    if (id) {
-      setIsLoading(false)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+  async function editProfile(data: any) {
+    const config = {
+      method: 'post' as 'post',
+      url: `http://localhost:3001/functions/editUser`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
     }
-  }, [id])
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
+    })
+
+    return dado
+  }
+
+  useEffect(() => {
+    if (address) {
+      getUser()
+    }
+  }, [address])
 
   if (!address) {
     return (
@@ -499,13 +582,12 @@ const EditProfile = (id: any) => {
 
           <div className="mt-[30px]">
             <button
-              type="submit"
               className={`rounded-[10px] bg-[#12AD50] py-[15px] px-[25px] text-[16px] font-bold !leading-[19px]  text-white hover:bg-[#0e7a39] ${
                 isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
               }`}
               //   disabled={isApplicationLoading}
               onClick={() => {
-                console.log('hello')
+                handleSaveChanges()
               }}
             >
               <span className="">Save changes</span>

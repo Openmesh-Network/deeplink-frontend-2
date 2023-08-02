@@ -350,7 +350,6 @@ const TaskApplication = (id: any) => {
   if (!address) {
     return (
       <div className="pb-[500px]">
-        {taskMetadata && <HeroTask task={taskMetadata} />}
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           Connect you wallet to continue
         </div>

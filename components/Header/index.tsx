@@ -69,13 +69,6 @@ const Header = () => {
 
   return (
     <>
-      {/* <header
-        className={`header top-0 left-0 z-40 flex w-full items-center bg-transparent ${
-          sticky
-            ? '!fixed !z-[9999] !bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm !transition dark:!bg-opacity-20'
-            : 'absolute'
-        }`}
-      > */}
       <header className={`header flex w-full items-center bg-[#F9F9F9]`}>
         <div className="container w-full px-0">
           <div className="relative  flex items-center  text-black">
@@ -84,25 +77,11 @@ const Header = () => {
                 href="/"
                 className={`header-logo mr-[60px] block w-full py-8 `}
               >
-                {/* <Image
-                  src="/images/logo/logo-2.svg"
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="w-full dark:hidden"
-                /> */}
                 <img
                   src="/images/header/openReD.svg"
                   alt="image"
                   className={`w-[145px]`}
                 />
-                {/* <Image
-                  src="/images/logo/logo.svg"
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="hidden w-full dark:block"
-                /> */}
               </Link>
             </div>
             <div className="flex w-full items-center justify-between">
@@ -119,16 +98,22 @@ const Header = () => {
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
-                          <Link
-                            href={menuItem.path}
-                            className={`flex py-2 text-[16px] font-medium text-[#000000] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 ${
-                              pathname.includes(menuItem.path)
-                                ? 'font-bold'
-                                : ''
-                            }`}
-                          >
-                            {menuItem.title}
-                          </Link>
+                          menuItem.title === 'Profile' && !address ? null : (
+                            <Link
+                              href={
+                                menuItem.title === 'Profile'
+                                  ? `/profile/${address}`
+                                  : menuItem.path
+                              }
+                              className={`flex py-2 text-[16px] font-medium text-[#000000] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 ${
+                                pathname.includes(menuItem.path)
+                                  ? 'font-bold'
+                                  : ''
+                              }`}
+                            >
+                              {menuItem.title}
+                            </Link>
+                          )
                         ) : (
                           <>
                             <a
@@ -183,23 +168,10 @@ const Header = () => {
                     Become a Verified Contributor
                   </a>
                 </div>
-                {/* <Link
-                  href="/signin"
-                  className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
-                >
-                  Sign In
-                </Link> */}
-                {/* <Link
-                  href="/signup"
-                  className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
-                >
-                  Connect wallet
-                </Link> */}
                 <div>
                   <Web3Button />
                 </div>
                 <div className="">{isChainWrong && <Web3NetworkSwitch />}</div>
-
                 <div>{/* <ThemeToggler /> */}</div>
               </div>
             </div>

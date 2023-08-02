@@ -20,7 +20,7 @@ const TransactionModal = ({ transaction }) => {
       </span>
       <div>
         <a
-          href={`https://polygonscan.com/tx/${transaction.transactionHash}`}
+          href={`https://mumbai.polygonscan.com/tx/${transaction.transactionHash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[10px] text-white line-clamp-1 lg:text-sm"
