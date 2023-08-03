@@ -43,6 +43,8 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
   const [orderByBudget, setOrderByBudget] = useState('greater')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isNominationLoading, setIsNominationLoading] = useState<boolean>(false)
+  const [isTakingTaskLoading, setIsTakingTaskLoading] = useState<boolean>(false)
+
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
   const pathname = usePathname()
@@ -180,6 +182,27 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
     }
   }
 
+  async function handleCreateTakingTask(taskId: string, applicationId: string) {
+    console.log('value to be sent')
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [Number(taskId), [Number(applicationId)]],
+      functionName: 'takeTask',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 5500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
   async function handleNominate(applicationIdValue: string) {
     setIsNominationLoading(true)
     console.log('doing nomination')
@@ -192,6 +215,21 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
       toast.error('Error during the application nomination')
       console.log(err)
       setIsNominationLoading(false)
+    }
+  }
+
+  async function handleTakeTask(applicationIdValue: string) {
+    setIsTakingTaskLoading(true)
+    console.log('doing taking')
+    try {
+      await handleCreateTakingTask(taskId, applicationIdValue)
+      window.location.reload()
+      toast.success('Task took succesfully!')
+      setIsTakingTaskLoading(false)
+    } catch (err) {
+      toast.error('Error during the task taking')
+      console.log(err)
+      setIsTakingTaskLoading(false)
     }
   }
 
@@ -290,23 +328,25 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
 
   return (
     <div className="text-[16px] font-medium !leading-[19px] text-[#505050]">
-      <div className="mt-[49px] w-full rounded-[10px] bg-[#F5F5F5] py-[30px] px-[15px]">
-        <div className="flex justify-center">
-          This project is still open for new applicants, if you are qualified
-          candidate please apply now
+      {isOpen && (
+        <div className="mt-[49px] w-full rounded-[10px] bg-[#F5F5F5] py-[30px] px-[15px]">
+          <div className="flex justify-center">
+            This project is still open for new applicants, if you are qualified
+            candidate please apply now
+          </div>
+          <div className="flex justify-center">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`/application/${taskId}`}
+              className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[16px] font-bold text-white hover:bg-[#0b9040]"
+            >
+              Start working
+            </a>
+          </div>
         </div>
-        <div className="flex justify-center">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`/application/${taskId}`}
-            className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[16px] font-bold text-white hover:bg-[#0b9040]"
-          >
-            Start working
-          </a>
-        </div>
-      </div>
-      <div className="mt-[30px] text-[#000000]">
+      )}
+      <div className={`text-[#000000] ${isOpen ? 'mt-[30px]' : 'mt-[49px]'}`}>
         <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
           <div className="mr-[52px] flex w-[400px] pl-[25px]">
             <p className="mr-[10px]">Applicants</p>
@@ -484,11 +524,38 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
                         <a
                           // href={`/task/${task.id}`}
                           onClick={() => {
-                            handleNominate(application.applicationId)
+                            if (!isNominationLoading) {
+                              handleNominate(application.applicationId)
+                            }
                           }}
-                          className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]  bg-[#0354EC] py-[10px] text-[16px] font-bold text-[#fff] hover:bg-[#092353]"
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                            isNominationLoading
+                              ? 'bg-[#2f71ec]'
+                              : 'bg-[#0354EC] hover:bg-[#092353]'
+                          }`}
                         >
                           Nominate
+                        </a>
+                      </div>
+                    )}
+                  {isOpen &&
+                    application.accepted &&
+                    application.applicant === address && (
+                      <div className="mt-[11px] flex">
+                        <a
+                          // href={`/task/${task.id}`}
+                          onClick={() => {
+                            if (!isTakingTaskLoading) {
+                              handleTakeTask(application.applicationId)
+                            }
+                          }}
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                            isTakingTaskLoading
+                              ? 'bg-[#2f71ec]'
+                              : 'bg-[#0354EC] hover:bg-[#092353]'
+                          }`}
+                        >
+                          Take task
                         </a>
                       </div>
                     )}

@@ -28,9 +28,9 @@ interface TasksModalProps {
 
 const HeroTask = ({ task }: TasksModalProps) => {
   const taskStateCircle = {
-    open: 'circle-green-task.svg',
-    taken: 'circle-yellow-task.svg',
-    closed: 'circle-gray-task.svg',
+    open: 'circle-green-task-hero.svg',
+    active: 'circle-blue-task-hero.svg',
+    closed: 'circle-black-task-hero.svg',
   }
 
   const taskStatusToButton = {
@@ -77,7 +77,11 @@ const HeroTask = ({ task }: TasksModalProps) => {
   }
 
   function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+    if (string === 'active') {
+      return 'On-going'
+    } else {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+    }
   }
 
   function formatDate(timestamp: string) {
@@ -243,7 +247,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     <img
                       src={`/images/task/${taskStateCircle[task.status]}`}
                       alt="image"
-                      className={`mr-[2px] w-[20px]`}
+                      className={`mr-[10px] w-[20px]`}
                     />
                     <p className="text-[16px] font-medium text-[#303030]">
                       {capitalizeFirstLetter(task.status)}
@@ -256,16 +260,30 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     {formatDate(task.deadline)}
                   </p>
                 </div>
-                <div className="mt-[25px] ">
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={taskStatusToLink[task.status]}
-                    className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[16px]  font-bold text-white hover:bg-[#0b9040] "
-                  >
-                    {taskStatusToButton[task.status] || 'Apply now'}
-                  </a>
-                </div>
+                {task.status === 'open' && (
+                  <div className="mt-[25px] ">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/application/${task.id}`}
+                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[16px]  font-bold text-white hover:bg-[#0b9040] "
+                    >
+                      {'Apply now'}
+                    </a>
+                  </div>
+                )}
+                {task.status === 'active' && (
+                  <div className="mt-[25px] ">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/new-submission/${task.id}`}
+                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[16px]  font-bold text-white hover:bg-[#5080da] "
+                    >
+                      {'Create submission'}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>

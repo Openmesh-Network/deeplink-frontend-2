@@ -26,7 +26,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 import HeroUser from './HeroUser'
-import { TasksOverview } from '@/types/task'
+import { TasksCounting, TasksOverview } from '@/types/task'
 import { SmileySad } from 'phosphor-react'
 
 const ProfileView = (id: any) => {
@@ -38,11 +38,13 @@ const ProfileView = (id: any) => {
   const pathname = usePathname()
   const [userProfile, setUserProfile] = useState<User | null>()
   const [userInvalidAddress, setUserInvalidAddress] = useState<boolean>()
+  const [counting, setCounting] = useState<TasksCounting>()
 
   const { push } = useRouter()
 
   const orderByOptions = ['newest', 'oldest']
   const budgetOrderByOptions = ['greater', 'lesser']
+  const statusOptions = ['open', 'active', 'completed']
 
   const { address, isConnecting, isDisconnected } = useAccount()
   const { data: ensName } = useEnsName()
@@ -124,6 +126,7 @@ const ProfileView = (id: any) => {
     try {
       await axios(config).then(function (response) {
         setUserProfile(response.data)
+        setCounting(response.data.counting)
         setIsLoading(false)
       })
     } catch (err) {
@@ -139,6 +142,10 @@ const ProfileView = (id: any) => {
     taskStartElement.scrollIntoView({ behavior: 'smooth' })
   }
 
+  function getStatusIndex(status: string): number {
+    return statusOptions.indexOf(status)
+  }
+
   const handleUpdate = () => {
     console.log('updated url happening')
     setDepartament('All')
@@ -151,12 +158,12 @@ const ProfileView = (id: any) => {
       const url = new URL(window.location.href)
 
       const status = url.searchParams.get('status')
-      // if (status) {
-      //   // if it returns -1, it means that it was passed a value that is not in the array
-      //   if (getStatusIndex(status) >= 0) {
-      //     dataBody['status'] = String(getStatusIndex(status))
-      //   }
-      // }
+      if (status) {
+        // if it returns -1, it means that it was passed a value that is not in the array
+        if (getStatusIndex(status) >= 0) {
+          dataBody['status'] = String(getStatusIndex(status))
+        }
+      }
 
       const orderBy = url.searchParams.get('orderBy')
       console.log(orderBy)
@@ -203,10 +210,9 @@ const ProfileView = (id: any) => {
     if (id) {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
-      console.log(id.id)
-      getUser({ address: id.id })
+      handleUpdate()
     } else if (address) {
-      push(`/application/${address}`)
+      push(`/profile/${address}`)
     }
   }, [id])
 
@@ -223,9 +229,9 @@ const ProfileView = (id: any) => {
       <FilterModal
         onUpdate={handleUpdate}
         scrollManually={scrollManually}
-        openProjectsNumber={userProfile ? userProfile.tasks.length : 0}
-        activeProjectsNumber={0}
-        completedProjectsNumber={0}
+        openProjectsNumber={counting ? counting.open : 0}
+        activeProjectsNumber={counting ? counting.active : 0}
+        completedProjectsNumber={counting ? counting.completed : 0}
       />
       <section className="px-[100px] pt-[40px] pb-[200px]" id={'taskStart'}>
         <div className="container px-0">
