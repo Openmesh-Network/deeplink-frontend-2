@@ -31,10 +31,6 @@ import * as Yup from 'yup'
 
 type TaskApplicationForm = {
   displayName: string
-  description: string
-  githubLink: string
-  additionalLink: string
-  howLikelyToMeetTheDeadline: string
 }
 
 type Payment = {
@@ -58,6 +54,7 @@ const TaskSubmission = (id: any) => {
     useState<boolean>(false)
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
+  const [linksValues, setLinksValues] = useState([])
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
@@ -148,10 +145,6 @@ const TaskSubmission = (id: any) => {
 
   const validSchema = Yup.object().shape({
     description: Yup.string().required('Desc is required'),
-    additionalLink: Yup.string().notRequired(),
-    howLikelyToMeetTheDeadline: Yup.string().notRequired(),
-    githubLink: Yup.string().notRequired(),
-    displayName: Yup.string().notRequired(),
   })
   const {
     register,
@@ -306,7 +299,7 @@ const TaskSubmission = (id: any) => {
 
     setIsApplicationLoading(true)
 
-    const { additionalLink, description } = data
+    const { description } = data
 
     const finalData = {
       howLikelyToMeetTheDeadline: 'Likely',
@@ -410,153 +403,13 @@ const TaskSubmission = (id: any) => {
                   Submit your work
                 </p>
                 <p className="mt-[30px] max-w-[854px] text-[16px] font-medium !leading-[140%] text-[#505050]">
-                  We're on the hunt for the absolute best candidate to lead this
-                  incredible project. We're eager to know, what makes you the
-                  perfect person to steer this ship towards resounding success?
-                </p>
-                <div className="mt-[30px]">
-                  <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
-                    Display Name
-                  </p>
-                  <p
-                    title={address}
-                    className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
-                  >
-                    {formatAddress(address)}
-                  </p>
-                </div>
-                <div className="mt-[30px]">
-                  <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
-                    Links
-                  </p>
-                  <p
-                    title={address}
-                    className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
-                  >
-                    www.github.com
-                  </p>
-                </div>
-              </div>
-              <div className="mt-[30px]">
-                <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Proposed Budget
-                </p>
-                <div className="mt-[25px]">
-                  <div className="relative w-full">
-                    <Range
-                      step={1}
-                      disabled={isApplicationLoading}
-                      min={0}
-                      max={Number(taskChainData['estimatedBudget']) * 2.5}
-                      values={budgetValue}
-                      onChange={(values) => {
-                        // transforming value to percentage:
-                        const percentage = Number(
-                          new Decimal(values[0] * 100).div(
-                            new Decimal(taskChainData['estimatedBudget']),
-                          ),
-                        )
-                        setBudgetValue([values[0]])
-                        setBudgetValueInputColor(
-                          colorsBudget[Math.floor(percentage / rangePerColor)],
-                        )
-                        setEstimatedBudgetRequested(
-                          values[0].toLocaleString('en-US'),
-                        )
-                        setBudgetPercentage(Number(percentage.toFixed(2)))
-                      }}
-                      renderTrack={({ props, children }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '9px',
-                            width: '500px',
-                            backgroundColor: '#ffffff',
-                            borderRadius: '4px',
-                            border: '1.5px solid #D4D4D4',
-                          }}
-                        >
-                          {children}
-                        </div>
-                      )}
-                      renderThumb={({ props }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '33px',
-                            backgroundColor: `${budgetValueInputColor}`,
-                            borderRadius: '5px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <div className="px-[10px] text-[14px] font-bold text-[#ffffff]">
-                            ${estimatedBudgetRequested}
-                          </div>
-                        </div>
-                      )}
-                    />
-                    {/* <Range
-                      step={1}
-                      disabled={isApplicationLoading}
-                      min={0}
-                      max={250}
-                      values={budgetValue}
-                      onChange={() => {}} // Its does nothing when changing
-                      renderTrack={({ props, children }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '0',
-                            width: '500px',
-                            backgroundColor: 'transparent',
-                          }}
-                        >
-                          {children}
-                        </div>
-                      )}
-                      renderThumb={({ props }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '0',
-                            width: '250px', // Aumente a largura conforme necessário
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            position: 'relative',
-                            top: '40px', // Ajuste conforme necessário
-                          }}
-                        >
-                          <div
-                            className={`font-regular text-[12px] ${
-                              estimatedBudgetRequested === '0' ? 'ml-14' : ''
-                            }`}
-                          >
-                            {estimatedBudgetRequested === '0'
-                              ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
-                              : `Est. $${estimatedBudgetRequested}`}
-                          </div>
-                        </div>
-                      )}
-                    /> */}
-                  </div>
-                </div>
-                <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
-                  Presenting a bid below the available funding can prove your
-                  ability to deliver results while being cost-effective
+                  Be sure to submit all the outcomes from your work, increasing
+                  the chances of it being accepted!
                 </p>
               </div>
               <div className="mt-[30px]">
                 <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  What sets you apart and makes you the ideal candidate for this
-                  task?{' '}
+                  Description{' '}
                   <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                     {errors.description?.message}
                   </p>
@@ -571,19 +424,58 @@ const TaskSubmission = (id: any) => {
                 />
               </div>
               <div className="mt-[30px]">
-                <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Additional links if needed
-                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                    {errors.additionalLink?.message}
-                  </p>
-                </span>
-                <input
-                  type="text"
-                  disabled={isApplicationLoading}
-                  maxLength={200}
-                  {...register('additionalLink')}
-                  onChange={(e) => handleLink(1, 'url', e.target.value)}
-                  className="mt-[8px] h-[41px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[12px] font-normal !leading-[17px] outline-0"
+                <div className="flex">
+                  <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    Links related to your work (Github repositories,
+                    documentation...){' '}
+                  </span>
+                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
+                    * press "enter" to insert the item
+                  </span>
+                </div>
+
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={[]} // Pode ser um array de opções predefinidas, ou vazio
+                  value={linksValues}
+                  onChange={(event, newValue) => {
+                    setLinksValues(newValue)
+                  }}
+                  popupIcon={
+                    <svg
+                      width="16"
+                      height="10"
+                      viewBox="0 0 16 10"
+                      className="mr-[15px] mt-[13px]"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                        fill="#959595"
+                      />
+                    </svg>
+                  }
+                  disabled={isLoading}
+                  className="mt-[10px]"
+                  size="small"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      id="margin-none"
+                      sx={{
+                        width: '500px',
+                        fieldset: {
+                          height: '45px',
+                          borderColor: '#D4D4D4',
+                          borderRadius: '10px',
+                        },
+                        input: { color: 'black' },
+                      }}
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -597,21 +489,8 @@ const TaskSubmission = (id: any) => {
                 disabled={isApplicationLoading}
                 onClick={handleSubmit(onSubmit)}
               >
-                <span className="">Apply now</span>
+                <span className="">Submit now</span>
               </button>
-            </div>
-            <div className=" mt-[30px] flex w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
-              <p>
-                | Have more questions? Reach out to{' '}
-                <a
-                  href="https://mumbai.polygonscan.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border-b border-[#0084FE] text-[#0084FE]"
-                >
-                  a verified contributor
-                </a>
-              </p>
             </div>
           </form>
         </div>
