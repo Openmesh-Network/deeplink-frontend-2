@@ -174,7 +174,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 3500))
+    await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
     }
@@ -453,7 +453,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
                   </div>
                 </div>
                 <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
-                  <p className="max-w-[100%] overflow-hidden text-ellipsis whitespace-nowrap">
+                  <p className="max-w-[120%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {returnsBudget(application.metadataProposedBudget)}
                   </p>
                 </div>
