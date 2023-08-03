@@ -30,7 +30,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 
 type TaskApplicationForm = {
-  displayName: string
+  description: string
 }
 
 type Payment = {
@@ -40,10 +40,7 @@ type Payment = {
 }
 
 type IPFSSubmition = {
-  displayName: string
   description: string
-  budgetPercentageRequested: number
-  howLikelyToMeetTheDeadline?: string | null
   links: Link[] | null
 }
 
@@ -161,7 +158,7 @@ const TaskSubmission = (id: any) => {
   async function formsUploadIPFS(data: IPFSSubmition) {
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskApplication`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskSubmission`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -262,20 +259,15 @@ const TaskSubmission = (id: any) => {
     }
   }
 
-  async function handleCreateApplication(
-    taskId: number,
-    metadata: string,
-    budget: Payment[],
-  ) {
+  async function handleCreateSubmission(taskId: number, metadata: string) {
     console.log('value to be sent')
     console.log(taskId['id'])
     console.log(metadata)
-    console.log(budget)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
-      args: [Number(taskId['id']), metadata, budget],
-      functionName: 'applyForTask',
+      args: [Number(taskId['id']), metadata],
+      functionName: 'createSubmission',
     })
     const { hash } = await writeContract(request)
 
@@ -302,12 +294,8 @@ const TaskSubmission = (id: any) => {
     const { description } = data
 
     const finalData = {
-      howLikelyToMeetTheDeadline: 'Likely',
-      displayName: address,
-      additionalLink,
+      links: linksValues,
       description,
-      budgetPercentageRequested: budgetPercentage,
-      links,
     }
 
     // eslint-disable-next-line no-unreachable
@@ -318,19 +306,19 @@ const TaskSubmission = (id: any) => {
       ipfsHashData = res
     } catch (err) {
       console.log('ipfs error')
-      toast.error('Error during the task application')
+      toast.error('Error during the submission')
       console.log(err)
       setIsApplicationLoading(false)
       return
     }
 
     try {
-      await handleCreateApplication(id, ipfsHashData, payments)
-      toast.success('Application done succesfully!')
+      await handleCreateSubmission(id, ipfsHashData)
+      toast.success('Submission done succesfully!')
       push(`/task/${id.id}`)
       setIsApplicationLoading(false)
     } catch (err) {
-      toast.error('Error during the task application')
+      toast.error('Error during the Submission')
       console.log(err)
       setIsApplicationLoading(false)
     }
