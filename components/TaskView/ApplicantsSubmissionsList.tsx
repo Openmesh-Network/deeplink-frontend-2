@@ -574,61 +574,64 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
       {!isLoading &&
         submissions.length > 0 &&
         submissions.map((submission, index) => (
-          <div key={index} className={`mt-[100px] text-[#000000]`}>
-            <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
-              <div className="mr-[52px] flex w-[400px] pl-[25px]">
-                <p className="mr-[10px]">Submissions</p>
-                <svg
-                  onClick={handleOrderByBudgetSelection}
-                  className={`w-[14px] cursor-pointer  ${
-                    orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
-                  }`}
-                  viewBox="0 0 16 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                    fill="#959595"
-                  />
-                </svg>
+          <div key={index} className={` text-[#000000]`}>
+            {index === 0 && (
+              <div className=" mt-[100px] flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+                <div className="mr-[52px] flex w-[400px] pl-[25px]">
+                  <p className="mr-[10px]">Submissions</p>
+                  <svg
+                    onClick={handleOrderByBudgetSelection}
+                    className={`w-[14px] cursor-pointer  ${
+                      orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
+                    }`}
+                    viewBox="0 0 16 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                      fill="#959595"
+                    />
+                  </svg>
+                </div>
+                <div className="mr-[52px] flex w-[500px] pl-[44px]">
+                  <p className="mr-[10px]">Links</p>
+                  <svg
+                    onClick={handleOrderByBudgetSelection}
+                    className={`w-[14px] cursor-pointer  ${
+                      orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
+                    }`}
+                    viewBox="0 0 16 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                      fill="#959595"
+                    />
+                  </svg>
+                </div>
+                <div className="mr-[177px] flex pl-[47px]">
+                  <p className="mr-[10px]">Created</p>
+                  <svg
+                    onClick={handleOrderByTimestampSelection}
+                    className={`w-[14px] cursor-pointer  ${
+                      orderByTimestamp === 'newest'
+                        ? 'rotate-180 transform'
+                        : ''
+                    }`}
+                    viewBox="0 0 16 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                      fill="#959595"
+                    />
+                  </svg>
+                </div>
               </div>
-              <div className="mr-[52px] flex w-[500px] pl-[44px]">
-                <p className="mr-[10px]">Links</p>
-                <svg
-                  onClick={handleOrderByBudgetSelection}
-                  className={`w-[14px] cursor-pointer  ${
-                    orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
-                  }`}
-                  viewBox="0 0 16 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                    fill="#959595"
-                  />
-                </svg>
-              </div>
-              <div className="mr-[177px] flex pl-[47px]">
-                <p className="mr-[10px]">Created</p>
-                <svg
-                  onClick={handleOrderByTimestampSelection}
-                  className={`w-[14px] cursor-pointer  ${
-                    orderByTimestamp === 'newest' ? 'rotate-180 transform' : ''
-                  }`}
-                  viewBox="0 0 16 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                    fill="#959595"
-                  />
-                </svg>
-              </div>
-            </div>
-
+            )}
             <div key={index}>
               <div
                 className={`relative mr-1 ${
