@@ -22,22 +22,26 @@ import {
   TasksPagination,
   TasksCounting,
   Application,
+  Submission,
 } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { File, SmileySad, Info } from 'phosphor-react'
 
 type ApplicantsSubmissionsListProps = {
-  data: Application[]
+  dataApplication: Application[]
+  dataSubmission: Submission[]
   taskId: string
   budget: string
   isOpen: boolean
   address: string
+  taskExecutor: string
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, budget, isOpen, address, taskExecutor}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
+  const [submissions, setSubmissions] = useState<Submission[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByTimestamp, setOrderByTimestamp] = useState('oldest')
   const [orderByBudget, setOrderByBudget] = useState('greater')
@@ -297,7 +301,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  function NoTasks() {
+  function NoApplications() {
     return (
       <div className="mt-[64px] mb-[100px] flex flex-col items-center">
         <SmileySad size={32} className="text-blue-500 mb-2" />
@@ -320,11 +324,14 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
 
   useEffect(() => {
     console.log('useEffect chamado')
-    setApplications(data)
+    setApplications(dataApplication)
+    setSubmissions(dataSubmission)
     console.log('recebi application')
-    console.log(data)
+    console.log(dataApplication)
+    console.log('recebi submission')
+    console.log(dataSubmission)
     handleUpdate()
-  }, [data])
+  }, [dataApplication])
 
   return (
     <div className="text-[16px] font-medium !leading-[19px] text-[#505050]">
@@ -444,7 +451,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
             </div>
           </div>
         )}
-        {!isLoading && applications.length === 0 && <NoTasks />}
+        {!isLoading && applications.length === 0 && <NoApplications />}
         {!isLoading &&
           applications.length > 0 &&
           applications.map((application, index) => (
@@ -519,7 +526,7 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
                   </div>
                   {isOpen &&
                     !application.accepted &&
-                    application.proposer === address && (
+                    taskExecutor === address && (
                       <div className="mt-[11px] flex">
                         <a
                           // href={`/task/${task.id}`}
@@ -564,6 +571,149 @@ const ApplicantsSubmissionsList = ({data, taskId, budget, isOpen, address}: Appl
             </div>
           ))}
       </div>
+      {!isLoading &&
+        submissions.length > 0 &&
+        submissions.map((submission, index) => (
+          <div key={index} className={`mt-[100px] text-[#000000]`}>
+            <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+              <div className="mr-[52px] flex w-[400px] pl-[25px]">
+                <p className="mr-[10px]">Submissions</p>
+                <svg
+                  onClick={handleOrderByBudgetSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
+              </div>
+              <div className="mr-[52px] flex w-[500px] pl-[44px]">
+                <p className="mr-[10px]">Links</p>
+                <svg
+                  onClick={handleOrderByBudgetSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByBudget === 'lesser' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
+              </div>
+              <div className="mr-[177px] flex pl-[47px]">
+                <p className="mr-[10px]">Created</p>
+                <svg
+                  onClick={handleOrderByTimestampSelection}
+                  className={`w-[14px] cursor-pointer  ${
+                    orderByTimestamp === 'newest' ? 'rotate-180 transform' : ''
+                  }`}
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                    fill="#959595"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div key={index}>
+              <div
+                className={`relative mr-1 ${
+                  index === 0 ? 'mt-[34px]' : 'mt-[25px]'
+                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal text-[#000000]`}
+              >
+                <div className="mr-[52px] w-[400px] items-center">
+                  <div className="flex">
+                    <div>
+                      <img
+                        alt="ethereum avatar"
+                        src={`https://effigy.im/a/${submission.applicant}.svg`}
+                        className="mr-[10px] w-[50px] rounded-full"
+                      ></img>
+                    </div>
+                    <div>
+                      <p
+                        title={submission.applicant}
+                        className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                      >
+                        {submission.applicant}
+                      </p>
+                      <a
+                        title={formatAddress(submission.applicant)}
+                        className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://mumbai.polygonscan.com/address/${submission.applicant}`}
+                      >
+                        {formatAddress(submission.applicant)}
+                      </a>
+                    </div>
+                  </div>
+                  <div
+                    title={submission.metadataDescription}
+                    className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                  >
+                    {submission.metadataDescription}
+                  </div>
+                </div>
+                <div className="mr-[52px] flex w-[425px] items-center">
+                  <p className="max-w-[220%] overflow-hidden text-ellipsis whitespace-nowrap">
+                    {submission.metadataAdditionalLinks}
+                  </p>
+                </div>
+                <div className="mr-[52px] flex w-[225px] items-center justify-center">
+                  {formatDeadline(submission.timestamp)}
+                </div>
+                <div>
+                  <div className="flex">
+                    <a
+                      // href={`/task/${task.id}`}
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                    >
+                      View more
+                    </a>
+                  </div>
+                  {isOpen &&
+                    !submission.accepted &&
+                    taskExecutor === address && (
+                      <div className="mt-[11px] flex">
+                        <a
+                          // href={`/task/${task.id}`}
+                          onClick={() => {
+                            if (!isNominationLoading) {
+                              handleNominate(submission.submissionId)
+                            }
+                          }}
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                            isNominationLoading
+                              ? 'bg-[#2f71ec]'
+                              : 'bg-[#0354EC] hover:bg-[#092353]'
+                          }`}
+                        >
+                          Nominate
+                        </a>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
     </div>
   )
 }

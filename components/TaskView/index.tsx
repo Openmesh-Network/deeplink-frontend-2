@@ -275,11 +275,13 @@ const TaskView = (id: any) => {
                 </div>
               ) : (
                 <ApplicantsSubmissionsList
-                  data={taskMetadata.Application}
+                  dataApplication={taskMetadata.Application}
+                  dataSubmission={taskMetadata.Submission}
                   taskId={String(taskMetadata.id)}
                   budget={taskMetadata.estimatedBudget}
                   isOpen={taskMetadata.status === 'open'}
                   address={address}
+                  taskExecutor={taskMetadata.executor}
                 />
               )}
             </div>

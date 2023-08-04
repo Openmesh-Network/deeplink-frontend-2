@@ -22,7 +22,7 @@ import {
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
-import { Link, TasksOverview } from '@/types/task'
+import { Link, TasksOverview, Submission } from '@/types/task'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import HeroTask from '../TaskView/HeroTask'
@@ -53,6 +53,7 @@ const TaskSubmission = (id: any) => {
   const [taskChainData, setTaskChainData] = useState<any>()
   const [linksValues, setLinksValues] = useState([])
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
+  const [submissionMetadata, setSubmissionMetadata] = useState<Submission>()
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
     useState<String>('#009A50')
@@ -200,14 +201,14 @@ const TaskSubmission = (id: any) => {
     console.log(data)
   }
 
-  async function getTask(taskId: string) {
+  async function getSubmission(id: string) {
     const data = {
-      id: taskId,
+      id,
     }
     setIsLoading(true)
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getTask`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getSubmission`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -217,17 +218,15 @@ const TaskSubmission = (id: any) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          console.log('here is the task')
+          console.log('here is the submission')
           console.log(response.data)
-          setTaskMetadata(response.data)
-          setTaskChainData(response.data)
-          setEstimatedBudgetRequested(
-            Number(response.data.estimatedBudget).toLocaleString('en-US') ||
-              '0',
-          )
-          setBudgetValue([response.data.estimatedBudget])
+          setTaskMetadata(response.data.task)
+          setTaskChainData(response.data.task)
+          // eslint-disable-next-line prettier/prettier
+          setEstimatedBudgetRequested(Number(response.data.task.estimatedBudget).toLocaleString('en-US') || '0',)
+          setBudgetValue([response.data.task.estimatedBudget])
           // Treating payments
-          const payments = response.data.payments.map((payment) => {
+          const payments = response.data.task.payments.map((payment) => {
             const amountInNumber = Number(payment.amount)
             return {
               to: address,
@@ -241,20 +240,21 @@ const TaskSubmission = (id: any) => {
             delete payment.decimals
           })
 
-          if (response.data['Application']) {
-            const contributors = response.data['Application']
+          if (response.data.task['Application']) {
+            const contributors = response.data.task['Application']
               .filter((app) => app.taken === true)
               .map((app) => app.applicant)
 
             setContributorsAllowed(contributors)
           }
-
+          setSubmissionMetadata(response.data.submission)
           setPayments(payments)
           setIsLoading(false)
         }
       })
     } catch (err) {
-      toast.error('Task not found!')
+      toast.error('Submission not found!')
+      push('/')
       setIsLoading(false)
     }
   }
@@ -331,9 +331,9 @@ const TaskSubmission = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
+      console.log('search for the submission info on blockchain')
       console.log(id.id)
-      getTask(id.id)
+      getSubmission(id.id)
     }
   }, [id])
 

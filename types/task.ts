@@ -39,6 +39,17 @@ export type Application = {
   accepted: boolean
 }
 
+export type Submission = {
+  submissionId: string
+  proposer: string
+  applicant: string
+  metadataDescription: string
+  metadataAdditionalLinks: string[]
+  accepted: boolean
+  timestamp: string
+  reviewed: boolean
+}
+
 export type TasksOverview = {
   id: number
   title: string
@@ -54,8 +65,10 @@ export type TasksOverview = {
   type: string
   payments: Payment[]
   estimatedBudget: string
+  executor: string
   contributors: ContributorInfo[] | null
   Application: Application[] | null
+  Submission: Submission[] | null
   updatesCount: number | null
 }
 
