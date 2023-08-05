@@ -30,8 +30,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import HeroSubmission from './HeroSubmission'
 
-type TaskApplicationForm = {
+type SubmissionRevisionForm = {
   description: string
+  judgment: string
 }
 
 type Payment = {
@@ -50,6 +51,7 @@ const SubmissionRevision = (id: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isApplicationLoading, setIsApplicationLoading] =
     useState<boolean>(false)
+  const [judgment, setJudgment] = useState('')
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
   const [linksValues, setLinksValues] = useState([])
@@ -96,6 +98,8 @@ const SubmissionRevision = (id: any) => {
 
   const [payments, setPayments] = useState<Payment[]>([])
 
+  const judgmentOptions = ['Accept', 'Reject']
+
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
     { title: 'additionalLink', url: '' },
@@ -118,13 +122,6 @@ const SubmissionRevision = (id: any) => {
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
-  const howLikelyToMeetTheDeadlineOptions = [
-    'Very unlikely',
-    'Unlikely',
-    'Likely',
-    'Very likely',
-  ]
-
   const handleLink = (
     index: number,
     field: keyof Link,
@@ -143,7 +140,8 @@ const SubmissionRevision = (id: any) => {
   }
 
   const validSchema = Yup.object().shape({
-    description: Yup.string().required('Desc is required'),
+    description: Yup.string().required('Feedback is required'),
+    judgment: Yup.string().required('Judgment is required'),
   })
   const {
     register,
@@ -153,11 +151,11 @@ const SubmissionRevision = (id: any) => {
     // eslint-disable-next-line no-unused-vars
     reset,
     formState: { errors },
-  } = useForm<TaskApplicationForm>({
+  } = useForm<SubmissionRevisionForm>({
     resolver: yupResolver(validSchema),
   })
 
-  async function formsUploadIPFS(data: IPFSSubmition) {
+  async function formsUploadIPFS(data: SubmissionRevisionForm) {
     const config = {
       method: 'post' as 'post',
       url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskSubmission`,
@@ -238,15 +236,32 @@ const SubmissionRevision = (id: any) => {
     }
   }
 
-  async function handleCreateSubmission(taskId: number, metadata: string) {
+  const judgmentToIndexOptions = {
+    Accept: 1,
+    Reject: 2,
+  }
+
+  async function handleCreateSubmissionRevision(
+    taskId: number,
+    submissionId: string,
+    metadata: string,
+    judgment: string,
+  ) {
     console.log('value to be sent')
-    console.log(taskId['id'])
+    console.log(taskId)
     console.log(metadata)
+    console.log(judgmentToIndexOptions[judgment])
+    console.log(submissionId)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
-      args: [Number(taskId['id']), metadata],
-      functionName: 'createSubmission',
+      args: [
+        taskId,
+        Number(submissionId),
+        judgmentToIndexOptions[judgment],
+        metadata,
+      ],
+      functionName: 'reviewSubmission',
     })
     const { hash } = await writeContract(request)
 
@@ -261,7 +276,7 @@ const SubmissionRevision = (id: any) => {
     }
   }
 
-  async function onSubmit(data: TaskApplicationForm) {
+  async function onSubmit(data: SubmissionRevisionForm) {
     console.log('submit called')
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
@@ -270,10 +285,10 @@ const SubmissionRevision = (id: any) => {
 
     setIsApplicationLoading(true)
 
-    const { description } = data
+    const { description, judgment } = data
 
     const finalData = {
-      links: linksValues,
+      judgment,
       description,
     }
 
@@ -292,12 +307,17 @@ const SubmissionRevision = (id: any) => {
     }
 
     try {
-      await handleCreateSubmission(id, ipfsHashData)
-      toast.success('Submission done succesfully!')
-      push(`/task/${id.id}`)
+      await handleCreateSubmissionRevision(
+        taskMetadata.id,
+        submissionMetadata.submissionId,
+        judgment,
+        ipfsHashData,
+      )
+      toast.success('Success!')
+      push(`/task/${taskMetadata.id}`)
       setIsApplicationLoading(false)
     } catch (err) {
-      toast.error('Error during the Submission')
+      toast.error('Error during the execution')
       console.log(err)
       setIsApplicationLoading(false)
     }
@@ -404,56 +424,77 @@ const SubmissionRevision = (id: any) => {
                 />
               </div>
               <div className="mt-[30px]">
-                <div className="flex">
-                  <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                    Links related to your work (Github repositories,
-                    documentation...){' '}
-                  </span>
-                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
-                    * press "enter" to insert the item
-                  </span>
-                </div>
-
-                <Autocomplete
-                  multiple
-                  freeSolo
-                  options={[]} // Pode ser um array de opções predefinidas, ou vazio
-                  value={linksValues}
-                  onChange={(event, newValue) => {
-                    setLinksValues(newValue)
-                  }}
-                  popupIcon={
-                    <svg
-                      width="16"
-                      height="10"
-                      viewBox="0 0 16 10"
-                      className="mr-[15px] mt-[13px]"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                        fill="#959595"
-                      />
-                    </svg>
-                  }
-                  disabled={isLoading}
-                  className="mt-[10px]"
-                  size="small"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      id="margin-none"
+                <span className="flex flex-row">
+                  Judgment
+                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                    {errors.judgment?.message}
+                  </p>
+                </span>
+                <Controller
+                  name="judgment"
+                  control={control}
+                  rules={{ required: 'Judgment is required' }}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      disabled={isLoading}
+                      popupIcon={
+                        <svg
+                          width="16"
+                          height="10"
+                          viewBox="0 0 16 10"
+                          className="mr-[15px] mt-[13px]"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                            fill="#959595"
+                          />
+                        </svg>
+                      }
+                      value={judgment}
+                      onChange={(e, newValue) => {
+                        field.onChange(newValue)
+                        setJudgment(newValue)
+                      }}
+                      className="mt-[10px]"
+                      options={judgmentOptions}
+                      getOptionLabel={(option) => `${option}`}
                       sx={{
                         width: '500px',
                         fieldset: {
-                          height: '45px',
+                          height: '55px',
                           borderColor: '#D4D4D4',
                           borderRadius: '10px',
                         },
                         input: { color: 'black' },
                       }}
+                      size="small"
+                      filterOptions={(options, state) =>
+                        options.filter((option) =>
+                          option
+                            .toLowerCase()
+                            .includes(state.inputValue.toLowerCase()),
+                        )
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label=""
+                          variant="outlined"
+                          id="margin-none"
+                          sx={{
+                            width: '500px',
+                            fieldset: {
+                              height: '55px',
+                              borderColor: '#D4D4D4',
+                              borderRadius: '10px',
+                            },
+                            input: { color: 'black' },
+                          }}
+                        />
+                      )}
                     />
                   )}
                 />
