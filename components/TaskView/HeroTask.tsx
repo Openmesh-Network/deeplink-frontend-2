@@ -32,7 +32,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
   const taskStateCircle = {
     open: 'circle-green-task-hero.svg',
     active: 'circle-blue-task-hero.svg',
-    closed: 'circle-black-task-hero.svg',
+    completed: 'circle-black-task-hero.svg',
   }
 
   const taskStatusToButton = {

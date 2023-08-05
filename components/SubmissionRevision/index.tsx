@@ -158,7 +158,7 @@ const SubmissionRevision = (id: any) => {
   async function formsUploadIPFS(data: SubmissionRevisionForm) {
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskSubmission`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskSubmissionRevision`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -247,10 +247,15 @@ const SubmissionRevision = (id: any) => {
     metadata: string,
     judgment: string,
   ) {
+    console.log('judgmetn here')
+    console.log(judgment)
     console.log('value to be sent')
     console.log(taskId)
+    console.log('value to be sent')
     console.log(metadata)
+    console.log('value to be sent')
     console.log(judgmentToIndexOptions[judgment])
+    console.log('value to be sent')
     console.log(submissionId)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
@@ -310,8 +315,8 @@ const SubmissionRevision = (id: any) => {
       await handleCreateSubmissionRevision(
         taskMetadata.id,
         submissionMetadata.submissionId,
-        judgment,
         ipfsHashData,
+        judgment,
       )
       toast.success('Success!')
       push(`/task/${taskMetadata.id}`)
@@ -424,7 +429,7 @@ const SubmissionRevision = (id: any) => {
                 />
               </div>
               <div className="mt-[30px]">
-                <span className="flex flex-row">
+                <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
                   Judgment
                   <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                     {errors.judgment?.message}
@@ -443,7 +448,7 @@ const SubmissionRevision = (id: any) => {
                           width="16"
                           height="10"
                           viewBox="0 0 16 10"
-                          className="mr-[15px] mt-[13px]"
+                          className="mr-[15px] mt-[0px]"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -464,7 +469,7 @@ const SubmissionRevision = (id: any) => {
                       sx={{
                         width: '500px',
                         fieldset: {
-                          height: '55px',
+                          height: '45px',
                           borderColor: '#D4D4D4',
                           borderRadius: '10px',
                         },
@@ -487,11 +492,11 @@ const SubmissionRevision = (id: any) => {
                           sx={{
                             width: '500px',
                             fieldset: {
-                              height: '55px',
+                              height: '45px',
                               borderColor: '#D4D4D4',
                               borderRadius: '10px',
                             },
-                            input: { color: 'black' },
+                            input: { color: 'black', fontSize: '14px' },
                           }}
                         />
                       )}

@@ -700,12 +700,24 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                       ></img>
                     </div>
                     <div>
-                      <p
-                        title={submission.applicant}
-                        className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
-                      >
-                        {submission.applicant}
-                      </p>
+                      <div className="flex">
+                        <p
+                          title={submission.applicant}
+                          className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                        >
+                          {formatAddress(submission.applicant)}
+                        </p>
+                        {submission.reviewed && submission.accepted && (
+                          <p className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#12ad50]">
+                            Accepted
+                          </p>
+                        )}
+                        {submission.reviewed && !submission.accepted && (
+                          <p className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#f90000]">
+                            Rejected
+                          </p>
+                        )}
+                      </div>
                       <a
                         title={formatAddress(submission.applicant)}
                         className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
