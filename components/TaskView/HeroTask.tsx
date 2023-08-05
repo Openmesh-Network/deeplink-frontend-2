@@ -24,9 +24,11 @@ import { TasksOverview } from '@/types/task'
 
 interface TasksModalProps {
   task: TasksOverview
+  contributorsAllowed: string[] | null
+  address: string | null
 }
 
-const HeroTask = ({ task }: TasksModalProps) => {
+const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
   const taskStateCircle = {
     open: 'circle-green-task-hero.svg',
     active: 'circle-blue-task-hero.svg',
@@ -116,7 +118,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
   return (
     <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
       <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
-        <div className="-mx-4 flex flex-wrap items-start">
+        <div className="flex -mx-4 flex-wrap items-start">
           <div className="w-full px-4">
             <div className="flex justify-between">
               <div className="w-full">
@@ -126,7 +128,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
                 >
                   {task.title}
                 </h3>
-                <div className="mt-[25px] flex text-[14px]  text-[#505050]">
+                <div className="flex mt-[25px] text-[14px]  text-[#505050]">
                   <p className="">Tags: </p>
                   <div className="flex italic">
                     {task.skills &&
@@ -141,14 +143,14 @@ const HeroTask = ({ task }: TasksModalProps) => {
                       ))}
                   </div>
                 </div>
-                <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
-                  <div className="mr-[22px] flex">
+                <div className="flex mt-[25px] text-[16px] font-medium text-[#505050]">
+                  <div className="flex mr-[22px]">
                     <img
                       src="/images/task/coins.svg"
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
-                    <p className="mr-[3px] flex items-center">
+                    <p className="flex mr-[3px] items-center">
                       Available funds:
                     </p>{' '}
                     <span className="flex items-center text-[16px] font-bold text-[#000000]">
@@ -184,34 +186,34 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     ))}
                   </div>
                 </div>
-                <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
-                  <div className="mr-[50px] flex">
+                <div className="flex mt-[25px] text-[16px] font-medium text-[#505050]">
+                  <div className="flex mr-[50px]">
                     <img
                       src="/images/task/people.svg"
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
-                    <p className="mr-[3px] flex items-center">
+                    <p className="flex mr-[3px] items-center">
                       Contributors needed:
                     </p>{' '}
                     <span className="flex items-center text-[16px] font-bold text-[#303030]">
                       {task.contributorsNeeded}
                     </span>
                   </div>
-                  <div className="mr-[50px] flex">
+                  <div className="flex mr-[50px]">
                     <img
                       src="/images/task/clock.svg"
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
-                    <p className="mr-[3px] flex items-center">
+                    <p className="flex mr-[3px] items-center">
                       Project length:
                     </p>{' '}
                     <span className="flex items-center text-[16px] font-bold text-[#303030]">
                       {task.projectLength}
                     </span>
                   </div>
-                  <div className="mr-[10px] flex">
+                  <div className="flex mr-[10px]">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -243,7 +245,7 @@ const HeroTask = ({ task }: TasksModalProps) => {
                 {' '}
                 <div className="text-[16px] font-bold text-[#000000]">
                   <div className="flex !leading-[150%]">Status:</div>
-                  <div className="mt-[6px] flex">
+                  <div className="flex mt-[6px]">
                     <img
                       src={`/images/task/${taskStateCircle[task.status]}`}
                       alt="image"
@@ -272,18 +274,20 @@ const HeroTask = ({ task }: TasksModalProps) => {
                     </a>
                   </div>
                 )}
-                {task.status === 'active' && (
-                  <div className="mt-[25px] ">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`/new-submission/${task.id}`}
-                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[16px]  font-bold text-white hover:bg-[#5080da] "
-                    >
-                      {'Create submission'}
-                    </a>
-                  </div>
-                )}
+                {task.status === 'active' &&
+                  address &&
+                  contributorsAllowed.includes(address) && (
+                    <div className="mt-[25px] ">
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`/new-submission/${task.id}`}
+                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[16px]  font-bold text-white hover:bg-[#5080da] "
+                      >
+                        {'Create submission'}
+                      </a>
+                    </div>,
+                  )}
               </div>
             </div>
           </div>

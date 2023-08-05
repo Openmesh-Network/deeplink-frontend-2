@@ -420,7 +420,7 @@ const TaskApplication = (id: any) => {
   if (!address) {
     return (
       <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
+        <div className="flex mt-[60px] items-center justify-center text-[#000000]">
           Connect you wallet to continue
         </div>
       </div>
@@ -430,7 +430,7 @@ const TaskApplication = (id: any) => {
   if (isLoading) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="container flex h-60 animate-pulse px-0 pb-12">
+        <div className="flex container h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
@@ -442,7 +442,7 @@ const TaskApplication = (id: any) => {
   if (!isLoading && (!taskChainData || !taskMetadata)) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="container flex h-60 px-0 pb-[700px]">
+        <div className="flex container h-60 px-0 pb-[700px]">
           Task not found
         </div>
       </section>
@@ -451,7 +451,13 @@ const TaskApplication = (id: any) => {
 
   return (
     <>
-      {taskMetadata && <HeroTask task={taskMetadata} />}
+      {taskMetadata && (
+        <HeroTask
+          task={taskMetadata}
+          contributorsAllowed={null}
+          address={address}
+        />
+      )}
       <section className="px-[100px] pt-[62px]  pb-[250px]">
         <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
@@ -662,7 +668,7 @@ const TaskApplication = (id: any) => {
                 <span className="">Apply now</span>
               </button>
             </div>
-            <div className=" mt-[30px] flex w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+            <div className=" flex mt-[30px] w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
               <p>
                 | Have more questions? Reach out to{' '}
                 <a

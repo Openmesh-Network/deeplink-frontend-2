@@ -83,7 +83,7 @@ const NewTask = () => {
     { title: 'calendarLink', url: '' },
     { title: 'reachOutLink', url: '' },
   ])
-  const departamentOptions = ['', 'Data', 'Frontend', 'Blockchain', 'Cloud']
+  const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
   const projectLengthOptions = [
     'Less than 1 week',
     '1 to 2 weeks',
@@ -132,9 +132,9 @@ const NewTask = () => {
     numberOfApplicants: Yup.string().required(
       'Number of applicants is required',
     ),
-    githubLink: Yup.string().required('Github repo is required'),
-    calendarLink: Yup.string().required('Calendar link is required'),
-    reachOutLink: Yup.string().required('Reach out link is required'),
+    githubLink: Yup.string().notRequired(),
+    calendarLink: Yup.string().notRequired(),
+    reachOutLink: Yup.string().notRequired(),
     type: Yup.string().notRequired(),
   })
   const {

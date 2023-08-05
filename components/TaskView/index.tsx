@@ -30,6 +30,7 @@ const TaskView = (id: any) => {
   const [imgTaskIPFS, setImgTaskIPFS] = useState('')
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
+  const [contributorsAllowed, setContributorsAllowed] = useState([])
 
   const { push } = useRouter()
   const { address } = useAccount()
@@ -65,6 +66,12 @@ const TaskView = (id: any) => {
       await axios(config).then(function (response) {
         if (response.data) {
           setTaskMetadata(response.data)
+          if (response.data['Application']) {
+            const contributors = response.data['Application']
+              .filter((app) => app.taken === true)
+              .map((app) => app.applicant)
+            setContributorsAllowed(contributors)
+          }
         }
       })
     } catch (err) {
@@ -85,7 +92,7 @@ const TaskView = (id: any) => {
         <div>
           {taskMetadata.contributors.map((contributor, index) => (
             <div
-              className="mt-[20px] flex items-center text-[16px] font-medium"
+              className="flex mt-[20px] items-center text-[16px] font-medium"
               key={index}
             >
               <img
@@ -124,7 +131,7 @@ const TaskView = (id: any) => {
   if (isLoading || !taskMetadata) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="container flex h-60 animate-pulse px-0 pb-12">
+        <div className="flex container h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
@@ -135,7 +142,11 @@ const TaskView = (id: any) => {
 
   return (
     <>
-      <HeroTask task={taskMetadata} />
+      <HeroTask
+        task={taskMetadata}
+        contributorsAllowed={contributorsAllowed}
+        address={address}
+      />
       <section className="px-[100px] pt-[59px] pb-[250px]">
         <div className="container mt-12  px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <div className="flex flex-wrap items-start">
@@ -193,7 +204,7 @@ const TaskView = (id: any) => {
               </div>
               {viewOption !== 'submissions' ? (
                 <div>
-                  <div className="mt-[49px] flex">
+                  <div className="flex mt-[49px]">
                     {viewOption === 'projectDescription' ? (
                       <div className="mr-[50px] w-full text-[16px] font-normal !leading-[150%]">
                         {imgTaskIPFS ? (
@@ -258,7 +269,7 @@ const TaskView = (id: any) => {
                     </div>
                   </div>
                   {viewOption === 'projectDescription' && (
-                    <div className=" mt-[50px] mr-[400px] flex rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+                    <div className=" flex mt-[50px] mr-[400px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
@@ -282,6 +293,7 @@ const TaskView = (id: any) => {
                   isOpen={taskMetadata.status === 'open'}
                   address={address}
                   taskExecutor={taskMetadata.executor}
+                  contributorsAllowed={contributorsAllowed}
                 />
               )}
             </div>

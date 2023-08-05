@@ -35,10 +35,11 @@ type ApplicantsSubmissionsListProps = {
   isOpen: boolean
   address: string
   taskExecutor: string
+  contributorsAllowed: string[]
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, budget, isOpen, address, taskExecutor}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, budget, isOpen, address, taskExecutor, contributorsAllowed}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
@@ -230,7 +231,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
     try {
       await handleCreateTakingTask(taskId, applicationIdValue)
       window.location.reload()
-      toast.success('Task took succesfully!')
+      toast.success('Success!')
       setIsTakingTaskLoading(false)
     } catch (err) {
       toast.error('Error during the task taking')
@@ -305,7 +306,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
 
   function NoApplications() {
     return (
-      <div className="mt-[64px] mb-[100px] flex flex-col items-center">
+      <div className="flex mt-[64px] mb-[100px] flex-col items-center">
         <SmileySad size={32} className="text-blue-500 mb-2" />
         <span>No applications found</span>
       </div>
@@ -348,7 +349,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
               target="_blank"
               rel="noopener noreferrer"
               href={`/application/${taskId}`}
-              className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[16px] font-bold text-white hover:bg-[#0b9040]"
+              className="flex mt-[25px] h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[16px] font-bold text-white hover:bg-[#0b9040]"
             >
               Start working
             </a>
@@ -357,7 +358,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
       )}
       <div className={`text-[#000000] ${isOpen ? 'mt-[30px]' : 'mt-[49px]'}`}>
         <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
-          <div className="mr-[52px] flex w-[400px] pl-[25px]">
+          <div className="flex mr-[52px] w-[400px] pl-[25px]">
             <p className="mr-[10px]">Applicants</p>
             <svg
               onClick={handleOrderByBudgetSelection}
@@ -374,7 +375,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
               />
             </svg>
           </div>
-          <div className="mr-[52px] flex pl-[44px]">
+          <div className="flex mr-[52px] pl-[44px]">
             <p className="mr-[10px]">Budget</p>
             <svg
               onClick={handleOrderByBudgetSelection}
@@ -391,7 +392,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
               />
             </svg>
           </div>
-          <div className="mr-[52px] flex">
+          <div className="flex mr-[52px]">
             <p className="mr-[10px]">Job Success</p>
             <svg
               className={`w-[14px] cursor-pointer`}
@@ -405,7 +406,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
               />
             </svg>
           </div>
-          <div className="mr-[52px] flex pl-[29px]">
+          <div className="flex mr-[52px] pl-[29px]">
             <p className="mr-[10px]">Total Earned</p>
             <svg
               className={`w-[14px] cursor-pointer`}
@@ -419,7 +420,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
               />
             </svg>
           </div>
-          <div className="mr-[177px] flex pl-[47px]">
+          <div className="flex mr-[177px] pl-[47px]">
             <p className="mr-[10px]">Joined</p>
             <svg
               onClick={handleOrderByTimestampSelection}
@@ -473,16 +474,29 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                       ></img>
                     </div>
                     <div>
-                      <p
-                        title={
-                          application.metadataDisplayName ||
-                          application.applicant
-                        }
-                        className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
-                      >
-                        {application.metadataDisplayName ||
-                          formatAddress(application.applicant)}
-                      </p>
+                      <div className="flex">
+                        <p
+                          title={
+                            application.metadataDisplayName ||
+                            application.applicant
+                          }
+                          className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                        >
+                          {application.metadataDisplayName ||
+                            formatAddress(application.applicant)}
+                        </p>
+                        {application.accepted && (
+                          <p
+                            title={
+                              application.metadataDisplayName ||
+                              application.applicant
+                            }
+                            className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#12ad50]"
+                          >
+                            Approved
+                          </p>
+                        )}
+                      </div>
                       <a
                         title={formatAddress(application.applicant)}
                         className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
@@ -511,18 +525,18 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                     </div>
                   )}
                 </div>
-                <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
+                <div className="flex mr-[52px] w-[125px] items-center pl-[5px]">
                   <p className="max-w-[120%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {returnsBudget(application.metadataProposedBudget)}
                   </p>
                 </div>
-                <div className="mr-[52px] flex w-[55px] items-center">
+                <div className="flex mr-[52px] w-[55px] items-center">
                   <p>{application.jobSuccess || 'Undefined'}</p>
                 </div>
-                <div className="mr-[52px] flex w-[55px] items-center">
+                <div className="flex mr-[52px] w-[55px] items-center">
                   <p>{application.jobSuccess || 'Undefined'}</p>
                 </div>
-                <div className="mr-[52px] flex w-[225px] items-center justify-center">
+                <div className="flex mr-[52px] w-[225px] items-center justify-center">
                   {formatDeadline(application.timestamp)}
                 </div>
 
@@ -537,7 +551,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
                       >
                         View less
                       </a>
@@ -551,7 +565,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
                       >
                         View more
                       </a>
@@ -561,7 +575,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                   {isOpen &&
                     !application.accepted &&
                     taskExecutor === address && (
-                      <div className="mt-[11px] flex">
+                      <div className="flex mt-[11px]">
                         <a
                           // href={`/task/${task.id}`}
                           onClick={() => {
@@ -569,7 +583,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                               handleNominate(application.applicationId)
                             }
                           }}
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                          className={`flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
                             isNominationLoading
                               ? 'bg-[#2f71ec]'
                               : 'bg-[#0354EC] hover:bg-[#092353]'
@@ -582,7 +596,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                   {isOpen &&
                     application.accepted &&
                     application.applicant === address && (
-                      <div className="mt-[11px] flex">
+                      <div className="flex mt-[11px]">
                         <a
                           // href={`/task/${task.id}`}
                           onClick={() => {
@@ -590,7 +604,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                               handleTakeTask(application.applicationId)
                             }
                           }}
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                          className={`flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
                             isTakingTaskLoading
                               ? 'bg-[#2f71ec]'
                               : 'bg-[#0354EC] hover:bg-[#092353]'
@@ -610,8 +624,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
         submissions.map((submission, index) => (
           <div key={index} className={` text-[#000000]`}>
             {index === 0 && (
-              <div className=" mt-[100px] flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
-                <div className="mr-[52px] flex w-[400px] pl-[25px]">
+              <div className=" flex mt-[100px] items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+                <div className="flex mr-[52px] w-[400px] pl-[25px]">
                   <p className="mr-[10px]">Submissions</p>
                   <svg
                     onClick={handleOrderByBudgetSelection}
@@ -628,7 +642,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                     />
                   </svg>
                 </div>
-                <div className="mr-[52px] flex w-[500px] pl-[44px]">
+                <div className="flex mr-[52px] w-[500px] pl-[44px]">
                   <p className="mr-[10px]">Links</p>
                   <svg
                     onClick={handleOrderByBudgetSelection}
@@ -645,7 +659,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                     />
                   </svg>
                 </div>
-                <div className="mr-[177px] flex pl-[47px]">
+                <div className="flex mr-[177px] pl-[47px]">
                   <p className="mr-[10px]">Created</p>
                   <svg
                     onClick={handleOrderByTimestampSelection}
@@ -718,20 +732,20 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                 </div>
                 {viewMoreSubmission &&
                 viewMoreSubmission === submission.submissionId ? (
-                  <div className="mr-[52px] flex w-[425px] items-center">
+                  <div className="flex mr-[52px] w-[425px] items-center">
                     <p className="max-h-[400px] max-w-[220%] overflow-y-auto">
                       {submission.metadataAdditionalLinks}
                     </p>
                   </div>
                 ) : (
-                  <div className="mr-[52px] flex w-[425px] items-center">
+                  <div className="flex mr-[52px] w-[425px] items-center">
                     <p className="max-w-[220%] overflow-hidden text-ellipsis whitespace-nowrap">
                       {submission.metadataAdditionalLinks}
                     </p>
                   </div>
                 )}
 
-                <div className="mr-[52px] flex w-[225px] items-center justify-center">
+                <div className="flex mr-[52px] w-[225px] items-center justify-center">
                   {formatDeadline(submission.timestamp)}
                 </div>
                 <div>
@@ -745,7 +759,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
                       >
                         View less
                       </a>
@@ -759,7 +773,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
                       >
                         View more
                       </a>
@@ -769,7 +783,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                   {isOpen &&
                     !submission.accepted &&
                     taskExecutor === address && (
-                      <div className="mt-[11px] flex">
+                      <div className="flex mt-[11px]">
                         <a
                           // href={`/task/${task.id}`}
                           onClick={() => {
@@ -777,7 +791,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                               handleNominate(submission.submissionId)
                             }
                           }}
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                          className={`flex ml-auto w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
                             isNominationLoading
                               ? 'bg-[#2f71ec]'
                               : 'bg-[#0354EC] hover:bg-[#092353]'
