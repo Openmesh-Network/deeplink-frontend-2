@@ -28,6 +28,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import HeroSubmission from './HeroSubmission'
 
 type TaskApplicationForm = {
   description: string
@@ -44,7 +45,7 @@ type IPFSSubmition = {
   links: Link[] | null
 }
 
-const TaskSubmission = (id: any) => {
+const SubmissionRevision = (id: any) => {
   Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isApplicationLoading, setIsApplicationLoading] =
@@ -325,11 +326,11 @@ const TaskSubmission = (id: any) => {
     )
   }
 
-  if (address && !contributorsAllowed.includes(address)) {
+  if (address && taskMetadata && taskMetadata.executor !== address) {
     return (
       <div className="pb-[500px]">
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          You are not allowed to submit to this task
+          You are not allowed to review this submission
         </div>
       </div>
     )
@@ -366,22 +367,29 @@ const TaskSubmission = (id: any) => {
           address={address}
         />
       )}
+      {submissionMetadata && (
+        <HeroSubmission
+          submission={submissionMetadata}
+          contributorsAllowed={null}
+          address={address}
+        />
+      )}
       <section className="px-[100px] pt-[62px]  pb-[250px]">
         <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>
                 <p className="text-[20px] font-bold !leading-[120%] text-[#000000]">
-                  Submit your work
+                  Submit your revision
                 </p>
                 <p className="mt-[30px] max-w-[854px] text-[16px] font-medium !leading-[140%] text-[#505050]">
-                  Be sure to submit all the outcomes from your work, increasing
-                  the chances of it being accepted!
+                  Be sure to submit a clear feedback, helping on the task's
+                  development
                 </p>
               </div>
               <div className="mt-[30px]">
                 <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Description{' '}
+                  Feedback{' '}
                   <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                     {errors.description?.message}
                   </p>
@@ -471,4 +479,4 @@ const TaskSubmission = (id: any) => {
   )
 }
 
-export default TaskSubmission
+export default SubmissionRevision

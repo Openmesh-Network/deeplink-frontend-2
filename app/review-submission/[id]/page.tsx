@@ -1,7 +1,7 @@
 'use client'
 
 import ScrollUp from '@/components/Common/ScrollUp'
-import TaskSubmission from '@/components/TaskSubmission'
+import SubmissionRevision from '@/components/SubmissionRevision'
 import { Inter } from '@next/font/google'
 
 // eslint-disable-next-line no-unused-vars
@@ -12,7 +12,7 @@ export default function UserPage({ params }) {
   return (
     <>
       <ScrollUp />
-      <TaskSubmission id={params.id} />
+      <SubmissionRevision id={params.id} />
     </>
   )
 }
