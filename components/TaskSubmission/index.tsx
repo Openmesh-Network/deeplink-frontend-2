@@ -460,7 +460,7 @@ const TaskSubmission = (id: any) => {
                           borderColor: '#D4D4D4',
                           borderRadius: '10px',
                         },
-                        input: { color: 'black' },
+                        input: { color: 'black', fontSize: '13px' },
                       }}
                     />
                   )}

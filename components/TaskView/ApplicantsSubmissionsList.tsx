@@ -48,6 +48,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isNominationLoading, setIsNominationLoading] = useState<boolean>(false)
   const [isTakingTaskLoading, setIsTakingTaskLoading] = useState<boolean>(false)
+  const [viewMoreSubmission, setViewMoreSubmission] = useState<any>()
+  const [viewMoreApplication, setViewMoreApplication] = useState<any>()
 
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
@@ -492,12 +494,22 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                       </a>
                     </div>
                   </div>
-                  <div
-                    title={application.metadataDescription}
-                    className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
-                  >
-                    {application.metadataDescription}
-                  </div>
+                  {viewMoreSubmission &&
+                  viewMoreSubmission === application.applicationId ? (
+                    <div
+                      title={application.metadataDescription}
+                      className="mt-[13px] max-h-[500px] overflow-y-auto text-[14px] font-normal !leading-[150%]"
+                    >
+                      {application.metadataDescription}
+                    </div>
+                  ) : (
+                    <div
+                      title={application.metadataDescription}
+                      className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                    >
+                      {application.metadataDescription}
+                    </div>
+                  )}
                 </div>
                 <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
                   <p className="max-w-[120%] overflow-hidden text-ellipsis whitespace-nowrap">
@@ -513,17 +525,39 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                 <div className="mr-[52px] flex w-[225px] items-center justify-center">
                   {formatDeadline(application.timestamp)}
                 </div>
+
                 <div>
-                  <div className="flex">
-                    <a
-                      // href={`/task/${task.id}`}
-                      target="_blank"
-                      rel="nofollow noreferrer"
-                      className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
-                    >
-                      View more
-                    </a>
-                  </div>
+                  {viewMoreSubmission &&
+                  viewMoreSubmission === application.applicationId ? (
+                    <div className="flex">
+                      <a
+                        // href={`/task/${task.id}`}
+                        onClick={() => {
+                          setViewMoreApplication(null)
+                        }}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                      >
+                        View less
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="flex">
+                      <a
+                        // href={`/task/${task.id}`}
+                        onClick={() => {
+                          setViewMoreApplication(application.applicationId)
+                        }}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                      >
+                        View more
+                      </a>
+                    </div>
+                  )}
+
                   {isOpen &&
                     !application.accepted &&
                     taskExecutor === address && (
@@ -665,32 +699,73 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
                       </a>
                     </div>
                   </div>
-                  <div
-                    title={submission.metadataDescription}
-                    className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
-                  >
-                    {submission.metadataDescription}
+                  {viewMoreSubmission &&
+                  viewMoreSubmission === submission.submissionId ? (
+                    <div
+                      title={submission.metadataDescription}
+                      className="mt-[13px] max-h-[400px] overflow-y-auto text-[14px] font-normal !leading-[150%]"
+                    >
+                      {submission.metadataDescription}
+                    </div>
+                  ) : (
+                    <div
+                      title={submission.metadataDescription}
+                      className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                    >
+                      {submission.metadataDescription}
+                    </div>
+                  )}
+                </div>
+                {viewMoreSubmission &&
+                viewMoreSubmission === submission.submissionId ? (
+                  <div className="mr-[52px] flex w-[425px] items-center">
+                    <p className="max-h-[400px] max-w-[220%] overflow-y-auto">
+                      {submission.metadataAdditionalLinks}
+                    </p>
                   </div>
-                </div>
-                <div className="mr-[52px] flex w-[425px] items-center">
-                  <p className="max-w-[220%] overflow-hidden text-ellipsis whitespace-nowrap">
-                    {submission.metadataAdditionalLinks}
-                  </p>
-                </div>
+                ) : (
+                  <div className="mr-[52px] flex w-[425px] items-center">
+                    <p className="max-w-[220%] overflow-hidden text-ellipsis whitespace-nowrap">
+                      {submission.metadataAdditionalLinks}
+                    </p>
+                  </div>
+                )}
+
                 <div className="mr-[52px] flex w-[225px] items-center justify-center">
                   {formatDeadline(submission.timestamp)}
                 </div>
                 <div>
-                  <div className="flex">
-                    <a
-                      // href={`/task/${task.id}`}
-                      target="_blank"
-                      rel="nofollow noreferrer"
-                      className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
-                    >
-                      View more
-                    </a>
-                  </div>
+                  {viewMoreSubmission &&
+                  viewMoreSubmission === submission.submissionId ? (
+                    <div className="flex">
+                      <a
+                        // href={`/task/${task.id}`}
+                        onClick={() => {
+                          setViewMoreSubmission(null)
+                        }}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                      >
+                        View less
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="flex">
+                      <a
+                        // href={`/task/${task.id}`}
+                        onClick={() => {
+                          setViewMoreSubmission(submission.submissionId)
+                        }}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                      >
+                        View more
+                      </a>
+                    </div>
+                  )}
+
                   {isOpen &&
                     !submission.accepted &&
                     taskExecutor === address && (

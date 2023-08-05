@@ -234,7 +234,6 @@ const TaskApplication = (id: any) => {
             Number(response.data.estimatedBudget).toLocaleString('en-US') ||
               '0',
           )
-          setBudgetValue([response.data.estimatedBudget])
           // Treating payments
           const payments = response.data.payments.map((payment) => {
             const amountInNumber = Number(payment.amount)
@@ -257,6 +256,55 @@ const TaskApplication = (id: any) => {
     } catch (err) {
       toast.error('Task not found!')
       setIsLoading(false)
+    }
+  }
+
+  async function getEstimationTokens(
+    taskId: string,
+    percentage: number,
+  ): Promise<Payment[]> {
+    const data = {
+      id: taskId,
+      percentage,
+    }
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getTokensNecessaryToFillRequest`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
+    }
+    try {
+      const response = await axios(config)
+      if (response.data) {
+        console.log('here is the answer')
+        console.log(response.data)
+        // Treating payments
+        const payments = response.data.payments.map((payment) => {
+          const amountInNumber = Number(payment.amount)
+          return {
+            to: address,
+            amount: amountInNumber,
+            nextToken: true,
+          }
+        })
+
+        // Removendo o campo 'decimals'
+        payments.forEach((payment) => {
+          delete payment.decimals
+        })
+
+        setPayments(payments)
+        return payments
+      } else {
+        return null // return empty array when no data
+      }
+    } catch (err) {
+      console.log(err)
+      toast.error('error!')
+      return null // return empty array in case of an error
     }
   }
 
@@ -322,8 +370,24 @@ const TaskApplication = (id: any) => {
       return
     }
 
+    // based on the percentage the user is requiring, we are going to calculate how many tokens are necessary to fill its request
+    const newPaymentsBasedOnPercentage: Payment[] = await getEstimationTokens(
+      id.id,
+      budgetPercentage,
+    )
+    console.log('final newPayment')
+    console.log(newPaymentsBasedOnPercentage)
+    if (!newPaymentsBasedOnPercentage) {
+      setIsApplicationLoading(false)
+      toast.error('Budget estimation')
+      return
+    }
     try {
-      await handleCreateApplication(id, ipfsHashData, payments)
+      await handleCreateApplication(
+        id,
+        ipfsHashData,
+        newPaymentsBasedOnPercentage,
+      )
       toast.success('Application done succesfully!')
       push(`/task/${id.id}`)
       setIsApplicationLoading(false)
@@ -428,23 +492,21 @@ const TaskApplication = (id: any) => {
                       step={1}
                       disabled={isApplicationLoading}
                       min={0}
-                      max={Number(taskChainData['estimatedBudget']) * 2.5}
+                      max={250}
                       values={budgetValue}
                       onChange={(values) => {
-                        // transforming value to percentage:
-                        const percentage = Number(
-                          new Decimal(values[0] * 100).div(
-                            new Decimal(taskChainData['estimatedBudget']),
-                          ),
-                        )
-                        setBudgetValue([values[0]])
+                        setBudgetValue(values)
                         setBudgetValueInputColor(
-                          colorsBudget[Math.floor(percentage / rangePerColor)],
+                          colorsBudget[Math.floor(values[0] / rangePerColor)],
                         )
                         setEstimatedBudgetRequested(
-                          values[0].toLocaleString('en-US'),
+                          Number(
+                            new Decimal(taskChainData['estimatedBudget']).mul(
+                              new Decimal(values[0] / 100),
+                            ),
+                          ).toLocaleString('en-US'),
                         )
-                        setBudgetPercentage(Number(percentage.toFixed(2)))
+                        setBudgetPercentage(values[0])
                       }}
                       renderTrack={({ props, children }) => (
                         <div
@@ -475,7 +537,7 @@ const TaskApplication = (id: any) => {
                           }}
                         >
                           <div className="px-[10px] text-[14px] font-bold text-[#ffffff]">
-                            ${estimatedBudgetRequested}
+                            {budgetValue}%
                           </div>
                         </div>
                       )}
