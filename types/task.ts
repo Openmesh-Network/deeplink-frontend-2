@@ -40,6 +40,7 @@ export type Application = {
 }
 
 export type Submission = {
+  id: string
   submissionId: string
   proposer: string
   applicant: string

@@ -340,7 +340,7 @@ const TaskSubmission = (id: any) => {
   if (!address) {
     return (
       <div className="pb-[500px]">
-        <div className="flex mt-[60px] items-center justify-center text-[#000000]">
+        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           Connect you wallet to continue
         </div>
       </div>
@@ -350,7 +350,7 @@ const TaskSubmission = (id: any) => {
   if (address && !contributorsAllowed.includes(address)) {
     return (
       <div className="pb-[500px]">
-        <div className="flex mt-[60px] items-center justify-center text-[#000000]">
+        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           You are not allowed to submit to this task
         </div>
       </div>
@@ -360,7 +360,7 @@ const TaskSubmission = (id: any) => {
   if (isLoading) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="flex container h-60 animate-pulse px-0 pb-12">
+        <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
@@ -372,7 +372,7 @@ const TaskSubmission = (id: any) => {
   if (!isLoading && (!taskChainData || !taskMetadata)) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="flex container h-60 px-0 pb-[700px]">
+        <div className="container flex h-60 px-0 pb-[700px]">
           Task not found
         </div>
       </section>
@@ -423,7 +423,7 @@ const TaskSubmission = (id: any) => {
                     Links related to your work (Github repositories,
                     documentation...){' '}
                   </span>
-                  <span className="flex ml-[9px] flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
+                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
                     * press "enter" to insert the item
                   </span>
                 </div>

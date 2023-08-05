@@ -179,28 +179,6 @@ const TaskSubmission = (id: any) => {
     return dado
   }
 
-  async function getTaskFromChain(id: any) {
-    setIsLoading(true)
-    console.log('getting data from task')
-    let data
-    try {
-      data = await readContract({
-        address: `0x${taskAddress.substring(2)}`,
-        abi: taskContractABI,
-        args: [Number(id)],
-        functionName: 'getTask',
-      })
-      setTaskChainData(data)
-      setIsLoading(false)
-    } catch (err) {
-      toast.error('Task not found!')
-      setIsLoading(false)
-    }
-
-    console.log('the data:')
-    console.log(data)
-  }
-
   async function getSubmission(id: string) {
     const data = {
       id,
@@ -381,7 +359,13 @@ const TaskSubmission = (id: any) => {
 
   return (
     <>
-      {taskMetadata && <HeroTask task={taskMetadata} />}
+      {taskMetadata && (
+        <HeroTask
+          task={taskMetadata}
+          contributorsAllowed={null}
+          address={address}
+        />
+      )}
       <section className="px-[100px] pt-[62px]  pb-[250px]">
         <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
           <form onSubmit={handleSubmit(onSubmit)} className="">

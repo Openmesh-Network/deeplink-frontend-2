@@ -85,29 +85,29 @@ const TaskView = (id: any) => {
   }
 
   function returnContributors() {
-    if (!taskMetadata.contributors || taskMetadata.contributors.length === 0) {
+    if (!contributorsAllowed || contributorsAllowed.length === 0) {
       return <div className="mt-[20px]">Empty</div>
     } else {
       return (
         <div>
-          {taskMetadata.contributors.map((contributor, index) => (
+          {contributorsAllowed.map((contributor, index) => (
             <div
-              className="flex mt-[20px] items-center text-[16px] font-medium"
+              className="mt-[20px] flex items-center text-[16px] font-medium"
               key={index}
             >
               <img
                 alt="ethereum avatar"
-                src={`https://effigy.im/a/${contributor.address}.svg`}
+                src={`https://effigy.im/a/${contributor}.svg`}
                 className=" mr-[20px] w-[30px] rounded-full"
               ></img>
               <a
-                title={contributor.address}
+                title={contributor}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary"
-                href={`https://mumbai.polygonscan.com/address/${contributor.address}`}
+                href={`/profile/${contributor}`}
               >
-                {formatAddress(contributor.address)}
+                {formatAddress(contributor)}
               </a>
             </div>
           ))}
@@ -131,7 +131,7 @@ const TaskView = (id: any) => {
   if (isLoading || !taskMetadata) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="flex container h-60 animate-pulse px-0 pb-12">
+        <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
@@ -204,7 +204,7 @@ const TaskView = (id: any) => {
               </div>
               {viewOption !== 'submissions' ? (
                 <div>
-                  <div className="flex mt-[49px]">
+                  <div className="mt-[49px] flex">
                     {viewOption === 'projectDescription' ? (
                       <div className="mr-[50px] w-full text-[16px] font-normal !leading-[150%]">
                         {imgTaskIPFS ? (
@@ -269,7 +269,7 @@ const TaskView = (id: any) => {
                     </div>
                   </div>
                   {viewOption === 'projectDescription' && (
-                    <div className=" flex mt-[50px] mr-[400px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+                    <div className=" mt-[50px] mr-[400px] flex rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
@@ -290,10 +290,10 @@ const TaskView = (id: any) => {
                   dataSubmission={taskMetadata.Submission}
                   taskId={String(taskMetadata.id)}
                   budget={taskMetadata.estimatedBudget}
-                  isOpen={taskMetadata.status === 'open'}
                   address={address}
                   taskExecutor={taskMetadata.executor}
                   contributorsAllowed={contributorsAllowed}
+                  status={taskMetadata.status}
                 />
               )}
             </div>
