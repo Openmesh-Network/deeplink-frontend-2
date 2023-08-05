@@ -420,7 +420,7 @@ const TaskApplication = (id: any) => {
   if (!address) {
     return (
       <div className="pb-[500px]">
-        <div className="flex mt-[60px] items-center justify-center text-[#000000]">
+        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
           Connect you wallet to continue
         </div>
       </div>
@@ -430,7 +430,7 @@ const TaskApplication = (id: any) => {
   if (isLoading) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="flex container h-60 animate-pulse px-0 pb-12">
+        <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
         </div>
@@ -442,7 +442,7 @@ const TaskApplication = (id: any) => {
   if (!isLoading && (!taskChainData || !taskMetadata)) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
-        <div className="flex container h-60 px-0 pb-[700px]">
+        <div className="container flex h-60 px-0 pb-[700px]">
           Task not found
         </div>
       </section>
@@ -513,7 +513,7 @@ const TaskApplication = (id: any) => {
                   <div className="mt-[25px]">
                     <div className="relative w-full">
                       <Range
-                        step={1}
+                        step={25}
                         disabled={isApplicationLoading}
                         min={0}
                         max={250}
@@ -566,58 +566,63 @@ const TaskApplication = (id: any) => {
                           </div>
                         )}
                       />
-                      {/* <Range
-                      step={1}
-                      disabled={isApplicationLoading}
-                      min={0}
-                      max={250}
-                      values={budgetValue}
-                      onChange={() => {}} // Its does nothing when changing
-                      renderTrack={({ props, children }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '0',
-                            width: '500px',
-                            backgroundColor: 'transparent',
-                          }}
-                        >
-                          {children}
-                        </div>
-                      )}
-                      renderThumb={({ props }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '0',
-                            width: '250px', // Aumente a largura conforme necessário
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            position: 'relative',
-                            top: '40px', // Ajuste conforme necessário
-                          }}
-                        >
+                      <Range
+                        step={1}
+                        disabled={isApplicationLoading}
+                        min={0}
+                        max={250}
+                        values={budgetValue}
+                        onChange={() => {}} // Its does nothing when changing
+                        renderTrack={({ props, children }) => (
                           <div
-                            className={`font-regular text-[12px] ${
-                              estimatedBudgetRequested === '0' ? 'ml-14' : ''
-                            }`}
+                            {...props}
+                            style={{
+                              ...props.style,
+                              height: '0',
+                              width: '500px',
+                              backgroundColor: 'transparent',
+                            }}
                           >
-                            {estimatedBudgetRequested === '0'
-                              ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
-                              : `Est. $${estimatedBudgetRequested}`}
+                            {children}
                           </div>
-                        </div>
-                      )}
-                    /> */}
+                        )}
+                        renderThumb={({ props }) => (
+                          <div
+                            {...props}
+                            style={{
+                              ...props.style,
+                              height: '0',
+                              width: '250px', // Aumente a largura conforme necessário
+                              backgroundColor: 'transparent',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              position: 'relative',
+                              top: '40px', // Ajuste conforme necessário
+                            }}
+                          >
+                            <div
+                              className={`font-regular text-[12px] ${
+                                estimatedBudgetRequested === '0' ? 'ml-14' : ''
+                              }`}
+                            >
+                              {estimatedBudgetRequested === '0'
+                                ? '❤️ Good choice! We thank you for your generosity for supporting our open initiative ❤️'
+                                : ``}
+                            </div>
+                          </div>
+                        )}
+                      />
                     </div>
-                    <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
-                      Presenting a bid below the available funding can prove
-                      your ability to deliver results while being cost-effective
-                    </p>
+                    {estimatedBudgetRequested !== '0' ? (
+                      <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
+                        Presenting a bid below the available funding can prove
+                        your ability to deliver results while being
+                        cost-effective
+                      </p>
+                    ) : (
+                      <div className="h-[60px]"></div>
+                    )}
                   </div>
                 )}
               </div>
@@ -668,7 +673,7 @@ const TaskApplication = (id: any) => {
                 <span className="">Apply now</span>
               </button>
             </div>
-            <div className=" flex mt-[30px] w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+            <div className=" mt-[30px] flex w-[850px] rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
               <p>
                 | Have more questions? Reach out to{' '}
                 <a
