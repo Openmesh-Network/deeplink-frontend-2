@@ -5,6 +5,7 @@
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import Checkbox from '@material-ui/core/Checkbox'
 import { useForm, Controller } from 'react-hook-form'
 import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
@@ -59,6 +60,7 @@ const TaskApplication = (id: any) => {
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
+  const [budgetView, setBudgetView] = useState<boolean>(false)
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
     useState<String>('#009A50')
@@ -185,6 +187,10 @@ const TaskApplication = (id: any) => {
     })
 
     return dado
+  }
+
+  const toggleBudgetView = () => {
+    setBudgetView(!budgetView)
   }
 
   async function getTaskFromChain(id: any) {
@@ -484,65 +490,77 @@ const TaskApplication = (id: any) => {
               </div>
               <div className="mt-[30px]">
                 <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Proposed Budget
+                  Budget
                 </p>
-                <div className="mt-[25px]">
-                  <div className="relative w-full">
-                    <Range
-                      step={1}
-                      disabled={isApplicationLoading}
-                      min={0}
-                      max={250}
-                      values={budgetValue}
-                      onChange={(values) => {
-                        setBudgetValue(values)
-                        setBudgetValueInputColor(
-                          colorsBudget[Math.floor(values[0] / rangePerColor)],
-                        )
-                        setEstimatedBudgetRequested(
-                          Number(
-                            new Decimal(taskChainData['estimatedBudget']).mul(
-                              new Decimal(values[0] / 100),
-                            ),
-                          ).toLocaleString('en-US'),
-                        )
-                        setBudgetPercentage(values[0])
-                      }}
-                      renderTrack={({ props, children }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '9px',
-                            width: '500px',
-                            backgroundColor: '#ffffff',
-                            borderRadius: '4px',
-                            border: '1.5px solid #D4D4D4',
-                          }}
-                        >
-                          {children}
-                        </div>
-                      )}
-                      renderThumb={({ props }) => (
-                        <div
-                          {...props}
-                          style={{
-                            ...props.style,
-                            height: '33px',
-                            backgroundColor: `${budgetValueInputColor}`,
-                            borderRadius: '5px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <div className="px-[10px] text-[14px] font-bold text-[#ffffff]">
-                            {budgetValue}%
-                          </div>
-                        </div>
-                      )}
+                <div className="mt-[10px]">
+                  <label className="text-[14px] text-[#C6C6C6]">
+                    <Checkbox
+                      checked={budgetView}
+                      onChange={toggleBudgetView}
+                      color="default"
+                      inputProps={{ 'aria-label': '' }}
                     />
-                    {/* <Range
+                    I’d like to amend the budget
+                  </label>
+                </div>
+                {budgetView && (
+                  <div className="mt-[25px]">
+                    <div className="relative w-full">
+                      <Range
+                        step={1}
+                        disabled={isApplicationLoading}
+                        min={0}
+                        max={250}
+                        values={budgetValue}
+                        onChange={(values) => {
+                          setBudgetValue(values)
+                          setBudgetValueInputColor(
+                            colorsBudget[Math.floor(values[0] / rangePerColor)],
+                          )
+                          setEstimatedBudgetRequested(
+                            Number(
+                              new Decimal(taskChainData['estimatedBudget']).mul(
+                                new Decimal(values[0] / 100),
+                              ),
+                            ).toLocaleString('en-US'),
+                          )
+                          setBudgetPercentage(values[0])
+                        }}
+                        renderTrack={({ props, children }) => (
+                          <div
+                            {...props}
+                            style={{
+                              ...props.style,
+                              height: '9px',
+                              width: '500px',
+                              backgroundColor: '#ffffff',
+                              borderRadius: '4px',
+                              border: '1.5px solid #D4D4D4',
+                            }}
+                          >
+                            {children}
+                          </div>
+                        )}
+                        renderThumb={({ props }) => (
+                          <div
+                            {...props}
+                            style={{
+                              ...props.style,
+                              height: '33px',
+                              backgroundColor: `${budgetValueInputColor}`,
+                              borderRadius: '5px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <div className="px-[10px] text-[14px] font-bold text-[#ffffff]">
+                              {budgetValue}%
+                            </div>
+                          </div>
+                        )}
+                      />
+                      {/* <Range
                       step={1}
                       disabled={isApplicationLoading}
                       min={0}
@@ -589,12 +607,13 @@ const TaskApplication = (id: any) => {
                         </div>
                       )}
                     /> */}
+                    </div>
+                    <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
+                      Presenting a bid below the available funding can prove
+                      your ability to deliver results while being cost-effective
+                    </p>
                   </div>
-                </div>
-                <p className="mt-[25px] max-w-[654px] text-[14px] font-medium !leading-[17px] text-[#959595]">
-                  Presenting a bid below the available funding can prove your
-                  ability to deliver results while being cost-effective
-                </p>
+                )}
               </div>
               <div className="mt-[30px]">
                 <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
