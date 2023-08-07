@@ -486,6 +486,44 @@ const NewTask = () => {
     }
   }
 
+  async function handleCreateTaskDraft(
+    metadata: string,
+    deadline: number,
+    budget: Payment[],
+  ) {
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [metadata, deadline, budget, address, []],
+      functionName: 'createTask',
+    })
+    const { hash } = await writeContract(request)
+    const unwatch = watchContractEvent(
+      {
+        address: `0x${taskAddress.substring(2)}`,
+        abi: taskContractABI,
+        eventName: 'TaskCreated',
+      },
+      (log) => {
+        console.log('event')
+        console.log(log)
+        if (log[0].transactionHash === hash) {
+          push(`/task/${Number(log[0]['args']['taskId'])}`)
+          console.log(log)
+        }
+      },
+    )
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 8500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
   function handleIsPaymentsTokensValid() {
     for (const payment of payments) {
       if (!ethers.isAddress(payment.tokenContract)) {
@@ -523,6 +561,10 @@ const NewTask = () => {
         element.scrollIntoView({ behavior: 'smooth' })
         return
       }
+    }
+    if (fundingView && !data.taskDraftDeadline) {
+      toast.error("Please set a date for the end of the task's draft voting")
+      return
     }
 
     setIsLoading(true)
@@ -574,27 +616,34 @@ const NewTask = () => {
       return
     }
 
-    try {
-      await handleAllowanceFromTokens()
-    } catch (err) {
-      toast.error('Something happened, please try again')
-      setIsLoading(false)
-      return
-    }
-    try {
-      await handleCreateTask(
-        ipfsHashData,
-        Math.floor(data.deadline.getTime() / 1000),
-        payments,
-      )
-      await new Promise((resolve) => setTimeout(resolve, 2500))
-      toast.success('Task created succesfully!')
-    } catch (err) {
-      toast.error(
-        'Error! Please ensure you have enough tokens in your wallet to pay for the budget',
-      )
-      console.log(err)
-      setIsLoading(false)
+    if (!fundingView) {
+      try {
+        await handleAllowanceFromTokens()
+      } catch (err) {
+        toast.error('Something happened, please try again')
+        setIsLoading(false)
+        return
+      }
+      try {
+        await handleCreateTask(
+          ipfsHashData,
+          Math.floor(data.deadline.getTime() / 1000),
+          payments,
+        )
+        await new Promise((resolve) => setTimeout(resolve, 2500))
+        toast.success('Task created succesfully!')
+      } catch (err) {
+        toast.error(
+          'Error! Please ensure you have enough tokens in your wallet to pay for the budget',
+        )
+        console.log(err)
+        setIsLoading(false)
+      }
+    } else {
+      //If its a funding draft task, we should upload following the aragon dao ipfs standard https://devs.aragon.org/docs/sdk/examples/client/pin-metadata:
+      const ipfsAragonMetadata = {
+
+      }
     }
   }
 
@@ -1214,7 +1263,10 @@ const NewTask = () => {
                     </label>
                   </div>
                   {fundingView && (
-                    <div className="mt-[25px]">
+                    <div className="ml-[15px] mt-[5px]">
+                      <span className="flex flex-row">
+                        Ends date of the task's draft voting
+                      </span>
                       <Controller
                         control={control}
                         name="taskDraftDeadline"
