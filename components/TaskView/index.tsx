@@ -289,6 +289,8 @@ const TaskView = (id: any) => {
                   dataApplication={taskMetadata.Application}
                   dataSubmission={taskMetadata.Submission}
                   taskId={String(taskMetadata.id)}
+                  taskDeadline={String(taskMetadata.deadline)}
+                  taskProjectLength={taskMetadata.projectLength}
                   budget={taskMetadata.estimatedBudget}
                   address={address}
                   taskExecutor={taskMetadata.executor}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable dot-notation */
 /* eslint-disable no-unused-vars */
 'use client'
@@ -30,6 +31,8 @@ import { File, SmileySad, Info } from 'phosphor-react'
 type ApplicantsSubmissionsListProps = {
   dataApplication: Application[]
   dataSubmission: Submission[]
+  taskDeadline: string
+  taskProjectLength: string
   taskId: string
   budget: string
   status: string
@@ -39,7 +42,7 @@ type ApplicantsSubmissionsListProps = {
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, budget, address, taskExecutor, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
@@ -51,6 +54,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
   const [isTakingTaskLoading, setIsTakingTaskLoading] = useState<boolean>(false)
   const [viewMoreSubmission, setViewMoreSubmission] = useState<any>()
   const [viewMoreApplication, setViewMoreApplication] = useState<any>()
+  const [isDeadlineEnough, setIsDeadlineEnough] = useState<boolean>(true)
 
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
@@ -240,6 +244,39 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
     }
   }
 
+  const taskProjectLengthToDays = {
+    'Less than 1 week': 5,
+    '1 to 2 weeks': 14,
+    '2 to 4 weeks': 30,
+    'More than 4 weeks': 45,
+  }
+
+  // returns if the time to finish the task is equals or greater than the remaining days to the deadline
+  async function getIfDeadlineIsEnough() {
+    // Data atual em milissegundos
+    const now = new Date().getTime()
+
+    // Converte taskDeadline (que está em segundos) para milissegundos
+    const deadline = Number(taskDeadline) * 1000
+
+    // Calcula a diferença entre as duas datas em milissegundos
+    const differenceInMilliseconds = deadline - now
+
+    // Converte a diferença em dias (1000 milissegundos * 60 segundos * 60 minutos * 24 horas)
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24)
+
+    console.log('the deadline')
+    console.log(taskDeadline)
+    console.log('the project length')
+    console.log(taskProjectLengthToDays[taskProjectLength])
+    console.log('difference in days')
+    console.log(differenceInDays)
+
+    // Retorna true se a diferença em dias for maior ou igual a taskProjectLength, senão false
+    setIsDeadlineEnough(
+      differenceInDays >= taskProjectLengthToDays[taskProjectLength],
+    )
+  }
   const handleUpdate = () => {
     console.log('updated url happening')
     setDepartament('All')
@@ -333,12 +370,13 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
     console.log(dataApplication)
     console.log('recebi submission')
     console.log(dataSubmission)
+    getIfDeadlineIsEnough()
     handleUpdate()
   }, [dataApplication])
 
   return (
     <div className="text-[16px] font-medium !leading-[19px] text-[#505050]">
-      {status === 'open' && (
+      {status === 'open' && isDeadlineEnough && (
         <div className="mt-[49px] w-full rounded-[10px] bg-[#F5F5F5] py-[30px] px-[15px]">
           <div className="flex justify-center">
             This project is still open for new applicants, if you are qualified
@@ -353,6 +391,32 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskId, bud
             >
               Start working
             </a>
+          </div>
+        </div>
+      )}
+      {status === 'open' && !isDeadlineEnough && (
+        <div className="mt-[49px] flex w-full rounded-[10px] bg-[#FFF6E0] py-[30px] px-[63px]">
+          <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
+            <img
+              alt="warning"
+              src="/images/task/warning.svg"
+              className=""
+            ></img>
+          </div>
+          <div className="!leading-[150%]">
+            The project creator estimates that this project could take "
+            {taskProjectLength}". The deadline for this project is approaching
+            and it appears you may not be able to complete it on time. We
+            recommend reaching out to the{' '}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`/profile/${taskExecutor}`}
+              className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
+            >
+              project creator{' '}
+            </a>{' '}
+            to request a time extension before proceeding.
           </div>
         </div>
       )}
