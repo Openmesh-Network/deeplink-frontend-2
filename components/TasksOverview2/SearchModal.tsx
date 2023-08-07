@@ -337,6 +337,26 @@ const SearchModal = ({
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
+            <p className="text-[16px] font-bold">Draft Projects</p>
+            <p className="text-[14px] font-normal">
+              Waiting for approval or for assigning
+            </p>
+            <p
+              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+                tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
+              }`}
+            >
+              {openProjectsNumber}
+            </p>
+          </div>
+          <div
+            onClick={() => {
+              handleStatusSelection('open')
+            }}
+            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+              tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
+            }`}
+          >
             <p className="text-[16px] font-bold">Open Projects</p>
             <p className="text-[14px] font-normal">
               Waiting for approval or for assigning

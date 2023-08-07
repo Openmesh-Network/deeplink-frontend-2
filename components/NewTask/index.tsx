@@ -9,6 +9,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import axios from 'axios'
+import Checkbox from '@material-ui/core/Checkbox'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
@@ -42,6 +43,7 @@ type TaskSubmitForm = {
   githubLink: string
   calendarLink: string
   reachOutLink: string
+  taskDraftDeadline: Date
 }
 
 type Payment = {
@@ -76,6 +78,7 @@ const NewTask = () => {
   const [numberOfApplicants, setNumberOfApplicants] = useState('')
   const [type, setType] = useState('Individual')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [fundingView, setFundingView] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
   const [contributors, setContributors] = useState<Contributor[]>([])
   const [links, setLinks] = useState<Link[]>([
@@ -123,6 +126,11 @@ const NewTask = () => {
       })
       .typeError('Deadline is required')
       .required('Deadline is required'),
+    taskDraftDeadline: Yup.date()
+      .transform((value, originalValue) => {
+        return originalValue ? new Date(originalValue) : null
+      })
+      .optional(),
     departament: Yup.string().required('Department is required'),
     skills: Yup.array()
       .of(Yup.string())
@@ -488,6 +496,9 @@ const NewTask = () => {
     }
     // all addresses are valid
     return true
+  }
+  const toggleFundingView = () => {
+    setFundingView(!fundingView)
   }
 
   async function onSubmit(data: TaskSubmitForm) {
@@ -1186,6 +1197,40 @@ const NewTask = () => {
                     onChange={(e) => handleLink(2, 'url', e.target.value)}
                     className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                   />
+                </div>
+                <div className="mt-[30px]">
+                  <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    Funding
+                  </p>
+                  <div className="mt-[10px]">
+                    <label className="text-[14px] text-[#C6C6C6]">
+                      <Checkbox
+                        checked={fundingView}
+                        onChange={toggleFundingView}
+                        color="default"
+                        inputProps={{ 'aria-label': '' }}
+                      />
+                      I’d like the DAO's departament to fund this task
+                    </label>
+                  </div>
+                  {fundingView && (
+                    <div className="mt-[25px]">
+                      <Controller
+                        control={control}
+                        name="taskDraftDeadline"
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <DatePicker
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            selected={value}
+                            dateFormat="yyyy-MM-dd"
+                            disabled={isLoading}
+                            className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                          />
+                        )}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
