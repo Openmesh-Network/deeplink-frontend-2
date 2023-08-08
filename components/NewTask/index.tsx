@@ -13,6 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
+import tasksDraftsContractABI from '@/utils/abi/tasksDraftsContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { Link, Contributor } from '@/types/task'
 
@@ -30,6 +31,7 @@ import {
   watchContractEvent,
 } from '@wagmi/core'
 import HeroNewTasks from './HeroNewTask'
+import { createHash } from 'crypto'
 
 type TaskSubmitForm = {
   title: string
@@ -86,7 +88,20 @@ const NewTask = () => {
     { title: 'calendarLink', url: '' },
     { title: 'reachOutLink', url: '' },
   ])
-  const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
+  const departamentOptions = [
+    'Data',
+    'Frontend',
+    'Blockchain',
+    'Cloud',
+    'Devops',
+  ]
+  const departamentOptionsToAddress = {
+    Data: '0xb994402df294e22fae82635978979bb96c545d14',
+    Frontend: '0xb994402df294e22fae82635978979bb96c545d14',
+    Blockchain: '0xb994402df294e22fae82635978979bb96c545d14',
+    Cloud: '0xb994402df294e22fae82635978979bb96c545d14',
+    Devops: '0xb994402df294e22fae82635978979bb96c545d14',
+  }
   const projectLengthOptions = [
     'Less than 1 week',
     '1 to 2 weeks',
@@ -390,10 +405,33 @@ const NewTask = () => {
     return ipfsHash
   }
 
-  async function formsUploadIPFS(data: IPFSSubmition) {
+  async function formsUploadIPFS(data: any) {
     const config = {
       method: 'post' as 'post',
       url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskCreation`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data,
+    }
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
+    })
+
+    return dado
+  }
+
+  async function formsUploadIPFSTaskDraft(data: any) {
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskDraftCreation`,
       headers: {
         'x-parse-application-id':
           'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
@@ -487,22 +525,61 @@ const NewTask = () => {
   }
 
   async function handleCreateTaskDraft(
+    metadataFinal: string,
+    startDate: number,
+    endDate: number,
     metadata: string,
     deadline: number,
     budget: Payment[],
   ) {
+    console.log('here creating')
+    console.log(metadataFinal)
+    console.log('here creating2')
+    console.log(startDate)
+    console.log('here creating3')
+    console.log(endDate)
+    console.log('here creating4')
+    console.log(metadata)
+    console.log('here creating5')
+    console.log(deadline)
+    console.log('here creating6')
+    console.log(budget)
+    console.log('here creating7')
+    console.log(address)
+    const addressTaskDraft = '0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759'
+    const obj = [metadata, deadline, budget, address, []]
+    const hashMetadataFinal = createHash('sha256')
+    hashMetadataFinal.update(metadataFinal)
+    console.log('the hash')
+    console.log(hashMetadataFinal.digest('hex'))
+    console.log('final')
+    console.log([
+      '0xc185B032C39544060D57E3304bE0fFb0c235118e',
+      startDate,
+      endDate,
+      obj,
+    ])
     const { request } = await prepareWriteContract({
-      address: `0x${taskAddress.substring(2)}`,
-      abi: taskContractABI,
-      args: [metadata, deadline, budget, address, []],
-      functionName: 'createTask',
+      address: `0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759`,
+      abi: tasksDraftsContractABI,
+      args: [
+        '0x0DD7167d9707faFE0837c0b1fe12348AfAabF170',
+        startDate,
+        endDate,
+        obj,
+      ],
+      functionName: 'createDraftTask',
     })
+    console.log('after')
+
     const { hash } = await writeContract(request)
     const unwatch = watchContractEvent(
       {
-        address: `0x${taskAddress.substring(2)}`,
-        abi: taskContractABI,
-        eventName: 'TaskCreated',
+        address: `0x${'0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759'.substring(
+          2,
+        )}`,
+        abi: tasksDraftsContractABI,
+        eventName: 'createDraftTask',
       },
       (log) => {
         console.log('event')
@@ -564,6 +641,12 @@ const NewTask = () => {
     }
     if (fundingView && !data.taskDraftDeadline) {
       toast.error("Please set a date for the end of the task's draft voting")
+      return
+    }
+    if (data.taskDraftDeadline.getTime() < Date.now()) {
+      toast.error(
+        "Please set a date for the end of the task's draft voting greater than now",
+      )
       return
     }
 
@@ -640,9 +723,43 @@ const NewTask = () => {
         setIsLoading(false)
       }
     } else {
-      //If its a funding draft task, we should upload following the aragon dao ipfs standard https://devs.aragon.org/docs/sdk/examples/client/pin-metadata:
+      // If its a funding draft task, we should upload following the aragon dao ipfs standard https://devs.aragon.org/docs/sdk/examples/client/pin-metadata:
       const ipfsAragonMetadata = {
-
+        title: 'Deeplink Draft Task',
+        description: 'Deeplink Draft Task',
+        body: '',
+        resources: { name: 'metadata', url: ipfsHashData },
+      }
+      let ipfsHashDataFinal
+      try {
+        const res = await formsUploadIPFSTaskDraft(ipfsAragonMetadata)
+        console.log('a resposta:')
+        console.log(res)
+        ipfsHashDataFinal = res
+      } catch (err) {
+        toast.error('something ocurred')
+        console.log(err)
+        setIsLoading(false)
+        return
+      }
+      console.log('creating draft Task now')
+      try {
+        await handleCreateTaskDraft(
+          ipfsHashDataFinal,
+          Math.floor(Date.now() / 1000),
+          Math.floor(data.taskDraftDeadline.getTime() / 1000),
+          ipfsHashData,
+          Math.floor(data.deadline.getTime() / 1000),
+          payments,
+        )
+        await new Promise((resolve) => setTimeout(resolve, 2500))
+        toast.success('Task created succesfully!')
+      } catch (err) {
+        toast.error(
+          'Error! Please ensure you have enough tokens in your wallet to pay for the budget',
+        )
+        console.log(err)
+        setIsLoading(false)
       }
     }
   }

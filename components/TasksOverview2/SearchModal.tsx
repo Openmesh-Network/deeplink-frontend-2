@@ -353,7 +353,7 @@ const SearchModal = ({
             onClick={() => {
               handleStatusSelection('open')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`ml-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
