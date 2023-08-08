@@ -4,6 +4,12 @@ export type Payment = {
   decimals: number | 18
 }
 
+export type Reward = {
+  boolean: boolean
+  tokenContract: string
+  amount: object // {"type": "BigNumber","hex": "0x068155a43676e00000"}
+}
+
 export type Link = {
   title: string
   url: string
@@ -30,6 +36,7 @@ export type Application = {
   metadataDisplayName: string
   applicationId: string
   proposer: string
+  reward: Reward[] | []
   applicant: string
   metadataDescription: string
   metadataProposedBudget: string

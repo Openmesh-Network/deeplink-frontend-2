@@ -23,6 +23,7 @@ import {
   TasksPagination,
   TasksCounting,
   Application,
+  Payment,
   Submission,
 } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
@@ -31,6 +32,7 @@ import { File, SmileySad, Info } from 'phosphor-react'
 type ApplicantsSubmissionsListProps = {
   dataApplication: Application[]
   dataSubmission: Submission[]
+  taskPayments: Payment[]
   taskDeadline: string
   taskProjectLength: string
   taskId: string
@@ -42,7 +44,7 @@ type ApplicantsSubmissionsListProps = {
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
@@ -193,6 +195,27 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskDeadlin
     }
   }
 
+  async function handleIncreaseTaskBudget(taskId: string, amounts: number[]) {
+    console.log('value to be sent')
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [Number(taskId), amounts],
+      functionName: 'increaseBudget',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
   async function handleCreateTakingTask(taskId: string, applicationId: string) {
     console.log('value to be sent')
     const { request } = await prepareWriteContract({
@@ -214,8 +237,102 @@ const ApplicantsSubmissionsList = ({dataApplication, dataSubmission, taskDeadlin
     }
   }
 
+  async function handleAllowanceFromTokens(payments) {
+    for (let i = 0; i < payments.length; i++) {
+      const data = await readContract({
+        address: `0x${payments[i].tokenContract.substring(2)}`,
+        abi: erc20ContractABI,
+        args: [address, `0x${taskAddress.substring(2)}`],
+        functionName: 'allowance',
+      })
+      console.log('o valor q recebi')
+      console.log(data)
+      if (Number(data) < Number(payments[i].amount)) {
+        console.log('required to increase allowance')
+        const { request } = await prepareWriteContract({
+          address: `0x${payments[i].tokenContract.substring(2)}`,
+          abi: erc20ContractABI,
+          args: [
+            `0x${taskAddress.substring(2)}`,
+            Number(payments[i].amount) * 100,
+          ],
+          functionName: 'approve',
+        })
+        const { hash } = await writeContract(request)
+        const data = await waitForTransaction({
+          hash,
+        })
+        console.log('the data')
+        console.log(data)
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        if (data.status !== 'success') {
+          throw data
+        }
+      }
+    }
+  }
+
   async function handleNominate(applicationIdValue: string) {
     setIsNominationLoading(true)
+    let hasToIncreaseBudget = false
+    const amountToBeIncreased = []
+    const newPaymentsAllowance = []
+
+    console.log('reward')
+    console.log(dataApplication[Number(applicationIdValue)].reward)
+    console.log('reward test')
+    console.log(
+      Number(dataApplication[Number(applicationIdValue)].reward[0][2].hex),
+    )
+    console.log('payments')
+    console.log(taskPayments)
+
+    if (dataApplication[Number(applicationIdValue)].reward.length > 0) {
+      console.log('reward exists')
+      for (
+        let i = 0;
+        i < dataApplication[Number(applicationIdValue)].reward.length;
+        i++
+      ) {
+        console.log('payment amount')
+        console.log(taskPayments[i].amount)
+        console.log('requested amount')
+        console.log(
+          Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex),
+        )
+        if (
+          Number(taskPayments[i].amount) <
+          Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex)
+        ) {
+          // eslint-disable-next-line prettier/prettier
+          amountToBeIncreased.push(Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex) -Number(taskPayments[i].amount),)
+          hasToIncreaseBudget = true
+          newPaymentsAllowance.push(taskPayments[i])
+        } else {
+          amountToBeIncreased.push(0)
+        }
+      }
+    }
+    console.log('final result')
+    console.log(hasToIncreaseBudget)
+    if (hasToIncreaseBudget) {
+      try {
+        await handleAllowanceFromTokens(newPaymentsAllowance)
+      } catch (err) {
+        toast.error('Something happened, please try again')
+        setIsLoading(false)
+        return
+      }
+      try {
+        await handleIncreaseTaskBudget(taskId, amountToBeIncreased)
+        toast.success('Budget increased succesfully!')
+        setIsNominationLoading(false)
+      } catch (err) {
+        toast.error('Error during the budget increase')
+        console.log(err)
+        setIsNominationLoading(false)
+      }
+    }
     console.log('doing nomination')
     try {
       await handleCreateNomination(taskId, applicationIdValue)

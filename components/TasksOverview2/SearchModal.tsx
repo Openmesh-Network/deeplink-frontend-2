@@ -331,10 +331,10 @@ const SearchModal = ({
         <div className="mt-[40px] flex text-[#000000]">
           <div
             onClick={() => {
-              handleStatusSelection('open')
+              handleStatusSelection('draft')
             }}
             className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
-              tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
+              tasksStatus === 'draft' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
             <p className="text-[16px] font-bold">Draft Projects</p>
@@ -343,10 +343,10 @@ const SearchModal = ({
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
-                tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
+                tasksStatus === 'draft' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
-              {openProjectsNumber}
+              0
             </p>
           </div>
           <div

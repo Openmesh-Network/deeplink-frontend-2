@@ -643,7 +643,7 @@ const NewTask = () => {
       toast.error("Please set a date for the end of the task's draft voting")
       return
     }
-    if (data.taskDraftDeadline.getTime() < Date.now()) {
+    if (fundingView && data.taskDraftDeadline.getTime() < Date.now()) {
       toast.error(
         "Please set a date for the end of the task's draft voting greater than now",
       )
