@@ -41,6 +41,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
     SubmissionCreated: 'New submission',
     SubmissionReviewed: 'New submission revision',
     TaskCompleted: 'The task was completed',
+    BudgetIncreased: 'The budget was increased',
   }
 
   function formatDeadlineComplet(timestamp) {
