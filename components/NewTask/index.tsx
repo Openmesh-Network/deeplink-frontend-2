@@ -96,11 +96,11 @@ const NewTask = () => {
     'Devops',
   ]
   const departamentOptionsToAddress = {
-    Data: '0xb994402df294e22fae82635978979bb96c545d14',
-    Frontend: '0xb994402df294e22fae82635978979bb96c545d14',
-    Blockchain: '0xb994402df294e22fae82635978979bb96c545d14',
-    Cloud: '0xb994402df294e22fae82635978979bb96c545d14',
-    Devops: '0xb994402df294e22fae82635978979bb96c545d14',
+    Data: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Frontend: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Blockchain: '0xb81994913544249F7DB7b9b16414B21FF5d9A12c',
+    Cloud: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Devops: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
   }
   const projectLengthOptions = [
     'Less than 1 week',
@@ -559,15 +559,16 @@ const NewTask = () => {
       endDate,
       obj,
     ])
+    console.log('ENDDATA')
+    console.log(endDate)
+    console.log('deadline')
+    console.log(deadline)
+    console.log('departament option')
+    console.log(`0x${departamentOptionsToAddress[departament].substring(2)}`)
     const { request } = await prepareWriteContract({
-      address: `0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759`,
+      address: `0x${departamentOptionsToAddress[departament].substring(2)}`,
       abi: tasksDraftsContractABI,
-      args: [
-        '0x0DD7167d9707faFE0837c0b1fe12348AfAabF170',
-        startDate,
-        endDate,
-        obj,
-      ],
+      args: ['0x', 0, endDate, obj],
       functionName: 'createDraftTask',
     })
     console.log('after')
@@ -575,9 +576,7 @@ const NewTask = () => {
     const { hash } = await writeContract(request)
     const unwatch = watchContractEvent(
       {
-        address: `0x${'0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759'.substring(
-          2,
-        )}`,
+        address: `0x${departamentOptionsToAddress[departament].substring(2)}`,
         abi: tasksDraftsContractABI,
         eventName: 'createDraftTask',
       },
@@ -1317,54 +1316,6 @@ const NewTask = () => {
                   />
                 </div>
                 <div className="mt-[30px]">
-                  <span className="flex flex-row">
-                    Github Repository Link
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.githubLink?.message}
-                    </p>
-                  </span>
-                  <input
-                    type="text"
-                    disabled={isLoading}
-                    maxLength={200}
-                    {...register('githubLink')}
-                    onChange={(e) => handleLink(0, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                  />
-                </div>
-                <div className="mt-[30px]">
-                  <span className="flex flex-row">
-                    Calendar Link
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.calendarLink?.message}
-                    </p>
-                  </span>
-                  <input
-                    type="text"
-                    disabled={isLoading}
-                    maxLength={200}
-                    {...register('calendarLink')}
-                    onChange={(e) => handleLink(1, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                  />
-                </div>
-                <div className="mt-[30px]">
-                  <span className="flex flex-row">
-                    Reach out Link
-                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                      {errors.reachOutLink?.message}
-                    </p>
-                  </span>
-                  <input
-                    type="text"
-                    disabled={isLoading}
-                    maxLength={200}
-                    {...register('reachOutLink')}
-                    onChange={(e) => handleLink(2, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
-                  />
-                </div>
-                <div className="mt-[30px]">
                   <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
                     Funding
                   </p>
@@ -1400,6 +1351,54 @@ const NewTask = () => {
                       />
                     </div>
                   )}
+                </div>
+                <div className="mt-[50px]">
+                  <span className="flex flex-row">
+                    Github Repository Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.githubLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('githubLink')}
+                    onChange={(e) => handleLink(0, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Calendar Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.calendarLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('calendarLink')}
+                    onChange={(e) => handleLink(1, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Reach out Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.reachOutLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('reachOutLink')}
+                    onChange={(e) => handleLink(2, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
                 </div>
               </div>
             </div>

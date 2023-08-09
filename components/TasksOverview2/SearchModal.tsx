@@ -12,6 +12,7 @@ interface ModalProps {
   openProjectsNumber: number
   activeProjectsNumber: number
   completedProjectsNumber: number
+  draftProjectsNumber: number
 }
 
 type DepartamentData = {
@@ -29,6 +30,7 @@ const SearchModal = ({
   openProjectsNumber,
   activeProjectsNumber,
   completedProjectsNumber,
+  draftProjectsNumber,
 }: ModalProps) => {
   const [tasksStatus, setTasksStatus] = useState('')
   const [tasksOrderBy, setTasksOrderBy] = useState('')
@@ -346,7 +348,7 @@ const SearchModal = ({
                 tasksStatus === 'draft' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
-              0
+              {draftProjectsNumber}
             </p>
           </div>
           <div

@@ -3,11 +3,13 @@ import { Payment } from '@/types/task'
 
 interface TasksModalProps {
   task: {
+    internalId: string
     id: number
     title: string
     description: string
     deadline: string
     daysLeft: string
+    isDraft: boolean
     payments: Payment[]
     status: string
     estimatedBudget: string
@@ -70,7 +72,9 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
       <div className="flex w-[8%] items-center">{task.daysLeft}</div>
       <div className="flex w-[12%]">
         <a
-          href={`/task/${task.id}`}
+          href={
+            task.isDraft ? `/task/${task.id}` : `/task-draft/${task.internalId}`
+          }
           target="_blank"
           rel="nofollow noreferrer"
           className="ml-auto cursor-pointer rounded-[5px] border border-[#0354EC] bg-white py-[10px] px-[22px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"

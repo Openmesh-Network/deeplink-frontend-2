@@ -42,7 +42,7 @@ const TransactionList = () => {
   const [taskChainData, setTaskChainData] = useState<any[]>([])
   const pathname = usePathname()
 
-  const statusOptions = ['open', 'active', 'completed']
+  const statusOptions = ['open', 'active', 'completed', 'draft']
   const departamentsOptions = [
     'All',
     'Data',
@@ -255,6 +255,7 @@ const TransactionList = () => {
         openProjectsNumber={counting ? counting.open : 0}
         activeProjectsNumber={counting ? counting.active : 0}
         completedProjectsNumber={counting ? counting.completed : 0}
+        draftProjectsNumber={counting ? counting.draft : 0}
       />
       <section className="px-[100px] pt-[40px]" id={'taskStart'}>
         <div className="container px-0">

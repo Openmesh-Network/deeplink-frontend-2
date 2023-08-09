@@ -59,12 +59,14 @@ export type Submission = {
 }
 
 export type TasksOverview = {
+  internalId: number
   id: number
   title: string
   description: string
   deadline: string
   daysLeft: string
   departament: string
+  isDraft: boolean
   status: string
   links: Link[] | null
   contributorsNeeded: string
@@ -111,4 +113,5 @@ export type TasksCounting = {
   open: number
   active: number
   completed: number
+  draft: number
 }
