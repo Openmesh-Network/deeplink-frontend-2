@@ -15,6 +15,7 @@ export type User = {
   links: string[] | null
   joinedSince: string | null
   updatesNonce: string | null
+  isVerifiedContributor: boolean
   tasks: TasksOverview[]
   VerifiedContributorSubmission: VerifiedContributorSubmission[]
 }

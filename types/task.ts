@@ -83,6 +83,12 @@ export type TasksOverview = {
   updatesCount: number | null
 }
 
+export type UserToDraftTask = {
+  isVerifiedContributor: boolean
+  alreadyVoted: boolean
+  voteOption: string | null
+}
+
 export type Event = {
   name: string
   transactionHash: string

@@ -20,7 +20,7 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition, TasksOverview } from '@/types/task'
+import { IPFSSubmition, TasksOverview, UserToDraftTask } from '@/types/task'
 import HeroTask from './HeroTask'
 import UpdatesList from './UpdatesList'
 import ApplicantsSubmissionsList from './ApplicantsSubmissionsList'
@@ -30,6 +30,8 @@ const TaskDraftView = (id: any) => {
   const [imgTaskIPFS, setImgTaskIPFS] = useState('')
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
+  const [userToDraftTaskData, setUserToDraftTaskData] =
+    useState<UserToDraftTask>()
   const [contributorsAllowed, setContributorsAllowed] = useState([])
 
   const { push } = useRouter()
@@ -84,6 +86,34 @@ const TaskDraftView = (id: any) => {
     setIsLoading(false)
   }
 
+  async function getUserToDraftTask(id: any, address: string) {
+    const dataBody = {
+      id,
+      address,
+    }
+    setIsLoading(true)
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getUserToDraftTask`,
+      headers: {
+        'x-parse-application-id':
+          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+      },
+      data: dataBody,
+    }
+
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          setUserToDraftTaskData(response.data)
+        }
+      })
+    } catch (err) {
+      toast.error('User undefined!')
+      console.log(err)
+    }
+  }
+
   function returnContributors() {
     if (!contributorsAllowed || contributorsAllowed.length === 0) {
       return <div className="mt-[20px]">Empty</div>
@@ -124,6 +154,11 @@ const TaskDraftView = (id: any) => {
       getTask(id.id)
     }
   }, [id])
+  useEffect(() => {
+    if (address && id) {
+      getUserToDraftTask(id.id, address)
+    }
+  }, [address])
   function formatAddress(address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
@@ -145,6 +180,7 @@ const TaskDraftView = (id: any) => {
       <HeroTask
         task={taskMetadata}
         contributorsAllowed={contributorsAllowed}
+        userToDraftTaskData={userToDraftTaskData}
         address={address}
       />
       <section className="px-[100px] pt-[59px] pb-[250px]">

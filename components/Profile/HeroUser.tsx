@@ -180,26 +180,27 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 className={`w-[17.5px]`}
               />
             </div>
-            {user.VerifiedContributorSubmission.length > 0 &&
-              user.VerifiedContributorSubmission[0].status === 'approved' && (
-                <div className="ml-auto flex cursor-pointer items-center  justify-end">
-                  <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
-                    <img
-                      src="/images/profile/check.svg"
-                      alt="image"
-                      className={`mr-[10px] w-[20px] `}
-                    />
-                    <a
-                      href="/verified-contributor"
-                      target="_blank"
-                      rel="nofollow noreferrer"
-                      className="text-[16px] font-bold text-[#fff]  "
-                    >
-                      Verified Contributor
-                    </a>
-                  </div>{' '}
-                </div>
-              )}
+            {((user.VerifiedContributorSubmission.length > 0 &&
+              user.VerifiedContributorSubmission[0].status === 'approved') ||
+              user.isVerifiedContributor) && (
+              <div className="ml-auto flex cursor-pointer items-center  justify-end">
+                <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
+                  <img
+                    src="/images/profile/check.svg"
+                    alt="image"
+                    className={`mr-[10px] w-[20px] `}
+                  />
+                  <a
+                    href="/verified-contributor"
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                    className="text-[16px] font-bold text-[#fff]  "
+                  >
+                    Verified Contributor
+                  </a>
+                </div>{' '}
+              </div>
+            )}
             {user.VerifiedContributorSubmission.length > 0 &&
               user.VerifiedContributorSubmission[0].status === 'pending' && (
                 <div className="ml-auto flex cursor-pointer items-center  justify-end">

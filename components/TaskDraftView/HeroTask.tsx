@@ -21,15 +21,21 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { TasksOverview } from '@/types/task'
+import { TasksOverview, UserToDraftTask } from '@/types/task'
 
 interface TasksModalProps {
   task: TasksOverview
+  userToDraftTaskData: UserToDraftTask | null
   contributorsAllowed: string[] | null
   address: string | null
 }
 
-const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
+const HeroTask = ({
+  task,
+  userToDraftTaskData,
+  contributorsAllowed,
+  address,
+}: TasksModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const taskStateCircle = {
@@ -302,20 +308,23 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     {formatDate(task.deadline)}
                   </p>
                 </div>
-                {task.status === 'draft' && (
-                  <div className="mt-[25px] ">
-                    <a
-                      onClick={() => {
-                        if (!isLoading) {
-                          handleApprove()
-                        }
-                      }}
-                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FBB816] text-[16px]  font-bold text-white hover:bg-[#dbac3f] "
-                    >
-                      {'Approve/Vote'}
-                    </a>
-                  </div>
-                )}
+                {task.status === 'draft' &&
+                  userToDraftTaskData &&
+                  userToDraftTaskData.isVerifiedContributor &&
+                  !userToDraftTaskData.alreadyVoted && (
+                    <div className="mt-[25px] ">
+                      <a
+                        onClick={() => {
+                          if (!isLoading) {
+                            handleApprove()
+                          }
+                        }}
+                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FBB816] text-[16px]  font-bold text-white hover:bg-[#dbac3f] "
+                      >
+                        {'Approve/Vote'}
+                      </a>
+                    </div>,
+                  )}
               </div>
             </div>
           </div>
