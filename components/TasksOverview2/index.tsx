@@ -218,6 +218,8 @@ const TransactionList = () => {
     let dado
     try {
       await axios(config).then(function (response) {
+        console.log('as respostas das taskss')
+        console.log(response.data)
         if (response.data) {
           setFinalTasks(response.data.tasks)
           setPagination(response.data.pagination)

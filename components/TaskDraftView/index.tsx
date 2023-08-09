@@ -168,7 +168,7 @@ const TaskDraftView = (id: any) => {
                     Project description
                   </p>
                 </div>
-                <div
+                {/* <div
                   className={`mx-[57px] px-[17px]  pb-[14px] ${
                     viewOption === 'submissions'
                       ? 'border-b-[2px]  border-[#000000]'
@@ -183,7 +183,7 @@ const TaskDraftView = (id: any) => {
                   >
                     Applicants & submissions
                   </p>
-                </div>
+                </div> */}
                 <div
                   className={`px-[17px]  pb-[14px] ${
                     viewOption === 'updates'

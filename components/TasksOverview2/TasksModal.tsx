@@ -73,7 +73,9 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
       <div className="flex w-[12%]">
         <a
           href={
-            task.isDraft ? `/task/${task.id}` : `/task-draft/${task.internalId}`
+            !task.isDraft
+              ? `/task/${task.id}`
+              : `/task-draft/${task.internalId}`
           }
           target="_blank"
           rel="nofollow noreferrer"

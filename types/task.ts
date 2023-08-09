@@ -59,7 +59,8 @@ export type Submission = {
 }
 
 export type TasksOverview = {
-  internalId: number
+  internalId: string
+  proposalId: string
   id: number
   title: string
   description: string

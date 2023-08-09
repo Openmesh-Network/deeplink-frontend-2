@@ -16,6 +16,7 @@ import {
   waitForTransaction,
 } from '@wagmi/core'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
+import tokenListGovernanceContractABI from '@/utils/abi/tokenListGovernanceContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -29,6 +30,8 @@ interface TasksModalProps {
 }
 
 const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const taskStateCircle = {
     open: 'circle-green-task-hero.svg',
     active: 'circle-blue-task-hero.svg',
@@ -57,11 +60,47 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
     '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619': 'generic-erc20',
   }
 
+  const departamentOptionsToTokenListGovernance = {
+    Data: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Frontend: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Blockchain: '0x4c4c68a829b273e8e9A6272E2B5fd467FcE3aC2c',
+    Cloud: '0x4149c51869DAac1eE8b7b5FC65E9301655c563f8',
+    Devops: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+  }
+
   function getTokenLogo(address: string) {
     if (tokensAllowedMap[address]) {
       return tokensAllowedMap[address]
     } else {
       return 'generic-erc20'
+    }
+  }
+
+  async function handleApprove() {
+    setIsLoading(true)
+    console.log('value to be sent')
+    console.log('the proposal id')
+    console.log(task)
+    console.log(task.proposalId)
+    const { request } = await prepareWriteContract({
+      address: `0x${departamentOptionsToTokenListGovernance[
+        task.departament
+      ].substring(2)}`,
+      abi: tokenListGovernanceContractABI,
+      args: [Number(task.proposalId), 2, true, 0],
+      functionName: 'vote',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    setIsLoading(false)
+    if (data.status !== 'success') {
+      throw data
     }
   }
 
@@ -263,33 +302,20 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     {formatDate(task.deadline)}
                   </p>
                 </div>
-                {task.status === 'open' && (
+                {task.status === 'draft' && (
                   <div className="mt-[25px] ">
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`/application/${task.id}`}
+                      onClick={() => {
+                        if (!isLoading) {
+                          handleApprove()
+                        }
+                      }}
                       className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FBB816] text-[16px]  font-bold text-white hover:bg-[#dbac3f] "
                     >
                       {'Approve/Vote'}
                     </a>
                   </div>
                 )}
-                {task.status === 'active' &&
-                  contributorsAllowed &&
-                  address &&
-                  contributorsAllowed.includes(address) && (
-                    <div className="mt-[25px] ">
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`/new-submission/${task.id}`}
-                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[16px]  font-bold text-white hover:bg-[#5080da] "
-                      >
-                        {'Create submission'}
-                      </a>
-                    </div>
-                  )}
               </div>
             </div>
           </div>
