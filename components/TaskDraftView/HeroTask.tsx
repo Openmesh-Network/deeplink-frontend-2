@@ -67,11 +67,10 @@ const HeroTask = ({
   }
 
   const departamentOptionsToTokenListGovernance = {
-    Data: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
-    Frontend: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
-    Blockchain: '0x4c4c68a829b273e8e9A6272E2B5fd467FcE3aC2c',
-    Cloud: '0x4149c51869DAac1eE8b7b5FC65E9301655c563f8',
-    Devops: '0xdC88D36F4a53735E72FAa1468031b82b014528Aa',
+    Data: '0xdbf68eF0876A96A9A13D6D82279aAF2228E1fF9E',
+    Frontend: '0x8248db7F95ec6CA2818A73E7CA95de1c0CC77310',
+    Blockchain: '0x2cda520aAD302836b3110F20B48163f96869383B',
+    Cloud: '0xE80bC76b61C39f9DD012541d972A39AaC9CBCFAe',
   }
 
   function getTokenLogo(address: string) {
