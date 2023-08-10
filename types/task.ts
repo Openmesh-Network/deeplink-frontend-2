@@ -87,6 +87,7 @@ export type UserToDraftTask = {
   isVerifiedContributor: boolean
   alreadyVoted: boolean
   voteOption: string | null
+  verifiedContributorToken: string | null
 }
 
 export type Event = {

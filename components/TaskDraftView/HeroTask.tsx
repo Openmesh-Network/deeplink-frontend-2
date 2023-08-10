@@ -88,12 +88,19 @@ const HeroTask = ({
     console.log('the proposal id')
     console.log(task)
     console.log(task.proposalId)
+    console.log('the user draft')
+    console.log(userToDraftTaskData)
     const { request } = await prepareWriteContract({
       address: `0x${departamentOptionsToTokenListGovernance[
         task.departament
       ].substring(2)}`,
       abi: tokenListGovernanceContractABI,
-      args: [Number(task.proposalId), 2, true, 0],
+      args: [
+        Number(task.proposalId),
+        2,
+        true,
+        Number(userToDraftTaskData.verifiedContributorToken),
+      ],
       functionName: 'vote',
     })
     const { hash } = await writeContract(request)
@@ -323,7 +330,25 @@ const HeroTask = ({
                       >
                         {'Approve/Vote'}
                       </a>
-                    </div>,
+                    </div>
+                  )}
+                {task.status === 'draft' &&
+                  userToDraftTaskData &&
+                  userToDraftTaskData.isVerifiedContributor &&
+                  userToDraftTaskData.alreadyVoted &&
+                  userToDraftTaskData.voteOption === '2' && (
+                    <div className="mt-[25px] ">
+                      <a
+                        onClick={() => {
+                          if (!isLoading) {
+                            handleApprove()
+                          }
+                        }}
+                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[16px]  font-bold text-white"
+                      >
+                        {'Voted'}
+                      </a>
+                    </div>
                   )}
               </div>
             </div>

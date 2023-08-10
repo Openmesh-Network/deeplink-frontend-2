@@ -220,23 +220,6 @@ const TaskDraftView = (id: any) => {
                     Applicants & submissions
                   </p>
                 </div> */}
-                <div
-                  className={`px-[17px]  pb-[14px] ${
-                    viewOption === 'updates'
-                      ? 'border-b-[2px]  border-[#000000]'
-                      : ''
-                  }`}
-                >
-                  <p
-                    onClick={() => {
-                      setViewOption('updates')
-                    }}
-                    className="cursor-pointer hover:text-[#353535]"
-                  >
-                    Updates ({taskMetadata.updatesCount})
-                    {/* Aqui inserir o numero de updates (transactions events) que teve */}
-                  </p>
-                </div>
               </div>
               {viewOption !== 'submissions' ? (
                 <div>
