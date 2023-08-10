@@ -601,6 +601,22 @@ const NewTask = () => {
     }
   }
 
+  const handleDateChange = (onChange) => (date) => {
+    const minDate = new Date()
+    minDate.setDate(minDate.getDate() + 2)
+
+    if (date < minDate) {
+      toast.error(
+        'The end voting date needs to be at least 2 days from today',
+        {
+          position: toast.POSITION.TOP_RIGHT,
+        },
+      )
+    } else {
+      onChange(date)
+    }
+  }
+
   function handleIsPaymentsTokensValid() {
     for (const payment of payments) {
       if (!ethers.isAddress(payment.tokenContract)) {
@@ -1341,7 +1357,7 @@ const NewTask = () => {
                         name="taskDraftDeadline"
                         render={({ field: { onChange, onBlur, value } }) => (
                           <DatePicker
-                            onChange={onChange}
+                            onChange={handleDateChange(onChange)}
                             onBlur={onBlur}
                             selected={value}
                             dateFormat="yyyy-MM-dd"
