@@ -110,7 +110,8 @@ const HeroTask = ({
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    window.location.reload()
     setIsLoading(false)
     if (data.status !== 'success') {
       throw data

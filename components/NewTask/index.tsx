@@ -594,7 +594,8 @@ const NewTask = () => {
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 8500))
+    await new Promise((resolve) => setTimeout(resolve, 4500))
+    push('/tasks')
     if (data.status !== 'success') {
       throw data
     }
