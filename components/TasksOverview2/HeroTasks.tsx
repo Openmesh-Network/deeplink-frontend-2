@@ -79,12 +79,12 @@ const HeroTasks = () => {
             <div>
               <div className="">
                 <p className="text-[14px] font-medium !leading-[17px] text-[#505050]">
-                  Introducing Pythia - our revolutionary, open-source Web3 data
-                  search and product development platform. With Pythia, anyone
-                  can easily search, design, build, and store their own crypto
-                  and Web3 data products directly within their wallet, just like
-                  ERC20 assets. Pythia Search functions like Google, allowing
-                  you to ask anything and get answers instantly.
+                  Introducing the OpenR&D initiative, an open-source platform
+                  designed to empower decentralized teams to collaborate
+                  seamlessly. Simplify task management, progress tracking, and
+                  automated payouts within web3 projects, addressing the
+                  challenges faced by remote teams in the rapidly growing
+                  decentralized ecosystem.
                 </p>
               </div>
             </div>

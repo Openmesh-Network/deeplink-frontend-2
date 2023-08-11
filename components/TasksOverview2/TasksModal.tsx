@@ -27,12 +27,17 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
       } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal`}
     >
       <div className="mr-4 w-[35%] items-center">
-        <p
+        <a
+          href={
+            !task.isDraft
+              ? `/task/${task.id}`
+              : `/task-draft/${task.internalId}`
+          }
           title={task.title}
           className="overflow-hidden pb-2 font-bold text-[#0354EC] line-clamp-1"
         >
           {task.title}
-        </p>
+        </a>
         <p
           title={task.description}
           className="overflow-hidden text-[14px] !leading-tight line-clamp-2"
@@ -77,8 +82,6 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
               ? `/task/${task.id}`
               : `/task-draft/${task.internalId}`
           }
-          target="_blank"
-          rel="nofollow noreferrer"
           className="ml-auto cursor-pointer rounded-[5px] border border-[#0354EC] bg-white py-[10px] px-[22px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
         >
           View more

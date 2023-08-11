@@ -12,7 +12,7 @@ const Footer = () => {
             <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
               <div className="mb-12 max-w-[360px] lg:mb-16">
                 <Link href="/" className="mb-8 inline-block text-[#000000]">
-                  <h1>DeepLink</h1>
+                  <h1>OpenR&D</h1>
                 </Link>
                 <p className="mb-9 text-base font-medium leading-relaxed text-[#000000]">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
