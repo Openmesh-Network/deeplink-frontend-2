@@ -9,6 +9,9 @@ import { UserOutlined } from '@ant-design/icons'
 import TransactionList from '../TaskTransactionsList'
 import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
+import DOMPurify from 'dompurify'
+import ReactHtmlParser, { convertNodeToElement } from 'react-html-parser'
+
 import {
   readContract,
   writeContract,
@@ -127,6 +130,43 @@ const TaskView = (id: any) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
+  function transform(node, index) {
+    if (node.type === 'tag') {
+      switch (node.name) {
+        case 'h1':
+          node.attribs.style = 'font-size: 2rem; font-weight: bold;'
+          break
+        case 'h2':
+          node.attribs.style = 'font-size: 1.5rem; font-weight: bold;'
+          break
+        case 'ul':
+          node.attribs.style = 'list-style: disc; margin-left: 40px;' // Ajuste o valor conforme necessário
+          break
+        case 'ol':
+          node.attribs.style = 'list-style: decimal; margin-left: 40px;' // Ajuste o valor conforme necessário
+          break
+        case 'strong':
+        case 'b':
+          node.attribs.style = 'font-weight: bold;'
+          break
+        case 'em':
+        case 'i':
+          node.attribs.style = 'font-style: italic;'
+          break
+        case 'li':
+          if (
+            node.attribs.class &&
+            node.attribs.class.includes('ql-indent-1')
+          ) {
+            node.attribs.style = 'margin-left: 30px;' // Adicione mais estilos se a classe ql-indent-1 tiver especificidades
+          }
+          break
+        // Adicione mais casos conforme necessário
+      }
+    }
+    return convertNodeToElement(node, index, transform)
+  }
+
   if (isLoading || !taskMetadata) {
     return (
       <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
@@ -216,26 +256,15 @@ const TaskView = (id: any) => {
                           <></>
                         )}
                         {(() => {
-                          const description = taskMetadata.description
-                          const result = []
-                          for (let i = 0; i < description.length; ) {
-                            let endIndex = i + 650
-                            if (endIndex < description.length) {
-                              endIndex = description.indexOf('.', endIndex)
-                              if (endIndex === -1) endIndex = description.length
-                              // No more periods found, take the rest of the string
-                              else endIndex += 1 // Include the period
-                            } else {
-                              endIndex = description.length
-                            }
-                            result.push(
-                              <p key={i} className="mb-[20px]">
-                                {description.slice(i, endIndex)}
-                              </p>,
-                            ) // 20px margin-bottom to create space between paragraphs
-                            i = endIndex
-                          }
-                          return result
+                          const cleanHtml = DOMPurify.sanitize(
+                            '<h1>New project information</h1><p><br></p><h2>Specs</h2><ul><li><strong>Lorem ipsum religaris:</strong></li><li class="ql-indent-1">sddsaddsadsadsasasasasasasasasasasadsadasdsadsadasdasdasdsadwqopidmwqmodw</li><li class="ql-indent-1">qwmpodwopqdmopwqmdopwqmodpmwqopdmpowqmdop</li><li class="ql-indent-1">wqopmdmqwopdmopqwmdopqwpdqwmkopwqmdpowqmdopqwmdopmqwmdop</li><li><strong>Lorem ipsum religaris:</strong></li><li class="ql-indent-1">sddsaddsadsadsasasasasasasasasasasadsadasdsadsadasdasdasdsadwqopidmwqmodw</li><li class="ql-indent-1">qwmpodwopqdmopwqmdopwqmodpmwqopdmpowqmdop</li><li class="ql-indent-1">wqopmdmqwopdmopqwmdopqwpdqwmkopwqmdpowqmdopqwmdopmqwmdop</li></ul><h2>Scope</h2><ul><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:dsad</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li></ul>',
+                          )
+
+                          const htmlTransformado = ReactHtmlParser(cleanHtml, {
+                            transform,
+                          })
+
+                          return <div>{htmlTransformado}</div>
                         })()}
                       </div>
                     ) : (

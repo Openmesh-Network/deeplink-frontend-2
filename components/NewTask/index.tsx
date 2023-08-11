@@ -16,6 +16,8 @@ import taskContractABI from '@/utils/abi/taskContractABI.json'
 import tasksDraftsContractABI from '@/utils/abi/tasksDraftsContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { Link, Contributor } from '@/types/task'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css' // import styles
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -73,6 +75,11 @@ type IPFSSubmition = {
   file: string | null
 }
 
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+})
+
 const NewTask = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [departament, setDepartament] = useState('')
@@ -86,6 +93,8 @@ const NewTask = () => {
   const [departamentOptionsToAddress, setDepartamentOptionsToAddress] =
     useState({})
   const [departamentOptions, setDepartamentOptions] = useState([])
+  const [editorHtml, setEditorHtml] = useState('')
+
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
     { title: 'calendarLink', url: '' },
@@ -310,6 +319,14 @@ const NewTask = () => {
 
     newContributors[index]['budgetPercentage'] = Number(value)
     setContributors(newContributors)
+  }
+
+  function handleChange(value) {
+    setEditorHtml(value)
+    // Aqui você pode também informar o valor ao gerenciador do formulário
+
+    console.log('the value markdown')
+    console.log(value)
   }
 
   const FileList: FC<FileListProps> = ({ files, onRemove }) => {
@@ -1275,13 +1292,13 @@ const NewTask = () => {
                         {errors.description?.message}
                       </p>
                     </span>
-                    <textarea
-                      disabled={isLoading}
-                      style={{ resize: 'none' }}
-                      className="mt-[10px] h-[574px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[25px] py-[25px] text-[17px] font-normal outline-0"
-                      maxLength={5000}
+                    <QuillNoSSRWrapper
+                      value={editorHtml}
+                      onChange={handleChange}
+                      // disabled={isLoading}
+                      className="h-144 border-gray-300 mt-2 w-full rounded-md border bg-white text-base font-normal outline-0"
+                      // maxLength={5000}
                       placeholder="Type here"
-                      {...register('description')}
                     />
                   </div>
                 </div>
