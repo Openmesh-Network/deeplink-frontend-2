@@ -34,7 +34,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
               : `/task-draft/${task.internalId}`
           }
           title={task.title}
-          className="overflow-hidden pb-2 font-bold text-[#0354EC] line-clamp-1"
+          className="overflow-hidden pb-2 font-bold text-[#0354EC]"
         >
           {task.title}
         </a>
