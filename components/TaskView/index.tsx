@@ -215,7 +215,28 @@ const TaskView = (id: any) => {
                         ) : (
                           <></>
                         )}
-                        <p className="">{taskMetadata.description}</p>
+                        {(() => {
+                          const description = taskMetadata.description
+                          const result = []
+                          for (let i = 0; i < description.length; ) {
+                            let endIndex = i + 650
+                            if (endIndex < description.length) {
+                              endIndex = description.indexOf('.', endIndex)
+                              if (endIndex === -1) endIndex = description.length
+                              // No more periods found, take the rest of the string
+                              else endIndex += 1 // Include the period
+                            } else {
+                              endIndex = description.length
+                            }
+                            result.push(
+                              <p key={i} className="mb-[20px]">
+                                {description.slice(i, endIndex)}
+                              </p>,
+                            ) // 20px margin-bottom to create space between paragraphs
+                            i = endIndex
+                          }
+                          return result
+                        })()}
                       </div>
                     ) : (
                       <UpdatesList taskId={id.id} />
