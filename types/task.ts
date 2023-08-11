@@ -43,6 +43,8 @@ export type Application = {
   timestamp: string
   totalEarned: string | null
   jobSuccess: string | null
+  profileImage: string | null
+  profileName: string | null
   accepted: boolean
 }
 
@@ -55,6 +57,8 @@ export type Submission = {
   metadataAdditionalLinks: string[]
   accepted: boolean
   timestamp: string
+  profileImage: string | null
+  profileName: string | null
   reviewed: boolean
 }
 

@@ -83,18 +83,15 @@ const NewTask = () => {
   const [fundingView, setFundingView] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
   const [contributors, setContributors] = useState<Contributor[]>([])
+  const [departamentOptionsToAddress, setDepartamentOptionsToAddress] =
+    useState({})
+  const [departamentOptions, setDepartamentOptions] = useState([])
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
     { title: 'calendarLink', url: '' },
     { title: 'reachOutLink', url: '' },
   ])
-  const departamentOptions = ['Data', 'Frontend', 'Blockchain', 'Cloud']
-  const departamentOptionsToAddress = {
-    Data: '0xdbf68eF0876A96A9A13D6D82279aAF2228E1fF9E',
-    Frontend: '0x8248db7F95ec6CA2818A73E7CA95de1c0CC77310',
-    Blockchain: '0x2cda520aAD302836b3110F20B48163f96869383B',
-    Cloud: '0xE80bC76b61C39f9DD012541d972A39AaC9CBCFAe',
-  }
+
   const projectLengthOptions = [
     'Less than 1 week',
     '1 to 2 weeks',
@@ -403,8 +400,7 @@ const NewTask = () => {
       method: 'post' as 'post',
       url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskCreation`,
       headers: {
-        'x-parse-application-id':
-          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
       },
       data,
     }
@@ -426,8 +422,7 @@ const NewTask = () => {
       method: 'post' as 'post',
       url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskDraftCreation`,
       headers: {
-        'x-parse-application-id':
-          'as90qw90uj3j9201fj90fj90dwinmfwei98f98ew0-o0c1m221dds222143',
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
       },
       data,
     }
@@ -511,7 +506,8 @@ const NewTask = () => {
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 8500))
+    await new Promise((resolve) => setTimeout(resolve, 4500))
+    push(`/tasks?status=open`)
     if (data.status !== 'success') {
       throw data
     }
@@ -772,6 +768,46 @@ const NewTask = () => {
       }
     }
   }
+
+  async function getDepartaments() {
+    setIsLoading(true)
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getDepartaments`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+      },
+    }
+
+    try {
+      // [		{			"id": "1b71121d-be7c-4331-89e9-5a6e6312852b",			"name": "Blockchain",			"addressTaskDrafts": "0x8c10bC4673d4f0B46cb565Bb565A5054368BC0E4",			"addressDAO": "0x11dF7E88E2FE64c5f7656c1311609Cc838D544DF",			"addressTokenListGovernance": "0x2cda520aAD302836b3110F20B48163f96869383B",			"createdAt": "2023-08-07T06:10:39.000Z",			"updatedAt": "2023-08-07T06:09:55.000Z"		},		{			"id": "1b71122d-be8c-4331-89e9-5a6e6312852b",			"name": "Cloud",			"addressTaskDrafts": "0x68Aaa9f0b989214C4a20831234A2b65F89e6846f",			"addressDAO": "0x7b92f0E65cCAeF6F8e259ABcFD5C87E3f0969Ddc",			"addressTokenListGovernance": "0xE80bC76b61C39f9DD012541d972A39AaC9CBCFAe",			"createdAt": "2023-08-08T11:43:06.000Z",			"updatedAt": null		},		{			"id": "9addf5fb-5ab8-4d80-b0bf-e26247920bd4",			"name": "Frontend",			"addressTaskDrafts": "0xbD6CdE02D09f0a59e9E83f38EbA47c60Fa402921",			"addressDAO": "0x8c8C9331c0550C3Dc492f6A11fC9b891F3AbFe62",			"addressTokenListGovernance": "0x8248db7F95ec6CA2818A73E7CA95de1c0CC77310",			"createdAt": "2023-08-10T14:15:06.000Z",			"updatedAt": null		},		{			"id": "f069bf45-f8b7-4e57-97d1-14bdcaf4bc17",			"name": "Data",			"addressTaskDrafts": "0x104D58217F1184548fEeC388640e9a6aD38C35c1",			"addressDAO": "0x10C93ee6962edfCE77f1ad1f04E86235e2bf96d2",			"addressTokenListGovernance": "0xdbf68eF0876A96A9A13D6D82279aAF2228E1fF9E",			"createdAt": "2023-08-10T14:12:57.000Z",			"updatedAt": null		}	]
+      await axios(config).then(function (response) {
+        if (response.data && response.data.departaments.length > 0) {
+          const departamentsNameList = []
+          const departamentsToAddress = {}
+
+          response.data.departaments.forEach((departament) => {
+            departamentsNameList.push(departament.name)
+            departamentsToAddress[departament.name] =
+              departament.addressTokenListGovernance
+          })
+
+          setDepartamentOptionsToAddress(departamentsToAddress)
+          setDepartamentOptions(departamentsNameList)
+        }
+      })
+    } catch (err) {
+      toast.error('Error getting the departaments options!')
+      console.log(err)
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    if (address) {
+      getDepartaments()
+    }
+  }, [address])
 
   if (!address) {
     return (

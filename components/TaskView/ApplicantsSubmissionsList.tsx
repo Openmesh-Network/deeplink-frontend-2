@@ -459,7 +459,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
   }
 
   function formatName(address) {
-    return `${address.slice(0, 12)}...`
+    if (address.length > 12) {
+      return `${address.slice(0, 12)}...`
+    } else {
+      return address
+    }
   }
 
   function NoApplications() {
@@ -658,7 +662,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                     <div>
                       <img
                         alt="ethereum avatar"
-                        src={`https://effigy.im/a/${application.applicant}.svg`}
+                        src={
+                          application.profileImage
+                            ? `https://cloudflare-ipfs.com/ipfs/${application.profileImage}`
+                            : `https://effigy.im/a/${application.applicant}.svg`
+                        }
                         className="mr-[10px] w-[50px] rounded-full"
                       ></img>
                     </div>
@@ -666,12 +674,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                       <div className="flex">
                         <p
                           title={
-                            application.metadataDisplayName ||
-                            application.applicant
+                            application.profileName || application.applicant
                           }
                           className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
                         >
-                          {formatName(application.metadataDisplayName) ||
+                          {formatName(application.profileName) ||
                             formatAddress(application.applicant)}
                         </p>
                         {application.accepted && (
@@ -880,7 +887,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                     <div>
                       <img
                         alt="ethereum avatar"
-                        src={`https://effigy.im/a/${submission.applicant}.svg`}
+                        src={
+                          submission.profileImage
+                            ? `https://cloudflare-ipfs.com/ipfs/${submission.profileImage}`
+                            : `https://effigy.im/a/${submission.applicant}.svg`
+                        }
                         className="mr-[10px] w-[50px] rounded-full"
                       ></img>
                     </div>
@@ -890,7 +901,8 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                           title={submission.applicant}
                           className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
                         >
-                          {formatAddress(submission.applicant)}
+                          {formatName(submission.profileName) ||
+                            formatAddress(submission.applicant)}
                         </p>
                         {submission.reviewed && submission.accepted && (
                           <p className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#12ad50]">

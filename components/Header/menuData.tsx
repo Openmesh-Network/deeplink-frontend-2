@@ -10,14 +10,14 @@ const menuData: Menu[] = [
   {
     id: 2,
     title: 'Docs',
-    path: '/',
-    newTab: false,
+    path: 'https://l3a.gitbook.io/l3a-dao-documentation/getting-started/vision',
+    newTab: true,
   },
   {
     id: 3,
     title: 'Governance & Forum',
-    path: '/',
-    newTab: false,
+    path: 'https://www.discourse.org/',
+    newTab: true,
   },
   {
     id: 4,

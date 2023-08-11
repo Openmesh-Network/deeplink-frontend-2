@@ -99,12 +99,14 @@ const Header = () => {
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
                           menuItem.title === 'Profile' && !address ? null : (
-                            <Link
+                            <a
                               href={
                                 menuItem.title === 'Profile'
                                   ? `/profile/${address}`
                                   : menuItem.path
                               }
+                              target={menuItem.newTab ? '_blank' : ''}
+                              rel={menuItem.newTab ? 'noopener noreferrer' : ''}
                               className={`flex py-2 text-[16px] font-medium text-[#000000] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 ${
                                 pathname.includes(menuItem.path)
                                   ? 'font-bold'
@@ -112,7 +114,7 @@ const Header = () => {
                               }`}
                             >
                               {menuItem.title}
-                            </Link>
+                            </a>
                           )
                         ) : (
                           <>
