@@ -1300,7 +1300,7 @@ const NewTask = () => {
                       value={editorHtml}
                       onChange={handleChange}
                       // disabled={isLoading}
-                      className="border-gray-300 mt-2 min-h-[300px] w-[900px] rounded-md border bg-white text-base font-normal outline-0"
+                      className="mt-2 min-h-[300px] w-[900px] rounded-md border border-[#D4D4D4] bg-white text-base font-normal outline-0"
                       // maxLength={5000}
                       placeholder="Type here"
                     />
