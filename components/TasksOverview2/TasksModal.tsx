@@ -1,5 +1,7 @@
 'use client'
 import { Payment } from '@/types/task'
+import DOMPurify from 'dompurify'
+import ReactHtmlParser, { convertNodeToElement } from 'react-html-parser'
 
 interface TasksModalProps {
   task: {
@@ -20,6 +22,42 @@ interface TasksModalProps {
 }
 
 const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
+  function transform(node, index) {
+    // if (node.type === 'tag') {
+    //   switch (node.name) {
+    //     case 'h1':
+    //       node.attribs.style = 'font-size: 2rem; font-weight: bold;'
+    //       break
+    //     case 'h2':
+    //       node.attribs.style = 'font-size: 1.5rem; font-weight: bold;'
+    //       break
+    //     case 'ul':
+    //       node.attribs.style = 'list-style: disc; margin-left: 40px;' // Ajuste o valor conforme necessário
+    //       break
+    //     case 'ol':
+    //       node.attribs.style = 'list-style: decimal; margin-left: 40px;' // Ajuste o valor conforme necessário
+    //       break
+    //     case 'strong':
+    //     case 'b':
+    //       node.attribs.style = 'font-weight: bold;'
+    //       break
+    //     case 'em':
+    //     case 'i':
+    //       node.attribs.style = 'font-style: italic;'
+    //       break
+    //     case 'li':
+    //       if (
+    //         node.attribs.class &&
+    //         node.attribs.class.includes('ql-indent-1')
+    //       ) {
+    //         node.attribs.style = 'margin-left: 30px;' // Adicione mais estilos se a classe ql-indent-1 tiver especificidades
+    //       }
+    //       break
+    //     // Adicione mais casos conforme necessário
+    //   }
+    // }
+    return convertNodeToElement(node, index, transform)
+  }
   return (
     <div
       className={`relative mr-1 ${
@@ -42,7 +80,18 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
           title={task.description}
           className="overflow-hidden text-[14px] !leading-tight line-clamp-2"
         >
-          {task.description}
+          {(() => {
+            // const cleanHtml = DOMPurify.sanitize(
+            //   '<h1>New project information</h1><p><br></p><h2>Specs</h2><ul><li><strong>Lorem ipsum religaris:</strong></li><li class="ql-indent-1">sddsaddsadsadsasasasasasasasasasasadsadasdsadsadasdasdasdsadwqopidmwqmodw</li><li class="ql-indent-1">qwmpodwopqdmopwqmdopwqmodpmwqopdmpowqmdop</li><li class="ql-indent-1">wqopmdmqwopdmopqwmdopqwpdqwmkopwqmdpowqmdopqwmdopmqwmdop</li><li><strong>Lorem ipsum religaris:</strong></li><li class="ql-indent-1">sddsaddsadsadsasasasasasasasasasasadsadasdsadsadasdasdasdsadwqopidmwqmodw</li><li class="ql-indent-1">qwmpodwopqdmopwqmdopwqmodpmwqopdmpowqmdop</li><li class="ql-indent-1">wqopmdmqwopdmopqwmdopqwpdqwmkopwqmdpowqmdopqwmdopmqwmdop</li></ul><p><br></p><h2>Scope</h2><ul><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris: dsad</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li><li><strong>Lorem ipsum religaris:</strong></li></ul>',
+            // )
+            const cleanHtml = DOMPurify.sanitize(task.description)
+
+            const htmlTransformado = ReactHtmlParser(cleanHtml, {
+              transform,
+            })
+
+            return <div>{htmlTransformado}</div>
+          })()}
         </p>
       </div>
       <div className="flex w-[15%] items-center">

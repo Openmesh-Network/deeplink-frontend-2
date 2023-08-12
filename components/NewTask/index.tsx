@@ -37,7 +37,6 @@ import { createHash } from 'crypto'
 
 type TaskSubmitForm = {
   title: string
-  description: string
   deadline: Date
   departament: string
   skills: string[]
@@ -133,7 +132,6 @@ const NewTask = () => {
 
   const validSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
-    description: Yup.string().required('Desc is required'),
     deadline: Yup.date()
       .transform((value, originalValue) => {
         return originalValue ? new Date(originalValue) : null
@@ -322,8 +320,9 @@ const NewTask = () => {
   }
 
   function handleChange(value) {
-    setEditorHtml(value)
-    // Aqui você pode também informar o valor ao gerenciador do formulário
+    if (editorHtml.length < 5000) {
+      setEditorHtml(value)
+    }
 
     console.log('the value markdown')
     console.log(value)
@@ -503,21 +502,21 @@ const NewTask = () => {
       functionName: 'createTask',
     })
     const { hash } = await writeContract(request)
-    const unwatch = watchContractEvent(
-      {
-        address: `0x${taskAddress.substring(2)}`,
-        abi: taskContractABI,
-        eventName: 'TaskCreated',
-      },
-      (log) => {
-        console.log('event')
-        console.log(log)
-        if (log[0].transactionHash === hash) {
-          push(`/task/${Number(log[0]['args']['taskId'])}`)
-          console.log(log)
-        }
-      },
-    )
+    // const unwatch = watchContractEvent(
+    //   {
+    //     address: `0x${taskAddress.substring(2)}`,
+    //     abi: taskContractABI,
+    //     eventName: 'TaskCreated',
+    //   },
+    //   (log) => {
+    //     console.log('event')
+    //     console.log(log)
+    //     if (log[0].transactionHash === hash) {
+    //       push(`/task/${Number(log[0]['args']['taskId'])}`)
+    //       console.log(log)
+    //     }
+    //   },
+    // )
     const data = await waitForTransaction({
       hash,
     })
@@ -580,21 +579,21 @@ const NewTask = () => {
     console.log('after')
 
     const { hash } = await writeContract(request)
-    const unwatch = watchContractEvent(
-      {
-        address: `0x${departamentOptionsToAddress[departament].substring(2)}`,
-        abi: tasksDraftsContractABI,
-        eventName: 'createDraftTask',
-      },
-      (log) => {
-        console.log('event')
-        console.log(log)
-        if (log[0].transactionHash === hash) {
-          push(`/task/${Number(log[0]['args']['taskId'])}`)
-          console.log(log)
-        }
-      },
-    )
+    // const unwatch = watchContractEvent(
+    //   {
+    //     address: `0x${departamentOptionsToAddress[departament].substring(2)}`,
+    //     abi: tasksDraftsContractABI,
+    //     eventName: 'createDraftTask',
+    //   },
+    //   (log) => {
+    //     console.log('event')
+    //     console.log(log)
+    //     if (log[0].transactionHash === hash) {
+    //       push(`/task/${Number(log[0]['args']['taskId'])}`)
+    //       console.log(log)
+    //     }
+    //   },
+    // )
     const data = await waitForTransaction({
       hash,
     })
@@ -641,6 +640,12 @@ const NewTask = () => {
   async function onSubmit(data: TaskSubmitForm) {
     if (chain && chain.name !== 'Polygon Mumbai') {
       toast.error('Please switch chain before interacting with the protocol.')
+      return
+    }
+    if (!editorHtml || editorHtml.length === 0) {
+      toast.error('Please set a description.')
+      const element = document.getElementById('descId')
+      element.scrollIntoView({ behavior: 'smooth' })
       return
     }
     if (payments.length === 0) {
@@ -701,6 +706,7 @@ const NewTask = () => {
       ...data,
       projectLength,
       numberOfApplicants,
+      description: editorHtml,
       contributors,
       payments,
       links,
@@ -1285,18 +1291,16 @@ const NewTask = () => {
                       </button>
                     )}
                   </div>
-                  <div className="mt-[30px]">
+                  <div className="mt-[30px]" id="descId">
                     <span className="flex flex-row">
                       Project Description (full)
-                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                        {errors.description?.message}
-                      </p>
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] "></p>
                     </span>
                     <QuillNoSSRWrapper
                       value={editorHtml}
                       onChange={handleChange}
                       // disabled={isLoading}
-                      className="h-144 border-gray-300 mt-2 w-full rounded-md border bg-white text-base font-normal outline-0"
+                      className="border-gray-300 mt-2 min-h-[300px] w-[900px] rounded-md border bg-white text-base font-normal outline-0"
                       // maxLength={5000}
                       placeholder="Type here"
                     />
