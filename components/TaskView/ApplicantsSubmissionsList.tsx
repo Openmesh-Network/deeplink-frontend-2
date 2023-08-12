@@ -459,10 +459,12 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
   }
 
   function formatName(address) {
-    if (address.length > 12) {
-      return `${address.slice(0, 12)}...`
-    } else {
-      return address
+    if (address) {
+      if (address.length > 12) {
+        return `${address.slice(0, 12)}...`
+      } else {
+        return address
+      }
     }
   }
 

@@ -119,6 +119,10 @@ const TaskView = (id: any) => {
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     if (id) {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
