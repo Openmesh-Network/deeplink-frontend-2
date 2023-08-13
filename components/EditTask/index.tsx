@@ -10,6 +10,8 @@ import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import { Range } from 'react-range'
 import { TextField, Autocomplete } from '@mui/material'
+import DOMPurify from 'dompurify'
+
 import { Slider } from 'rsuite'
 import Decimal from 'decimal.js'
 import {
@@ -22,26 +24,49 @@ import {
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
-import { Link, TasksOverview } from '@/types/task'
+import { Link, TasksOverview, Contributor } from '@/types/task'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css' // import styles
+
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 type TaskApplicationForm = {
   description: string
 }
 
-type Payment = {
-  tokenContract: string
-  amount: number
-  nextToken: boolean
+type TaskSubmitForm = {
+  title: string
+  deadline: Date
+  departament: string
+  skills: string[]
+  type: string
+  projectLength: string
+  numberOfApplicants: string
+  githubLink: string
+  calendarLink: string
+  reachOutLink: string
+  taskDraftDeadline: Date
 }
 
-type IPFSSubmition = {
-  description: string
-  links: Link[] | null
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+})
+
+type Payment = {
+  tokenContract: string
+  amount: string
+}
+
+type FileListProps = {
+  files: File[]
+  onRemove(index: number): void
 }
 
 const EditTask = (id: any) => {
@@ -62,6 +87,42 @@ const EditTask = (id: any) => {
   const [budgetPercentage, setBudgetPercentage] = useState(100)
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
+  const [fundingView, setFundingView] = useState<boolean>(false)
+  const [payments, setPayments] = useState<Payment[]>([])
+  const [contributors, setContributors] = useState<Contributor[]>([])
+  const [departamentOptionsToAddress, setDepartamentOptionsToAddress] =
+    useState({})
+  const [departamentOptions, setDepartamentOptions] = useState([])
+  const [editorHtml, setEditorHtml] = useState('')
+  const [projectLength, setProjectLength] = useState('')
+  const [numberOfApplicants, setNumberOfApplicants] = useState('')
+  const [departament, setDepartament] = useState('')
+
+  const [links, setLinks] = useState<Link[]>([
+    { title: 'githubLink', url: '' },
+    { title: 'calendarLink', url: '' },
+    { title: 'reachOutLink', url: '' },
+  ])
+
+  const projectLengthOptions = [
+    'Less than 1 week',
+    '1 to 2 weeks',
+    '2 to 4 weeks',
+    'More than 4 weeks',
+  ]
+
+  const numberOfApplicantsOptions = ['1', '2', '3', '4', '5']
+
+  const skillOptions = [
+    'Backend',
+    'Frontend',
+    'Web development',
+    'Solidity',
+    'UI',
+    'UX',
+    'HR',
+  ]
+
   const colorsBudget = [
     '#39D303',
     '#31ce19',
@@ -92,13 +153,6 @@ const EditTask = (id: any) => {
 
   const rangePerColor = 250 / colorsBudget.length
 
-  const [payments, setPayments] = useState<Payment[]>([])
-
-  const [links, setLinks] = useState<Link[]>([
-    { title: 'githubLink', url: '' },
-    { title: 'additionalLink', url: '' },
-  ])
-
   const getColor = (value) => {
     if (value < 50) {
       return 'bg-yellow-500'
@@ -122,6 +176,14 @@ const EditTask = (id: any) => {
     'Likely',
     'Very likely',
   ]
+  function handleChange(value) {
+    if (editorHtml.length < 5000) {
+      setEditorHtml(value)
+    }
+
+    console.log('the value markdown')
+    console.log(value)
+  }
 
   const handleLink = (
     index: number,
@@ -140,8 +202,128 @@ const EditTask = (id: any) => {
     setLinks(newLink)
   }
 
+  const addPayments = () => {
+    if (payments.length > 4) {
+      toast.error('Only 5 payments per task', {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+      return
+    }
+    setPayments([
+      ...payments,
+      {
+        tokenContract: '',
+        amount: '',
+      },
+    ])
+  }
+
+  const addContributors = () => {
+    if (contributors.length > 15) {
+      toast.error('Maximum of 15', {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+      return
+    }
+    setContributors([
+      ...contributors,
+      {
+        walletAddress: '',
+        budgetPercentage: 0,
+      },
+    ])
+  }
+
+  const handleDeletePayment = (index: number) => {
+    setPayments(payments.filter((_, i) => i !== index))
+  }
+
+  const handleDeleteContributors = (index: number) => {
+    setContributors(contributors.filter((_, i) => i !== index))
+  }
+
+  const handleBudgetPercentage = (
+    index: number,
+    field: keyof Contributor,
+    valueReceived: string,
+  ) => {
+    const newContributors = [...contributors]
+
+    if (
+      Number(newContributors[index][field]) &&
+      Number(newContributors[index][field]) >= 100
+    ) {
+      return
+    }
+
+    const value = valueReceived.replace(/[^0-9]/g, '')
+
+    newContributors[index]['budgetPercentage'] = Number(value)
+    setContributors(newContributors)
+  }
+
+  const handleAmountPayment = (
+    index: number,
+    field: keyof Payment,
+    valueReceived: string,
+  ) => {
+    const newPayment = [...payments]
+
+    if (
+      newPayment[index][field].length > 10000000000000000000000000000000000000
+    ) {
+      return
+    }
+
+    const value = valueReceived.replace(/[^0-9]/g, '')
+
+    newPayment[index][field] = value
+    setPayments(newPayment)
+  }
+
+  const handleERC20AddressPayment = (
+    index: number,
+    field: keyof Payment,
+    valueReceived: string,
+  ) => {
+    const newPagamentos = [...payments]
+
+    if (newPagamentos[index][field].length > 100) {
+      return
+    }
+
+    const value = valueReceived
+
+    newPagamentos[index][field] = value
+    setPayments(newPagamentos)
+  }
+
   const validSchema = Yup.object().shape({
-    description: Yup.string().required('Desc is required'),
+    title: Yup.string().required('Title is required'),
+    deadline: Yup.date()
+      .transform((value, originalValue) => {
+        return originalValue ? new Date(originalValue) : null
+      })
+      .typeError('Deadline is required')
+      .required('Deadline is required'),
+    taskDraftDeadline: Yup.date()
+      .transform((value, originalValue) => {
+        return originalValue ? new Date(originalValue) : null
+      })
+      .optional(),
+    departament: Yup.string().required('Department is required'),
+    skills: Yup.array()
+      .of(Yup.string())
+      .min(2, 'At least two tags are required')
+      .max(3, 'You can select up to 3 skills'),
+    projectLength: Yup.string().required('Project length is required'),
+    numberOfApplicants: Yup.string().required(
+      'Number of applicants is required',
+    ),
+    githubLink: Yup.string().notRequired(),
+    calendarLink: Yup.string().notRequired(),
+    reachOutLink: Yup.string().notRequired(),
+    type: Yup.string().notRequired(),
   })
   const {
     register,
@@ -151,30 +333,42 @@ const EditTask = (id: any) => {
     // eslint-disable-next-line no-unused-vars
     reset,
     formState: { errors },
-  } = useForm<TaskApplicationForm>({
+  } = useForm<TaskSubmitForm>({
     resolver: yupResolver(validSchema),
   })
 
-  async function formsUploadIPFS(data: IPFSSubmition) {
+  async function getDepartaments() {
+    setIsLoading(true)
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskSubmission`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getDepartaments`,
       headers: {
         'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
       },
-      data,
     }
 
-    let dado
+    try {
+      // [		{			"id": "1b71121d-be7c-4331-89e9-5a6e6312852b",			"name": "Blockchain",			"addressTaskDrafts": "0x8c10bC4673d4f0B46cb565Bb565A5054368BC0E4",			"addressDAO": "0x11dF7E88E2FE64c5f7656c1311609Cc838D544DF",			"addressTokenListGovernance": "0x2cda520aAD302836b3110F20B48163f96869383B",			"createdAt": "2023-08-07T06:10:39.000Z",			"updatedAt": "2023-08-07T06:09:55.000Z"		},		{			"id": "1b71122d-be8c-4331-89e9-5a6e6312852b",			"name": "Cloud",			"addressTaskDrafts": "0x68Aaa9f0b989214C4a20831234A2b65F89e6846f",			"addressDAO": "0x7b92f0E65cCAeF6F8e259ABcFD5C87E3f0969Ddc",			"addressTokenListGovernance": "0xE80bC76b61C39f9DD012541d972A39AaC9CBCFAe",			"createdAt": "2023-08-08T11:43:06.000Z",			"updatedAt": null		},		{			"id": "9addf5fb-5ab8-4d80-b0bf-e26247920bd4",			"name": "Frontend",			"addressTaskDrafts": "0xbD6CdE02D09f0a59e9E83f38EbA47c60Fa402921",			"addressDAO": "0x8c8C9331c0550C3Dc492f6A11fC9b891F3AbFe62",			"addressTokenListGovernance": "0x8248db7F95ec6CA2818A73E7CA95de1c0CC77310",			"createdAt": "2023-08-10T14:15:06.000Z",			"updatedAt": null		},		{			"id": "f069bf45-f8b7-4e57-97d1-14bdcaf4bc17",			"name": "Data",			"addressTaskDrafts": "0x104D58217F1184548fEeC388640e9a6aD38C35c1",			"addressDAO": "0x10C93ee6962edfCE77f1ad1f04E86235e2bf96d2",			"addressTokenListGovernance": "0xdbf68eF0876A96A9A13D6D82279aAF2228E1fF9E",			"createdAt": "2023-08-10T14:12:57.000Z",			"updatedAt": null		}	]
+      await axios(config).then(function (response) {
+        if (response.data && response.data.departaments.length > 0) {
+          const departamentsNameList = []
+          const departamentsToAddress = {}
 
-    await axios(config).then(function (response) {
-      if (response.data) {
-        dado = response.data
-        console.log(dado)
-      }
-    })
+          response.data.departaments.forEach((departament) => {
+            departamentsNameList.push(departament.name)
+            departamentsToAddress[departament.name] =
+              departament.addressTokenListGovernance
+          })
 
-    return dado
+          setDepartamentOptionsToAddress(departamentsToAddress)
+          setDepartamentOptions(departamentsNameList)
+        }
+      })
+    } catch (err) {
+      toast.error('Error getting the departaments options!')
+      console.log(err)
+    }
+    setIsLoading(false)
   }
 
   async function getTaskFromChain(id: any) {
@@ -223,6 +417,18 @@ const EditTask = (id: any) => {
             Number(response.data.estimatedBudget).toLocaleString('en-US') ||
               '0',
           )
+          // setting pre-defined values
+          setValue('title', response.data.title)
+          setValue('departament', response.data.departament)
+          setDepartament(response.data.departament)
+          const cleanHtml = DOMPurify.sanitize(response.data.description)
+          setEditorHtml(cleanHtml)
+          setProjectLength(response.data.projectLength)
+          setValue('projectLength', response.data.projectLength)
+          setValue('skills', response.data.skills)
+          setValue('numberOfApplicants', response.data.contributorsNeeded)
+          setValue('deadline', new Date(response.data.deadline * 1000))
+          setPayments(response.data.payments)
           setBudgetValue([response.data.estimatedBudget])
           // Treating payments
           const payments = response.data.payments.map((payment) => {
@@ -257,6 +463,23 @@ const EditTask = (id: any) => {
     }
   }
 
+  const handleWalletAddressContributor = (
+    index: number,
+    field: keyof Contributor,
+    valueReceived: string,
+  ) => {
+    const newContributors = [...contributors]
+
+    if (newContributors[index]['walletAddress'].length > 100) {
+      return
+    }
+
+    const value = valueReceived
+
+    newContributors[index]['walletAddress'] = value
+    setContributors(newContributors)
+  }
+
   async function handleCreateSubmission(taskId: number, metadata: string) {
     console.log('value to be sent')
     console.log(taskId['id'])
@@ -281,45 +504,7 @@ const EditTask = (id: any) => {
   }
 
   async function onSubmit(data: TaskApplicationForm) {
-    console.log('submit called')
-    if (chain && chain.name !== 'Polygon Mumbai') {
-      toast.error('Please switch chain before interacting with the protocol.')
-      return
-    }
-
-    setIsApplicationLoading(true)
-
-    const { description } = data
-
-    const finalData = {
-      links: linksValues,
-      description,
-    }
-
-    // eslint-disable-next-line no-unreachable
-    let ipfsHashData
-    try {
-      const res = await formsUploadIPFS(finalData)
-      console.log(res)
-      ipfsHashData = res
-    } catch (err) {
-      console.log('ipfs error')
-      toast.error('Error during the submission')
-      console.log(err)
-      setIsApplicationLoading(false)
-      return
-    }
-
-    try {
-      await handleCreateSubmission(id, ipfsHashData)
-      toast.success('Submission done succesfully!')
-      push(`/task/${id.id}`)
-      setIsApplicationLoading(false)
-    } catch (err) {
-      toast.error('Error during the Submission')
-      console.log(err)
-      setIsApplicationLoading(false)
-    }
+    console.log('dddd')
   }
 
   function formatAddress(address) {
@@ -386,104 +571,627 @@ const EditTask = (id: any) => {
           address={null}
         />
       )}
-      <section className="px-[100px] pt-[62px]  pb-[250px]">
-        <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+      <section className="mt-12 mb-24  px-32 text-[14px] font-medium !leading-[17px]  text-[#000000]">
+        <div className="container">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>
-                <p className="text-[20px] font-bold !leading-[120%] text-[#000000]">
-                  Submit your work
-                </p>
-                <p className="mt-[30px] max-w-[854px] text-[16px] font-medium !leading-[140%] text-[#505050]">
-                  Be sure to submit all the outcomes from your work, increasing
-                  the chances of it being accepted!
-                </p>
-              </div>
-              <div className="mt-[30px]">
-                <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                  Description{' '}
-                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                    {errors.description?.message}
-                  </p>
-                </p>
-                <textarea
-                  disabled={isApplicationLoading}
-                  style={{ resize: 'none' }}
-                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] py-[12px] text-[12px] font-normal !leading-[17px] outline-0"
-                  maxLength={2000}
-                  placeholder="Type here"
-                  {...register('description')}
-                />
-              </div>
-              <div className="mt-[30px]">
-                <div className="flex">
-                  <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
-                    Links related to your work (Github repositories,
-                    documentation...){' '}
-                  </span>
-                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
-                    * press "enter" to insert the item
-                  </span>
-                </div>
-
-                <Autocomplete
-                  multiple
-                  freeSolo
-                  options={[]} // Pode ser um array de opções predefinidas, ou vazio
-                  value={linksValues}
-                  onChange={(event, newValue) => {
-                    setLinksValues(newValue)
-                  }}
-                  popupIcon={
-                    <svg
-                      width="16"
-                      height="10"
-                      viewBox="0 0 16 10"
-                      className="mr-[15px] mt-[13px]"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                        fill="#959595"
-                      />
-                    </svg>
-                  }
-                  disabled={isLoading}
-                  className="mt-[10px]"
-                  size="small"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      id="margin-none"
-                      sx={{
-                        width: '500px',
-                        fieldset: {
-                          height: '45px',
-                          borderColor: '#D4D4D4',
-                          borderRadius: '10px',
-                        },
-                        input: { color: 'black', fontSize: '13px' },
-                      }}
+                <div className="">
+                  <div className="">
+                    <span className="flex flex-row">
+                      Project Title
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.title?.message}
+                      </p>
+                    </span>
+                    <input
+                      disabled={isLoading}
+                      className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                      type="text"
+                      maxLength={100}
+                      placeholder=""
+                      {...register('title')}
                     />
-                  )}
-                />
+                  </div>
+                  <div className="mt-[30px]">
+                    <span className="flex flex-row">
+                      Tag the project for easier discovery
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.skills?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="skills"
+                      control={control}
+                      defaultValue={[]}
+                      rules={{
+                        required: 'At least two tags are required',
+                        validate: (value) =>
+                          value.length >= 2 || 'At least two tags are required',
+                      }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          multiple
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
+                          disabled={isLoading}
+                          className="mt-[10px]"
+                          options={skillOptions}
+                          size="small"
+                          getOptionLabel={(option) => `${option}`}
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          onChange={(e, newValue) => {
+                            if (newValue.length <= 8) {
+                              field.onChange(newValue)
+                            } else {
+                              console.log('not aloweed')
+                              toast.error('Only 8 tags per task', {
+                                position: toast.POSITION.TOP_RIGHT,
+                              })
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '55px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[30px]">
+                    <span className="flex flex-row">
+                      Project length
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.projectLength?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="projectLength"
+                      control={control}
+                      rules={{ required: 'Project length is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disabled={isLoading}
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
+                          value={projectLength}
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setProjectLength(newValue)
+                          }}
+                          className="mt-[10px]"
+                          options={projectLengthOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            width: '500px',
+                            fieldset: {
+                              height: '55px',
+                              borderColor: '#D4D4D4',
+                              borderRadius: '10px',
+                            },
+                            input: { color: 'black' },
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label=""
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '55px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[30px]" id="budgetId">
+                    <span className="flex flex-row">
+                      Deadline
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.deadline?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      control={control}
+                      name="deadline"
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <DatePicker
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          selected={value}
+                          dateFormat="yyyy-MM-dd"
+                          disabled={isLoading}
+                          className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-[30px] max-h-[500px] overflow-auto">
+                    <span className="flex flex-row">Budget</span>
+                    {payments.map((pagamento, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Payment {index + 1}</h3>
+                          {index === payments.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeletePayment(index)}
+                              className="ml-2 font-extrabold text-[#707070]"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`payment-${index}-erc20Address`}
+                              className="mb-1 block text-xs"
+                            >
+                              ERC20 Token
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-erc20Address`}
+                              value={pagamento.tokenContract}
+                              onChange={(e) =>
+                                handleERC20AddressPayment(
+                                  index,
+                                  'tokenContract',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`payment-${index}-amount`}
+                              className="mb-1 block text-xs"
+                            >
+                              Amount (with decimal places)
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-amount`}
+                              value={pagamento.amount}
+                              onChange={(e) =>
+                                handleAmountPayment(
+                                  index,
+                                  'amount',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          {index === payments.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={addPayments}
+                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                            >
+                              + Add more
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {(!payments || payments.length === 0) && (
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={addPayments}
+                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                      >
+                        + Add payment
+                      </button>
+                    )}
+                  </div>
+                  <div className="mt-[30px]" id="contributorsId">
+                    <span className="flex flex-row">
+                      Number of applicants/contributors needed
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                        {errors.numberOfApplicants?.message}
+                      </p>
+                    </span>
+                    <Controller
+                      name="numberOfApplicants"
+                      control={control}
+                      rules={{ required: 'Number of applicants is required' }}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disabled={isLoading}
+                          value={numberOfApplicants}
+                          popupIcon={
+                            <svg
+                              width="16"
+                              height="10"
+                              viewBox="0 0 16 10"
+                              className="mr-[15px] mt-[13px]"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                                fill="#959595"
+                              />
+                            </svg>
+                          }
+                          onChange={(e, newValue) => {
+                            field.onChange(newValue)
+                            setNumberOfApplicants(newValue)
+                          }}
+                          className="mt-[10px]"
+                          options={numberOfApplicantsOptions}
+                          getOptionLabel={(option) => `${option}`}
+                          sx={{
+                            width: '500px',
+                            fieldset: {
+                              height: '55px',
+                              borderColor: '#D4D4D4',
+                              borderRadius: '10px',
+                            },
+                            input: { color: 'black' },
+                          }}
+                          size="small"
+                          filterOptions={(options, state) =>
+                            options.filter((option) =>
+                              option
+                                .toLowerCase()
+                                .includes(state.inputValue.toLowerCase()),
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label=""
+                              variant="outlined"
+                              id="margin-none"
+                              sx={{
+                                width: '500px',
+                                fieldset: {
+                                  height: '55px',
+                                  borderColor: '#D4D4D4',
+                                  borderRadius: '10px',
+                                },
+                                input: { color: 'black' },
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                    <span className="flex flex-row">
+                      Add contributors (optional)
+                    </span>
+                    {contributors.map((contributor, index) => (
+                      <div key={index} className="payment mb-2">
+                        <div className="mb-1 mt-4 flex items-center text-sm font-medium">
+                          <h3>Contributor {index + 1}</h3>
+                          {index === contributors.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={() => handleDeleteContributors(index)}
+                              className="ml-2 font-extrabold text-[#707070]"
+                            >
+                              X
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex justify-start">
+                          <div className="">
+                            <label
+                              htmlFor={`contributor-${index}-walletAddress`}
+                              className="mb-1 block text-xs"
+                            >
+                              Wallet address
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`contributor-${index}-walletAddress`}
+                              value={contributor.walletAddress}
+                              onChange={(e) =>
+                                handleWalletAddressContributor(
+                                  index,
+                                  'walletAddress',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          <div className="ml-2">
+                            <label
+                              htmlFor={`payment-${index}-amount`}
+                              className="mb-1 block text-xs"
+                            >
+                              Budget %
+                            </label>
+                            <input
+                              type="text"
+                              disabled={isLoading}
+                              id={`payment-${index}-amount`}
+                              value={contributor.budgetPercentage}
+                              onChange={(e) =>
+                                handleBudgetPercentage(
+                                  index,
+                                  'budgetPercentage',
+                                  e.target.value,
+                                )
+                              }
+                              className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            />
+                          </div>
+                          {index === contributors.length - 1 && (
+                            <button
+                              type="button"
+                              disabled={isLoading}
+                              onClick={addContributors}
+                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                            >
+                              + Add more
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {(!contributors || contributors.length === 0) && (
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={addContributors}
+                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                      >
+                        + Add contributor
+                      </button>
+                    )}
+                  </div>
+                  <div className="mt-[30px]" id="descId">
+                    <span className="flex flex-row">
+                      Project Description (full)
+                      <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] "></p>
+                    </span>
+                    <QuillNoSSRWrapper
+                      value={editorHtml}
+                      onChange={handleChange}
+                      // disabled={isLoading}
+                      className="mt-2 min-h-[300px] w-[900px] rounded-md border border-[#D4D4D4] bg-white text-base font-normal outline-0"
+                      // maxLength={5000}
+                      placeholder="Type here"
+                    />
+                  </div>
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Departament
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.departament?.message}
+                    </p>
+                  </span>
+                  <Controller
+                    name="departament"
+                    control={control}
+                    rules={{ required: 'Department is required' }}
+                    render={({ field }) => (
+                      <Autocomplete
+                        {...field}
+                        disabled={isLoading}
+                        popupIcon={
+                          <svg
+                            width="16"
+                            height="10"
+                            viewBox="0 0 16 10"
+                            className="mr-[15px] mt-[13px]"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84527 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
+                              fill="#959595"
+                            />
+                          </svg>
+                        }
+                        value={departament}
+                        onChange={(e, newValue) => {
+                          field.onChange(newValue)
+                          setDepartament(newValue)
+                        }}
+                        className="mt-[10px]"
+                        options={departamentOptions}
+                        getOptionLabel={(option) => `${option}`}
+                        sx={{
+                          width: '500px',
+                          fieldset: {
+                            height: '55px',
+                            borderColor: '#D4D4D4',
+                            borderRadius: '10px',
+                          },
+                          input: { color: 'black' },
+                        }}
+                        size="small"
+                        filterOptions={(options, state) =>
+                          options.filter((option) =>
+                            option
+                              .toLowerCase()
+                              .includes(state.inputValue.toLowerCase()),
+                          )
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label=""
+                            variant="outlined"
+                            id="margin-none"
+                            sx={{
+                              width: '500px',
+                              fieldset: {
+                                height: '55px',
+                                borderColor: '#D4D4D4',
+                                borderRadius: '10px',
+                              },
+                              input: { color: 'black' },
+                            }}
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                </div>
+                <div className="mt-[50px]">
+                  <span className="flex flex-row">
+                    Github Repository Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.githubLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('githubLink')}
+                    onChange={(e) => handleLink(0, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Calendar Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.calendarLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('calendarLink')}
+                    onChange={(e) => handleLink(1, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
+                <div className="mt-[30px]">
+                  <span className="flex flex-row">
+                    Reach out Link (optional)
+                    <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
+                      {errors.reachOutLink?.message}
+                    </p>
+                  </span>
+                  <input
+                    type="text"
+                    disabled={isLoading}
+                    maxLength={200}
+                    {...register('reachOutLink')}
+                    onChange={(e) => handleLink(2, 'url', e.target.value)}
+                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                  />
+                </div>
               </div>
             </div>
-
-            <div className="mt-[30px]">
-              <button
-                type="submit"
-                className={`rounded-[10px] bg-[#0354EC] py-[12px] px-[25px] text-[18px] font-bold  text-white hover:bg-[#3c6cc5] ${
-                  isApplicationLoading ? 'bg-[#5080da] hover:bg-[#5080da]' : ''
-                }`}
-                disabled={isApplicationLoading}
-                onClick={handleSubmit(onSubmit)}
-              >
-                <span className="">Submit now</span>
-              </button>
-            </div>
+            {isLoading ? (
+              <div className="mt-[30px] flex pb-60">
+                <button
+                  disabled={true}
+                  className=" mr-[15px] h-[50px] w-[250px] rounded-[10px] bg-[#53c781] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#53c781]"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <span className="">Submit for Review</span>
+                </button>
+                <svg
+                  className="mt-1 animate-spin"
+                  height="40px"
+                  id="Icons"
+                  version="1.1"
+                  viewBox="0 0 80 80"
+                  width="40px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M58.385,34.343V21.615L53.77,26.23C50.244,22.694,45.377,20.5,40,20.5c-10.752,0-19.5,8.748-19.5,19.5S29.248,59.5,40,59.5  c7.205,0,13.496-3.939,16.871-9.767l-4.326-2.496C50.035,51.571,45.358,54.5,40,54.5c-7.995,0-14.5-6.505-14.5-14.5  S32.005,25.5,40,25.5c3.998,0,7.617,1.632,10.239,4.261l-4.583,4.583H58.385z" />
+                </svg>
+              </div>
+            ) : (
+              <div className="mt-[30px] pb-60">
+                <button
+                  type="submit"
+                  className=" h-[50px] w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#0e7a39]"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  <span className="">Submit for Review</span>
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </section>

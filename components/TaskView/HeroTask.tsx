@@ -122,12 +122,25 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
           <div className="w-full px-4">
             <div className="flex justify-between">
               <div className="w-full">
-                <h3
-                  title={task.description}
-                  className="mb-[50px] overflow-hidden text-ellipsis whitespace-nowrap  text-[24px] font-bold !leading-[120%]"
-                >
-                  {task.title}
-                </h3>
+                <div className="mb-[50px] flex">
+                  <h3
+                    title={task.description}
+                    className="mr-[15px] overflow-hidden text-ellipsis  whitespace-nowrap text-[24px] font-bold !leading-[120%]"
+                  >
+                    {task.title}
+                  </h3>
+                  {task.executor === address && (
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/edit-task/${task.id}`}
+                      className="flex h-fit cursor-pointer items-center justify-center border-b-[1px] border-[#505050] pt-[6px] text-[14px] font-medium !leading-[19px] text-[#505050]"
+                    >
+                      Edit task
+                    </a>
+                  )}
+                </div>
+
                 <div className="mt-[25px] flex text-[14px]  text-[#505050]">
                   <p className="">Tags: </p>
                   <div className="flex italic">
