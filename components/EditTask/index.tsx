@@ -72,6 +72,7 @@ type FileListProps = {
 const EditTask = (id: any) => {
   Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isEditionLoading, setIsEditionLoading] = useState<boolean>(false)
   const [isApplicationLoading, setIsApplicationLoading] =
     useState<boolean>(false)
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
@@ -382,28 +383,6 @@ const EditTask = (id: any) => {
     setIsLoading(false)
   }
 
-  async function getTaskFromChain(id: any) {
-    setIsLoading(true)
-    console.log('getting data from task')
-    let data
-    try {
-      data = await readContract({
-        address: `0x${taskAddress.substring(2)}`,
-        abi: taskContractABI,
-        args: [Number(id)],
-        functionName: 'getTask',
-      })
-      setTaskChainData(data)
-      setIsLoading(false)
-    } catch (err) {
-      toast.error('Task not found!')
-      setIsLoading(false)
-    }
-
-    console.log('the data:')
-    console.log(data)
-  }
-
   async function getTask(taskId: string) {
     console.log('get task chamado')
     const data = {
@@ -515,29 +494,6 @@ const EditTask = (id: any) => {
     }
   }
 
-  async function handleCreateSubmission(taskId: number, metadata: string) {
-    console.log('value to be sent')
-    console.log(taskId['id'])
-    console.log(metadata)
-    const { request } = await prepareWriteContract({
-      address: `0x${taskAddress.substring(2)}`,
-      abi: taskContractABI,
-      args: [Number(taskId['id']), metadata],
-      functionName: 'createSubmission',
-    })
-    const { hash } = await writeContract(request)
-
-    const data = await waitForTransaction({
-      hash,
-    })
-    console.log('the data')
-    console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 5500))
-    if (data.status !== 'success') {
-      throw data
-    }
-  }
-
   async function onSubmit(data: TaskSubmitForm) {
     console.log('submit initiate')
     if (chain && chain.name !== 'Polygon Mumbai') {
@@ -568,7 +524,7 @@ const EditTask = (id: any) => {
         return
       }
     }
-
+    setIsEditionLoading(true)
     // First, checking if deadline and/or budget had any changes, if so its needed to called its respective functions on smart-contract to change it, besides of justing changing the metadata description
     console.log('changing the deadline')
     try {
@@ -609,22 +565,26 @@ const EditTask = (id: any) => {
     } catch (err) {
       toast.error('something ocurred')
       console.log(err)
-      setIsLoading(false)
+      setIsEditionLoading(false)
+      return
     }
 
     console.log('changing the task creation')
     try {
-      await handleCreateTask(Number(id.id), ipfsHashData)
-      await new Promise((resolve) => setTimeout(resolve, 4500))
+      await handleEditMetadata(Number(id.id), ipfsHashData)
+      await new Promise((resolve) => setTimeout(resolve, 11500))
       toast.success('Task edited succesfully!')
+      push(`/task/${id.id}`)
     } catch (err) {
       toast.error('Error metadata change')
       console.log(err)
-      setIsLoading(false)
+      setIsEditionLoading(false)
+      return
     }
+    setIsEditionLoading(false)
   }
 
-  async function handleCreateTask(taskId: number, metadata: string) {
+  async function handleEditMetadata(taskId: number, metadata: string) {
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -901,7 +861,7 @@ const EditTask = (id: any) => {
                       </p>
                     </span>
                     <input
-                      disabled={isLoading}
+                      disabled={isEditionLoading}
                       className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                       type="text"
                       maxLength={100}
@@ -944,7 +904,7 @@ const EditTask = (id: any) => {
                               />
                             </svg>
                           }
-                          disabled={isLoading}
+                          disabled={isEditionLoading}
                           className="mt-[10px]"
                           options={skillOptions}
                           size="small"
@@ -1000,7 +960,7 @@ const EditTask = (id: any) => {
                       render={({ field }) => (
                         <Autocomplete
                           {...field}
-                          disabled={isLoading}
+                          disabled={isEditionLoading}
                           popupIcon={
                             <svg
                               width="16"
@@ -1078,7 +1038,7 @@ const EditTask = (id: any) => {
                           onBlur={onBlur}
                           selected={value}
                           dateFormat="yyyy-MM-dd"
-                          disabled={isLoading}
+                          disabled={isEditionLoading}
                           className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                         />
                       )}
@@ -1133,7 +1093,7 @@ const EditTask = (id: any) => {
                             </label>
                             <input
                               type="text"
-                              disabled={isLoading}
+                              disabled={isEditionLoading}
                               id={`payment-${index}-amount`}
                               value={pagamento.amount}
                               onChange={(e) =>
@@ -1184,7 +1144,7 @@ const EditTask = (id: any) => {
                       render={({ field }) => (
                         <Autocomplete
                           {...field}
-                          disabled={isLoading}
+                          disabled={isEditionLoading}
                           value={numberOfApplicants}
                           popupIcon={
                             <svg
@@ -1258,7 +1218,7 @@ const EditTask = (id: any) => {
                           {index === contributors.length - 1 && (
                             <button
                               type="button"
-                              disabled={isLoading}
+                              disabled={isEditionLoading}
                               onClick={() => handleDeleteContributors(index)}
                               className="ml-2 font-extrabold text-[#707070]"
                             >
@@ -1276,7 +1236,7 @@ const EditTask = (id: any) => {
                             </label>
                             <input
                               type="text"
-                              disabled={isLoading}
+                              disabled={isEditionLoading}
                               id={`contributor-${index}-walletAddress`}
                               value={contributor.walletAddress}
                               onChange={(e) =>
@@ -1298,7 +1258,7 @@ const EditTask = (id: any) => {
                             </label>
                             <input
                               type="text"
-                              disabled={isLoading}
+                              disabled={isEditionLoading}
                               id={`payment-${index}-amount`}
                               value={contributor.budgetPercentage}
                               onChange={(e) =>
@@ -1314,7 +1274,7 @@ const EditTask = (id: any) => {
                           {index === contributors.length - 1 && (
                             <button
                               type="button"
-                              disabled={isLoading}
+                              disabled={isEditionLoading}
                               onClick={addContributors}
                               className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                             >
@@ -1327,7 +1287,7 @@ const EditTask = (id: any) => {
                     {(!contributors || contributors.length === 0) && (
                       <button
                         type="button"
-                        disabled={isLoading}
+                        disabled={isEditionLoading}
                         onClick={addContributors}
                         className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
                       >
@@ -1435,7 +1395,7 @@ const EditTask = (id: any) => {
                   </span>
                   <input
                     type="text"
-                    disabled={isLoading}
+                    disabled={isEditionLoading}
                     maxLength={200}
                     {...register('githubLink')}
                     onChange={(e) => handleLink(0, 'url', e.target.value)}
@@ -1451,7 +1411,7 @@ const EditTask = (id: any) => {
                   </span>
                   <input
                     type="text"
-                    disabled={isLoading}
+                    disabled={isEditionLoading}
                     maxLength={200}
                     {...register('calendarLink')}
                     onChange={(e) => handleLink(1, 'url', e.target.value)}
@@ -1467,7 +1427,7 @@ const EditTask = (id: any) => {
                   </span>
                   <input
                     type="text"
-                    disabled={isLoading}
+                    disabled={isEditionLoading}
                     maxLength={200}
                     {...register('reachOutLink')}
                     onChange={(e) => handleLink(2, 'url', e.target.value)}
@@ -1476,14 +1436,14 @@ const EditTask = (id: any) => {
                 </div>
               </div>
             </div>
-            {isLoading ? (
+            {isEditionLoading ? (
               <div className="mt-[30px] flex pb-60">
                 <button
                   disabled={true}
                   className=" mr-[15px] h-[50px] w-[250px] rounded-[10px] bg-[#53c781] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#53c781]"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <span className="">Submit for Review</span>
+                  <span className="">Edit task</span>
                 </button>
                 <svg
                   className="mt-1 animate-spin"
@@ -1504,7 +1464,7 @@ const EditTask = (id: any) => {
                   className=" h-[50px] w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#0e7a39]"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <span className="">Submit for Review</span>
+                  <span className="">Edit task</span>
                 </button>
               </div>
             )}
