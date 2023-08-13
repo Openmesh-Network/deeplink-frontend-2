@@ -87,8 +87,10 @@ const EditTask = (id: any) => {
   const [budgetPercentage, setBudgetPercentage] = useState(100)
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
+  const [currentlyDeadline, setCurrentlyDeadline] = useState<Date>()
   const [fundingView, setFundingView] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
+  const [currentlyPayments, setCurrentlyPayments] = useState<Payment[]>([])
   const [contributors, setContributors] = useState<Contributor[]>([])
   const [departamentOptionsToAddress, setDepartamentOptionsToAddress] =
     useState({})
@@ -97,6 +99,8 @@ const EditTask = (id: any) => {
   const [projectLength, setProjectLength] = useState('')
   const [numberOfApplicants, setNumberOfApplicants] = useState('')
   const [departament, setDepartament] = useState('')
+
+  let currentlyPaymentsData
 
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
@@ -267,6 +271,9 @@ const EditTask = (id: any) => {
     field: keyof Payment,
     valueReceived: string,
   ) => {
+    console.log('os currently payments')
+    console.log(currentlyPayments)
+    console.log('os currently data')
     const newPayment = [...payments]
 
     if (
@@ -276,6 +283,10 @@ const EditTask = (id: any) => {
     }
 
     const value = valueReceived.replace(/[^0-9]/g, '')
+
+    if (Number(value) < Number(currentlyPayments[index][field])) {
+      return
+    }
 
     newPayment[index][field] = value
     setPayments(newPayment)
@@ -329,6 +340,7 @@ const EditTask = (id: any) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     control, // Adicione esta linha
     // eslint-disable-next-line no-unused-vars
     reset,
@@ -394,6 +406,7 @@ const EditTask = (id: any) => {
   }
 
   async function getTask(taskId: string) {
+    console.log('get task chamado')
     const data = {
       id: taskId,
     }
@@ -427,23 +440,36 @@ const EditTask = (id: any) => {
           setValue('projectLength', response.data.projectLength)
           setValue('skills', response.data.skills)
           setValue('numberOfApplicants', response.data.contributorsNeeded)
+          setValue('githubLink', response.data.links[0]['url'])
+          setValue('calendarLink', response.data.links[1]['url'])
+          setValue('reachOutLink', response.data.links[2]['url'])
+          setNumberOfApplicants(response.data.contributorsNeeded)
           setValue('deadline', new Date(response.data.deadline * 1000))
+          setCurrentlyDeadline(new Date(response.data.deadline * 1000))
           setPayments(response.data.payments)
+          // Cria uma cópia profunda usando JSON -- currentlyPayments estava mudando conforme mudávamos o response.data.payments, entao criamos uma copai
+          setCurrentlyPayments(
+            JSON.parse(JSON.stringify(response.data.payments)),
+          )
+          console.log('os currently payments')
+          console.log(response.data.payments)
+          console.log(currentlyPayments)
           setBudgetValue([response.data.estimatedBudget])
           // Treating payments
-          const payments = response.data.payments.map((payment) => {
-            const amountInNumber = Number(payment.amount)
-            return {
-              to: address,
-              amount: amountInNumber,
-              nextToken: true,
-            }
-          })
+          // const payments = response.data.payments.map((payment) => {
+          //   const amountInNumber = Number(payment.amount)
+          //   return {
+          //     to: address,
+          //     amount: amountInNumber,
+          //     nextToken: true,
+          //   }
+          // })
+          setPayments(response.data.payments)
 
           // Removendo o campo 'decimals'
-          payments.forEach((payment) => {
-            delete payment.decimals
-          })
+          // payments.forEach((payment) => {
+          //   delete payment.decimals
+          // })
 
           if (response.data['Application']) {
             const contributors = response.data['Application']
@@ -453,7 +479,7 @@ const EditTask = (id: any) => {
             setContributorsAllowed(contributors)
           }
 
-          setPayments(payments)
+          // setPayments(payments)
           setIsLoading(false)
         }
       })
@@ -478,6 +504,16 @@ const EditTask = (id: any) => {
 
     newContributors[index]['walletAddress'] = value
     setContributors(newContributors)
+  }
+
+  const handleDateChange = (onChange) => (date) => {
+    if (date < currentlyDeadline) {
+      toast.error('The deadline cannot be decreased', {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    } else {
+      onChange(date)
+    }
   }
 
   async function handleCreateSubmission(taskId: number, metadata: string) {
@@ -512,6 +548,10 @@ const EditTask = (id: any) => {
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     if (id) {
       setIsLoading(true)
       console.log('search for the task info on blockchain')
@@ -758,7 +798,7 @@ const EditTask = (id: any) => {
                       name="deadline"
                       render={({ field: { onChange, onBlur, value } }) => (
                         <DatePicker
-                          onChange={onChange}
+                          onChange={handleDateChange(onChange)}
                           onBlur={onBlur}
                           selected={value}
                           dateFormat="yyyy-MM-dd"
@@ -774,7 +814,7 @@ const EditTask = (id: any) => {
                       <div key={index} className="payment mb-2">
                         <div className="mb-1 mt-4 flex items-center text-sm font-medium">
                           <h3>Payment {index + 1}</h3>
-                          {index === payments.length - 1 && (
+                          {/* {index === payments.length - 1 && (
                             <button
                               type="button"
                               disabled={isLoading}
@@ -783,7 +823,7 @@ const EditTask = (id: any) => {
                             >
                               X
                             </button>
-                          )}
+                          )} */}
                         </div>
                         <div className="flex justify-start">
                           <div className="">
@@ -795,7 +835,7 @@ const EditTask = (id: any) => {
                             </label>
                             <input
                               type="text"
-                              disabled={isLoading}
+                              disabled={true}
                               id={`payment-${index}-erc20Address`}
                               value={pagamento.tokenContract}
                               onChange={(e) =>
@@ -830,7 +870,7 @@ const EditTask = (id: any) => {
                               className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
-                          {index === payments.length - 1 && (
+                          {/* {index === payments.length - 1 && (
                             <button
                               type="button"
                               disabled={isLoading}
@@ -839,11 +879,11 @@ const EditTask = (id: any) => {
                             >
                               + Add more
                             </button>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     ))}
-                    {(!payments || payments.length === 0) && (
+                    {/* {(!payments || payments.length === 0) && (
                       <button
                         type="button"
                         disabled={isLoading}
@@ -852,7 +892,7 @@ const EditTask = (id: any) => {
                       >
                         + Add payment
                       </button>
-                    )}
+                    )} */}
                   </div>
                   <div className="mt-[30px]" id="contributorsId">
                     <span className="flex flex-row">
@@ -1048,7 +1088,7 @@ const EditTask = (id: any) => {
                     render={({ field }) => (
                       <Autocomplete
                         {...field}
-                        disabled={isLoading}
+                        disabled={true}
                         popupIcon={
                           <svg
                             width="16"
