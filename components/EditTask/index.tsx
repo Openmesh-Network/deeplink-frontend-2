@@ -74,6 +74,7 @@ const EditTask = (id: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isApplicationLoading, setIsApplicationLoading] =
     useState<boolean>(false)
+  const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskChainData, setTaskChainData] = useState<any>()
   const [linksValues, setLinksValues] = useState([])
@@ -99,8 +100,6 @@ const EditTask = (id: any) => {
   const [projectLength, setProjectLength] = useState('')
   const [numberOfApplicants, setNumberOfApplicants] = useState('')
   const [departament, setDepartament] = useState('')
-
-  let currentlyPaymentsData
 
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
@@ -539,8 +538,285 @@ const EditTask = (id: any) => {
     }
   }
 
-  async function onSubmit(data: TaskApplicationForm) {
-    console.log('dddd')
+  async function onSubmit(data: TaskSubmitForm) {
+    console.log('submit initiate')
+    if (chain && chain.name !== 'Polygon Mumbai') {
+      toast.error('Please switch chain before interacting with the protocol.')
+      return
+    }
+    if (!editorHtml || editorHtml.length === 0) {
+      toast.error('Please set a description.')
+      const element = document.getElementById('descId')
+      element.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    if (payments.length === 0) {
+      toast.error('Please set a payment.')
+      const element = document.getElementById('budgetId')
+      element.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    if (contributors.length > 0) {
+      let totalSumBudgetPercentage = 0
+      for (let i = 0; i < contributors.length; i++) {
+        totalSumBudgetPercentage += contributors[i].budgetPercentage
+      }
+      if (totalSumBudgetPercentage !== 100) {
+        toast.error('Total sum of budget percentage needs to be 100.')
+        const element = document.getElementById('contributorsId')
+        element.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+    }
+
+    // First, checking if deadline and/or budget had any changes, if so its needed to called its respective functions on smart-contract to change it, besides of justing changing the metadata description
+    console.log('changing the deadline')
+    try {
+      await checkDeadline(currentlyDeadline, data.deadline)
+    } catch (err) {
+      toast.error('Error during the deadline change')
+      return
+    }
+
+    console.log('changing the budget')
+    try {
+      await checkBudget(currentlyPayments, payments)
+    } catch (err) {
+      toast.error('Error during the budget change')
+      return
+    }
+
+    // after checking budget and deadline, change the metadata
+    const finalData = {
+      ...data,
+      projectLength,
+      numberOfApplicants,
+      description: editorHtml,
+      contributors,
+      payments,
+      links,
+      file: '',
+    }
+
+    console.log('changing the ipfs')
+    let ipfsHashData
+    try {
+      const res = await formsUploadIPFS(finalData)
+      console.log('a resposta:')
+      console.log(res)
+      ipfsHashData = res
+      setIpfsHashTaskData(res)
+    } catch (err) {
+      toast.error('something ocurred')
+      console.log(err)
+      setIsLoading(false)
+    }
+
+    console.log('changing the task creation')
+    try {
+      await handleCreateTask(Number(id.id), ipfsHashData)
+      await new Promise((resolve) => setTimeout(resolve, 4500))
+      toast.success('Task edited succesfully!')
+    } catch (err) {
+      toast.error('Error metadata change')
+      console.log(err)
+      setIsLoading(false)
+    }
+  }
+
+  async function handleCreateTask(taskId: number, metadata: string) {
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [taskId, metadata],
+      functionName: 'editMetadata',
+    })
+    const { hash } = await writeContract(request)
+    // const unwatch = watchContractEvent(
+    //   {
+    //     address: `0x${taskAddress.substring(2)}`,
+    //     abi: taskContractABI,
+    //     eventName: 'TaskCreated',
+    //   },
+    //   (log) => {
+    //     console.log('event')
+    //     console.log(log)
+    //     if (log[0].transactionHash === hash) {
+    //       push(`/task/${Number(log[0]['args']['taskId'])}`)
+    //       console.log(log)
+    //     }
+    //   },
+    // )
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
+  async function checkDeadline(currentlyDeadline: Date, newDeadline: Date) {
+    const difference =
+      Math.floor(newDeadline.getTime() / 1000) -
+      Math.floor(currentlyDeadline.getTime() / 1000)
+
+    if (currentlyDeadline !== newDeadline && difference > 0) {
+      const { request } = await prepareWriteContract({
+        address: `0x${taskAddress.substring(2)}`,
+        abi: taskContractABI,
+        args: [Number(id.id), difference],
+        functionName: 'extendDeadline',
+      })
+      const { hash } = await writeContract(request)
+      // const unwatch = watchContractEvent(
+      //   {
+      //     address: `0x${taskAddress.substring(2)}`,
+      //     abi: taskContractABI,
+      //     eventName: 'TaskCreated',
+      //   },
+      //   (log) => {
+      //     console.log('event')
+      //     console.log(log)
+      //     if (log[0].transactionHash === hash) {
+      //       push(`/task/${Number(log[0]['args']['taskId'])}`)
+      //       console.log(log)
+      //     }
+      //   },
+      // )
+      const data = await waitForTransaction({
+        hash,
+      })
+      console.log('the data')
+      console.log(data)
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      if (data.status !== 'success') {
+        throw data
+      }
+    }
+  }
+
+  async function formsUploadIPFS(data: any) {
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/uploadIPFSMetadataTaskCreation`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+      },
+      data,
+    }
+
+    let dado
+
+    await axios(config).then(function (response) {
+      if (response.data) {
+        dado = response.data
+        console.log(dado)
+      }
+    })
+
+    return dado
+  }
+
+  async function checkBudget(currentlyBudget: Payment[], newBudget: Payment[]) {
+    let hasToIncreaseBudget = false
+    const amountToBeIncreased = []
+    const newPaymentsAllowance = []
+
+    if (newBudget.length > 0) {
+      console.log('reward exists')
+      for (let i = 0; i < newBudget.length; i++) {
+        console.log('payment amount')
+        console.log(newBudget[i].amount)
+        console.log('requested amount')
+        console.log(Number(currentlyBudget[i].amount))
+        if (Number(newBudget[i].amount) > Number(currentlyBudget[i].amount)) {
+          // eslint-disable-next-line prettier/prettier
+          amountToBeIncreased.push(Number(newBudget[i].amount) - Number(currentlyBudget[i].amount))
+          hasToIncreaseBudget = true
+          newPaymentsAllowance.push(newBudget[i])
+        } else {
+          amountToBeIncreased.push(0)
+        }
+      }
+    }
+    console.log('final result')
+    console.log(hasToIncreaseBudget)
+    if (hasToIncreaseBudget) {
+      try {
+        await handleAllowanceFromTokens(newPaymentsAllowance)
+      } catch (err) {
+        toast.error('Error during the budget increase')
+        setIsLoading(false)
+        console.log(err)
+        throw err
+      }
+      try {
+        await handleIncreaseTaskBudget(id.id, amountToBeIncreased)
+      } catch (err) {
+        toast.error('Error during the budget increase')
+        console.log(err)
+        throw err
+      }
+    }
+  }
+
+  async function handleIncreaseTaskBudget(taskId: string, amounts: number[]) {
+    console.log('value to be sent')
+    const { request } = await prepareWriteContract({
+      address: `0x${taskAddress.substring(2)}`,
+      abi: taskContractABI,
+      args: [Number(taskId), amounts],
+      functionName: 'increaseBudget',
+    })
+    const { hash } = await writeContract(request)
+
+    const data = await waitForTransaction({
+      hash,
+    })
+    console.log('the data')
+    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    if (data.status !== 'success') {
+      throw data
+    }
+  }
+
+  async function handleAllowanceFromTokens(payments) {
+    for (let i = 0; i < payments.length; i++) {
+      const data = await readContract({
+        address: `0x${payments[i].tokenContract.substring(2)}`,
+        abi: erc20ContractABI,
+        args: [address, `0x${taskAddress.substring(2)}`],
+        functionName: 'allowance',
+      })
+      console.log('o valor q recebi')
+      console.log(data)
+      if (Number(data) < Number(payments[i].amount)) {
+        console.log('required to increase allowance')
+        const { request } = await prepareWriteContract({
+          address: `0x${payments[i].tokenContract.substring(2)}`,
+          abi: erc20ContractABI,
+          args: [
+            `0x${taskAddress.substring(2)}`,
+            Number(payments[i].amount) * 100,
+          ],
+          functionName: 'approve',
+        })
+        const { hash } = await writeContract(request)
+        const data = await waitForTransaction({
+          hash,
+        })
+        console.log('the data')
+        console.log(data)
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        if (data.status !== 'success') {
+          throw data
+        }
+      }
+    }
   }
 
   function formatAddress(address) {

@@ -305,7 +305,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
           Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex)
         ) {
           // eslint-disable-next-line prettier/prettier
-          amountToBeIncreased.push(Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex) -Number(taskPayments[i].amount),)
+          amountToBeIncreased.push(Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex) - Number(taskPayments[i].amount),)
           hasToIncreaseBudget = true
           newPaymentsAllowance.push(taskPayments[i])
         } else {
