@@ -70,6 +70,9 @@ export type TasksOverview = {
   description: string
   deadline: string
   daysLeft: string
+  metadataEdited: boolean
+  budgetIncreased: boolean
+  deadlineIncreased: boolean
   departament: string
   isDraft: boolean
   status: string
