@@ -8,7 +8,7 @@ export default function Head() {
         name="description"
         content="Open-source platform designed to empower decentralized teams to collaborate seamlessly."
       />
-      <link rel="icon" href="/images/red.ico" />
+      <link rel="icon" href="/images/redLogo.ico" />
     </>
   );
 }
