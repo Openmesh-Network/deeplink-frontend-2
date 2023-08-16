@@ -9,6 +9,7 @@ export default function Head() {
         content="Open-source platform designed to empower decentralized teams to collaborate seamlessly."
       />
       <link rel="icon" href="/images/redLogo.ico" />
+      <meta property="og:image" content="/images/open.png" />
     </>
   );
 }
