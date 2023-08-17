@@ -6,7 +6,7 @@ export default function Head() {
       {/* <meta content="width=device-width, initial-scale=1" name="viewport" /> */}
       <meta
         property="og:image"
-        content="https://openrd.l3a.xyz/images/testimonials/author-03.png"
+        content="https://openrd.l3a.xyz/images/open.png"
       />
       <meta
         property="og:description"
