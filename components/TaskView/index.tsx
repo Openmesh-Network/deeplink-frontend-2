@@ -218,6 +218,30 @@ const TaskView = (id: any) => {
                   </div>
                 </div>
               )}
+              {!taskMetadata.title && (
+                <div className="-mt-[60px] mb-[40px] flex w-full rounded-[10px] bg-[#FFF6E0] py-[30px] px-[63px]">
+                  <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
+                    <img
+                      alt="warning"
+                      src="/images/task/warning.svg"
+                      className=""
+                    ></img>
+                  </div>
+                  <div className="!leading-[150%]">
+                    The task's metadata seems to be empty. We recommend reaching
+                    out to the{' '}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/profile/${taskMetadata.executor}`}
+                      className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
+                    >
+                      project creator{' '}
+                    </a>{' '}
+                    to know more about it.
+                  </div>
+                </div>
+              )}
               <div className="flex font-bold !leading-[150%]">
                 <div
                   className={`px-[17px]  pb-[14px] ${

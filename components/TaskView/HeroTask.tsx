@@ -79,10 +79,12 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
   }
 
   function capitalizeFirstLetter(string) {
-    if (string === 'active') {
-      return 'On-going'
-    } else {
-      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+    if (string) {
+      if (string === 'active') {
+        return 'On-going'
+      } else {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+      }
     }
   }
 
