@@ -13,6 +13,8 @@ export type User = {
   profilePictureHash: string | null
   tags: string[] | null
   links: string[] | null
+  jobSuccess: string | null
+  totalEarned: string | null
   joinedSince: string | null
   updatesNonce: string | null
   isVerifiedContributor: boolean

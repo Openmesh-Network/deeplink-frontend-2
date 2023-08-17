@@ -186,9 +186,9 @@ const FilterModal = ({
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Open Projects</p>
+            <p className="text-[16px] font-bold">Open Applications</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Active applications for projects
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
@@ -206,9 +206,9 @@ const FilterModal = ({
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Active Projects</p>
+            <p className="text-[16px] font-bold">On-going Projects</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Tasks that are currently in progress{' '}
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
@@ -230,7 +230,7 @@ const FilterModal = ({
           >
             <p className="text-[16px] font-bold">Completed Projects</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Tasks that have been completed
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${

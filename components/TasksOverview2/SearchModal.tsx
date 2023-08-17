@@ -361,7 +361,7 @@ const SearchModal = ({
           >
             <p className="text-[16px] font-bold">Open Projects</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Tasks that are open for applications
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
@@ -381,7 +381,7 @@ const SearchModal = ({
           >
             <p className="text-[16px] font-bold">Active Projects</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Tasks that are currently active{' '}
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
@@ -403,7 +403,7 @@ const SearchModal = ({
           >
             <p className="text-[16px] font-bold">Completed Projects</p>
             <p className="text-[14px] font-normal">
-              Waiting for approval or for assigning
+              Tasks that have been completed
             </p>
             <p
               className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${

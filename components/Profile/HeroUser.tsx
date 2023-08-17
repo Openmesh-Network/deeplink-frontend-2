@@ -268,7 +268,14 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                   alt="image"
                   className={`mr-2 w-[18px]`}
                 />
-                <span className="flex items-center">Total earned:</span>
+                <span className="flex items-center">
+                  Total earned:{' '}
+                  <span className="ml-1 font-bold text-[#303030]">
+                    {user.totalEarned !== null
+                      ? `$${Number(user.totalEarned)}`
+                      : '-'}
+                  </span>
+                </span>{' '}
               </div>
               <div className="mr-[60px] flex">
                 <img
@@ -276,7 +283,14 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                   alt="image"
                   className={`mr-2 w-[18px]`}
                 />
-                <span className="flex items-center">Job success:</span>
+                <span className="flex items-center">
+                  Job success:{' '}
+                  <span className="ml-1 font-bold text-[#303030]">
+                    {user.jobSuccess !== null
+                      ? `${Number(user.jobSuccess)}%`
+                      : '-'}
+                  </span>
+                </span>
               </div>
             </div>
             <div className="ml-auto flex w-[107px] justify-between">
@@ -404,7 +418,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
-              <span className="flex items-center">Total earned:</span>
+              <span className="flex items-center">Totalm earned: </span>{' '}
             </div>
             <div className="mr-[60px] flex">
               <img
@@ -412,7 +426,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
-              <span className="flex items-center">Job success:</span>
+              <span className="flex items-center">Job success: </span>{' '}
             </div>
           </div>
           <div className="ml-auto flex w-[107px] justify-between">

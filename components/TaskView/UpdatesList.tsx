@@ -81,12 +81,6 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
     setIsLoading(false)
   }
 
-  // When I want to scroll manually to the tasks
-  const scrollManually = () => {
-    const taskStartElement = document.getElementById('taskStart')
-    taskStartElement.scrollIntoView({ behavior: 'smooth' })
-  }
-
   function formatAddress(address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
@@ -101,6 +95,10 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     console.log('useEffect chamado')
     handleEvents(taskId)
   }, [taskId])

@@ -490,6 +490,10 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     console.log('useEffect chamado')
     setApplications(dataApplication)
     setSubmissions(dataSubmission)
