@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import tasksDraftsContractABI from '@/utils/abi/tasksDraftsContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import { Link, Contributor } from '@/types/task'
+import { Link, Contributor, PreapprovedApplication } from '@/types/task'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css' // import styles
 
@@ -494,11 +494,12 @@ const NewTask = () => {
     metadata: string,
     deadline: number,
     budget: Payment[],
+    preapproved: PreapprovedApplication[],
   ) {
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
-      args: [metadata, deadline, budget, address, []],
+      args: [metadata, deadline, budget, address, preapproved],
       functionName: 'createTask',
     })
     const { hash } = await writeContract(request)
@@ -536,6 +537,7 @@ const NewTask = () => {
     metadata: string,
     deadline: number,
     budget: Payment[],
+    preapproved: PreapprovedApplication[],
   ) {
     console.log('here creating')
     console.log(metadataFinal)
@@ -552,7 +554,7 @@ const NewTask = () => {
     console.log('here creating7')
     console.log(address)
     const addressTaskDraft = '0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759'
-    const obj = [metadata, deadline, budget, address, []]
+    const obj = [metadata, deadline, budget, address, preapproved]
     const hashMetadataFinal = createHash('sha256')
     hashMetadataFinal.update(metadataFinal)
     console.log('the hash')
@@ -633,6 +635,15 @@ const NewTask = () => {
     // all addresses are valid
     return true
   }
+  function handleIsAddressValid(address: string) {
+    if (!ethers.isAddress(address)) {
+      // this is not a valid address
+      console.log('invalid address here')
+      return false
+    }
+    // all addresses are valid
+    return true
+  }
   const toggleFundingView = () => {
     setFundingView(!fundingView)
   }
@@ -654,16 +665,33 @@ const NewTask = () => {
       element.scrollIntoView({ behavior: 'smooth' })
       return
     }
+    const preApprovedApplications = []
     if (contributors.length > 0) {
-      let totalSumBudgetPercentage = 0
       for (let i = 0; i < contributors.length; i++) {
-        totalSumBudgetPercentage += contributors[i].budgetPercentage
-      }
-      if (totalSumBudgetPercentage !== 100) {
-        toast.error('Total sum of budget percentage needs to be 100.')
-        const element = document.getElementById('contributorsId')
-        element.scrollIntoView({ behavior: 'smooth' })
-        return
+        const isValid = await handleIsAddressValid(
+          contributors[i].walletAddress,
+        )
+        if (!isValid) {
+          toast.error(
+            'All the Contributors are needed to have a valid address!',
+          )
+          const element = document.getElementById('contributorsId')
+          element.scrollIntoView({ behavior: 'smooth' })
+          setIsLoading(false)
+          return
+        }
+        const reward = []
+        for (let k = 0; k < payments.length; k++) {
+          reward.push({
+            nextToken: true,
+            to: contributors[i].walletAddress,
+            amount: Number(payments[k].amount),
+          })
+        }
+        preApprovedApplications.push({
+          applicant: contributors[i].walletAddress,
+          reward,
+        })
       }
     }
     if (fundingView && !data.taskDraftDeadline) {
@@ -740,6 +768,7 @@ const NewTask = () => {
           ipfsHashData,
           Math.floor(data.deadline.getTime() / 1000),
           payments,
+          preApprovedApplications,
         )
         await new Promise((resolve) => setTimeout(resolve, 2500))
         toast.success('Task created succesfully!')
@@ -779,6 +808,7 @@ const NewTask = () => {
           ipfsHashData,
           Math.floor(data.deadline.getTime() / 1000),
           payments,
+          preApprovedApplications,
         )
         await new Promise((resolve) => setTimeout(resolve, 2500))
         toast.success('Task created succesfully!')
@@ -1205,7 +1235,7 @@ const NewTask = () => {
 
                   <div className="mt-[30px] max-h-[500px]  overflow-auto">
                     <span className="flex flex-row">
-                      Add contributors (optional)
+                      Add pre-approved applicants (optional)
                     </span>
                     {contributors.map((contributor, index) => (
                       <div key={index} className="payment mb-2">
@@ -1245,7 +1275,7 @@ const NewTask = () => {
                               className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
                           </div>
-                          <div className="ml-2">
+                          {/* <div className="ml-2">
                             <label
                               htmlFor={`payment-${index}-amount`}
                               className="mb-1 block text-xs"
@@ -1266,7 +1296,7 @@ const NewTask = () => {
                               }
                               className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
                             />
-                          </div>
+                          </div> */}
                           {index === contributors.length - 1 && (
                             <button
                               type="button"

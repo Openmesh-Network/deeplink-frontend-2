@@ -10,6 +10,17 @@ export type Reward = {
   amount: object // {"type": "BigNumber","hex": "0x068155a43676e00000"}
 }
 
+export type RewardApplicant = {
+  nextToken: boolean
+  to: string
+  amount: number
+}
+
+export type PreapprovedApplication = {
+  applicant: string
+  reward: RewardApplicant[]
+}
+
 export type Link = {
   title: string
   url: string
