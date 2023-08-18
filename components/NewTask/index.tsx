@@ -472,7 +472,7 @@ const NewTask = () => {
           abi: erc20ContractABI,
           args: [
             `0x${taskAddress.substring(2)}`,
-            Number(payments[i].amount) * 100,
+            Number(payments[i].amount) * 10,
           ],
           functionName: 'approve',
         })
@@ -523,7 +523,7 @@ const NewTask = () => {
     })
     console.log('the data')
     console.log(data)
-    await new Promise((resolve) => setTimeout(resolve, 8500))
+    await new Promise((resolve) => setTimeout(resolve, 25500))
     push(`/tasks?status=open`)
     if (data.status !== 'success') {
       throw data
