@@ -78,7 +78,7 @@ const HeroTasks = () => {
           <div className="w-full lg:w-2/3">
             <div>
               <div className="">
-                <p className="text-[14px] font-medium !leading-[17px] text-[#505050]">
+                <p className="text-[12px] font-medium !leading-[17px] text-[#505050] lg:text-[14px]">
                   Introducing the OpenR&D initiative, an open-source platform
                   designed to empower decentralized teams to collaborate
                   seamlessly. Simplify task management, progress tracking, and
@@ -90,10 +90,10 @@ const HeroTasks = () => {
             </div>
           </div>
           <div className="w-full lg:w-1/3">
-            <div className="font-regular mt-[20px] flex max-w-[500px] rounded-md text-[14px] !leading-none text-[#000000] lg:mx-auto lg:mt-0 lg:justify-end lg:px-4 lg:text-right ">
+            <div className="font-regular mt-[20px] flex max-w-[500px] rounded-md text-[12px] !leading-none text-[#000000] lg:mx-auto lg:mt-0 lg:justify-end lg:px-4 lg:text-right lg:text-[14px] ">
               <div className="">
                 <p className="">Available Funding</p>
-                <p className="mt-[8px] text-[18px] font-bold text-[#0354EC]">
+                <p className="mt-[8px] text-[16px] font-bold text-[#0354EC] lg:text-[18px]">
                   $151,967
                 </p>
                 <img

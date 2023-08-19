@@ -261,7 +261,7 @@ const TransactionList = () => {
       <section className="px-[20px] pt-[40px] lg:px-[100px]" id={'taskStart'}>
         <div className="container px-0">
           <div className=" text-[#000000]">
-            <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
+            <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[12px] font-bold lg:text-[16px]">
               <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
                 <p
                   onClick={() => {
@@ -270,7 +270,7 @@ const TransactionList = () => {
                     console.log('filtered tasks')
                     console.log(filteredTasks)
                   }}
-                  className="pr-[20px] lg:pr-2"
+                  className="pr-[55px] lg:pr-2"
                 >
                   Project
                 </p>
@@ -287,7 +287,7 @@ const TransactionList = () => {
                 /> */}
                 <svg
                   onClick={handleOrderByEstimatedBudgetSelection}
-                  className={`w-[14px] cursor-pointer  ${
+                  className={`w-[10px] cursor-pointer lg:w-[14px]  ${
                     orderByEstimatedBudget === 'greater'
                       ? 'rotate-180 transform'
                       : ''
@@ -306,7 +306,7 @@ const TransactionList = () => {
                 <p className="pr-[10px] pl-[20px] lg:pr-[15px]">Ends</p>
                 <svg
                   onClick={handleOrderByDeadlineSelection}
-                  className={`w-[14px] cursor-pointer  ${
+                  className={`w-[10px] cursor-pointer lg:w-[14px]  ${
                     orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
                   }`}
                   viewBox="0 0 16 10"
