@@ -177,7 +177,7 @@ const SearchModal = ({
   }, [pathname])
 
   return (
-    <section className="mt-[34px] px-[100px]">
+    <section className="mt-[55px] px-[20px] lg:mt-[34px] lg:px-[100px]">
       <div className="container px-0">
         <div className="flex">
           <input
@@ -191,7 +191,7 @@ const SearchModal = ({
             }}
             value={tasksSearchBar}
             placeholder="Search here..."
-            className="mr-3 h-[52px] w-[600px] rounded-[10px] border border-[#0085FF] bg-white py-[12px] px-5 text-[18px] font-normal text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10"
+            className="mr-3 h-[35px] w-full rounded-[10px] border border-[#0085FF] bg-white py-[12px] px-5 text-[14px] font-normal text-[#000000] placeholder-[#9b9b9b] outline-none focus:border-primary dark:bg-opacity-10 lg:h-[52px] lg:w-[600px] lg:text-[18px]"
           />
           {/* <button
             onClick={() => {
@@ -214,9 +214,9 @@ const SearchModal = ({
             </svg>
           </button> */}
         </div>
-        <div className="mt-[69px] flex  text-xl text-[16px] font-bold text-[#0354EC]">
+        <div className="mt-[35px] flex overflow-x-auto  text-[12px] font-bold  text-[#0354EC] lg:mt-[69px] lg:text-[16px]">
           <div
-            className={`mr-[40px] flex pr-[5px] ${
+            className={`mr-[25px] flex pr-[5px] lg:mr-[40px] ${
               departament === 'All' || !departament
                 ? 'border-b-2 border-[#0354EC]'
                 : ''
@@ -243,7 +243,7 @@ const SearchModal = ({
               return (
                 <div
                   key={index}
-                  className={`mr-[5px] flex px-[35px] ${
+                  className={`mr-[5px] flex px-[20px] lg:px-[35px] ${
                     departament === departamentOption.name
                       ? 'border-b-2 border-[#0354EC]'
                       : ''
@@ -268,18 +268,18 @@ const SearchModal = ({
               )
             }
           })}
-          <div className="ml-auto flex  items-end justify-end text-[16px] font-bold text-white">
+          <div className="ml-[20px] flex items-end  justify-end text-[12px] font-bold text-white lg:ml-auto lg:text-[16px]">
             <a
               href="/new-task"
               target="_blank"
               rel="nofollow noreferrer"
-              className="ml-auto flex h-[43px] w-[170px] cursor-pointer items-center  justify-center rounded-[10px] bg-[#0354EC] hover:bg-primary"
+              className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px]  bg-[#0354EC] hover:bg-primary lg:h-[43px] lg:w-[170px]"
             >
               + Add a project
             </a>
           </div>
         </div>
-        <div className="mt-[39px] items-start justify-start rounded-[10px] border border-[#D4D4D4] py-[40px] px-[50px] text-[14px] font-medium text-[#505050]">
+        <div className="mt-[39px] items-start justify-start rounded-[10px] border border-[#D4D4D4] py-[25px] px-[25px] text-[11px] font-medium text-[#505050] lg:py-[40px] lg:px-[50px] lg:text-[14px]">
           {departamentSelected ? (
             <>
               <div className="">
@@ -287,7 +287,7 @@ const SearchModal = ({
               </div>
               <div className="mt-[25px] flex">
                 <p className="mr-1">Tags: </p>
-                <div className="flex italic">
+                <div className="flex max-w-[200px] overflow-x-auto italic lg:max-w-full">
                   {departamentSelected.tags.map((tag, index) => (
                     <p className="ml-2 border-b" key={index}>
                       {tag}
@@ -299,13 +299,13 @@ const SearchModal = ({
               <div className="mt-[25px] flex">
                 <p className="mr-[3px]">Avalaible Funding: </p>
                 <div className="flex">
-                  <p className="mr-[22px] text-[16px] font-bold text-[#000000]">
+                  <p className="mr-[22px] text-[12px] font-bold text-[#000000] lg:text-[16px]">
                     ${departamentSelected.funding}
                   </p>
                   <img
                     src="/images/tokens/tokens-logo-2.svg"
                     alt="image"
-                    className={`w-[72px]`}
+                    className={`w-[45px] lg:w-[72px]`}
                   />
                 </div>
               </div>
@@ -330,21 +330,23 @@ const SearchModal = ({
             <></>
           )}
         </div>
-        <div className="mt-[40px] flex text-[#000000]">
+        <div className="mt-[40px] flex overflow-x-auto text-[#000000]">
           <div
             onClick={() => {
               handleStatusSelection('draft')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'draft' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Draft Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Draft Projects
+            </p>
+            <p className="w-[150px] text-[11px] font-normal lg:w-full lg:text-[14px]">
               Waiting for approval or for assigning
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'draft' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
@@ -355,16 +357,18 @@ const SearchModal = ({
             onClick={() => {
               handleStatusSelection('open')
             }}
-            className={`ml-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`ml-[25px] cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Open Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Open Projects
+            </p>
+            <p className="w-[150px] text-[11px] font-normal lg:w-full lg:text-[14px]">
               Tasks that are open for applications
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
@@ -375,16 +379,18 @@ const SearchModal = ({
             onClick={() => {
               handleStatusSelection('active')
             }}
-            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`mx-[25px] w-[200px] cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Active Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Active Projects
+            </p>
+            <p className="w-[150px] text-[11px] font-normal lg:w-full lg:text-[14px]">
               Tasks that are currently active{' '}
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'active'
                   ? 'border-b-[2px] border-[#000000]'
                   : ''
@@ -397,16 +403,18 @@ const SearchModal = ({
             onClick={() => {
               handleStatusSelection('completed')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`w-[200px] cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Completed Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Completed Projects
+            </p>
+            <p className="w-[150px] text-[11px] font-normal lg:w-full lg:text-[14px]">
               Tasks that have been completed
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'completed'
                   ? 'border-b-[2px] border-[#000000]'
                   : ''

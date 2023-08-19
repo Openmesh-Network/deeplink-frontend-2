@@ -72,7 +72,7 @@ const HeroTasks = () => {
   }, [pathname])
 
   return (
-    <section className="px-[100px] pt-[44px]">
+    <section className="px-[20px] pt-[30px] lg:px-[100px] lg:pt-[44px]">
       <div className="container px-0">
         <div className="flex flex-wrap items-start">
           <div className="w-full lg:w-2/3">
@@ -90,7 +90,7 @@ const HeroTasks = () => {
             </div>
           </div>
           <div className="w-full lg:w-1/3">
-            <div className="font-regular mx-auto flex max-w-[500px] justify-end rounded-md px-4 text-right text-[14px] !leading-none text-[#000000] ">
+            <div className="font-regular mt-[20px] flex max-w-[500px] rounded-md text-[14px] !leading-none text-[#000000] lg:mx-auto lg:mt-0 lg:justify-end lg:px-4 lg:text-right ">
               <div className="">
                 <p className="">Available Funding</p>
                 <p className="mt-[8px] text-[18px] font-bold text-[#0354EC]">
@@ -99,7 +99,7 @@ const HeroTasks = () => {
                 <img
                   src="/images/tokens/tokensLogo.svg"
                   alt="image"
-                  className={`ml-auto mt-[8px] w-[60px]`}
+                  className={`mt-[8px] w-[60px] lg:ml-auto`}
                 />
               </div>
             </div>

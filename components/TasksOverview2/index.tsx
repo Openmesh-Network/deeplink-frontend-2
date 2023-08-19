@@ -258,11 +258,11 @@ const TransactionList = () => {
         completedProjectsNumber={counting ? counting.completed : 0}
         draftProjectsNumber={counting ? counting.draft : 0}
       />
-      <section className="px-[100px] pt-[40px]" id={'taskStart'}>
+      <section className="px-[20px] pt-[40px] lg:px-[100px]" id={'taskStart'}>
         <div className="container px-0">
           <div className=" text-[#000000]">
-            <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
-              <div className="mr-4 flex w-[35%] items-center">
+            <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
+              <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
                 <p
                   onClick={() => {
                     console.log('as tasks')
@@ -270,16 +270,16 @@ const TransactionList = () => {
                     console.log('filtered tasks')
                     console.log(filteredTasks)
                   }}
-                  className="pr-2"
+                  className="pr-[20px] lg:pr-2"
                 >
                   Project
                 </p>
               </div>
-              <div className="flex w-[15%] items-center">
-                <p className="pr-2">Dept/Tags</p>
+              <div className="flex w-[100px] items-center lg:w-[15%]">
+                <p className="pr-[20px] lg:pr-2">Dept/Tags</p>
               </div>
-              <div className="flex w-[10%] items-center">
-                <p className="pr-[15px]">Budget</p>
+              <div className="flex w-[100px] items-center lg:w-[10%]">
+                <p className="pr-[10px] lg:pr-[15px]">Budget</p>
                 {/* <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
@@ -302,8 +302,8 @@ const TransactionList = () => {
                   />
                 </svg>
               </div>
-              <div className="flex w-[8%] items-center">
-                <p className="pr-[15px]">Ends</p>
+              <div className="flex w-[100px] items-center lg:w-[8%]">
+                <p className="pr-[10px] pl-[20px] lg:pr-[15px]">Ends</p>
                 <svg
                   onClick={handleOrderByDeadlineSelection}
                   className={`w-[14px] cursor-pointer  ${

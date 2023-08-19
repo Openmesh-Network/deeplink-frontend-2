@@ -75,7 +75,7 @@ const Header = () => {
             <div className="">
               <Link
                 href="/"
-                className={`header-logo mr-[60px] block w-full py-8 `}
+                className={`header-logo mr-[60px] ml-[20px] block w-full py-8 lg:ml-0 `}
               >
                 <img
                   src="/images/header/openReD.svg"
@@ -155,7 +155,7 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <div className="mr-[20px] ml-[10px] flex h-[43px] w-[308px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#12AD50] text-[16px] font-medium text-[#12AD50] hover:text-[#148541]">
+                <div className="mr-[20px] ml-[10px] hidden h-[43px] w-[308px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#12AD50] text-[16px] font-medium text-[#12AD50] hover:text-[#148541] lg:flex">
                   <img
                     src="/images/header/check.svg"
                     alt="image"
@@ -170,7 +170,7 @@ const Header = () => {
                     Become a Verified Contributor
                   </a>
                 </div>
-                <div>
+                <div className="hidden lg:block">
                   <Web3Button />
                 </div>
                 <div className="">{isChainWrong && <Web3NetworkSwitch />}</div>
