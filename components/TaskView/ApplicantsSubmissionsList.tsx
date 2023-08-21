@@ -506,7 +506,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
   }, [dataApplication])
 
   return (
-    <div className="text-[16px] font-medium !leading-[19px] text-[#505050]">
+    <div className="text-[12px] font-medium !leading-[19px] text-[#505050] lg:text-[16px]">
       {status === 'open' && isDeadlineEnough && (
         <div className="mt-[49px] w-full rounded-[10px] bg-[#F5F5F5] py-[30px] px-[15px]">
           <div className="flex justify-center">
@@ -518,7 +518,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
               target="_blank"
               rel="noopener noreferrer"
               href={`/application/${taskId}`}
-              className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[16px] font-bold text-white hover:bg-[#0b9040]"
+              className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[12px] font-bold text-white hover:bg-[#0b9040] lg:text-[16px]"
             >
               Start working
             </a>
@@ -556,7 +556,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
           status === 'open' ? 'mt-[30px]' : 'mt-[49px]'
         }`}
       >
-        <div className="flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+        <div className="flex items-center overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[12px] font-bold !leading-[150%] lg:text-[16px]">
           <div className="mr-[52px] flex w-[400px] pl-[25px]">
             <p className="mr-[10px]">Applicants</p>
             <svg
@@ -661,7 +661,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
               <div
                 className={`relative mr-1 ${
                   index === 0 ? 'mt-[34px]' : 'mt-[25px]'
-                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal text-[#000000]`}
+                } flex items-start justify-between overflow-x-auto border-b border-[#D4D4D4] pb-6 text-[12px] font-normal text-[#000000] lg:text-[16px]`}
               >
                 <div className="mr-[52px] w-[400px] items-center">
                   <div className="flex">
@@ -673,7 +673,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                             ? `https://cloudflare-ipfs.com/ipfs/${application.profileImage}`
                             : `https://effigy.im/a/${application.applicant}.svg`
                         }
-                        className="mr-[10px] w-[50px] rounded-full"
+                        className="mr-[10px] w-[500px] rounded-full"
                       ></img>
                     </div>
                     <div>
@@ -693,7 +693,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                               application.metadataDisplayName ||
                               application.applicant
                             }
-                            className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#12ad50]"
+                            className="ml-[20px] max-w-[300px] pb-2 text-[11px] font-bold text-[#12ad50]  lg:text-[14px]"
                           >
                             Approved
                           </p>
@@ -701,7 +701,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                       </div>
                       <a
                         title={formatAddress(application.applicant)}
-                        className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
+                        className="mt-[8px] cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://mumbai.polygonscan.com/address/${application.applicant}`}
@@ -714,14 +714,14 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                   viewMoreApplication === application.applicationId ? (
                     <div
                       title={application.metadataDescription}
-                      className="mt-[13px] max-h-[500px] overflow-y-auto text-[14px] font-normal !leading-[150%]"
+                      className="mt-[13px] max-h-[500px] overflow-y-auto text-[11px] font-normal !leading-[150%] lg:text-[14px]"
                     >
                       {application.metadataDescription}
                     </div>
                   ) : (
                     <div
                       title={application.metadataDescription}
-                      className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                      className="mt-[13px] text-[11px] font-normal !leading-[150%] line-clamp-2 lg:text-[14px]"
                     >
                       {application.metadataDescription}
                     </div>
@@ -753,7 +753,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
                       >
                         View less
                       </a>
@@ -767,7 +767,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
                       >
                         View more
                       </a>
@@ -785,7 +785,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                               handleNominate(application.applicationId)
                             }
                           }}
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[12px] font-bold text-[#fff] lg:text-[16px]  ${
                             isNominationLoading
                               ? 'bg-[#2f71ec]'
                               : 'bg-[#0354EC] hover:bg-[#092353]'
@@ -806,7 +806,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                               handleTakeTask(application.applicationId)
                             }
                           }}
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[16px] font-bold text-[#fff]  ${
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px]   py-[10px] text-[12px] font-bold text-[#fff] lg:text-[16px]  ${
                             isTakingTaskLoading
                               ? 'bg-[#2f71ec]'
                               : 'bg-[#0354EC] hover:bg-[#092353]'
@@ -826,7 +826,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
         submissions.map((submission, index) => (
           <div key={index} className={` text-[#000000]`}>
             {index === 0 && (
-              <div className=" mt-[100px] flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[16px] font-bold !leading-[150%]">
+              <div className=" mt-[100px] flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[12px] font-bold !leading-[150%] lg:text-[16px]">
                 <div className="mr-[52px] flex w-[400px] pl-[25px]">
                   <p className="mr-[10px]">Submissions</p>
                   <svg
@@ -886,7 +886,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
               <div
                 className={`relative mr-1 ${
                   index === 0 ? 'mt-[34px]' : 'mt-[25px]'
-                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[16px] font-normal text-[#000000]`}
+                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[12px] font-normal text-[#000000] lg:text-[16px]`}
               >
                 <div className="mr-[52px] w-[400px] items-center">
                   <div className="flex">
@@ -911,19 +911,19 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                             formatAddress(submission.applicant)}
                         </p>
                         {submission.reviewed && submission.accepted && (
-                          <p className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#12ad50]">
+                          <p className="ml-[20px] max-w-[300px] pb-2 text-[11px] font-bold text-[#12ad50]  lg:text-[14px]">
                             Accepted
                           </p>
                         )}
                         {submission.reviewed && !submission.accepted && (
-                          <p className="ml-[20px] max-w-[300px] pb-2 text-[14px] font-bold  text-[#f90000]">
+                          <p className="ml-[20px] max-w-[300px] pb-2 text-[11px] font-bold text-[#f90000]  lg:text-[14px]">
                             Rejected
                           </p>
                         )}
                       </div>
                       <a
                         title={formatAddress(submission.applicant)}
-                        className="mt-[8px] cursor-pointer text-[14px] font-normal text-[#505050] hover:text-primary"
+                        className="mt-[8px] cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://mumbai.polygonscan.com/address/${submission.applicant}`}
@@ -936,14 +936,14 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                   viewMoreSubmission === submission.submissionId ? (
                     <div
                       title={submission.metadataDescription}
-                      className="mt-[13px] max-h-[400px] overflow-y-auto text-[14px] font-normal !leading-[150%]"
+                      className="mt-[13px] max-h-[400px] overflow-y-auto text-[11px] font-normal !leading-[150%] lg:text-[14px]"
                     >
                       {submission.metadataDescription}
                     </div>
                   ) : (
                     <div
                       title={submission.metadataDescription}
-                      className="mt-[13px] text-[14px] font-normal !leading-[150%] line-clamp-2"
+                      className="mt-[13px] text-[11px] font-normal !leading-[150%] line-clamp-2 lg:text-[14px]"
                     >
                       {submission.metadataDescription}
                     </div>
@@ -978,7 +978,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
                       >
                         View less
                       </a>
@@ -992,7 +992,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         }}
                         target="_blank"
                         rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white"
+                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
                       >
                         View more
                       </a>
@@ -1007,7 +1007,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                           href={`/review-submission/${submission.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white`}
+                          className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]`}
                         >
                           Review
                         </a>
