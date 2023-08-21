@@ -118,7 +118,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
   }
 
   return (
-    <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[70px] lg:px-[100px] lg:pt-[59px]">
+    <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[50px] lg:px-[100px] lg:pb-[70px] lg:pt-[59px]">
       <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
@@ -127,7 +127,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                 <div className="mb-[35px] flex lg:mb-[50px]">
                   <h3
                     title={task.description}
-                    className="mr-[15px] overflow-hidden text-ellipsis  whitespace-nowrap text-[18px] font-bold !leading-[120%] lg:text-[24px]"
+                    className="mr-[15px] overflow-hidden text-ellipsis  text-[18px] font-bold !leading-[120%] lg:whitespace-nowrap lg:text-[24px]"
                   >
                     {task.title}
                   </h3>
@@ -228,7 +228,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       {task.projectLength}
                     </span>
                   </div>
-                  <div className="mr-[10px] mt-[25px] mt-0 flex">
+                  <div className="mr-[10px] mt-[25px] flex lg:mt-0">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"

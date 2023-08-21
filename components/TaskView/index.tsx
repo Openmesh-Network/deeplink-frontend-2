@@ -190,8 +190,8 @@ const TaskView = (id: any) => {
         contributorsAllowed={contributorsAllowed}
         address={address}
       />
-      <section className="px-[100px] pt-[59px] pb-[250px]">
-        <div className="container mt-12  px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+      <section className="px-[20px] pt-[15px] pb-[80px] lg:px-[100px] lg:pb-[250px] lg:pt-[59px]">
+        <div className="container mt-12  px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
           <div className="flex flex-wrap items-start">
             <div className="w-full">
               {taskMetadata.metadataEdited && (
@@ -242,9 +242,9 @@ const TaskView = (id: any) => {
                   </div>
                 </div>
               )}
-              <div className="flex font-bold !leading-[150%]">
+              <div className="flex overflow-x-auto font-bold !leading-[150%]">
                 <div
-                  className={`px-[17px]  pb-[14px] ${
+                  className={`px-[17px] pb-[14px] text-center ${
                     viewOption === 'projectDescription'
                       ? 'border-b-[2px] border-[#000000]'
                       : ''
@@ -254,13 +254,13 @@ const TaskView = (id: any) => {
                     onClick={() => {
                       setViewOption('projectDescription')
                     }}
-                    className="cursor-pointer hover:text-[#353535]"
+                    className="cursor-pointer   hover:text-[#353535]"
                   >
                     Project description
                   </p>
                 </div>
                 <div
-                  className={`mx-[57px] px-[17px]  pb-[14px] ${
+                  className={`mx-[17px] px-[17px] pb-[14px] text-center lg:mx-[57px] ${
                     viewOption === 'submissions'
                       ? 'border-b-[2px]  border-[#000000]'
                       : ''
@@ -286,7 +286,7 @@ const TaskView = (id: any) => {
                     onClick={() => {
                       setViewOption('updates')
                     }}
-                    className="cursor-pointer hover:text-[#353535]"
+                    className="cursor-pointer text-center hover:text-[#353535]"
                   >
                     Updates ({taskMetadata.updatesCount})
                     {/* Aqui inserir o numero de updates (transactions events) que teve */}
@@ -295,9 +295,9 @@ const TaskView = (id: any) => {
               </div>
               {viewOption !== 'submissions' ? (
                 <div>
-                  <div className="mt-[49px] flex">
+                  <div className="mt-[49px] lg:flex">
                     {viewOption === 'projectDescription' ? (
-                      <div className="mr-[50px] w-full text-[16px] font-normal !leading-[150%]">
+                      <div className="mr-[50px] w-full text-[12px] font-normal !leading-[150%] lg:text-[16px]">
                         {imgTaskIPFS ? (
                           <img
                             src={imgTaskIPFS}
@@ -325,7 +325,7 @@ const TaskView = (id: any) => {
                     ) : (
                       <UpdatesList taskId={id.id} />
                     )}
-                    <div className="w-[400px] text-[#505050]">
+                    <div className="mt-[50px] text-[#505050] lg:mt-0 lg:w-[400px]">
                       <div className="shadow-lg">
                         <div className="flex h-[79px] items-center bg-[#F7F8F9] px-[30px] font-bold">
                           <p>More details</p>
@@ -373,7 +373,7 @@ const TaskView = (id: any) => {
                     </div>
                   </div>
                   {viewOption === 'projectDescription' && (
-                    <div className=" mt-[50px] mr-[400px] flex rounded-md bg-[#F5F5F5] py-[43px]  pl-[49px] text-center text-[16px] font-medium !leading-[19px] text-[#505050]">
+                    <div className=" mt-[50px] flex rounded-md bg-[#F5F5F5] py-[43px] px-[10px] text-center text-[12px]  font-medium !leading-[19px] text-[#505050] lg:mr-[400px] lg:px-0 lg:pl-[49px] lg:text-[16px]">
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
