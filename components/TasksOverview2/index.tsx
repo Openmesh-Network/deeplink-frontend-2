@@ -349,7 +349,7 @@ const TransactionList = () => {
                 />
               ))}
             {!isLoading && finalTasks.length > 0 && pagination && (
-              <div className="flex items-center justify-center pt-16 pb-[100px] text-[18px] font-normal">
+              <div className="flex items-center justify-center pt-16 pb-[100px] text-[14px] font-normal lg:text-[18px]">
                 {pagination.currentPage !== 1 && (
                   <p
                     onClick={handlePaginationSelectionPrev}

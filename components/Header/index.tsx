@@ -86,9 +86,31 @@ const Header = () => {
             </div>
             <div className="flex w-full items-center justify-between">
               <div>
+                <button
+                  onClick={navbarToggleHandler}
+                  id="navbarToggler"
+                  aria-label="Mobile Menu"
+                  className="absolute right-4 top-1/2 block translate-y-[-50%] rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+                >
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
+                      navbarOpen ? ' top-[7px] rotate-45' : ' '
+                    }`}
+                  />
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 ${
+                      navbarOpen ? 'opacity-0 ' : ' '
+                    }`}
+                  />
+                  <span
+                    className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
+                      navbarOpen ? ' top-[-8px] -rotate-45' : ' '
+                    }`}
+                  />
+                </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 mr-[95px] w-[250px] rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:mr-[95px] lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
                     navbarOpen
                       ? 'visibility top-full opacity-100'
                       : 'invisible top-[120%] opacity-0'
@@ -107,7 +129,7 @@ const Header = () => {
                               }
                               target={menuItem.newTab ? '_blank' : ''}
                               rel={menuItem.newTab ? 'noopener noreferrer' : ''}
-                              className={`flex py-2 text-[16px] font-medium text-[#000000] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 ${
+                              className={`flex py-2 text-[16px] font-medium text-[#ffffff] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 lg:text-[#000000] ${
                                 pathname.includes(menuItem.path)
                                   ? 'font-bold'
                                   : ''
@@ -151,6 +173,17 @@ const Header = () => {
                         )}
                       </li>
                     ))}
+                    <a
+                      href="/verified-contributor"
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className={`flex py-2 text-[16px] font-medium text-[#ffffff] group-hover:opacity-70 lg:mr-0 lg:hidden lg:py-6 lg:px-0 lg:text-[#000000]`}
+                    >
+                      Verified contributor
+                    </a>
+                    <div className="lg:hidden">
+                      <Web3Button />
+                    </div>
                   </ul>
                 </nav>
               </div>
