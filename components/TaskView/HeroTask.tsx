@@ -118,16 +118,16 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
   }
 
   return (
-    <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
-      <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+    <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[70px] lg:px-[100px] lg:pt-[59px]">
+      <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
         <div className="-mx-4 flex flex-wrap items-start">
           <div className="w-full px-4">
-            <div className="flex justify-between">
+            <div className="justify-between lg:flex">
               <div className="w-full">
-                <div className="mb-[50px] flex">
+                <div className="mb-[35px] flex lg:mb-[50px]">
                   <h3
                     title={task.description}
-                    className="mr-[15px] overflow-hidden text-ellipsis  whitespace-nowrap text-[24px] font-bold !leading-[120%]"
+                    className="mr-[15px] overflow-hidden text-ellipsis  whitespace-nowrap text-[18px] font-bold !leading-[120%] lg:text-[24px]"
                   >
                     {task.title}
                   </h3>
@@ -136,14 +136,14 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       href={`/edit-task/${task.id}`}
-                      className="flex h-fit cursor-pointer items-center justify-center border-b-[1px] border-[#505050] pt-[6px] text-[14px] font-medium !leading-[19px] text-[#505050]"
+                      className="flex h-fit cursor-pointer items-center justify-center border-b-[1px] border-[#505050] pt-[6px] text-[11px] font-medium !leading-[19px] text-[#505050] lg:text-[14px]"
                     >
                       Edit task
                     </a>
                   )}
                 </div>
 
-                <div className="mt-[25px] flex text-[14px]  text-[#505050]">
+                <div className="mt-[25px] flex text-[11px] text-[#505050]  lg:text-[14px]">
                   <p className="">Tags: </p>
                   <div className="flex italic">
                     {task.skills &&
@@ -158,7 +158,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       ))}
                   </div>
                 </div>
-                <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
+                <div className="mt-[25px] flex text-[12px] font-medium text-[#505050] lg:text-[16px]">
                   <div className="mr-[22px] flex">
                     <img
                       src="/images/task/coins.svg"
@@ -168,12 +168,12 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <p className="mr-[3px] flex items-center">
                       Available funds:
                     </p>{' '}
-                    <span className="flex items-center text-[16px] font-bold text-[#000000]">
+                    <span className="flex items-center text-[12px] font-bold text-[#000000] lg:text-[16px]">
                       ${task.estimatedBudget}
                     </span>
                   </div>
 
-                  <div className="flex items-center text-[16px] font-normal">
+                  <div className="flex items-center text-[12px] font-normal lg:text-[16px]">
                     {task.payments.map((payment, index) => (
                       <div key={index} className="flex">
                         <img
@@ -201,7 +201,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     ))}
                   </div>
                 </div>
-                <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
+                <div className="mt-[25px] text-[12px] font-medium text-[#505050] lg:flex lg:text-[16px]">
                   <div className="mr-[50px] flex">
                     <img
                       src="/images/task/people.svg"
@@ -211,11 +211,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <p className="mr-[3px] flex items-center">
                       Contributors needed:
                     </p>{' '}
-                    <span className="flex items-center text-[16px] font-bold text-[#303030]">
+                    <span className="flex items-center text-[12px] font-bold text-[#303030] lg:text-[16px]">
                       {task.contributorsNeeded}
                     </span>
                   </div>
-                  <div className="mr-[50px] flex">
+                  <div className="mr-[50px] mt-[25px] flex lg:mt-0">
                     <img
                       src="/images/task/clock.svg"
                       alt="image"
@@ -224,11 +224,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <p className="mr-[3px] flex items-center">
                       Project length:
                     </p>{' '}
-                    <span className="flex items-center text-[16px] font-bold text-[#303030]">
+                    <span className="flex items-center text-[12px] font-bold text-[#303030] lg:text-[16px]">
                       {task.projectLength}
                     </span>
                   </div>
-                  <div className="mr-[10px] flex">
+                  <div className="mr-[10px] mt-[25px] mt-0 flex">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -256,9 +256,9 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   </div>
                 </div>
               </div>
-              <div className="w-[163px]">
+              <div className="w-full lg:w-[163px]">
                 {' '}
-                <div className="text-[16px] font-bold text-[#000000]">
+                <div className="mt-[25px] text-[12px] font-bold text-[#000000] lg:mt-0 lg:text-[16px]">
                   <div className="flex !leading-[150%]">Status:</div>
                   <div className="mt-[6px] flex">
                     <img
@@ -266,13 +266,13 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       alt="image"
                       className={`mr-[10px] w-[20px]`}
                     />
-                    <p className="text-[16px] font-medium text-[#303030]">
+                    <p className="text-[12px] font-medium text-[#303030] lg:text-[16px]">
                       {capitalizeFirstLetter(task.status)}
                     </p>
                   </div>
                 </div>
-                <div className="mt-[25px] text-[16px] font-bold !leading-[150%] text-[#000000]">
-                  <p> Deadline: </p>
+                <div className="mt-[25px] flex text-[12px] font-bold !leading-[150%] text-[#000000] lg:block lg:text-[16px]">
+                  <p className="mr-[10px] lg:mr-0"> Deadline: </p>
                   <p className="font-medium text-[#303030]">
                     {formatDate(task.deadline)}
                   </p>
@@ -283,7 +283,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       href={`/application/${task.id}`}
-                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[16px]  font-bold text-white hover:bg-[#0b9040] "
+                      className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[12px] font-bold text-white hover:bg-[#0b9040] lg:text-[16px] "
                     >
                       {'Apply now'}
                     </a>
@@ -298,7 +298,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`/new-submission/${task.id}`}
-                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[16px]  font-bold text-white hover:bg-[#5080da] "
+                        className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[12px] font-bold text-white hover:bg-[#5080da] lg:text-[16px] "
                       >
                         {'Create submission'}
                       </a>
