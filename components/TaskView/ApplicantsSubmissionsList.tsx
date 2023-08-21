@@ -557,7 +557,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
         }`}
       >
         <div className="flex items-center overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[12px] font-bold !leading-[150%] lg:text-[16px]">
-          <div className="mr-[52px] flex w-[400px] pl-[25px]">
+          <div className="mr-[10px] flex w-[400px] pl-[25px] lg:mr-[52px]">
             <p className="mr-[10px]">Applicants</p>
             <svg
               onClick={handleOrderByBudgetSelection}
@@ -664,8 +664,8 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                 } flex items-start justify-between overflow-x-auto border-b border-[#D4D4D4] pb-6 text-[12px] font-normal text-[#000000] lg:text-[16px]`}
               >
                 <div className="mr-[52px] w-[400px] items-center">
-                  <div className="flex">
-                    <div>
+                  <div className="flex min-w-[100px]">
+                    <div className="mr-[10px]">
                       <img
                         alt="ethereum avatar"
                         src={
@@ -673,7 +673,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                             ? `https://cloudflare-ipfs.com/ipfs/${application.profileImage}`
                             : `https://effigy.im/a/${application.applicant}.svg`
                         }
-                        className="mr-[10px] w-[500px] rounded-full"
+                        className="min-w-[25px] rounded-full lg:w-[50px]"
                       ></img>
                     </div>
                     <div>
@@ -682,7 +682,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                           title={
                             application.profileName || application.applicant
                           }
-                          className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                          className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap font-bold text-[#0354EC] lg:pb-2"
                         >
                           {formatName(application.profileName) ||
                             formatAddress(application.applicant)}
@@ -701,7 +701,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                       </div>
                       <a
                         title={formatAddress(application.applicant)}
-                        className="mt-[8px] cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:text-[14px]"
+                        className="cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:mt-[8px] lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
                         href={`https://mumbai.polygonscan.com/address/${application.applicant}`}
@@ -738,7 +738,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                 <div className="mr-[52px] flex w-[55px] items-center">
                   <p>{application.jobSuccess || 'Undefined'}</p>
                 </div>
-                <div className="mr-[52px] flex w-[225px] items-center justify-center">
+                <div className="mr-[52px] flex min-w-[80px] items-center justify-center lg:w-[225px]">
                   {formatDeadline(application.timestamp)}
                 </div>
 
@@ -826,7 +826,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
         submissions.map((submission, index) => (
           <div key={index} className={` text-[#000000]`}>
             {index === 0 && (
-              <div className=" mt-[100px] flex items-center rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[12px] font-bold !leading-[150%] lg:text-[16px]">
+              <div className=" mt-[100px] flex items-center overflow-x-auto  rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] py-[11.5px] text-[12px] font-bold !leading-[150%] lg:text-[16px]">
                 <div className="mr-[52px] flex w-[400px] pl-[25px]">
                   <p className="mr-[10px]">Submissions</p>
                   <svg
@@ -886,11 +886,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
               <div
                 className={`relative mr-1 ${
                   index === 0 ? 'mt-[34px]' : 'mt-[25px]'
-                } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[12px] font-normal text-[#000000] lg:text-[16px]`}
+                } flex items-start justify-between overflow-x-auto border-b border-[#D4D4D4] pb-6 text-[12px] font-normal text-[#000000] lg:text-[16px]`}
               >
                 <div className="mr-[52px] w-[400px] items-center">
-                  <div className="flex">
-                    <div>
+                  <div className="flex min-w-[100px]">
+                    <div className="mr-[10px]">
                       <img
                         alt="ethereum avatar"
                         src={
@@ -898,14 +898,14 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                             ? `https://cloudflare-ipfs.com/ipfs/${submission.profileImage}`
                             : `https://effigy.im/a/${submission.applicant}.svg`
                         }
-                        className="mr-[10px] w-[50px] rounded-full"
+                        className="min-w-[25px] rounded-full lg:w-[50px]"
                       ></img>
                     </div>
                     <div>
-                      <div className="flex">
+                      <div className="flex overflow-x-auto">
                         <p
                           title={submission.applicant}
-                          className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
+                          className="max-w-[300px] text-ellipsis whitespace-nowrap pb-2 font-bold text-[#0354EC]"
                         >
                           {formatName(submission.profileName) ||
                             formatAddress(submission.applicant)}
