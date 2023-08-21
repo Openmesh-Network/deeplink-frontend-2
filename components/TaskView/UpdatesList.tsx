@@ -117,7 +117,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
   }
 
   return (
-    <div className="mr-[50px] max-h-[1200px] w-full overflow-auto text-[14px] font-medium !leading-[19px] text-[#505050]">
+    <div className="mr-[50px] max-h-[1200px] w-full overflow-auto text-[11px] font-medium !leading-[19px] text-[#505050] lg:text-[14px]">
       {!isLoading &&
         events.length > 0 &&
         events.map((event, index) => {
@@ -125,10 +125,10 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
             <div
               className={`${
                 index === 0 ? '' : 'mt-[25px]'
-              } rounded-[10px] bg-[#F5F5F5] py-[40px] px-[35px]`}
+              } rounded-[10px] bg-[#F5F5F5] py-[25px] px-[25px] lg:py-[40px] lg:px-[35px]`}
               key={index}
             >
-              <div className="flex">
+              <div className="lg:flex">
                 <div className="flex">
                   <img
                     alt="ethereum avatar"
@@ -144,17 +144,17 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
                     {formatAddress(event.address)}
                   </a>
                 </div>
-                <div className="ml-auto flex items-center font-normal">
+                <div className="ml-auto mt-[15px] flex items-center font-normal lg:mt-0">
                   {formatDeadlineComplet(event.timestamp)}
                 </div>
               </div>
-              <div className="mt-[15px] flex">
+              <div className="mt-[15px] lg:flex">
                 <div className="flex">
-                  <p className="ml-[35px] flex items-center text-[#000000] ">
+                  <p className="flex text-[#000000] lg:ml-[35px] lg:items-center ">
                     {eventsNameFormatted[event.name]}
                   </p>
                 </div>
-                <div className="ml-auto flex items-center">
+                <div className="ml-auto mt-[15px] flex items-center lg:mt-0">
                   <a
                     className=" flex items-center border-b-[1px] border-[#0354EC] text-[#0354EC] hover:text-primary"
                     target="_blank"

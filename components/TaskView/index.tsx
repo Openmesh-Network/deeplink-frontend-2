@@ -94,7 +94,7 @@ const TaskView = (id: any) => {
         <div>
           {contributorsAllowed.map((contributor, index) => (
             <div
-              className="mt-[20px] flex items-center text-[16px] font-medium"
+              className="mt-[20px] flex items-center text-[12px] font-medium lg:text-[16px]"
               key={index}
             >
               <img

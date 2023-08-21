@@ -138,8 +138,8 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
     }
 
     return (
-      <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
-        <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+      <section className="border-b border-[#CFCFCF] px-[20px] pb-[50px] pt-[40px] lg:px-[100px] lg:pt-[59px] lg:pb-[70px]">
+        <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
           <div className="flex">
             <div className="flex cursor-pointer items-center">
               {user.profilePictureHash ? (
@@ -158,7 +158,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div
               title={id}
-              className={`ml-[20px] flex items-center text-[30px] font-bold ${
+              className={`ml-[20px] flex items-center text-[21px] font-bold lg:text-[30px] ${
                 user.name || ensName ? 'text-[#000000]' : 'text-[#D4D4D4]'
               }`}
             >
@@ -166,7 +166,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div
               title={id}
-              className={`mr-4 ml-[20px] flex items-center pt-[7px] text-[16px] font-medium text-[#505050]`}
+              className={`mr-4 ml-[20px] flex items-center pt-[7px] text-[12px] font-medium text-[#505050] lg:text-[16px]`}
             >
               {formatAddressSecondType(id)}
             </div>
@@ -194,7 +194,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                     href="/verified-contributor"
                     target="_blank"
                     rel="nofollow noreferrer"
-                    className="text-[16px] font-bold text-[#fff]  "
+                    className="text-[12px] font-bold text-[#fff] lg:text-[16px]  "
                   >
                     Verified Contributor
                   </a>
@@ -214,7 +214,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                       href="/verified-contributor"
                       target="_blank"
                       rel="nofollow noreferrer"
-                      className="text-[16px] font-bold text-[#fff] "
+                      className="text-[12px] font-bold text-[#fff] lg:text-[16px] "
                     >
                       Pending Approval
                     </a>
@@ -222,7 +222,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 </div>
               )}
           </div>
-          <div className="mt-[25px] flex">
+          <div className="mt-[25px] lg:flex">
             <div className="flex">
               <p>Tags:</p>
               {user.tags && (
@@ -236,20 +236,20 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 </div>
               )}
             </div>
-            <div className="ml-auto flex cursor-pointer items-center  justify-end">
+            <div className="mt-[25px] flex cursor-pointer items-center lg:ml-auto lg:mt-0  lg:justify-end">
               <a
                 href="/edit-profile"
                 target="_blank"
                 rel="nofollow noreferrer"
-                className="flex h-[29px] w-[116px] items-center justify-center rounded-[5px] bg-[#000000] text-[16px] font-bold  text-white hover:bg-[#202020]"
+                className="flex h-[29px] w-[100px] items-center justify-center rounded-[5px] bg-[#000000] text-[12px] font-bold text-white hover:bg-[#202020]  lg:w-[116px] lg:text-[16px]"
               >
                 <span className="">Edit Profile</span>
               </a>
             </div>
           </div>
-          <div className="mt-[25px] flex">
-            <div className="flex">
-              <div className="mr-[60px] flex">
+          <div className="mt-[25px] lg:flex">
+            <div className="lg:flex">
+              <div className="flex lg:mr-[60px]">
                 <img
                   src={`/images/profile/clock.svg`}
                   alt="image"
@@ -262,7 +262,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                   </span>
                 </span>
               </div>
-              <div className="mr-[60px] flex">
+              <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
                 <img
                   src={`/images/profile/coins.svg`}
                   alt="image"
@@ -277,7 +277,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                   </span>
                 </span>{' '}
               </div>
-              <div className="mr-[60px] flex">
+              <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
                 <img
                   src={`/images/profile/people.svg`}
                   alt="image"
@@ -293,7 +293,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 </span>
               </div>
             </div>
-            <div className="ml-auto flex w-[107px] justify-between">
+            <div className="mt-[15px] flex w-[107px] justify-between lg:ml-auto lg:mt-0">
               <div className="flex items-center">
                 {githubLink && (
                   <a
@@ -339,8 +339,8 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
   }
 
   return (
-    <section className="border-b border-[#CFCFCF] px-[100px] pt-[59px] pb-[70px]">
-      <div className="container px-[0px] text-[16px] font-medium !leading-[19px] text-[#000000]">
+    <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[50px] lg:px-[100px] lg:pt-[59px] lg:pb-[70px]">
+      <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
         <div className="flex">
           <div className="flex cursor-pointer items-center">
             <img
@@ -351,7 +351,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
           </div>
           <div
             title={id}
-            className={`ml-[20px] flex items-center text-[30px] font-bold ${
+            className={`ml-[20px] flex items-center text-[21px] font-bold lg:text-[30px] ${
               ensName ? 'text-[#000000]' : 'text-[#D4D4D4]'
             }`}
           >
@@ -359,7 +359,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
           </div>
           <div
             title={id}
-            className={`mr-4 ml-[20px] flex items-center pt-[7px] text-[16px] font-medium text-[#505050]`}
+            className={`mr-4 ml-[20px] flex items-center pt-[7px] text-[12px] font-medium text-[#505050] lg:text-[16px]`}
           >
             {formatAddressSecondType(id)}
           </div>
@@ -384,24 +384,24 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </a>
           </div> */}
         </div>
-        <div className="mt-[25px] flex">
+        <div className="mt-[25px] lg:flex">
           <div className="flex">
             <p>Tags:</p>
           </div>
-          <div className="ml-auto flex cursor-pointer items-center  justify-end">
+          <div className="mt-[25px] flex cursor-pointer items-center lg:ml-auto lg:mt-0  lg:justify-end">
             <a
               href="/edit-profile"
               target="_blank"
               rel="nofollow noreferrer"
-              className="flex h-[29px] w-[116px] items-center justify-center rounded-[5px] bg-[#000000] text-[16px] font-bold  text-white hover:bg-[#202020]"
+              className="flex h-[29px] w-[100px] items-center justify-center rounded-[5px] bg-[#000000] text-[12px] font-bold text-white hover:bg-[#202020]  lg:w-[116px] lg:text-[16px]"
             >
               <span className="">Edit Profile</span>
             </a>
           </div>
         </div>
-        <div className="mt-[25px] flex">
+        <div className="mt-[25px] lg:flex">
           <div className="flex">
-            <div className="mr-[60px] flex">
+            <div className="flex lg:mr-[60px]">
               <img
                 src={`/images/profile/clock.svg`}
                 alt="image"
@@ -412,15 +412,15 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 <span className="ml-1 font-bold text-[#303030]">{'-'}</span>
               </span>
             </div>
-            <div className="mr-[60px] flex">
+            <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
               <img
                 src={`/images/profile/coins.svg`}
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
-              <span className="flex items-center">Totalm earned: </span>{' '}
+              <span className="flex items-center">Total earned: </span>{' '}
             </div>
-            <div className="mr-[60px] flex">
+            <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
               <img
                 src={`/images/profile/people.svg`}
                 alt="image"
@@ -429,7 +429,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
               <span className="flex items-center">Job success: </span>{' '}
             </div>
           </div>
-          <div className="ml-auto flex w-[107px] justify-between">
+          <div className="mt-[15px] flex w-[107px] justify-between lg:ml-auto lg:mt-0">
             <div className="flex items-center">
               <img
                 src={`/images/profile/github.svg`}

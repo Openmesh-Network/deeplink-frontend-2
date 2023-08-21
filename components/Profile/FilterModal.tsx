@@ -177,21 +177,23 @@ const FilterModal = ({
   return (
     <section className="mt-[34px] px-[100px]">
       <div className="container px-0">
-        <div className="mt-[40px] flex text-[#000000]">
+        <div className="mt-[40px] flex overflow-x-auto text-[#000000]">
           <div
             onClick={() => {
               handleStatusSelection('open')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'open' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Open Applications</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Open Applications
+            </p>
+            <p className="w-[150px] text-[11px] font-normal lg:w-full lg:text-[14px]">
               Active applications for projects
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'open' ? 'border-b-[2px] border-[#000000]' : ''
               }`}
             >
@@ -202,16 +204,18 @@ const FilterModal = ({
             onClick={() => {
               handleStatusSelection('active')
             }}
-            className={`mx-[25px] w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`mx-[25px] cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'active' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">On-going Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              On-going Projects
+            </p>
+            <p className="text-[11px] font-normal lg:text-[14px]">
               Tasks that are currently in progress{' '}
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'active'
                   ? 'border-b-[2px] border-[#000000]'
                   : ''
@@ -224,16 +228,18 @@ const FilterModal = ({
             onClick={() => {
               handleStatusSelection('completed')
             }}
-            className={`w-1/3 cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[25px] py-[20px] hover:bg-[#F1F0F0] ${
+            className={`cursor-pointer rounded-[10px] border border-[#D4D4D4] px-[15px] py-[10px] hover:bg-[#F1F0F0] lg:w-1/3 lg:px-[25px] lg:py-[20px] ${
               tasksStatus === 'completed' ? 'bg-[#F1F0F0]' : ''
             }`}
           >
-            <p className="text-[16px] font-bold">Completed Projects</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[13px] font-bold lg:text-[16px]">
+              Completed Projects
+            </p>
+            <p className="text-[11px] font-normal lg:text-[14px]">
               Tasks that have been completed
             </p>
             <p
-              className={`mt-[9px] w-fit text-[26px] font-bold !leading-none ${
+              className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${
                 tasksStatus === 'completed'
                   ? 'border-b-[2px] border-[#000000]'
                   : ''

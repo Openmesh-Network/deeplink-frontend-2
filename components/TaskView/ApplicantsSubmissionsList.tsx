@@ -964,7 +964,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                   </div>
                 )}
 
-                <div className="mr-[52px] flex w-[225px] items-center justify-center">
+                <div className="mr-[52px] flex min-w-[80px] items-center justify-center lg:w-[225px]">
                   {formatDeadline(submission.timestamp)}
                 </div>
                 <div>
