@@ -173,7 +173,7 @@ const TaskView = (id: any) => {
 
   if (isLoading || !taskMetadata) {
     return (
-      <section className="py-16 px-32 text-black md:py-20 lg:pt-40">
+      <section className="py-16 px-[20px] text-black md:py-20 lg:px-[100px] lg:pt-40">
         <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
