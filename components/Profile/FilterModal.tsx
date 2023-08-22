@@ -175,7 +175,7 @@ const FilterModal = ({
   }, [pathname])
 
   return (
-    <section className="mt-[34px] px-[100px]">
+    <section className="mt-[55px] px-[20px] lg:mt-[34px] lg:px-[100px]">
       <div className="container px-0">
         <div className="mt-[40px] flex overflow-x-auto text-[#000000]">
           <div
@@ -211,7 +211,7 @@ const FilterModal = ({
             <p className="text-[13px] font-bold lg:text-[16px]">
               On-going Projects
             </p>
-            <p className="text-[11px] font-normal lg:text-[14px]">
+            <p className="w-[150px] text-[11px] font-normal lg:text-[14px]">
               Tasks that are currently in progress{' '}
             </p>
             <p
@@ -235,8 +235,8 @@ const FilterModal = ({
             <p className="text-[13px] font-bold lg:text-[16px]">
               Completed Projects
             </p>
-            <p className="text-[11px] font-normal lg:text-[14px]">
-              Tasks that have been completed
+            <p className="w-[150px] text-[11px]  font-normal lg:text-[14px]">
+              Tasks that have been completeds
             </p>
             <p
               className={`mt-[9px] w-fit text-[20px] font-bold !leading-none lg:text-[26px] ${

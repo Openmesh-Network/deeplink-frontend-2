@@ -10,6 +10,8 @@ import { ethers } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import { Range } from 'react-range'
 import { TextField, Autocomplete } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { Slider } from 'rsuite'
 import Decimal from 'decimal.js'
 import {
@@ -71,6 +73,9 @@ const VerifiedContributor = (id: any) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [ipfsHashTaskData, setIpfsHashTaskData] = useState<String>('')
   const [userProfile, setUserProfile] = useState<User | null>()
+
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const [howLikelyToMeetTheDeadlineValue, setHowLikelyToMeetTheDeadlineValue] =
     useState('')
@@ -452,7 +457,7 @@ const VerifiedContributor = (id: any) => {
 
   if (isLoading) {
     return (
-      <section className="px-[100px] pb-[250px] pt-[62px] text-black ">
+      <section className="px-[20px] pb-[250px] pt-[62px] text-black lg:px-[100px] ">
         <div className="container flex h-60 animate-pulse px-0 pb-12">
           <div className="mr-10 w-3/4 animate-pulse bg-[#dfdfdf]"></div>
           <div className="w-1/4 animate-pulse bg-[#dfdfdf]"></div>
@@ -472,8 +477,8 @@ const VerifiedContributor = (id: any) => {
         <div id={'forms'}>
           <HeroVerifiedContributor />
         </div>
-        <section className="px-[100px] pt-[40px]  pb-[450px]">
-          <div className="container px-[0px] text-[16px] font-bold !leading-[19px] text-[#ffffff]">
+        <section className="px-[20px] pt-[40px] pb-[200px] lg:px-[100px] lg:pb-[450px]">
+          <div className="container px-[0px] text-[12px] font-bold !leading-[19px] text-[#ffffff] lg:text-[16px]">
             <div className="flex h-[29px] w-[199px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#FBB816] hover:bg-[#f5c149]">
               <img
                 src="/images/profile/check.svg"
@@ -489,7 +494,7 @@ const VerifiedContributor = (id: any) => {
                 Pending Approval
               </a>
             </div>{' '}
-            <div className="mt-[30px] flex  text-[14px] text-[#505050]">
+            <div className="mt-[30px] flex text-[11px]  text-[#505050] lg:text-[14px]">
               Your submition is under revision!
             </div>
           </div>
@@ -508,8 +513,8 @@ const VerifiedContributor = (id: any) => {
         <div id={'forms'}>
           <HeroVerifiedContributor />
         </div>
-        <section className="px-[100px] pt-[40px]  pb-[450px]">
-          <div className="container px-[0px] text-[16px] font-bold !leading-[19px] text-[#ffffff]">
+        <section className="px-[20px] pt-[40px] pb-[100px] lg:px-[100px] lg:pt-[59px]  lg:pb-[450px]">
+          <div className="container px-[0px] font-bold !leading-[19px] text-[#ffffff] lg:text-[16px]">
             <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
               <img
                 src="/images/profile/check.svg"
@@ -529,19 +534,19 @@ const VerifiedContributor = (id: any) => {
       <div id={'forms'}>
         <HeroVerifiedContributor />
       </div>
-      <section className="px-[100px] pt-[40px]  pb-[250px]">
-        <div className="container px-[0px] text-[14px] font-medium !leading-[19px] text-[#000000]">
+      <section className="px-[20px] pt-[40px] pb-[100px] lg:px-[100px] lg:pt-[59px]  lg:pb-[250px]">
+        <div className="container px-[0px] text-[11px] font-medium !leading-[19px] text-[#000000] lg:text-[14px]">
           <form>
             <div className="">
               <div className="">
                 {githubData ? (
                   <div>
-                    <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    <span className="flex flex-row text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
                       Github
                     </span>
                     <div className="mt-[10px] flex">
                       <div className="mr-[10px]">
-                        <div className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[16px] font-medium text-[#000000] hover:text-[#272626]">
+                        <div className="flex h-[50px] w-[207px] cursor-pointer items-center  justify-center rounded-[10px] border border-[#000000] text-[12px] font-medium text-[#000000] hover:text-[#272626] lg:text-[16px]">
                           <img
                             src={githubData.avatar_url}
                             alt="image"
@@ -562,12 +567,12 @@ const VerifiedContributor = (id: any) => {
                   </div>
                 ) : (
                   <div>
-                    <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                    <span className="flex flex-row text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
                       Connect to your account for verification
                     </span>
                     <div
                       onClick={loginWithGithub}
-                      className="mt-[10px] flex h-[50px] w-[207px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#000000] p-[5px] text-[16px] font-medium text-[#000000] hover:text-[#272626]"
+                      className="mt-[10px] flex h-[50px] w-[207px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#000000] p-[5px] text-[12px] font-medium text-[#000000] hover:text-[#272626] lg:text-[16px]"
                     >
                       <img
                         src="/images/profile/github.svg"
@@ -580,17 +585,17 @@ const VerifiedContributor = (id: any) => {
                 )}
               </div>
               <div className="mt-[30px]">
-                <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                <span className="flex flex-row text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
                   Please give us some details about your qualifications to be a
                   Verified Contributor:
-                  <p className="ml-[8px] text-[12px] font-normal text-[#ff0000] ">
+                  <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] lg:text-[12px] ">
                     {errors.description?.message}
                   </p>
                 </span>
                 <textarea
                   disabled={isLoading}
                   style={{ resize: 'none' }}
-                  className="mt-[10px] h-[159px] w-[800px] rounded-[10px] border border-[#D4D4D4] bg-white px-[15px] py-[15px] text-[14px] font-normal outline-0"
+                  className="mt-[10px] h-[159px] w-full rounded-[10px] border border-[#D4D4D4] bg-white px-[15px] py-[15px] text-[11px] font-normal outline-0 lg:w-[800px] lg:text-[14px]"
                   maxLength={2000}
                   placeholder="Type here"
                   {...register('description')}
@@ -599,10 +604,10 @@ const VerifiedContributor = (id: any) => {
 
               <div className="mt-[30px]">
                 <div className="flex">
-                  <span className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                  <span className="flex flex-row text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
                     Additional links that you think may help the team to review
                   </span>
-                  <span className="ml-[9px] flex flex-row text-[10px] font-medium !leading-[17px] text-[#505050]">
+                  <span className="ml-[9px] flex flex-row text-[9px] font-medium !leading-[17px] text-[#505050] lg:text-[10px]">
                     * press "enter" to insert the item
                   </span>
                 </div>
@@ -639,7 +644,7 @@ const VerifiedContributor = (id: any) => {
                       variant="outlined"
                       id="margin-none"
                       sx={{
-                        width: '500px',
+                        width: isSmallScreen ? '280px' : '500px',
                         fieldset: {
                           height: '45px',
                           borderColor: '#D4D4D4',
@@ -656,7 +661,7 @@ const VerifiedContributor = (id: any) => {
             <div className="mt-[30px]">
               <button
                 type="submit"
-                className={`rounded-[10px] bg-[#12AD50] py-[15px] px-[25px] text-[16px] font-bold !leading-[19px]  text-white hover:bg-[#0e7a39] ${
+                className={`rounded-[10px] bg-[#12AD50] py-[10px] px-[25px] text-[12px] font-bold !leading-[19px] text-white hover:bg-[#0e7a39]  lg:py-[15px] lg:text-[16px] ${
                   isApplicationLoading ? 'bg-[#7deba9] hover:bg-[#7deba9]' : ''
                 }`}
                 //   disabled={isApplicationLoading}

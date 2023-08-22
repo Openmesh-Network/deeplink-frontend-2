@@ -25,23 +25,23 @@ const HeroVerifiedContributor = () => {
   const { address, isConnecting, isDisconnected } = useAccount()
 
   return (
-    <section className="border-b border-[#CFCFCF] px-32 pb-[51px] pt-[40px]">
+    <section className="border-b border-[#CFCFCF] px-[20px] pb-[50px] pt-[40px] lg:px-[100px] lg:pb-[70px] lg:pt-[59px]">
       <div className="container px-0">
         <div className="flex flex-wrap items-start">
           <div className="w-full 2xl:w-2/3">
             <div className="mb-1 flex">
-              <p className="text-[20px] font-bold !leading-[150%] text-[#000000]">
+              <p className="text-[16px] font-bold !leading-[150%] text-[#000000] lg:text-[20px]">
                 Become a Verified Contributor{' '}
               </p>
               <img
                 src={`/images/verified-contributor/check.svg`}
                 alt="image"
-                className={`ml-[10px] flex w-[17px] cursor-pointer items-center`}
+                className={`ml-[10px] flex w-[15px] cursor-pointer items-center lg:w-[17px]`}
               />
             </div>
           </div>
           <div className="mt-[25px] max-w-[1169px] text-[#505050]">
-            <p className="text-[14px] font-medium !leading-[17px]">
+            <p className="text-[11px] font-medium !leading-[17px] lg:text-[14px]">
               Verified contributors are set of users that have more access to
               functionalities such as approving tasks, adjusting project
               deadlines, and voting for applicants. They typically are core
@@ -49,7 +49,7 @@ const HeroVerifiedContributor = () => {
               in the fields and are vetted by the community.
             </p>
           </div>
-          <div className="mt-[25px] flex text-[14px] font-medium !leading-[17px] text-[#505050]">
+          <div className="mt-[25px] flex text-[11px] font-medium !leading-[17px] text-[#505050] lg:text-[14px]">
             <div className="mr-[20px]">
               <div className="flex">
                 <img

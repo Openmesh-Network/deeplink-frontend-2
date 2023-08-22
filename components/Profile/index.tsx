@@ -232,18 +232,21 @@ const ProfileView = (id: any) => {
         activeProjectsNumber={counting ? counting.active : 0}
         completedProjectsNumber={counting ? counting.completed : 0}
       />
-      <section className="px-[100px] pt-[40px] pb-[200px]" id={'taskStart'}>
+      <section
+        className="px-[20px] pt-[40px] pb-[100px] lg:px-[100px] lg:pb-[200px]"
+        id={'taskStart'}
+      >
         <div className="container px-0">
           <div className=" text-[#000000]">
-            <div className="flex items-start justify-between rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[16px] font-bold">
-              <div className="mr-4 flex w-[35%] items-center">
-                <p className="pr-2">Project</p>
+            <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[12px] font-bold lg:text-[16px]">
+              <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
+                <p className="pr-[55px] lg:pr-2">Project</p>
               </div>
-              <div className="flex w-[15%] items-center">
-                <p className="pr-2">Dept/Tags</p>
+              <div className="flex w-[100px] items-center lg:w-[15%]">
+                <p className="pr-[20px] lg:pr-2">Dept/Tags</p>
               </div>
-              <div className="flex w-[10%] items-center">
-                <p className="pr-[15px]">Budget</p>
+              <div className="flex w-[100px] items-center lg:w-[10%]">
+                <p className="pr-[10px] lg:pr-[15px]">Budget</p>
                 {/* <img
                   src="/images/task/vectorDown.svg"
                   alt="image"
@@ -251,7 +254,7 @@ const ProfileView = (id: any) => {
                 /> */}
                 <svg
                   onClick={handleOrderByEstimatedBudgetSelection}
-                  className={`w-[14px] cursor-pointer  ${
+                  className={`w-[10px] cursor-pointer lg:w-[14px]  ${
                     orderByEstimatedBudget === 'greater'
                       ? 'rotate-180 transform'
                       : ''
@@ -266,11 +269,11 @@ const ProfileView = (id: any) => {
                   />
                 </svg>
               </div>
-              <div className="flex w-[8%] items-center">
-                <p className="pr-[15px]">Ends</p>
+              <div className="flex w-[100px] items-center lg:w-[8%]">
+                <p className="pl-[20px] pr-[10px] lg:pr-[15px]">Ends</p>
                 <svg
                   onClick={handleOrderByDeadlineSelection}
-                  className={`w-[14px] cursor-pointer  ${
+                  className={`w-[10px] cursor-pointer lg:w-[14px]  ${
                     orderByDeadline === 'oldest' ? 'rotate-180 transform' : ''
                   }`}
                   viewBox="0 0 16 10"
