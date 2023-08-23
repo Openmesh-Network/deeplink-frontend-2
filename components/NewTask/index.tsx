@@ -18,7 +18,8 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { Link, Contributor, PreapprovedApplication } from '@/types/task'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css' // import styles
-
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -111,6 +112,9 @@ const NewTask = () => {
   const { push } = useRouter()
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
+
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const [erc20AddressReadAllowance, setErc20AddressReadAllowance] =
     useState<String>('')
@@ -873,8 +877,8 @@ const NewTask = () => {
   return (
     <>
       <HeroNewTasks />
-      <section className="mt-12 mb-24  px-32 text-[14px] font-medium !leading-[17px]  text-[#000000]">
-        <div className="container">
+      <section className="mt-12 mb-[0px] px-[20px] text-[11px]  font-medium !leading-[17px] text-[#000000] lg:mb-24 lg:px-[100px]  lg:text-[14px]">
+        <div className="container px-[0px]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>
@@ -888,7 +892,7 @@ const NewTask = () => {
                     </span>
                     <input
                       disabled={isLoading}
-                      className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                      className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                       type="text"
                       maxLength={100}
                       placeholder=""
@@ -958,7 +962,7 @@ const NewTask = () => {
                               variant="outlined"
                               id="margin-none"
                               sx={{
-                                width: '500px',
+                                width: isSmallScreen ? '280px' : '500px',
                                 fieldset: {
                                   height: '55px',
                                   borderColor: '#D4D4D4',
@@ -1011,7 +1015,7 @@ const NewTask = () => {
                           options={projectLengthOptions}
                           getOptionLabel={(option) => `${option}`}
                           sx={{
-                            width: '500px',
+                            width: isSmallScreen ? '280px' : '500px',
                             fieldset: {
                               height: '55px',
                               borderColor: '#D4D4D4',
@@ -1034,7 +1038,7 @@ const NewTask = () => {
                               variant="outlined"
                               id="margin-none"
                               sx={{
-                                width: '500px',
+                                width: isSmallScreen ? '280px' : '500px',
                                 fieldset: {
                                   height: '55px',
                                   borderColor: '#D4D4D4',
@@ -1065,12 +1069,12 @@ const NewTask = () => {
                           selected={value}
                           dateFormat="yyyy-MM-dd"
                           disabled={isLoading}
-                          className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                          className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                         />
                       )}
                     />
                   </div>
-                  <div className="mt-[30px] max-h-[500px] overflow-auto">
+                  <div className="mt-[30px] max-h-[300px] overflow-auto lg:max-h-[500px]">
                     <span className="flex flex-row">Budget</span>
                     {payments.map((pagamento, index) => (
                       <div key={index} className="payment mb-2">
@@ -1107,7 +1111,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                             />
                           </div>
                           <div className="ml-2">
@@ -1129,7 +1133,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] mr-[15px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] mr-[15px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                             />
                           </div>
                           {index === payments.length - 1 && (
@@ -1150,7 +1154,7 @@ const NewTask = () => {
                         type="button"
                         disabled={isLoading}
                         onClick={addPayments}
-                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                        className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px] font-normal  text-[#D4D4D4] hover:text-[#b6b5b5] lg:w-[500px]"
                       >
                         + Add payment
                       </button>
@@ -1195,7 +1199,7 @@ const NewTask = () => {
                           options={numberOfApplicantsOptions}
                           getOptionLabel={(option) => `${option}`}
                           sx={{
-                            width: '500px',
+                            width: isSmallScreen ? '280px' : '500px',
                             fieldset: {
                               height: '55px',
                               borderColor: '#D4D4D4',
@@ -1218,7 +1222,7 @@ const NewTask = () => {
                               variant="outlined"
                               id="margin-none"
                               sx={{
-                                width: '500px',
+                                width: isSmallScreen ? '280px' : '500px',
                                 fieldset: {
                                   height: '55px',
                                   borderColor: '#D4D4D4',
@@ -1233,7 +1237,7 @@ const NewTask = () => {
                     />
                   </div>
 
-                  <div className="mt-[30px] max-h-[500px]  overflow-auto">
+                  <div className="mt-[30px] max-h-[250px] overflow-auto  lg:max-h-[500px]">
                     <span className="flex flex-row">
                       Add pre-approved applicants (optional)
                     </span>
@@ -1272,7 +1276,7 @@ const NewTask = () => {
                                   e.target.value,
                                 )
                               }
-                              className="mt-[8px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                              className="mt-[8px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                             />
                           </div>
                           {/* <div className="ml-2">
@@ -1302,7 +1306,7 @@ const NewTask = () => {
                               type="button"
                               disabled={isLoading}
                               onClick={addContributors}
-                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                              className="mt-[28px] h-[50px] w-[129px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[11px] font-normal  text-[#D4D4D4] hover:text-[#b6b5b5] lg:text-[14px]"
                             >
                               + Add more
                             </button>
@@ -1315,7 +1319,7 @@ const NewTask = () => {
                         type="button"
                         disabled={isLoading}
                         onClick={addContributors}
-                        className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px]  font-normal text-[#D4D4D4] hover:text-[#b6b5b5]"
+                        className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-2 text-[14px] font-normal  text-[#D4D4D4] hover:text-[#b6b5b5] lg:w-[500px]"
                       >
                         + Add contributor
                       </button>
@@ -1330,7 +1334,7 @@ const NewTask = () => {
                       value={editorHtml}
                       onChange={handleChange}
                       // disabled={isLoading}
-                      className="mt-2 min-h-[300px] w-[900px] rounded-md border border-[#D4D4D4] bg-white text-base font-normal outline-0"
+                      className="mt-2 min-h-[300px] w-[280px] rounded-md border border-[#D4D4D4] bg-white text-base font-normal outline-0 lg:w-[900px]"
                       // maxLength={5000}
                       placeholder="Type here"
                     />
@@ -1375,7 +1379,7 @@ const NewTask = () => {
                         options={departamentOptions}
                         getOptionLabel={(option) => `${option}`}
                         sx={{
-                          width: '500px',
+                          width: isSmallScreen ? '280px' : '500px',
                           fieldset: {
                             height: '55px',
                             borderColor: '#D4D4D4',
@@ -1398,7 +1402,7 @@ const NewTask = () => {
                             variant="outlined"
                             id="margin-none"
                             sx={{
-                              width: '500px',
+                              width: isSmallScreen ? '280px' : '500px',
                               fieldset: {
                                 height: '55px',
                                 borderColor: '#D4D4D4',
@@ -1413,11 +1417,11 @@ const NewTask = () => {
                   />
                 </div>
                 <div className="mt-[30px]">
-                  <p className="flex flex-row text-[14px] font-medium !leading-[17px] text-[#000000]">
+                  <p className="flex flex-row text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
                     Funding
                   </p>
                   <div className="mt-[10px]">
-                    <label className="text-[14px] text-[#C6C6C6]">
+                    <label className="text-[11px] text-[#C6C6C6] lg:text-[14px]">
                       <Checkbox
                         checked={fundingView}
                         onChange={toggleFundingView}
@@ -1442,7 +1446,7 @@ const NewTask = () => {
                             selected={value}
                             dateFormat="yyyy-MM-dd"
                             disabled={isLoading}
-                            className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                            className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                           />
                         )}
                       />
@@ -1462,7 +1466,7 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('githubLink')}
                     onChange={(e) => handleLink(0, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                   />
                 </div>
                 <div className="mt-[30px]">
@@ -1478,7 +1482,7 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('calendarLink')}
                     onChange={(e) => handleLink(1, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                   />
                 </div>
                 <div className="mt-[30px]">
@@ -1494,16 +1498,16 @@ const NewTask = () => {
                     maxLength={200}
                     {...register('reachOutLink')}
                     onChange={(e) => handleLink(2, 'url', e.target.value)}
-                    className="mt-[10px] h-[50px] w-[500px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0"
+                    className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
                   />
                 </div>
               </div>
             </div>
             {isLoading ? (
-              <div className="mt-[30px] flex pb-60">
+              <div className="mt-[30px] flex pb-[10px] lg:pb-60">
                 <button
                   disabled={true}
-                  className=" mr-[15px] h-[50px] w-[250px] rounded-[10px] bg-[#53c781] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#53c781]"
+                  className=" mr-[15px] h-[50px] w-[250px] rounded-[10px] bg-[#53c781] py-[12px] px-[25px] text-[12px] font-bold text-white  hover:bg-[#53c781] lg:text-[16px]"
                   onClick={handleSubmit(onSubmit)}
                 >
                   <span className="">Submit for Review</span>
@@ -1524,7 +1528,7 @@ const NewTask = () => {
               <div className="mt-[30px] pb-60">
                 <button
                   type="submit"
-                  className=" h-[50px] w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[16px] font-bold  text-white hover:bg-[#0e7a39]"
+                  className=" h-[50px] w-[250px] rounded-[10px] bg-[#12AD50] py-[12px] px-[25px] text-[12px] font-bold text-white  hover:bg-[#0e7a39] lg:text-[16px]"
                   onClick={handleSubmit(onSubmit)}
                 >
                   <span className="">Submit for Review</span>
