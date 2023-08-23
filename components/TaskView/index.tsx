@@ -218,7 +218,7 @@ const TaskView = (id: any) => {
                   </div>
                 </div>
               )}
-              {taskMetadata && (
+              {taskMetadata.hasSpamLink && (
                 <div className="-mt-[60px] mb-[40px] flex w-full rounded-[10px] bg-[#FFF6E0] py-[30px] px-[63px]">
                   <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
                     <img
