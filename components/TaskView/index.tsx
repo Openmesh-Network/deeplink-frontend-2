@@ -423,6 +423,8 @@ const TaskView = (id: any) => {
                   budget={taskMetadata.estimatedBudget}
                   address={address}
                   taskExecutor={taskMetadata.executor}
+                  taskCreator={taskMetadata.creator}
+                  taskManager={taskMetadata.manager}
                   contributorsAllowed={contributorsAllowed}
                   status={taskMetadata.status}
                 />

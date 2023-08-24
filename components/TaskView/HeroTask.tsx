@@ -131,7 +131,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   >
                     {task.title}
                   </h3>
-                  {task.executor === address && (
+                  {task.manager === address && (
                     <a
                       target="_blank"
                       rel="noopener noreferrer"

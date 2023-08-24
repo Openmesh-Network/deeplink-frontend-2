@@ -40,11 +40,13 @@ type ApplicantsSubmissionsListProps = {
   status: string
   address: string
   taskExecutor: string
+  taskCreator: string
+  taskManager: string | null
   contributorsAllowed: string[]
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, taskCreator, taskManager, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
@@ -502,6 +504,8 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
     console.log('recebi submission')
     console.log(dataSubmission)
     getIfDeadlineIsEnough()
+    console.log('the task executor')
+    console.log(taskExecutor)
     handleUpdate()
   }, [dataApplication])
 
@@ -776,7 +780,8 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
 
                   {status === 'open' &&
                     !application.accepted &&
-                    taskExecutor === address && (
+                    address &&
+                    taskManager === address && (
                       <div className="mt-[11px] flex">
                         <a
                           // href={`/task/${task.id}`}
@@ -1001,7 +1006,8 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
 
                   {status === 'active' &&
                     !submission.accepted &&
-                    taskExecutor === address && (
+                    address &&
+                    taskManager === address && (
                       <div className="mt-[11px] flex">
                         <a
                           href={`/review-submission/${submission.id}`}

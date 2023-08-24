@@ -806,7 +806,7 @@ const EditTask = (id: any) => {
     )
   }
 
-  if (taskMetadata && address !== taskMetadata.executor) {
+  if (taskMetadata && address !== taskMetadata.manager) {
     return (
       <div className="pb-[500px]">
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">

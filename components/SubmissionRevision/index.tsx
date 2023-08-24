@@ -29,6 +29,7 @@ import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import HeroSubmission from './HeroSubmission'
+import { Console } from 'console'
 
 type SubmissionRevisionForm = {
   description: string
@@ -349,10 +350,15 @@ const SubmissionRevision = (id: any) => {
     )
   }
 
-  if (address && taskMetadata && taskMetadata.executor !== address) {
+  if (address && taskMetadata && taskMetadata.manager !== address) {
     return (
       <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
+        <div
+          onClick={() => {
+            console.log(taskMetadata)
+          }}
+          className="mt-[60px] flex items-center justify-center text-[#000000]"
+        >
           You are not allowed to review this submission
         </div>
       </div>

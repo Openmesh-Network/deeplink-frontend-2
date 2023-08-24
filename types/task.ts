@@ -96,6 +96,8 @@ export type TasksOverview = {
   payments: Payment[]
   estimatedBudget: string
   executor: string
+  creator: string
+  manager: string
   contributors: ContributorInfo[] | null
   Application: Application[] | null
   Submission: Submission[] | null
