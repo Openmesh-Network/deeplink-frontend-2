@@ -846,7 +846,7 @@ const NewTask = () => {
           response.data.departaments.forEach((departament) => {
             departamentsNameList.push(departament.name)
             departamentsToAddress[departament.name] =
-              departament.addressTokenListGovernance
+              departament.addressTaskDrafts
           })
 
           setDepartamentOptionsToAddress(departamentsToAddress)
