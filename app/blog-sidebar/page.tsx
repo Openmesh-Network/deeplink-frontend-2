@@ -1,8 +1,8 @@
-import RelatedPost from "@/components/Blog/RelatedPost";
-import SharePost from "@/components/Blog/SharePost";
-import TagButton from "@/components/Blog/TagButton";
-import NewsLatterBox from "@/components/Contact/NewsLatterBox";
-import Image from "next/image";
+import RelatedPost from '@/components/Blog/RelatedPost'
+import SharePost from '@/components/Blog/SharePost'
+import TagButton from '@/components/Blog/TagButton'
+import NewsLatterBox from '@/components/Contact/NewsLatterBox'
+import Image from 'next/image'
 
 const BlogSidebarPage = () => {
   return (
@@ -127,8 +127,8 @@ const BlogSidebarPage = () => {
                     aliqua. Quis enim lobortis scelerisque fermentum. Neque
                     sodales ut etiam sit amet. Ligula ullamcorper
                     <strong className="text-primary dark:text-white">
-                      {" "}
-                      malesuada{" "}
+                      {' '}
+                      malesuada{' '}
                     </strong>
                     proin libero nunc consequat interdum varius. Quam
                     pellentesque nec nam aliquam sem et tortor consequat.
@@ -137,8 +137,8 @@ const BlogSidebarPage = () => {
                   <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Semper auctor neque vitae tempus quam pellentesque nec.
                     <span className="text-primary underline dark:text-white">
-                      {" "}
-                      Amet dictum sit amet justo{" "}
+                      {' '}
+                      Amet dictum sit amet justo{' '}
                     </span>
                     donec enim diam. Varius sit amet mattis vulputate enim nulla
                     aliquet porttitor. Odio pellentesque diam volutpat commodo
@@ -242,7 +242,7 @@ const BlogSidebarPage = () => {
                         />
                         <mask
                           id="mask0_111:596"
-                          style={{ maskType: "alpha" }}
+                          style={{ maskType: 'alpha' }}
                           maskUnits="userSpaceOnUse"
                           x="0"
                           y="0"
@@ -463,7 +463,7 @@ const BlogSidebarPage = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default BlogSidebarPage;
+export default BlogSidebarPage
