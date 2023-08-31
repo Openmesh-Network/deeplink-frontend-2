@@ -22,7 +22,11 @@ const BlogSidebarPage = () => {
                       <div className="mr-4">
                         <div className="relative h-10 w-10 overflow-hidden rounded-full">
                           <Image
-                            src="/images/blog/author-02.png"
+                            src={`${
+                              process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                                ? process.env.NEXT_PUBLIC_BASE_PATH
+                                : ''
+                            }/images/blog/author-02.png`}
                             alt="author"
                             fill
                           />
@@ -106,7 +110,11 @@ const BlogSidebarPage = () => {
                   <div className="mb-10 w-full overflow-hidden rounded">
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                       <Image
-                        src="/images/blog/blog-details-01.jpg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/blog/blog-details-01.jpg`}
                         alt="image"
                         fill
                         className="h-full w-full object-cover object-center"

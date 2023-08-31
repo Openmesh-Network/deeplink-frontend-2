@@ -161,7 +161,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                 <div className="mt-[25px] flex text-[12px] font-medium text-[#505050] lg:text-[16px]">
                   <div className="mr-[22px] flex">
                     <img
-                      src="/images/task/coins.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/coins.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -177,9 +181,13 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     {task.payments.map((payment, index) => (
                       <div key={index} className="flex">
                         <img
-                          src={`/images/tokens/${getTokenLogo(
+                          src={`${
+                            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                              ? process.env.NEXT_PUBLIC_BASE_PATH
+                              : ''
+                          }${`/images/tokens/${getTokenLogo(
                             payment.tokenContract,
-                          )}.svg`}
+                          )}.svg`}`}
                           alt="image"
                           className={`mr-[1px] w-[22px]`}
                         />
@@ -204,7 +212,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                 <div className="mt-[25px] text-[12px] font-medium text-[#505050] lg:flex lg:text-[16px]">
                   <div className="mr-[50px] flex">
                     <img
-                      src="/images/task/people.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/people.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -217,7 +229,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   </div>
                   <div className="mr-[50px] mt-[25px] flex lg:mt-0">
                     <img
-                      src="/images/task/clock.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/clock.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -236,7 +252,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
-                        src="/images/task/github-logo.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/github-logo.svg`}
                         alt="image"
                         className={`w-[22px]`}
                       />
@@ -248,7 +268,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
-                        src="/images/task/share-logo.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/share-logo.svg`}
                         alt="image"
                         className={`w-[22px]`}
                       />
@@ -262,7 +286,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   <div className="flex !leading-[150%]">Status:</div>
                   <div className="mt-[6px] flex">
                     <img
-                      src={`/images/task/${taskStateCircle[task.status]}`}
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }${`/images/task/${taskStateCircle[task.status]}`}`}
                       alt="image"
                       className={`mr-[10px] w-[20px]`}
                     />

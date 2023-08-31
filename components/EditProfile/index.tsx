@@ -447,7 +447,11 @@ const EditProfile = (id: any) => {
                 <label className="">
                   <div className="">
                     <img
-                      src={`/images/edit-profile/user-logo.svg`}
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/edit-profile/user-logo.svg`}
                       alt="image"
                       className={`mr-[25px] w-[107px] cursor-pointer`}
                     />

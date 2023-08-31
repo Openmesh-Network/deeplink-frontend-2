@@ -199,7 +199,11 @@ const HeroTask = ({
                 <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
                   <div className="mr-[22px] flex">
                     <img
-                      src="/images/task/coins.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/coins.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -215,9 +219,13 @@ const HeroTask = ({
                     {task.payments.map((payment, index) => (
                       <div key={index} className="flex">
                         <img
-                          src={`/images/tokens/${getTokenLogo(
+                          src={`${
+                            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                              ? process.env.NEXT_PUBLIC_BASE_PATH
+                              : ''
+                          }${`/images/tokens/${getTokenLogo(
                             payment.tokenContract,
-                          )}.svg`}
+                          )}.svg`}`}
                           alt="image"
                           className={`mr-[1px] w-[22px]`}
                         />
@@ -242,7 +250,11 @@ const HeroTask = ({
                 <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
                   <div className="mr-[50px] flex">
                     <img
-                      src="/images/task/people.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/people.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -255,7 +267,11 @@ const HeroTask = ({
                   </div>
                   <div className="mr-[50px] flex">
                     <img
-                      src="/images/task/clock.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/clock.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -274,7 +290,11 @@ const HeroTask = ({
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
-                        src="/images/task/github-logo.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/github-logo.svg`}
                         alt="image"
                         className={`w-[22px]`}
                       />
@@ -286,7 +306,11 @@ const HeroTask = ({
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
-                        src="/images/task/share-logo.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/share-logo.svg`}
                         alt="image"
                         className={`w-[22px]`}
                       />
@@ -300,7 +324,11 @@ const HeroTask = ({
                   <div className="flex !leading-[150%]">Status:</div>
                   <div className="mt-[6px] flex">
                     <img
-                      src={`/images/task/${taskStateCircle[task.status]}`}
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }${`/images/task/${taskStateCircle[task.status]}`}`}
                       alt="image"
                       className={`mr-[10px] w-[20px]`}
                     />

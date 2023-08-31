@@ -97,7 +97,11 @@ const HeroTasks = () => {
                   $151,967
                 </p>
                 <img
-                  src="/images/tokens/tokensLogo.svg"
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/tokens/tokensLogo.svg`}
                   alt="image"
                   className={`mt-[8px] w-[60px] lg:ml-auto`}
                 />

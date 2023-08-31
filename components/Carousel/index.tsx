@@ -5,7 +5,11 @@ import { UserOutlined } from '@ant-design/icons'
 function EmblaCarousel() {
   const slides = [
     {
-      src: '/images/carousel/blockchainLogo.svg',
+      src: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/carousel/blockchainLogo.svg`,
       alt: 'Bitcoin Logo',
       text: 'Task title',
       description:
@@ -14,7 +18,11 @@ function EmblaCarousel() {
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
     },
     {
-      src: '/images/carousel/bitcoinLogo.svg',
+      src: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/carousel/bitcoinLogo.svg`,
       alt: 'Bitcoin Logo',
       text: 'Task title',
       description:
@@ -23,7 +31,11 @@ function EmblaCarousel() {
       submitter: '0x1f28763e7579F76620aAB20063534CF3599e2b4c',
     },
     {
-      src: '/images/carousel/blockchainLogo.svg',
+      src: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/carousel/blockchainLogo.svg`,
       alt: 'Bitcoin Logo',
       text: 'Task title',
       description:

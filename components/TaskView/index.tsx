@@ -199,7 +199,11 @@ const TaskView = (id: any) => {
                   <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
                     <img
                       alt="warning"
-                      src="/images/task/warning.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/warning.svg`}
                       className=""
                     ></img>
                   </div>
@@ -223,7 +227,11 @@ const TaskView = (id: any) => {
                   <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
                     <img
                       alt="warning"
-                      src="/images/task/warning.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/warning.svg`}
                       className=""
                     ></img>
                   </div>
@@ -247,7 +255,11 @@ const TaskView = (id: any) => {
                   <div className="mr-[25px] mb-0 flex w-[35px] flex-none items-center">
                     <img
                       alt="warning"
-                      src="/images/task/warning.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/warning.svg`}
                       className=""
                     ></img>
                   </div>

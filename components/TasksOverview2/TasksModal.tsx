@@ -119,7 +119,11 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
               </p>
               <p>{`(`}</p>
               <img
-                src="/images/tokens/usd-coin-usdc-logo.svg"
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/tokens/usd-coin-usdc-logo.svg`}
                 alt="image"
                 className={`w-[12px] lg:w-[14px]`}
               />

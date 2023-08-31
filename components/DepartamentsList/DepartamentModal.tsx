@@ -11,10 +11,26 @@ const DepartamentModal = ({ departament }) => {
     // Adicione quaisquer outros ícones que você pode usar aqui
   }
   const logoMapping = {
-    USDC: '/images/tokens/usd-coin-usdc-logo.svg',
-    USDT: '/images/tokens/tether-usdt-logo.svg',
-    LINK: '/images/tokens/chainlink-link-logo.svg',
-    ERC20: '/images/tokens/generic-erc20.svg',
+    USDC: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? process.env.NEXT_PUBLIC_BASE_PATH
+        : ''
+    }/images/tokens/usd-coin-usdc-logo.svg`,
+    USDT: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? process.env.NEXT_PUBLIC_BASE_PATH
+        : ''
+    }/images/tokens/tether-usdt-logo.svg`,
+    LINK: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? process.env.NEXT_PUBLIC_BASE_PATH
+        : ''
+    }/images/tokens/chainlink-link-logo.svg`,
+    ERC20: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? process.env.NEXT_PUBLIC_BASE_PATH
+        : ''
+    }/images/tokens/generic-erc20.svg`,
   }
   return (
     <div className="border border-[#e2e2e2] px-8 py-10 text-[#000000] shadow-2xl">

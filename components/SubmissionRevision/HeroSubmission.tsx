@@ -69,12 +69,24 @@ const HeroSubmission = ({
     if (submission) {
       if (submission.reviewed) {
         if (submission.accepted) {
-          return `/images/task/circle-green-task-hero.svg`
+          return `${
+            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+              ? process.env.NEXT_PUBLIC_BASE_PATH
+              : ''
+          }/images/task/circle-green-task-hero.svg`
         } else {
-          return `/images/task/circle-red-task-hero.svg`
+          return `${
+            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+              ? process.env.NEXT_PUBLIC_BASE_PATH
+              : ''
+          }/images/task/circle-red-task-hero.svg`
         }
       } else {
-        return `/images/task/circle-yellow-task-hero.svg`
+        return `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? process.env.NEXT_PUBLIC_BASE_PATH
+            : ''
+        }/images/task/circle-yellow-task-hero.svg`
       }
     }
   }
@@ -190,7 +202,11 @@ const HeroSubmission = ({
                 <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
                   <div className="mr-[22px] flex">
                     <img
-                      src="/images/task/clock.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/clock.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />
@@ -203,7 +219,11 @@ const HeroSubmission = ({
                 <div className="mt-[25px] flex text-[16px] font-medium text-[#505050]">
                   <div className="mr-[50px] flex">
                     <img
-                      src="/images/task/people.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/people.svg`}
                       alt="image"
                       className={`mr-[10px] w-[22px]`}
                     />

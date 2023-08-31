@@ -123,7 +123,11 @@ const TaskView = (id: any) => {
                   <p>Available funds</p>{' '}
                   <div className="ml-4 flex items-start justify-start px-2">
                     <img
-                      src="/images/tokens/usd-coin-usdc-logo.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/tokens/usd-coin-usdc-logo.svg`}
                       alt="image"
                       className={`w-[22px]`}
                     />
@@ -145,7 +149,11 @@ const TaskView = (id: any) => {
                     <div className="flex justify-end">
                       {' '}
                       <img
-                        src="/images/task/bola-teste.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/bola-teste.svg`}
                         alt="image"
                         className={`w-[34px]`}
                       />
@@ -256,7 +264,11 @@ const TaskView = (id: any) => {
                       Arbitrium, xDai, Harmony in the pipeline.
                     </p>
                     <img
-                      src="/images/task/tech-fluxograma.png"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/task/tech-fluxograma.png`}
                       alt="image"
                       className={`mt-16 w-4/5`}
                     />
@@ -297,7 +309,11 @@ const TaskView = (id: any) => {
                       rel="nofollow noreferrer"
                     >
                       <img
-                        src="/images/task/calendar-google-2.png"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/task/calendar-google-2.png`}
                         alt="image"
                         className={`mt-4 ml-1 w-[70px] hover:z-20 hover:scale-110`}
                       />
@@ -314,7 +330,11 @@ const TaskView = (id: any) => {
                         rel="nofollow noreferrer"
                       >
                         <img
-                          src="/images/task/discord.svg"
+                          src={`${
+                            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                              ? process.env.NEXT_PUBLIC_BASE_PATH
+                              : ''
+                          }/images/task/discord.svg`}
                           alt="image"
                           className={`mt-4 ml-1 w-[40px] hover:z-20 hover:scale-110`}
                         />

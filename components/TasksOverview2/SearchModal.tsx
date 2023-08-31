@@ -56,7 +56,11 @@ const SearchModal = ({
       tags: ['Data', 'Graph', 'LLM', 'Solidity', 'Rust', 'Contracts'],
       funding: '330,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: '/images/departaments/paper.svg',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/paper.svg`,
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
@@ -64,7 +68,11 @@ const SearchModal = ({
       tags: ['Data', 'Graph', 'LLM'],
       funding: '11,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: '/images/departaments/data.svg',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/data.svg`,
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
@@ -72,7 +80,11 @@ const SearchModal = ({
       tags: ['Web', 'Mobile', 'Desktop'],
       funding: '51,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: '/images/departaments/pointer.svg',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/pointer.svg`,
       imgClassName: 'mr-1 mb-1 w-[13px]',
     },
     {
@@ -80,7 +92,11 @@ const SearchModal = ({
       tags: ['Solidity', 'Rust', 'Contracts'],
       funding: '89,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: '/images/departaments/blockchain.svg',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/blockchain.svg`,
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
@@ -88,7 +104,11 @@ const SearchModal = ({
       tags: ['DevOps', 'AWS', 'Kubernets'],
       funding: '151,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: '/images/departaments/cloud.svg',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/cloud.svg`,
       imgClassName: 'mr-1 mb-1 w-[19px]',
     },
   ]
@@ -223,7 +243,11 @@ const SearchModal = ({
             }`}
           >
             <img
-              src="/images/departaments/paper.svg"
+              src={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? process.env.NEXT_PUBLIC_BASE_PATH
+                  : ''
+              }/images/departaments/paper.svg`}
               alt="image"
               className={`mr-1 mb-1 w-[19px]`}
             />
@@ -303,7 +327,11 @@ const SearchModal = ({
                     ${departamentSelected.funding}
                   </p>
                   <img
-                    src="/images/tokens/tokens-logo-2.svg"
+                    src={`${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? process.env.NEXT_PUBLIC_BASE_PATH
+                        : ''
+                    }/images/tokens/tokens-logo-2.svg`}
                     alt="image"
                     className={`w-[45px] lg:w-[72px]`}
                   />

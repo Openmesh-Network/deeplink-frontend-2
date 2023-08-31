@@ -481,7 +481,11 @@ const VerifiedContributor = (id: any) => {
           <div className="container px-[0px] text-[12px] font-bold !leading-[19px] text-[#ffffff] lg:text-[16px]">
             <div className="flex h-[29px] w-[199px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#FBB816] hover:bg-[#f5c149]">
               <img
-                src="/images/profile/check.svg"
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/check.svg`}
                 alt="image"
                 className={`mr-[10px] w-[20px] `}
               />
@@ -517,7 +521,11 @@ const VerifiedContributor = (id: any) => {
           <div className="container px-[0px] font-bold !leading-[19px] text-[#ffffff] lg:text-[16px]">
             <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
               <img
-                src="/images/profile/check.svg"
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/check.svg`}
                 alt="image"
                 className={`mr-[10px] w-[20px] `}
               />
@@ -575,7 +583,11 @@ const VerifiedContributor = (id: any) => {
                       className="mt-[10px] flex h-[50px] w-[207px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#000000] p-[5px] text-[12px] font-medium text-[#000000] hover:text-[#272626] lg:text-[16px]"
                     >
                       <img
-                        src="/images/profile/github.svg"
+                        src={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? process.env.NEXT_PUBLIC_BASE_PATH
+                            : ''
+                        }/images/profile/github.svg`}
                         alt="image"
                         className={`mr-[10px] w-[20px]`}
                       />

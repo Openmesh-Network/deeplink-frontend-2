@@ -175,7 +175,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
               className="flex cursor-pointer items-center"
             >
               <img
-                src={`/images/profile/copy.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/copy.svg`}
                 alt="image"
                 className={`w-[17.5px]`}
               />
@@ -186,7 +190,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
               <div className="ml-auto flex cursor-pointer items-center  justify-end">
                 <div className="flex h-[29px] w-[217px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#12AD50] hover:bg-[#20c964]">
                   <img
-                    src="/images/profile/check.svg"
+                    src={`${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? process.env.NEXT_PUBLIC_BASE_PATH
+                        : ''
+                    }/images/profile/check.svg`}
                     alt="image"
                     className={`mr-[10px] w-[20px] `}
                   />
@@ -206,7 +214,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                 <div className="ml-auto flex cursor-pointer items-center  justify-end">
                   <div className="flex h-[29px] w-[199px] cursor-pointer items-center  justify-center rounded-[5px] bg-[#FBB816] hover:bg-[#f5c149]">
                     <img
-                      src="/images/profile/check.svg"
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/profile/check.svg`}
                       alt="image"
                       className={`mr-[10px] w-[20px] `}
                     />
@@ -251,7 +263,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             <div className="lg:flex">
               <div className="flex lg:mr-[60px]">
                 <img
-                  src={`/images/profile/clock.svg`}
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/profile/clock.svg`}
                   alt="image"
                   className={`mr-2 w-[18px]`}
                 />
@@ -264,7 +280,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
               </div>
               <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
                 <img
-                  src={`/images/profile/coins.svg`}
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/profile/coins.svg`}
                   alt="image"
                   className={`mr-2 w-[18px]`}
                 />
@@ -279,7 +299,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
               </div>
               <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
                 <img
-                  src={`/images/profile/people.svg`}
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/profile/people.svg`}
                   alt="image"
                   className={`mr-2 w-[18px]`}
                 />
@@ -302,7 +326,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                     rel="nofollow noreferrer"
                   >
                     <img
-                      src={`/images/profile/github.svg`}
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/profile/github.svg`}
                       alt="image"
                       className={`w-[24.2px]`}
                     />
@@ -317,7 +345,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                     rel="nofollow noreferrer"
                   >
                     <img
-                      src={`/images/profile/twitter.svg`}
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/profile/twitter.svg`}
                       alt="image"
                       className={`w-[25px]`}
                     />
@@ -368,7 +400,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             className="flex cursor-pointer items-center"
           >
             <img
-              src={`/images/profile/copy.svg`}
+              src={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? process.env.NEXT_PUBLIC_BASE_PATH
+                  : ''
+              }/images/profile/copy.svg`}
               alt="image"
               className={`w-[17.5px]`}
             />
@@ -403,7 +439,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
           <div className="flex">
             <div className="flex lg:mr-[60px]">
               <img
-                src={`/images/profile/clock.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/clock.svg`}
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
@@ -414,7 +454,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
               <img
-                src={`/images/profile/coins.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/coins.svg`}
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
@@ -422,7 +466,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div className="mt-[15px] flex lg:mr-[60px] lg:mt-0">
               <img
-                src={`/images/profile/people.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/people.svg`}
                 alt="image"
                 className={`mr-2 w-[18px]`}
               />
@@ -432,21 +480,33 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
           <div className="mt-[15px] flex w-[107px] justify-between lg:ml-auto lg:mt-0">
             <div className="flex items-center">
               <img
-                src={`/images/profile/github.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/github.svg`}
                 alt="image"
                 className={`w-[24.2px]`}
               />
             </div>
             <div className="flex items-center">
               <img
-                src={`/images/profile/twitter.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/twitter.svg`}
                 alt="image"
                 className={`w-[25px]`}
               />
             </div>
             <div className="flex items-center">
               <img
-                src={`/images/profile/share.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/profile/share.svg`}
                 alt="image"
                 className={`w-[21.88px]`}
               />

@@ -34,7 +34,11 @@ const HeroVerifiedContributor = () => {
                 Become a Verified Contributor{' '}
               </p>
               <img
-                src={`/images/verified-contributor/check.svg`}
+                src={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? process.env.NEXT_PUBLIC_BASE_PATH
+                    : ''
+                }/images/verified-contributor/check.svg`}
                 alt="image"
                 className={`ml-[10px] flex w-[15px] cursor-pointer items-center lg:w-[17px]`}
               />
@@ -53,7 +57,11 @@ const HeroVerifiedContributor = () => {
             <div className="mr-[20px]">
               <div className="flex">
                 <img
-                  src="/images/verified-contributor/check-3.svg"
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/verified-contributor/check-3.svg`}
                   alt="image"
                   className={`mr-[4px] w-[12px]`}
                 />
@@ -61,7 +69,11 @@ const HeroVerifiedContributor = () => {
               </div>
               <div className="mt-[15px] flex">
                 <img
-                  src="/images/verified-contributor/check-3.svg"
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/verified-contributor/check-3.svg`}
                   alt="image"
                   className={`mr-[4px] w-[12px]`}
                 />
@@ -71,7 +83,11 @@ const HeroVerifiedContributor = () => {
             <div>
               <div className="flex">
                 <img
-                  src="/images/verified-contributor/check-3.svg"
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/verified-contributor/check-3.svg`}
                   alt="image"
                   className={`mr-[4px] w-[12px]`}
                 />
@@ -79,7 +95,11 @@ const HeroVerifiedContributor = () => {
               </div>
               <div className="mt-[15px] flex">
                 <img
-                  src="/images/verified-contributor/check-3.svg"
+                  src={`${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? process.env.NEXT_PUBLIC_BASE_PATH
+                      : ''
+                  }/images/verified-contributor/check-3.svg`}
                   alt="image"
                   className={`mr-[4px] w-[12px]`}
                 />
