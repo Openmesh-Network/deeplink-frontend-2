@@ -394,7 +394,13 @@ const VerifiedContributor = (id: any) => {
       toast.success('Application submited succesfully!')
       setIsApplicationLoading(false)
       await new Promise((resolve) => setTimeout(resolve, 2500))
-      push(`/profile/${address}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/profile/${address}`
+            : `/profile/${address}`
+        }`,
+      )
     } catch (err) {
       toast.error('Error during the application submited')
       console.log(err)
@@ -490,7 +496,11 @@ const VerifiedContributor = (id: any) => {
                 className={`mr-[10px] w-[20px] `}
               />
               <a
-                href="/verified-contributor"
+                href={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? `/openrd/verified-contributor`
+                    : '/verified-contributor'
+                }`}
                 target="_blank"
                 rel="nofollow noreferrer"
                 className=" "

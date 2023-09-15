@@ -69,8 +69,16 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
           <a
             href={
               !task.isDraft
-                ? `/task/${task.id}`
-                : `/task-draft/${task.internalId}`
+                ? `${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? `/openrd/task/${task.id}`
+                      : `/task/${task.id}`
+                  }`
+                : `${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? `/openrd/task-draft/${task.internalId}`
+                      : `/task-draft/${task.internalId}`
+                  }`
             }
             title={task.title}
             className="overflow-hidden pb-2 font-bold text-[#0354EC]"
@@ -138,8 +146,16 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
           <a
             href={
               !task.isDraft
-                ? `/task/${task.id}`
-                : `/task-draft/${task.internalId}`
+                ? `${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? `/openrd/task/${task.id}`
+                      : `/task/${task.id}`
+                  }`
+                : `${
+                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      ? `/openrd/task-draft/${task.internalId}`
+                      : `/task-draft/${task.internalId}`
+                  }`
             }
             className="ml-auto cursor-pointer rounded-[5px] border border-[#0354EC] bg-white py-[8px] px-[15px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:py-[10px] lg:px-[22px] lg:text-[16px]"
           >

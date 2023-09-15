@@ -56,7 +56,11 @@ const DepartamentModal = ({ departament }) => {
           {tasks.map((task, index) => (
             <div key={index}>
               <Link
-                href={`/task/${task.id}`}
+                href={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? `/openrd/task/${task.id}`
+                    : `/task/${task.id}`
+                }`}
                 className="text-sm font-light text-[#000000] hover:text-primary"
               >
                 - {task.title}

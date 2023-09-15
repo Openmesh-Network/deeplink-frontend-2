@@ -135,7 +135,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`/edit-task/${task.id}`}
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/edit-task/${task.id}`
+                          : `/edit-task/${task.id}`
+                      }`}
                       className="flex h-fit cursor-pointer items-center justify-center border-b-[1px] border-[#505050] pt-[6px] text-[11px] font-medium !leading-[19px] text-[#505050] lg:text-[14px]"
                     >
                       Edit task
@@ -310,7 +314,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`/application/${task.id}`}
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/application/${task.id}`
+                          : `/application/${task.id}`
+                      }`}
                       className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] text-[12px] font-bold text-white hover:bg-[#0b9040] lg:text-[16px] "
                     >
                       {'Apply now'}
@@ -325,7 +333,11 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`/new-submission/${task.id}`}
+                        href={`${
+                          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                            ? `/openrd/new-submission/${task.id}`
+                            : `/new-submission/${task.id}`
+                        }`}
                         className="flex h-[43px] w-[163px] cursor-pointer items-center justify-center rounded-[10px] bg-[#0354EC] text-[12px] font-bold text-white hover:bg-[#5080da] lg:text-[16px] "
                       >
                         {'Create submission'}

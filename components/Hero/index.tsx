@@ -7,7 +7,17 @@ import { useRouter } from 'next/navigation'
 const Hero = () => {
   const { push } = useRouter()
 
-  useEffect(() => push('/tasks'), [])
+  useEffect(
+    () =>
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/tasks`
+            : `/tasks`
+        }`,
+      ),
+    [],
+  )
 
   return <section className="py-16 px-32 md:py-20 lg:pt-40"></section>
 }

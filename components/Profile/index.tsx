@@ -211,7 +211,13 @@ const ProfileView = (id: any) => {
       console.log('search for the task info on blockchain')
       handleUpdate()
     } else if (address) {
-      push(`/profile/${address}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/profile/${address}`
+            : `/profile/${address}`
+        }`,
+      )
     }
   }, [id])
 

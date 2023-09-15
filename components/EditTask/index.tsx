@@ -574,7 +574,13 @@ const EditTask = (id: any) => {
       await handleEditMetadata(Number(id.id), ipfsHashData)
       await new Promise((resolve) => setTimeout(resolve, 11500))
       toast.success('Task edited succesfully!')
-      push(`/task/${id.id}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/task/${id.id}`
+            : `/task/${id.id}`
+        }`,
+      )
     } catch (err) {
       toast.error('Error metadata change')
       console.log(err)

@@ -79,7 +79,9 @@ const TaskView = (id: any) => {
     } catch (err) {
       toast.error('Task undefined!')
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      push('/')
+      push(
+        `${process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD' ? `/openrd` : `/`}`,
+      )
       console.log(err)
     }
 
@@ -107,7 +109,11 @@ const TaskView = (id: any) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary"
-                href={`/profile/${contributor}`}
+                href={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? `/openrd/profile/${contributor}`
+                    : `/profile/${contributor}`
+                }`}
               >
                 {formatAddress(contributor)}
               </a>
@@ -213,7 +219,11 @@ const TaskView = (id: any) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`/profile/${taskMetadata.executor}`}
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/profile/${taskMetadata.executor}`
+                          : `/profile/${taskMetadata.executor}`
+                      }`}
                       className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
                     >
                       project creator{' '}
@@ -241,7 +251,11 @@ const TaskView = (id: any) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`/profile/${taskMetadata.executor}`}
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/profile/${taskMetadata.executor}`
+                          : `/profile/${taskMetadata.executor}`
+                      }`}
                       className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
                     >
                       verified contributor{' '}
@@ -269,7 +283,11 @@ const TaskView = (id: any) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`/profile/${taskMetadata.executor}`}
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/profile/${taskMetadata.executor}`
+                          : `/profile/${taskMetadata.executor}`
+                      }`}
                       className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
                     >
                       project creator{' '}

@@ -4,7 +4,11 @@ const menuData: Menu[] = [
   {
     id: 1,
     title: 'Projects',
-    path: '/tasks',
+    path: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? `/openrd/tasks`
+        : `/tasks`
+    }`,
     newTab: false,
   },
   {
@@ -22,13 +26,17 @@ const menuData: Menu[] = [
   {
     id: 4,
     title: 'FAQs',
-    path: '/',
+    path: `${process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD' ? `/openrd` : `/`}`,
     newTab: false,
   },
   {
     id: 5,
     title: 'Profile',
-    path: '/profile',
+    path: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? `/openrd/profile`
+        : `/profile`
+    }`,
     newTab: false,
   },
   // {

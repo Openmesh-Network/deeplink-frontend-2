@@ -521,7 +521,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`/application/${taskId}`}
+              href={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? `/openrd/application/${taskId}`
+                  : `/application/${taskId}`
+              }`}
               className="mt-[25px] flex h-[43px] w-[135px] cursor-pointer items-center justify-center rounded-[10px] bg-[#12AD50] px-[5px] text-[12px] font-bold text-white hover:bg-[#0b9040] lg:text-[16px]"
             >
               Start working
@@ -550,7 +554,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`/profile/${taskExecutor}`}
+              href={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? `/openrd/profile/${taskExecutor}`
+                  : `/profile/${taskExecutor}`
+              }`}
               className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
             >
               project creator{' '}
@@ -1014,7 +1022,11 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                     taskManager === address && (
                       <div className="mt-[11px] flex">
                         <a
-                          href={`/review-submission/${submission.id}`}
+                          href={`${
+                            process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                              ? `/openrd/review-submission/${submission.id}`
+                              : `/review-submission/${submission.id}`
+                          }`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]`}

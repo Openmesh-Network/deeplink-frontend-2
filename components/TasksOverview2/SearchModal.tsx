@@ -294,7 +294,11 @@ const SearchModal = ({
           })}
           <div className="ml-[20px] flex items-end  justify-end text-[12px] font-bold text-white lg:ml-auto lg:text-[16px]">
             <a
-              href="/new-task"
+              href={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? `/openrd/new-task`
+                  : `/new-task`
+              }`}
               target="_blank"
               rel="nofollow noreferrer"
               className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px]  bg-[#0354EC] hover:bg-primary lg:h-[43px] lg:w-[170px]"

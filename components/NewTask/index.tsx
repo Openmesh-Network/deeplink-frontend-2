@@ -528,7 +528,13 @@ const NewTask = () => {
     console.log('the data')
     console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 25500))
-    push(`/tasks?status=open`)
+    push(
+      `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? `/openrd/tasks?status=open`
+          : `/tasks?status=open`
+      }`,
+    )
     if (data.status !== 'success') {
       throw data
     }
@@ -606,7 +612,13 @@ const NewTask = () => {
     console.log('the data')
     console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 4500))
-    push('/tasks')
+    push(
+      `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? `/openrd/tasks`
+          : `/tasks`
+      }`,
+    )
     if (data.status !== 'success') {
       throw data
     }

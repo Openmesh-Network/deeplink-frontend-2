@@ -74,7 +74,11 @@ const Header = () => {
           <div className="relative  flex items-center  text-black">
             <div className="">
               <Link
-                href="/"
+                href={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? `/openrd/`
+                    : `/`
+                }`}
                 className={`header-logo mr-[60px] ml-[20px] block w-full py-8 lg:ml-0 `}
               >
                 <img
@@ -128,8 +132,18 @@ const Header = () => {
                             <a
                               href={
                                 menuItem.title === 'Profile'
-                                  ? `/profile/${address}`
-                                  : menuItem.path
+                                  ? `${
+                                      process.env.NEXT_PUBLIC_ENVIRONMENT ===
+                                      'PROD'
+                                        ? `/openrd/profile/${address}`
+                                        : `/profile/${address}`
+                                    }`
+                                  : `${
+                                      process.env.NEXT_PUBLIC_ENVIRONMENT ===
+                                      'PROD'
+                                        ? menuItem.path
+                                        : menuItem.path
+                                    }`
                               }
                               target={menuItem.newTab ? '_blank' : ''}
                               rel={menuItem.newTab ? 'noopener noreferrer' : ''}
@@ -178,7 +192,11 @@ const Header = () => {
                       </li>
                     ))}
                     <a
-                      href="/verified-contributor"
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/verified-contributor`
+                          : `/verified-contributor`
+                      }`}
                       target="_blank"
                       rel="nofollow noreferrer"
                       className={`flex py-2 text-[16px] font-medium text-[#ffffff] group-hover:opacity-70 lg:mr-0 lg:hidden lg:py-6 lg:px-0 lg:text-[#000000]`}
@@ -203,7 +221,11 @@ const Header = () => {
                     className={`mr-[10px] w-[20px]`}
                   />
                   <a
-                    href="/verified-contributor"
+                    href={`${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? `/openrd/verified-contributor`
+                        : `/verified-contributor`
+                    }`}
                     target="_blank"
                     rel="nofollow noreferrer"
                     className=" "

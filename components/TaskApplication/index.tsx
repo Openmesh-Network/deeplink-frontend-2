@@ -392,7 +392,13 @@ const TaskApplication = (id: any) => {
         newPaymentsBasedOnPercentage,
       )
       toast.success('Application done succesfully!')
-      push(`/task/${id.id}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/task/${id.id}`
+            : `/task/${id.id}`
+        }`,
+      )
       setIsApplicationLoading(false)
     } catch (err) {
       toast.error('Error during the task application')

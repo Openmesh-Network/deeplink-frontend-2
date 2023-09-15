@@ -199,7 +199,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                     className={`mr-[10px] w-[20px] `}
                   />
                   <a
-                    href="/verified-contributor"
+                    href={`${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? `/openrd/verified-contributor`
+                        : `/verified-contributor`
+                    }`}
                     target="_blank"
                     rel="nofollow noreferrer"
                     className="text-[12px] font-bold text-[#fff] lg:text-[16px]  "
@@ -223,7 +227,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
                       className={`mr-[10px] w-[20px] `}
                     />
                     <a
-                      href="/verified-contributor"
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/verified-contributor`
+                          : `/verified-contributor`
+                      }`}
                       target="_blank"
                       rel="nofollow noreferrer"
                       className="text-[12px] font-bold text-[#fff] lg:text-[16px] "
@@ -250,7 +258,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
             </div>
             <div className="mt-[25px] flex cursor-pointer items-center lg:ml-auto lg:mt-0  lg:justify-end">
               <a
-                href="/edit-profile"
+                href={`${
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                    ? `/openrd/edit-profile`
+                    : `/edit-profile`
+                }`}
                 target="_blank"
                 rel="nofollow noreferrer"
                 className="flex h-[29px] w-[100px] items-center justify-center rounded-[5px] bg-[#000000] text-[12px] font-bold text-white hover:bg-[#202020]  lg:w-[116px] lg:text-[16px]"
@@ -426,7 +438,11 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
           </div>
           <div className="mt-[25px] flex cursor-pointer items-center lg:ml-auto lg:mt-0  lg:justify-end">
             <a
-              href="/edit-profile"
+              href={`${
+                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                  ? `/openrd/edit-profile`
+                  : `/edit-profile`
+              }`}
               target="_blank"
               rel="nofollow noreferrer"
               className="flex h-[29px] w-[100px] items-center justify-center rounded-[5px] bg-[#000000] text-[12px] font-bold text-white hover:bg-[#202020]  lg:w-[116px] lg:text-[16px]"

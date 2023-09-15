@@ -230,7 +230,9 @@ const SubmissionRevision = (id: any) => {
       })
     } catch (err) {
       toast.error('Submission not found!')
-      push('/')
+      push(
+        `${process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD' ? `/openrd` : `/`}`,
+      )
       setIsLoading(false)
     }
   }
@@ -318,7 +320,13 @@ const SubmissionRevision = (id: any) => {
         judgment,
       )
       toast.success('Success!')
-      push(`/task/${taskMetadata.id}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/task/${taskMetadata.id}`
+            : `/task/${taskMetadata.id}`
+        }`,
+      )
       setIsApplicationLoading(false)
     } catch (err) {
       toast.error('Error during the execution')

@@ -378,7 +378,13 @@ const EditProfile = (id: any) => {
       toast.success('Profile edited succesfully!')
       setIsApplicationLoading(false)
       await new Promise((resolve) => setTimeout(resolve, 2500))
-      push(`/profile/${address}`)
+      push(
+        `${
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+            ? `/openrd/profile/${address}`
+            : `/profile/${address}`
+        }`,
+      )
     } catch (err) {
       toast.error('Error during the profile edition')
       console.log(err)
