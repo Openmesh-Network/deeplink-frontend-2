@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  assetPrefix: 'https://deeplink-frontend-2-prod.vercel.app',
+  assetPrefix: 'https://deeplink-frontend-dao.vercel.app',
 }
 
 module.exports = nextConfig
