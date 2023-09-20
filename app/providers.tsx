@@ -8,7 +8,11 @@ import { arbitrum, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { ThemeProvider } from 'next-themes'
 import { ToastContainer } from 'react-toastify'
 
-const chains = [polygonMumbai]
+const chain =
+  process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Polygon'
+    ? polygon
+    : polygonMumbai
+const chains = [chain]
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
