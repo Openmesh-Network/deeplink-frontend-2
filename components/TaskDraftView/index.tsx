@@ -318,7 +318,7 @@ const TaskDraftView = (id: any) => {
                             </div>
                             <div className="mt-[25px]">
                               <p className="font-bold">Next meeting:</p>
-                              <p>10:30 PM UTC 23-12-2021</p>
+                              <p>-</p>
                             </div>
                             <div className="mt-[25px]">
                               <p>Reacht out to a</p>

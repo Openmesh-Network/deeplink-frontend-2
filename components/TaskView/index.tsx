@@ -4,6 +4,7 @@
 'use client'
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
+import { formatDistanceToNow, format } from 'date-fns'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { UserOutlined } from '@ant-design/icons'
 import TransactionList from '../TaskTransactionsList'
@@ -23,13 +24,14 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition, TasksOverview } from '@/types/task'
+import { IPFSSubmition, TasksOverview, Event } from '@/types/task'
 import HeroTask from './HeroTask'
 import UpdatesList from './UpdatesList'
 import ApplicantsSubmissionsList from './ApplicantsSubmissionsList'
 
 const TaskView = (id: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [events, setEvents] = useState<Event[]>([])
   const [imgTaskIPFS, setImgTaskIPFS] = useState('')
   const [viewOption, setViewOption] = useState('projectDescription')
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
@@ -88,6 +90,40 @@ const TaskView = (id: any) => {
     setIsLoading(false)
   }
 
+  function formatDeadlineComplet(timestamp) {
+    const dateInMilliseconds = parseInt(timestamp, 10) * 1000 // converta para milissegundos
+    const formattedDeadline = format(
+      new Date(dateInMilliseconds),
+      "HH:mm:ss 'UTC', dd MMMM yyyy",
+    )
+    return formattedDeadline
+  }
+
+  async function handleEvents(id: string) {
+    const dataBody = {
+      id,
+    }
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getTaskEvents`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+      },
+      data: dataBody,
+    }
+
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          setEvents(response.data.sort((a, b) => b.timestamp - a.timestamp))
+        }
+      })
+    } catch (err) {
+      toast.error('Error getting the updates!')
+      console.log(err)
+    }
+  }
+
   function returnContributors() {
     if (!contributorsAllowed || contributorsAllowed.length === 0) {
       return <div className="mt-[20px]">Empty</div>
@@ -134,6 +170,7 @@ const TaskView = (id: any) => {
       console.log('search for the task info on blockchain')
       console.log(id.id)
       getTask(id.id)
+      handleEvents(id.id)
     }
   }, [id])
   function formatAddress(address) {
@@ -396,11 +433,15 @@ const TaskView = (id: any) => {
                             </a>
                             <div className="mt-[25px]">
                               <p className="font-bold">Last Updated:</p>
-                              <p>3 days ago</p>
+                              <p>
+                                {events.length > 0
+                                  ? formatDeadlineComplet(events[0].timestamp)
+                                  : '-'}
+                              </p>
                             </div>
                             <div className="mt-[25px]">
                               <p className="font-bold">Next meeting:</p>
-                              <p>10:30 PM UTC 23-12-2021</p>
+                              <p>-</p>
                             </div>
                             <div className="mt-[25px]">
                               <p>Reacht out to a</p>
