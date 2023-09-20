@@ -341,7 +341,7 @@ const TaskApplication = (id: any) => {
 
   async function onSubmit(data: TaskApplicationForm) {
     console.log('submit called')
-    if (chain && chain.name !== 'Polygon Mumbai') {
+    if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
     }
@@ -680,7 +680,7 @@ const TaskApplication = (id: any) => {
               <p>
                 | Have more questions? Reach out to{' '}
                 <a
-                  href="https://mumbai.polygonscan.com/"
+                  href="https://polygonscan.com/"
                   target="_blank"
                   rel="noreferrer"
                   className="border-b border-[#0084FE] text-[#0084FE]"

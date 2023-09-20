@@ -49,7 +49,7 @@ const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`https://mumbai.polygonscan.com/address/${task.submitter}`}
+            href={`https://polygonscan.com/address/${task.submitter}`}
             className="my-3 flex hover:text-primary"
           >
             <UserOutlined />

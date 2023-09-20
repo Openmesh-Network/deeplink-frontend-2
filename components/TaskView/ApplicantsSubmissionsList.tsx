@@ -720,7 +720,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         className="cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:mt-[8px] lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://mumbai.polygonscan.com/address/${application.applicant}`}
+                        href={`https://polygonscan.com/address/${application.applicant}`}
                       >
                         {formatAddress(application.applicant)}
                       </a>
@@ -943,7 +943,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                         className="mt-[8px] cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://mumbai.polygonscan.com/address/${submission.applicant}`}
+                        href={`https://polygonscan.com/address/${submission.applicant}`}
                       >
                         {formatAddress(submission.applicant)}
                       </a>

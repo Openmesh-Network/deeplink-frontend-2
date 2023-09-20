@@ -182,7 +182,7 @@ const TaskView = (id: any) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`https://mumbai.polygonscan.com/address/${task[0].submitter}`}
+                      href={`https://polygonscan.com/address/${task[0].submitter}`}
                       className="mt-1 flex hover:text-primary"
                     >
                       <UserOutlined />

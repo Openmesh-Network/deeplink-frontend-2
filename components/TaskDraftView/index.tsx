@@ -349,7 +349,7 @@ const TaskDraftView = (id: any) => {
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
-                          href="https://mumbai.polygonscan.com/"
+                          href="https://polygonscan.com/"
                           target="_blank"
                           rel="noreferrer"
                           className="border-b border-[#0084FE] text-[#0084FE]"

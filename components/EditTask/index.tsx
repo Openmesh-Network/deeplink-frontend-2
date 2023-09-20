@@ -496,7 +496,7 @@ const EditTask = (id: any) => {
 
   async function onSubmit(data: TaskSubmitForm) {
     console.log('submit initiate')
-    if (chain && chain.name !== 'Polygon Mumbai') {
+    if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
     }

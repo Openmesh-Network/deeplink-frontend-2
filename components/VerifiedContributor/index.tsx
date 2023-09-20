@@ -350,7 +350,7 @@ const VerifiedContributor = (id: any) => {
       element.scrollIntoView({ behavior: 'smooth' })
     }
 
-    if (chain && chain.name !== 'Polygon Mumbai') {
+    if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
     }

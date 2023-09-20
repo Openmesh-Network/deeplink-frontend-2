@@ -198,7 +198,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={`https://mumbai.polygonscan.com/token/${payment.tokenContract}`}
+                          href={`https://polygonscan.com/token/${payment.tokenContract}`}
                           className="mt-[2px] border-b border-[#505050] hover:text-primary"
                         >
                           {(
@@ -268,7 +268,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`https://mumbai.polygonscan.com`}
+                      href={`https://polygonscan.com`}
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
