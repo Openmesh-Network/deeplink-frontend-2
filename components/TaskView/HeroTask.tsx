@@ -149,7 +149,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
 
                 <div className="mt-[25px] flex text-[11px] text-[#505050]  lg:text-[14px]">
                   <p className="">Tags: </p>
-                  <div className="flex italic">
+                  <div className="flex flex-wrap gap-y-[10px] italic">
                     {task.skills &&
                       task.skills.map((skill, index) => (
                         <p
@@ -177,7 +177,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       Available funds:
                     </p>{' '}
                     <span className="flex items-center text-[12px] font-bold text-[#000000] lg:text-[16px]">
-                      ${task.estimatedBudget}
+                      ${Number(task.estimatedBudget).toLocaleString('en-US')}
                     </span>
                   </div>
 
