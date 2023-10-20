@@ -93,9 +93,9 @@ const HeroTasks = () => {
             <div className="font-regular mt-[20px] flex max-w-[500px] rounded-md text-[12px] !leading-none text-[#000000] lg:mx-auto lg:mt-0 lg:justify-end lg:px-4 lg:text-right lg:text-[14px] ">
               <div className="">
                 <p className="">Available Funding</p>
-                <p className="mt-[8px] text-[16px] font-bold text-[#0354EC] lg:text-[18px]">
+                {/* <p className="mt-[8px] text-[16px] font-bold text-[#0354EC] lg:text-[18px]">
                   $151,967
-                </p>
+                </p> */}
                 <img
                   src={`${
                     process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'

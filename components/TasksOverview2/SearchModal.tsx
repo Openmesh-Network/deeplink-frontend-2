@@ -327,9 +327,9 @@ const SearchModal = ({
               <div className="mt-[25px] flex">
                 <p className="mr-[3px]">Avalaible Funding: </p>
                 <div className="flex">
-                  <p className="mr-[22px] text-[12px] font-bold text-[#000000] lg:text-[16px]">
+                  {/* <p className="mr-[22px] text-[12px] font-bold text-[#000000] lg:text-[16px]">
                     ${departamentSelected.funding}
-                  </p>
+                  </p> */}
                   <img
                     src={`${
                       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'

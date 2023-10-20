@@ -675,12 +675,12 @@ const NewTask = () => {
       element.scrollIntoView({ behavior: 'smooth' })
       return
     }
-    if (payments.length === 0) {
-      toast.error('Please set a payment.')
-      const element = document.getElementById('budgetId')
-      element.scrollIntoView({ behavior: 'smooth' })
-      return
-    }
+    // if (payments.length === 0) {
+    //   toast.error('Please set a payment.')
+    //   const element = document.getElementById('budgetId')
+    //   element.scrollIntoView({ behavior: 'smooth' })
+    //   return
+    // }
     const preApprovedApplications = []
     if (contributors.length > 0) {
       for (let i = 0; i < contributors.length; i++) {

@@ -15,8 +15,8 @@ const Footer = () => {
                   <h1>OpenR&D</h1>
                 </Link>
                 <p className="mb-9 text-base font-medium leading-relaxed text-[#000000]">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer lobortis.
+                  An open-source platform designed to empower decentralized
+                  teams to collaborate seamlessly.
                 </p>
                 <div className="flex items-center">
                   <a
@@ -87,26 +87,10 @@ const Footer = () => {
                 <ul>
                   <li>
                     <a
-                      href="/"
+                      href="https://open-mesh.gitbook.io/l3a-v3-documentation-2.0/openmesh/openmesh-overview"
+                      target="_blank"
                       className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
-                    >
-                      {' '}
-                      Docs{' '}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/"
-                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
-                    >
-                      {' '}
-                      Docs{' '}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/"
-                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
+                      rel="noreferrer"
                     >
                       {' '}
                       Docs{' '}
@@ -124,26 +108,10 @@ const Footer = () => {
                 <ul>
                   <li>
                     <a
-                      href="/"
+                      href="https://open-mesh.gitbook.io/l3a-v3-documentation-2.0/openmesh/project-faqs"
+                      target="_blank"
                       className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
-                    >
-                      {' '}
-                      Docs{' '}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/"
-                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
-                    >
-                      {' '}
-                      Docs{' '}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/"
-                      className="mb-4 inline-block text-base font-medium text-[#000000] hover:text-primary"
+                      rel="noreferrer"
                     >
                       {' '}
                       Docs{' '}
