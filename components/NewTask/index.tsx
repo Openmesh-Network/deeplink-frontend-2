@@ -140,7 +140,6 @@ const NewTask = () => {
     'Cryptography',
     'Validation',
     'Data Integrity',
-    'Data Replication',
     'Protocol Selection',
     'Network Design',
     'Consensus Mechanism',
@@ -155,7 +154,6 @@ const NewTask = () => {
     'AI/ML Tools',
     'Patch Management',
     'Continuous Deployment',
-    'Version Control',
     'High Throughput',
     'Low Latency',
     'Topology Design',
@@ -216,6 +214,9 @@ const NewTask = () => {
     'Decentralized Applications',
     'Web3',
     'Cryptocurrency',
+    'Scalability',
+    'Network Optimization',
+    'IDS/IPS',
   ]
 
   const validSchema = Yup.object().shape({
