@@ -217,6 +217,7 @@ const NewTask = () => {
     'Scalability',
     'Network Optimization',
     'IDS/IPS',
+    'Data Integration',
   ]
 
   const validSchema = Yup.object().shape({
