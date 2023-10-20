@@ -219,6 +219,10 @@ const NewTask = () => {
     'IDS/IPS',
     'Data Integration',
     'Databricks',
+    'Data API',
+    'GraphQL',
+    'Framework',
+    'Developer Tools',
   ]
 
   const validSchema = Yup.object().shape({
