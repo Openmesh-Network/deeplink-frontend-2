@@ -71,6 +71,7 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
     'Blockchain',
     'DevOps/Cloud',
     'Front-end',
+    'Bunda',
   ]
   const orderByOptions = ['newest', 'oldest']
 
