@@ -218,6 +218,7 @@ const NewTask = () => {
     'Network Optimization',
     'IDS/IPS',
     'Data Integration',
+    'Databricks',
   ]
 
   const validSchema = Yup.object().shape({
