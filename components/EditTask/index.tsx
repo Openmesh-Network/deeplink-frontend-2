@@ -326,7 +326,7 @@ const EditTask = (id: any) => {
     skills: Yup.array()
       .of(Yup.string())
       .min(2, 'At least two tags are required')
-      .max(3, 'You can select up to 3 skills'),
+      .max(10, 'You can select up to 10 tags'),
     projectLength: Yup.string().required('Project length is required'),
     numberOfApplicants: Yup.string().required(
       'Number of applicants is required',
