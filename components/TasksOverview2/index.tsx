@@ -47,7 +47,14 @@ const TransactionList = () => {
     'All',
     'Data',
     'Blockchain',
-    'DevOps/Cloud',
+    'DevOps',
+    'Cloud',
+    'Docs',
+    'Infrastructure',
+    'Integrations',
+    'Web App Development',
+    'Analytics',
+    'Data',
     'Front-end',
   ]
   const orderByOptions = ['newest', 'oldest']

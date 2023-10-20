@@ -76,18 +76,6 @@ const SearchModal = ({
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
-      name: 'Front-end',
-      tags: ['Web', 'Mobile', 'Desktop'],
-      funding: '51,231',
-      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
-      img: `${
-        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-          ? process.env.NEXT_PUBLIC_BASE_PATH
-          : ''
-      }/images/departaments/pointer.svg`,
-      imgClassName: 'mr-1 mb-1 w-[13px]',
-    },
-    {
       name: 'Blockchain',
       tags: ['Solidity', 'Rust', 'Contracts'],
       funding: '89,231',
@@ -100,8 +88,92 @@ const SearchModal = ({
       imgClassName: 'mr-1 mb-1 w-[16px]',
     },
     {
-      name: 'DevOps/Cloud',
+      name: 'DevOps',
       tags: ['DevOps', 'AWS', 'Kubernets'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/cloud.svg`,
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Cloud',
+      tags: ['DevOps', 'AWS', 'Kubernets'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/cloud.svg`,
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Cryptography & zk',
+      tags: ['Cryptography', 'ZK', 'Math'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/paper.svg`,
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Infrastructure',
+      tags: ['Xnodes', 'Network', 'Topology Design'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/cloud.svg`,
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Docs',
+      tags: ['Knowledge Base', 'Documentation', 'User support'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/paper.svg`,
+      imgClassName: 'mr-1 mb-1 w-[19px]',
+    },
+    {
+      name: 'Integrations',
+      tags: ['Data Integration', 'Third-Party Integration', 'Databricks'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/pointer.svg`,
+      imgClassName: 'mr-1 mb-1 w-[14px]',
+    },
+    {
+      name: 'Web App Development',
+      tags: ['Dashboard', 'Gamefi', 'Real-time analytics'],
+      funding: '151,231',
+      desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
+      img: `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+          ? process.env.NEXT_PUBLIC_BASE_PATH
+          : ''
+      }/images/departaments/blockchain.svg`,
+      imgClassName: 'mr-1 mb-1 w-[16px]',
+    },
+    {
+      name: 'Analytics',
+      tags: ['Pythia Pro', 'SQL', 'Visualization'],
       funding: '151,231',
       desc: 'Introducing the OpenR&D initiative, an open-source platform designed to empower decentralized teams to collaborate seamlessly. Simplify task management, progress tracking, and automated payouts within web3 projects, addressing the challenges faced by remote teams in the rapidly growing decentralized ecosystem.',
       img: `${
@@ -234,9 +306,23 @@ const SearchModal = ({
             </svg>
           </button> */}
         </div>
-        <div className="mt-[35px] flex overflow-x-auto  text-[12px] font-bold  text-[#0354EC] lg:mt-[69px] lg:text-[16px]">
+        <div className="ml-[20px] mt-[35px]  flex items-end justify-end  text-[12px] font-bold text-white lg:mt-[69px] lg:ml-auto lg:text-[16px]">
+          <a
+            href={`${
+              process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                ? `/openrd/new-task`
+                : `/new-task`
+            }`}
+            target="_blank"
+            rel="nofollow noreferrer"
+            className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px]  bg-[#0354EC] hover:bg-primary lg:h-[43px] lg:w-[170px]"
+          >
+            + Add a project
+          </a>
+        </div>
+        <div className="mt-[20px] flex flex-wrap gap-y-[15px]  text-[12px] font-bold text-[#0354EC] lg:mt-[40px]  lg:gap-y-[25px] lg:text-[16px]">
           <div
-            className={`mr-[25px] flex pr-[5px] lg:mr-[40px] ${
+            className={`mr-[25px] ml-5 flex pr-[5px] md:ml-0 lg:mr-[40px] ${
               departament === 'All' || !departament
                 ? 'border-b-2 border-[#0354EC]'
                 : ''
@@ -267,7 +353,7 @@ const SearchModal = ({
               return (
                 <div
                   key={index}
-                  className={`mr-[5px] flex px-[20px] lg:px-[35px] ${
+                  className={`flex px-[20px] lg:mr-[5px] lg:px-[35px] ${
                     departament === departamentOption.name
                       ? 'border-b-2 border-[#0354EC]'
                       : ''
@@ -292,20 +378,6 @@ const SearchModal = ({
               )
             }
           })}
-          <div className="ml-[20px] flex items-end  justify-end text-[12px] font-bold text-white lg:ml-auto lg:text-[16px]">
-            <a
-              href={`${
-                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                  ? `/openrd/new-task`
-                  : `/new-task`
-              }`}
-              target="_blank"
-              rel="nofollow noreferrer"
-              className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px]  bg-[#0354EC] hover:bg-primary lg:h-[43px] lg:w-[170px]"
-            >
-              + Add a project
-            </a>
-          </div>
         </div>
         <div className="mt-[39px] items-start justify-start rounded-[10px] border border-[#D4D4D4] py-[25px] px-[25px] text-[11px] font-medium text-[#505050] lg:py-[40px] lg:px-[50px] lg:text-[14px]">
           {departamentSelected ? (
