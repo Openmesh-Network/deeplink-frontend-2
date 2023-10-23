@@ -27,6 +27,7 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import HeroTasks from './HeroTasks'
 import { File, SmileySad, Info } from 'phosphor-react'
 import SidebarNav from '../SidebarNav'
+import ReducedSidebarNav from '../ReducedSideBarNav'
 
 const TransactionList = () => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
@@ -60,6 +61,7 @@ const TransactionList = () => {
   ]
   const orderByOptions = ['newest', 'oldest']
   const budgetOrderByOptions = ['greater', 'lesser']
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true)
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
@@ -258,18 +260,41 @@ const TransactionList = () => {
   return (
     <>
       <div className="flex">
-        <div>
-          <SidebarNav
-            onUpdate={handleUpdate}
-            scrollManually={scrollManually}
-            openProjectsNumber={counting ? counting.open : 0}
-            activeProjectsNumber={counting ? counting.active : 0}
-            completedProjectsNumber={counting ? counting.completed : 0}
-            draftProjectsNumber={counting ? counting.draft : 0}
-          />
+        <div
+          onMouseEnter={() => setSidebarExpanded(true)}
+          onMouseLeave={() => setSidebarExpanded(false)}
+          className="h-full"
+        >
+          <div
+            className={`opacity-${
+              isSidebarExpanded ? '100 block h-full' : '0 hidden'
+            } h-full transition-opacity duration-300`}
+          >
+            <SidebarNav
+              onUpdate={handleUpdate}
+              scrollManually={scrollManually}
+              openProjectsNumber={counting ? counting.open : 0}
+              activeProjectsNumber={counting ? counting.active : 0}
+              completedProjectsNumber={counting ? counting.completed : 0}
+              draftProjectsNumber={counting ? counting.draft : 0}
+            />
+          </div>
+          <div
+            className={`opacity-${
+              isSidebarExpanded ? '0 hidden' : '100 block h-full'
+            } h-full transition-opacity duration-300`}
+          >
+            <ReducedSidebarNav
+              onUpdate={handleUpdate}
+              scrollManually={scrollManually}
+              openProjectsNumber={counting ? counting.open : 0}
+              activeProjectsNumber={counting ? counting.active : 0}
+              completedProjectsNumber={counting ? counting.completed : 0}
+              draftProjectsNumber={counting ? counting.draft : 0}
+            />
+          </div>
         </div>
-        <div>
-          <HeroTasks />
+        <div className="px-[17px] md:px-[20.6px] lg:px-[23.8px] xl:px-[27px] 2xl:px-[34px]">
           <SearchModal
             onUpdate={handleUpdate}
             scrollManually={scrollManually}
@@ -279,12 +304,12 @@ const TransactionList = () => {
             draftProjectsNumber={counting ? counting.draft : 0}
           />
           <section
-            className="px-[20px] pt-[40px] lg:px-[100px]"
+            className="mt-[27px] md:mt-[33px] lg:mt-[38.5px] xl:mt-[44px] 2xl:mt-[55px]"
             id={'taskStart'}
           >
             <div className="container px-0">
               <div className=" text-[#000000]">
-                <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border border-[#D4D4D4] bg-[#F1F0F0] px-[25px] py-[10px] text-[12px] font-bold lg:text-[16px]">
+                <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border-[0.7px] border-[#E3E3E3] bg-[#fff] px-[25px] py-[10px] text-[12px] font-medium lg:text-[16px]">
                   <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
                     <p
                       onClick={() => {
@@ -309,19 +334,31 @@ const TransactionList = () => {
                   className={`w-[14px]`}
                 /> */}
                     <svg
+                      width="11"
                       onClick={handleOrderByEstimatedBudgetSelection}
                       className={`w-[10px] cursor-pointer lg:w-[14px]  ${
                         orderByEstimatedBudget === 'greater'
                           ? 'rotate-180 transform'
                           : ''
                       }`}
-                      viewBox="0 0 16 10"
+                      height="7"
+                      viewBox="0 0 11 7"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path
-                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                        fill="#959595"
+                      <line
+                        x1="0.336336"
+                        y1="1.08462"
+                        x2="5.33634"
+                        y2="5.63007"
+                        stroke="black"
+                      />
+                      <line
+                        x1="10.3536"
+                        y1="1.35355"
+                        x2="5.35355"
+                        y2="6.35355"
+                        stroke="black"
                       />
                     </svg>
                   </div>
@@ -334,13 +371,23 @@ const TransactionList = () => {
                           ? 'rotate-180 transform'
                           : ''
                       }`}
-                      viewBox="0 0 16 10"
+                      viewBox="0 0 11 7"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path
-                        d="M7.15474 9.65876L0.35261 3.07599C-0.117537 2.62101 -0.117537 1.88529 0.35261 1.43514L1.48296 0.341239C1.95311 -0.113746 2.71335 -0.113746 3.17849 0.341239L8 5.00726L12.8215 0.341239C13.2917 -0.113746 14.0519 -0.113746 14.517 0.341239L15.6474 1.43514C16.1175 1.89013 16.1175 2.62585 15.6474 3.07599L8.84526 9.65876C8.38512 10.1137 7.62488 10.1137 7.15474 9.65876Z"
-                        fill="#959595"
+                      <line
+                        x1="0.336336"
+                        y1="1.08462"
+                        x2="5.33634"
+                        y2="5.63007"
+                        stroke="black"
+                      />
+                      <line
+                        x1="10.3536"
+                        y1="1.35355"
+                        x2="5.35355"
+                        y2="6.35355"
+                        stroke="black"
                       />
                     </svg>
                   </div>

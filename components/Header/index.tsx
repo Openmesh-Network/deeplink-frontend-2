@@ -69,7 +69,9 @@ const Header = () => {
 
   return (
     <>
-      <header className={`header flex w-full items-center bg-[#F9F9F9]`}>
+      <header
+        className={`header flex w-full items-center bg-[#F9F9F9] shadow-[0_4px_20px_0px_rgba(0,0,0,0.08)]`}
+      >
         <div className="container w-full px-0">
           <div className="relative  flex items-center  text-black">
             <div className="">

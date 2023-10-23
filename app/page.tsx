@@ -13,7 +13,7 @@ import Video from '@/components/Video'
 import { Inter } from '@next/font/google'
 import EmblaCarousel from '@/components/Carousel'
 import DepartamentsList from '@/components/DepartamentsList'
-import TransactionList from '@/components/TasksOverview2'
+import TransactionList from '@/components/TasksOverview3'
 
 // eslint-disable-next-line no-unused-vars
 const inter = Inter({ subsets: ['latin'] })
