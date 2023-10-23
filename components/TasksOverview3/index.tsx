@@ -61,7 +61,7 @@ const TransactionList = () => {
   ]
   const orderByOptions = ['newest', 'oldest']
   const budgetOrderByOptions = ['greater', 'lesser']
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true)
+  const [isSidebarExpanded, setSidebarExpanded] = useState(false)
 
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
