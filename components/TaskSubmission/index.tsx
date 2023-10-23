@@ -345,7 +345,7 @@ const TaskSubmission = (id: any) => {
     return (
       <div className="pb-[500px]">
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect you wallet to continue
+          Connect your wallet to continue
         </div>
       </div>
     )

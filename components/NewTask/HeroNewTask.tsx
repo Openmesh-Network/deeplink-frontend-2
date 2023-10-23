@@ -38,7 +38,7 @@ const HeroNewTasks = () => {
             </div>
           </div>
           <div className="mt-4 text-[#000000]">
-            Connect you wallet to continue
+            Connect your wallet to continue
           </div>
         </div>
       </section>

@@ -444,7 +444,7 @@ const TaskView = (id: any) => {
                               <p>-</p>
                             </div>
                             <div className="mt-[25px]">
-                              <p>Reacht out to a</p>
+                              <p>Reach out to a</p>
                               <a
                                 href="https://github.com/"
                                 target="_blank"

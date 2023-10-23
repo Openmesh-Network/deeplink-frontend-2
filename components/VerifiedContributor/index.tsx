@@ -452,7 +452,7 @@ const VerifiedContributor = (id: any) => {
     return (
       <div className="pb-[500px]">
         <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect you wallet to continue
+          Connect your wallet to continue
         </div>
         <div className="mt-[20px] flex justify-center text-[14px] text-[#505050]">
           Why do I need to connect my Web3 wallet?
