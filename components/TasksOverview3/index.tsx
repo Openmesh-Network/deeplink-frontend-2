@@ -263,7 +263,7 @@ const TransactionList = () => {
         <div
           onMouseEnter={() => setSidebarExpanded(true)}
           onMouseLeave={() => setSidebarExpanded(false)}
-          className="h-full"
+          className=""
         >
           <div
             className={`opacity-${
@@ -281,7 +281,7 @@ const TransactionList = () => {
           </div>
           <div
             className={`opacity-${
-              isSidebarExpanded ? '0 hidden' : '100 block h-full'
+              isSidebarExpanded ? '0 hidden' : '100 block'
             } h-full transition-opacity duration-300`}
           >
             <ReducedSidebarNav

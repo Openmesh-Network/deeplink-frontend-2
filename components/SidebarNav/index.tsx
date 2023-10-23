@@ -178,7 +178,7 @@ const SidebarNav = ({
 
   return (
     <>
-      <div className="relative z-50 h-full pb-[400px] text-[#000] shadow-[0_0px_5px_0px_rgba(0,0,0,0.10)]">
+      <div className="relative z-30 h-full pb-[400px] text-[#000] shadow-[0_0px_5px_0px_rgba(0,0,0,0.10)]">
         <div className="">
           <div className=" pl-[12px] pr-[10px] md:pl-[14px] md:pr-[12px] lg:pl-[16px] lg:pr-[14px] xl:pl-[18.5px] xl:pr-[16px] 2xl:pl-[23px] 2xl:pr-[20px]">
             <div className="py-[17px] md:py-[20px]  lg:py-[24px]  xl:py-[27px] 2xl:py-[34px]">

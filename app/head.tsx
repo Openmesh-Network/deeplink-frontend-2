@@ -12,7 +12,7 @@ export default function Head() {
         property="og:description"
         content="Open-source platform designed to empower decentralized teams to collaborate seamlessly."
       />
-      <link rel="icon" href="/images/redLogo.ico" />
+      <link rel="icon" href="/openmesh-ico-logo.png" />
     </>
   );
 }

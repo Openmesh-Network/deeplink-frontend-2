@@ -3,12 +3,8 @@ import { Menu } from '@/types/menu'
 const menuData: Menu[] = [
   {
     id: 1,
-    title: 'Projects',
-    path: `${
-      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-        ? `/openrd/tasks`
-        : `/tasks`
-    }`,
+    title: 'About',
+    path: `https://l3a.gitbook.io/l3a-dao-documentation/getting-started/vision`,
     newTab: false,
   },
   {

@@ -178,7 +178,7 @@ const ReducedSidebarNav = ({
 
   return (
     <>
-      <div className="relative z-50 h-full w-fit pb-[300px] text-[#000] shadow-[0_0px_5px_0px_rgba(0,0,0,0.10)]">
+      <div className="relative z-50 h-full  w-fit text-[#000] shadow-[0_0px_5px_0px_rgba(0,0,0,0.10)]">
         <div className="">
           <div className="px-[20px] md:px-[20px] lg:px-[24px] xl:px-[27px] 2xl:px-[34px]">
             <div className="pt-[17px] md:pt-[20px]  lg:pt-[24px]  xl:pt-[27px] 2xl:pt-[34px]">

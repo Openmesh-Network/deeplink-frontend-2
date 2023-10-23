@@ -70,9 +70,9 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header flex w-full items-center bg-[#F9F9F9] shadow-[0_4px_20px_0px_rgba(0,0,0,0.08)]`}
+        className={`header z-50 flex w-full items-center bg-[#fff] shadow-[0_4px_20px_0px_rgba(0,0,0,0.08)]`}
       >
-        <div className="container w-full px-0">
+        <div className="w-full px-[16px] md:px-[19.2px] lg:px-[22.4px] xl:px-[25.5px] 2xl:px-[34px]">
           <div className="relative  flex items-center  text-black">
             <div className="">
               <Link
@@ -81,16 +81,16 @@ const Header = () => {
                     ? `/openrd/`
                     : `/`
                 }`}
-                className={`header-logo mr-[60px] ml-[20px] block w-full py-8 lg:ml-0 `}
+                className={`header-logo block w-[68px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px]  2xl:mr-[102px] 2xl:w-[136px]`}
               >
                 <img
                   src={`${
                     process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                       ? process.env.NEXT_PUBLIC_BASE_PATH
                       : ''
-                  }/images/header/openReD.svg`}
+                  }/images/header/logo.svg`}
                   alt="image"
-                  className={`w-[145px]`}
+                  className={`w-[68px] md:w-[80px] lg:w-[95px] xl:w-[109px] 2xl:w-[136px]`}
                 />
               </Link>
             </div>
@@ -126,7 +126,7 @@ const Header = () => {
                       : 'invisible top-[120%] opacity-0'
                   }`}
                 >
-                  <ul className="block lg:flex lg:space-x-[60px]">
+                  <ul className="block  pt-[17px] pb-[19.5px] md:gap-x-[39px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[45.5px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[52px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
@@ -149,7 +149,7 @@ const Header = () => {
                               }
                               target={menuItem.newTab ? '_blank' : ''}
                               rel={menuItem.newTab ? 'noopener noreferrer' : ''}
-                              className={`flex py-2 text-[16px] font-medium text-[#ffffff] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 lg:text-[#000000] ${
+                              className={`flex text-[7px] font-normal text-[#ffffff] group-hover:opacity-70 md:text-[8.4px] lg:mr-0 lg:inline-flex lg:px-0 lg:text-[9.8px] lg:text-[#000000] xl:text-[11.2px] 2xl:text-[14px] ${
                                 pathname.includes(menuItem.path)
                                   ? 'font-bold'
                                   : ''
@@ -211,16 +211,16 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <div className="mr-[20px] ml-[10px] hidden h-[43px] w-[308px] cursor-pointer items-center justify-center  rounded-[10px] border border-[#12AD50] text-[16px] font-medium text-[#12AD50] hover:text-[#148541] lg:flex">
+              <div className="flex w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
+                <div className="ml-[5px] hidden cursor-pointer items-center justify-center gap-x-[5px] rounded-[10px] border border-[#0354EC] px-[11px]  py-[5.25px]  font-semibold text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:gap-x-[6px] md:px-[13px] md:py-[6.3px] lg:flex lg:gap-x-[7px] lg:px-[15.5px] lg:py-[7.35px] xl:gap-x-[8px] xl:px-[17.5px] xl:py-[8.4px] 2xl:gap-x-[10px] 2xl:px-[21.5px] 2xl:py-[10.5px]">
                   <img
                     src={`${
                       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                         ? process.env.NEXT_PUBLIC_BASE_PATH
                         : ''
-                    }/images/header/check.svg`}
+                    }/images/header/check-blue.svg`}
                     alt="image"
-                    className={`mr-[10px] w-[20px]`}
+                    className={`w-[10px] md:w-[12px] lg:w-[14px] xl:w-[16px] 2xl:w-[20px]`}
                   />
                   <a
                     href={`${
@@ -230,16 +230,17 @@ const Header = () => {
                     }`}
                     target="_blank"
                     rel="nofollow noreferrer"
-                    className=" "
+                    className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[14px]"
                   >
-                    Become a Verified Contributor
+                    Become a Contributor
                   </a>
                 </div>
-                <div className="hidden lg:block">
-                  <Web3Button />
+                <div className="">
+                  <div className="hidden lg:block">{<Web3Button />}</div>
+                  <div className="">
+                    {isChainWrong && <Web3NetworkSwitch />}
+                  </div>
                 </div>
-                <div className="">{isChainWrong && <Web3NetworkSwitch />}</div>
-                <div>{/* <ThemeToggler /> */}</div>
               </div>
             </div>
           </div>
