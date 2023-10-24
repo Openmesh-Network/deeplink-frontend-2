@@ -423,7 +423,7 @@ const TaskApplication = (id: any) => {
 
   if (!address) {
     return (
-      <div className="pb-[200px]">
+      <div className="pb-[500px]">
         <ConnectYourWallet />
       </div>
     )
