@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable dot-notation */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
@@ -90,6 +91,7 @@ const Login = () => {
     const finalData = {
       ...data,
     }
+    return
     try {
       const res = await loginUser(finalData)
       console.log(res)
