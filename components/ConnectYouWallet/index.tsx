@@ -29,7 +29,7 @@ const ConnectYourWallet = () => {
 
   return (
     <section className="px-[20px] pb-[43px] text-[#000] md:px-[31px]  lg:px-[36px]  xl:px-[42px] 2xl:px-[52px] ">
-      <div className="flex">
+      <div className="md:flex">
         <div className="mr-[30px] max-w-[434px] pt-[40px] md:mr-[35.5px] md:pt-[64px] lg:mr-[41px] lg:pt-[75px] xl:mr-[47px] xl:pt-[85px] 2xl:mr-[59px] 2xl:pt-[107px]">
           <div className="text-[15px] font-bold -tracking-[2.2%] md:text-[18px] lg:text-[21px] lg:!leading-[120%] xl:text-[24px] 2xl:text-[30px]">
             Connect your wallet to continue
@@ -42,8 +42,8 @@ const ConnectYourWallet = () => {
             <Web3Button />
           </div>
         </div>
-        <div className="mt-[33px] mr-[50px] h-[309px] w-[1px] bg-[#E3E3E3] md:mt-[40px] md:mr-[60px] lg:mt-[46px] lg:mr-[70px] xl:mt-[53px] xl:mr-[80px] 2xl:mt-[66px] 2xl:mr-[100px]"></div>
-        <div className="pt-[68px] text-[8px] font-bold -tracking-[2.2%] md:pt-[81px] md:text-[9.6px] lg:pt-[95px] lg:text-[11.2px] lg:!leading-[150%] xl:pt-[109px] xl:text-[12.8px] 2xl:pt-[136px] 2xl:text-[16px]">
+        <div className="mt-[20px] mr-[50px] hidden h-[309px] w-[1px] bg-[#E3E3E3] md:mt-[40px] md:mr-[60px] md:block lg:mt-[46px] lg:mr-[70px] xl:mt-[53px] xl:mr-[80px] 2xl:mt-[66px] 2xl:mr-[100px]"></div>
+        <div className="pt-[38px] text-[8px] font-bold -tracking-[2.2%] md:pt-[81px] md:text-[9.6px] lg:pt-[95px] lg:text-[11.2px] lg:!leading-[150%] xl:pt-[109px] xl:text-[12.8px] 2xl:pt-[136px] 2xl:text-[16px]">
           {isLogin ? (
             <div>
               {' '}

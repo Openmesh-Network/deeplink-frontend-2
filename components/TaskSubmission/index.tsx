@@ -343,9 +343,7 @@ const TaskSubmission = (id: any) => {
   }, [id])
 
   if (!address) {
-    ;<>
-      <ConnectYourWallet />
-    </>
+    return <ConnectYourWallet />
   }
 
   if (address && !contributorsAllowed.includes(address)) {

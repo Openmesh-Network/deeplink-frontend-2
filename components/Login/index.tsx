@@ -120,7 +120,7 @@ const Login = () => {
   return (
     <>
       <section className="text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
-        <div className="mx-auto flex w-fit justify-center rounded-[8px] border border-[#cacaca] p-[100px]">
+        <div className="mx-auto flex max-w-[300px] justify-center rounded-[8px] border border-[#cacaca] p-[20px] md:w-fit md:p-[100px]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>
@@ -134,7 +134,7 @@ const Login = () => {
                     </span>
                     <input
                       disabled={isLoading}
-                      className="mt-[10px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
+                      className="mt-[10px] h-[30px] w-[200px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 md:h-[50px] md:w-[280px] lg:w-[500px]"
                       type="text"
                       maxLength={500}
                       placeholder=""
@@ -151,7 +151,7 @@ const Login = () => {
                     <div className="flex">
                       <input
                         disabled={isLoading}
-                        className="mt-[10px] mr-[20px] h-[50px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
+                        className="mt-[10px] mr-[20px] h-[30px] w-[200px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 md:h-[50px] md:w-[280px] lg:w-[500px]"
                         type={passwordVisibility ? 'password' : 'text'}
                         maxLength={500}
                         placeholder=""
@@ -181,7 +181,7 @@ const Login = () => {
               <div className="mt-[30px] flex">
                 <button
                   disabled={true}
-                  className=" cursor-pointer items-center rounded-[5px] border  border-[#000] bg-transparent py-[8px] px-[25px] text-[13px] font-bold !leading-[19px] text-[#575757] hover:bg-[#ececec] lg:text-[16px]"
+                  className=" cursor-pointer items-center rounded-[5px] border border-[#000]  bg-transparent py-[4px] px-[15px] text-[10px] font-bold !leading-[19px] text-[#575757] hover:bg-[#ececec] md:py-[8px] md:px-[25px] lg:text-[16px]"
                   onClick={handleSubmit(onSubmit)}
                 >
                   <span className="">Sign in</span>
@@ -202,7 +202,7 @@ const Login = () => {
               <div className="mt-[30px]">
                 <button
                   type="submit"
-                  className=" cursor-pointer items-center rounded-[5px] border  border-[#000] bg-transparent py-[8px] px-[25px] text-[13px] font-bold !leading-[19px] text-[#575757] hover:bg-[#ececec] lg:text-[16px]"
+                  className=" cursor-pointer  items-center rounded-[5px] border  border-[#000] bg-transparent py-[4px] px-[15px] text-[10px] font-bold !leading-[19px] text-[#575757] hover:bg-[#ececec] md:py-[8px] md:px-[25px] lg:text-[16px]"
                   onClick={handleSubmit(onSubmit)}
                 >
                   <span className="">Sign in</span>
