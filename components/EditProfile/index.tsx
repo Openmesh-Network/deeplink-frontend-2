@@ -32,6 +32,7 @@ import * as Yup from 'yup'
 import HeroEditProfile from './HeroEditProfile'
 import { User } from '@/types/user'
 import { createHash } from 'crypto'
+import ConnectYourWallet from '../ConnectYouWallet'
 
 type TaskApplicationForm = {
   displayName: string
@@ -421,13 +422,7 @@ const EditProfile = (id: any) => {
   }, [address])
 
   if (!address) {
-    return (
-      <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect your wallet to continue
-        </div>
-      </div>
-    )
+    return <ConnectYourWallet />
   }
 
   if (isLoading) {

@@ -30,6 +30,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import HeroSubmission from './HeroSubmission'
 import { Console } from 'console'
+import ConnectYourWallet from '../ConnectYouWallet'
 
 type SubmissionRevisionForm = {
   description: string
@@ -349,13 +350,7 @@ const SubmissionRevision = (id: any) => {
   }, [id])
 
   if (!address) {
-    return (
-      <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect your wallet to continue
-        </div>
-      </div>
-    )
+    return <ConnectYourWallet />
   }
 
   if (address && taskMetadata && taskMetadata.manager !== address) {

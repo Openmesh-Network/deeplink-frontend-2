@@ -100,6 +100,7 @@ const Login = () => {
       setUser(res)
       console.log('setting false')
       setIsLoading(false)
+      push('/')
     } catch (err) {
       console.log(err)
       if (err.response.data.message === 'Unconfirmed Email') {
@@ -116,7 +117,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="mt-12 mb-[0px] px-[20px] pt-[50px]  text-[11px] font-medium !leading-[17px] text-[#000000] lg:mb-24 lg:px-[100px]  lg:text-[14px]">
+      <section className="text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
         <div className="mx-auto flex w-fit justify-center rounded-[8px] border border-[#cacaca] p-[100px]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
@@ -209,11 +210,9 @@ const Login = () => {
             <div className="lg:mt-[50px]">
               Does not have an account yet?{' '}
               <a
-                href={`${
-                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                    ? `${process.env.NEXT_PUBLIC_BASE_URL}/oec/register`
-                    : '/register'
-                }`}
+                href={`https://www.openmesh.network/oen`}
+                target="_blank"
+                rel="noreferrer"
                 className="border-b-1 cursor-pointer border-b text-[#3253FE]"
               >
                 Create account
@@ -222,11 +221,9 @@ const Login = () => {
             <div className="lg:mt-[20px]">
               Forgot your password?{' '}
               <a
-                href={`${
-                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                    ? `${process.env.NEXT_PUBLIC_BASE_URL}/oec/recover-password`
-                    : '/recover-password'
-                }`}
+                href={`https://www.openmesh.network/oen/recover-password`}
+                target="_blank"
+                rel="noreferrer"
                 className="border-b-1 cursor-pointer border-b text-[#3253FE]"
               >
                 Recover password

@@ -34,6 +34,7 @@ import * as Yup from 'yup'
 import HeroVerifiedContributor from './HeroVerifiedContributor'
 import { User } from '@/types/user'
 import { createHash } from 'crypto'
+import ConnectYourWallet from '../ConnectYouWallet'
 
 type VerifiedContributorForm = {
   description: string
@@ -449,16 +450,7 @@ const VerifiedContributor = (id: any) => {
   }, [address])
 
   if (!address) {
-    return (
-      <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect your wallet to continue
-        </div>
-        <div className="mt-[20px] flex justify-center text-[14px] text-[#505050]">
-          Why do I need to connect my Web3 wallet?
-        </div>
-      </div>
-    )
+    return <ConnectYourWallet />
   }
 
   if (isLoading) {
