@@ -205,7 +205,7 @@ const ReducedSidebarNav = ({
                 className={`mx-auto w-[15px]  cursor-pointer md:w-[18px] md:hover:scale-105 lg:w-[21px] xl:w-[24px] 2xl:w-[30px]`}
               />
               <div className="mx-auto mt-[5px] flex w-fit items-center justify-center border-b-[1px] text-[8px] font-normal text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
-                12
+                {openProjectsNumber}
               </div>
             </div>
             <div className="mt-[23px] md:mt-[26px] lg:mt-[30px] xl:mt-[34px] 2xl:mt-[41px]">

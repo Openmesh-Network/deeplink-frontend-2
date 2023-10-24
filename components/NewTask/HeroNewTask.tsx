@@ -20,30 +20,15 @@ import { IPFSSubmition } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { BigNumberish } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
+import ConnectYourWallet from '../ConnectYouWallet'
 
 const HeroNewTasks = () => {
   const { address, isConnecting, isDisconnected } = useAccount()
 
   if (!address) {
-    return (
-      <section className="border-b border-[#CFCFCF] px-32 pb-[43px] pt-[40px]">
-        <div className="container">
-          <div className="-mx-4 flex flex-wrap items-start">
-            <div className="wow fadeInUp" data-wow-delay=".2s">
-              <div className="mb-1">
-                <h3 className="text-[20px] font-bold text-[#000000]">
-                  Add New Project
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div className="mt-4 text-[#000000]">
-            Connect your wallet to continue
-          </div>
-        </div>
-      </section>
-    )
+    return <ConnectYourWallet />
   }
+
   return (
     <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[43px] lg:px-[100px] lg:pt-[40px]">
       <div className="container px-[0px]">

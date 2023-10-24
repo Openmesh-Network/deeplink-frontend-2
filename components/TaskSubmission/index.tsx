@@ -28,6 +28,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import ConnectYourWallet from '../ConnectYouWallet'
 
 type TaskApplicationForm = {
   description: string
@@ -342,13 +343,9 @@ const TaskSubmission = (id: any) => {
   }, [id])
 
   if (!address) {
-    return (
-      <div className="pb-[500px]">
-        <div className="mt-[60px] flex items-center justify-center text-[#000000]">
-          Connect your wallet to continue
-        </div>
-      </div>
-    )
+    ;<>
+      <ConnectYourWallet />
+    </>
   }
 
   if (address && !contributorsAllowed.includes(address)) {

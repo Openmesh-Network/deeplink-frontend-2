@@ -270,7 +270,7 @@ const SearchModal = ({
 
   return (
     <section className="mt-[55px] md:mt-[48px] lg:mt-[56px] xl:mt-[64px] 2xl:mt-[80px]">
-      <div className="container flex px-0">
+      <div className="container flex px-0 2xl:max-w-[1800px]">
         <div className="flex">
           <input
             type="text"

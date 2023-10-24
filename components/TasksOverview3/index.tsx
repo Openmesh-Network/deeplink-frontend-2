@@ -294,7 +294,7 @@ const TransactionList = () => {
             />
           </div>
         </div>
-        <div className="px-[17px] md:px-[20.6px] lg:px-[23.8px] xl:px-[27px] 2xl:px-[34px]">
+        <div className="mx-auto px-[17px] md:px-[20.6px] lg:px-[23.8px] xl:px-[27px] 2xl:px-[34px]">
           <SearchModal
             onUpdate={handleUpdate}
             scrollManually={scrollManually}
@@ -307,7 +307,7 @@ const TransactionList = () => {
             className="mt-[27px] md:mt-[33px] lg:mt-[38.5px] xl:mt-[44px] 2xl:mt-[55px]"
             id={'taskStart'}
           >
-            <div className="container px-0">
+            <div className="container px-0 2xl:max-w-[1800px]">
               <div className=" text-[#000000]">
                 <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border-[0.7px] border-[#E3E3E3] bg-[#fff] px-[25px] py-[10px] text-[12px] font-medium lg:text-[16px]">
                   <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
