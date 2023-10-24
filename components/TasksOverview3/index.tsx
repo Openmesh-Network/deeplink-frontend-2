@@ -260,11 +260,7 @@ const TransactionList = () => {
   return (
     <>
       <div className="flex">
-        <div
-          onMouseEnter={() => setSidebarExpanded(true)}
-          onMouseLeave={() => setSidebarExpanded(false)}
-          className=""
-        >
+        <div className="md:hidden">
           <div
             className={`opacity-${
               isSidebarExpanded ? '100 block h-full' : '0 hidden'
@@ -272,6 +268,7 @@ const TransactionList = () => {
           >
             <SidebarNav
               onUpdate={handleUpdate}
+              onClickBurger={() => setSidebarExpanded(!isSidebarExpanded)}
               scrollManually={scrollManually}
               openProjectsNumber={counting ? counting.open : 0}
               activeProjectsNumber={counting ? counting.active : 0}
@@ -286,6 +283,43 @@ const TransactionList = () => {
           >
             <ReducedSidebarNav
               onUpdate={handleUpdate}
+              onClickBurger={() => setSidebarExpanded(!isSidebarExpanded)}
+              scrollManually={scrollManually}
+              openProjectsNumber={counting ? counting.open : 0}
+              activeProjectsNumber={counting ? counting.active : 0}
+              completedProjectsNumber={counting ? counting.completed : 0}
+              draftProjectsNumber={counting ? counting.draft : 0}
+            />
+          </div>
+        </div>
+        <div
+          onMouseEnter={() => setSidebarExpanded(true)}
+          onMouseLeave={() => setSidebarExpanded(false)}
+          className="hidden md:block"
+        >
+          <div
+            className={`opacity-${
+              isSidebarExpanded ? '100 block h-full' : '0 hidden'
+            } h-full transition-opacity duration-300`}
+          >
+            <SidebarNav
+              onUpdate={handleUpdate}
+              onClickBurger={() => console.log()}
+              scrollManually={scrollManually}
+              openProjectsNumber={counting ? counting.open : 0}
+              activeProjectsNumber={counting ? counting.active : 0}
+              completedProjectsNumber={counting ? counting.completed : 0}
+              draftProjectsNumber={counting ? counting.draft : 0}
+            />
+          </div>
+          <div
+            className={`opacity-${
+              isSidebarExpanded ? '0 hidden' : '100 block'
+            } h-full transition-opacity duration-300`}
+          >
+            <ReducedSidebarNav
+              onUpdate={handleUpdate}
+              onClickBurger={() => console.log()}
               scrollManually={scrollManually}
               openProjectsNumber={counting ? counting.open : 0}
               activeProjectsNumber={counting ? counting.active : 0}
@@ -307,7 +341,11 @@ const TransactionList = () => {
             className="mt-[27px] md:mt-[33px] lg:mt-[38.5px] xl:mt-[44px] 2xl:mt-[55px]"
             id={'taskStart'}
           >
-            <div className="container px-0 2xl:max-w-[1800px]">
+            <div
+              className={`container ${
+                isSidebarExpanded ? 'max-w-[150px]' : 'max-w-[200px]'
+              } px-0 md:max-w-none 2xl:max-w-[1800px]`}
+            >
               <div className=" text-[#000000]">
                 <div className="flex items-start justify-between overflow-x-auto rounded-[10px] border-[0.7px] border-[#E3E3E3] bg-[#fff] px-[25px] py-[10px] text-[12px] font-medium lg:text-[16px]">
                   <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
@@ -421,7 +459,7 @@ const TransactionList = () => {
                     />
                   ))}
                 {!isLoading && finalTasks.length > 0 && pagination && (
-                  <div className="flex items-center justify-center pt-16 pb-[180px] text-[14px] font-normal lg:text-[18px]">
+                  <div className="flex items-center justify-center pt-16 pb-[40px] text-[14px] font-normal md:pb-[180px] lg:text-[18px]">
                     {pagination.currentPage !== 1 && (
                       <p
                         onClick={handlePaginationSelectionPrev}
@@ -430,7 +468,7 @@ const TransactionList = () => {
                         Prev
                       </p>
                     )}
-                    <p className="mx-14">
+                    <p className="mx-2 md:mx-14">
                       Page {pagination.currentPage} of {pagination.totalPages}
                     </p>
                     {pagination.totalPages > pagination.currentPage && (

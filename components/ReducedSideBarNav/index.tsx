@@ -5,6 +5,7 @@ import SubBarData from '../SubBarData'
 
 interface ModalProps {
   onUpdate(): void
+  onClickBurger(): void
   scrollManually(): void
   openProjectsNumber: number
   activeProjectsNumber: number
@@ -17,6 +18,7 @@ const ReducedSidebarNav = ({
   onUpdate,
   scrollManually,
   openProjectsNumber,
+  onClickBurger,
   activeProjectsNumber,
   completedProjectsNumber,
   draftProjectsNumber,
@@ -183,6 +185,7 @@ const ReducedSidebarNav = ({
           <div className="px-[20px] md:px-[20px] lg:px-[24px] xl:px-[27px] 2xl:px-[34px]">
             <div className="pt-[17px] md:pt-[20px]  lg:pt-[24px]  xl:pt-[27px] 2xl:pt-[34px]">
               <img
+                onClick={onClickBurger}
                 src="/images/sidebarNav/burguer.svg"
                 alt="image"
                 className={`mx-auto w-[12px] cursor-pointer md:w-[14.5px] md:hover:scale-105 lg:w-[17px] xl:w-[19px] 2xl:w-[24px]`}

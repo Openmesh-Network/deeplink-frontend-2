@@ -81,7 +81,7 @@ const Header = () => {
                     ? `/openrd/`
                     : `/`
                 }`}
-                className={`header-logo block w-[68px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px]  2xl:mr-[102px] 2xl:w-[136px]`}
+                className={`header-logo block w-[90px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px]  2xl:mr-[102px] 2xl:w-[136px]`}
               >
                 <img
                   src={`${
@@ -90,11 +90,11 @@ const Header = () => {
                       : ''
                   }/images/header/logo.svg`}
                   alt="image"
-                  className={`w-[68px] md:w-[80px] lg:w-[95px] xl:w-[109px] 2xl:w-[136px]`}
+                  className={`w-[90px] md:w-[80px] lg:w-[95px] xl:w-[109px] 2xl:w-[136px]`}
                 />
               </Link>
             </div>
-            <div className="flex w-full items-center justify-between">
+            <div className="flex w-full items-center justify-between py-[25px] md:py-[0px]">
               <div>
                 <button
                   onClick={navbarToggleHandler}

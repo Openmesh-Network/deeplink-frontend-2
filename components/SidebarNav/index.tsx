@@ -6,6 +6,7 @@ import SubBarData from '../SubBarData'
 interface ModalProps {
   onUpdate(): void
   scrollManually(): void
+  onClickBurger(): void
   openProjectsNumber: number
   activeProjectsNumber: number
   completedProjectsNumber: number
@@ -16,6 +17,7 @@ interface ModalProps {
 const SidebarNav = ({
   onUpdate,
   scrollManually,
+  onClickBurger,
   openProjectsNumber,
   activeProjectsNumber,
   completedProjectsNumber,
@@ -183,6 +185,7 @@ const SidebarNav = ({
           <div className=" pl-[12px] pr-[10px] md:pl-[14px] md:pr-[12px] lg:pl-[16px] lg:pr-[14px] xl:pl-[18.5px] xl:pr-[16px] 2xl:pl-[23px] 2xl:pr-[20px]">
             <div className="py-[17px] md:py-[20px]  lg:py-[24px]  xl:py-[27px] 2xl:py-[34px]">
               <img
+                onClick={onClickBurger}
                 src="/images/sidebarNav/burguer.svg"
                 alt="image"
                 className={`w-[12px]  cursor-pointer md:w-[14.5px] md:hover:scale-105 lg:w-[17px] xl:w-[19px] 2xl:w-[24px]`}
@@ -244,7 +247,7 @@ const SidebarNav = ({
             </div>
           </div>
           <div className="mt-[22.5px] h-[0.7px] w-full bg-[#E3E3E3] md:mt-[27px] lg:mt-[31.5px] xl:mt-[36px] 2xl:mt-[45px]"></div>
-          <div className="mx-auto mt-[20px] grid min-w-[230px] gap-y-[27.5px] md:mt-[24px] md:gap-y-[33px] lg:mt-[28px] lg:gap-y-[38.5px] xl:mt-[32px] xl:gap-y-[44px] 2xl:mt-[40px] 2xl:gap-y-[55px]">
+          <div className="mx-auto mt-[20px] grid min-w-[40px] gap-y-[27.5px] md:mt-[24px] md:gap-y-[33px] lg:mt-[28px] lg:gap-y-[38.5px] xl:mt-[32px] xl:gap-y-[44px] 2xl:mt-[40px] 2xl:gap-y-[55px]">
             {categoriesOptions.map((option, index) => (
               <div key={index}>
                 <div
@@ -270,13 +273,13 @@ const SidebarNav = ({
                       <img
                         src="/images/sidebarNav/arrow-baixo.svg"
                         alt="image"
-                        className="flex w-[8px] items-center lg:w-[9px] 2xl:w-[11px]"
+                        className="flex w-[5px] items-center md:w-[8px] lg:w-[9px] 2xl:w-[11px]"
                       />
                     ) : (
                       <img
                         src="/images/sidebarNav/arrow.svg"
                         alt="image"
-                        className="flex w-[7px] items-center lg:w-[7px] xl:w-[8px] 2xl:w-[9px]"
+                        className="flex w-[5px] items-center md:w-[7px] lg:w-[7px] xl:w-[8px] 2xl:w-[9px]"
                       />
                     )}
                   </div>

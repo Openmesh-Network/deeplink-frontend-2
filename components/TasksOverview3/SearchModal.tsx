@@ -270,7 +270,7 @@ const SearchModal = ({
 
   return (
     <section className="mt-[55px] md:mt-[48px] lg:mt-[56px] xl:mt-[64px] 2xl:mt-[80px]">
-      <div className="container flex px-0 2xl:max-w-[1800px]">
+      <div className="container px-0 md:flex 2xl:max-w-[1800px]">
         <div className="flex">
           <input
             type="text"
@@ -306,7 +306,7 @@ const SearchModal = ({
             </svg>
           </button> */}
         </div>
-        <div className="ml-[20px] flex items-end justify-end  text-[12px] font-medium text-white md:text-[9.6px] lg:ml-auto lg:text-[11.2px] xl:text-[13px] 2xl:text-[16px]">
+        <div className="mt-[10px] flex items-end text-[9px] font-medium text-white  md:ml-[20px] md:mt-0 md:justify-end md:text-[9.6px] lg:ml-auto lg:text-[11.2px] xl:text-[13px] 2xl:text-[16px]">
           <a
             href={`${
               process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
@@ -315,7 +315,7 @@ const SearchModal = ({
             }`}
             target="_blank"
             rel="nofollow noreferrer"
-            className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px] border-[0.7px] border-[#0354EC] bg-[#fff] text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] lg:h-[43px] lg:w-[170px]"
+            className="flex h-[25px] w-[90px] cursor-pointer items-center justify-center rounded-[10px] border-[0.7px] border-[#0354EC] bg-[#fff] text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:ml-auto lg:h-[43px] lg:w-[170px]"
           >
             + Add a project
           </a>
