@@ -191,7 +191,7 @@ const SidebarNav = ({
             <div>
               <div className="flex gap-x-[8.5px] md:gap-x-[10px] lg:gap-x-[12px] xl:gap-x-[13.5px] 2xl:gap-x-[17px]">
                 <div className="text-[11px] font-bold md:text-[13.2px] lg:text-[15.4px] lg:!leading-[150%] xl:text-[17.5px] 2xl:text-[22px]">
-                  $151,967
+                  $1,159,000
                 </div>
                 <img
                   src={`${

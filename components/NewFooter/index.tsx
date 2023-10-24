@@ -7,6 +7,7 @@ const NewFooter = () => {
     'Gas Optimization',
     'Crypto Liquidity',
   ]
+
   return (
     <>
       <section
@@ -40,12 +41,18 @@ const NewFooter = () => {
                 </div>
                 <div className="grid grid-cols-2 justify-between gap-y-[5px] md:block md:!leading-[160%] lg:!leading-[220%]">
                   {useCasesOptions.map((useCase, index) => (
-                    <div
+                    <a
+                      href="https://github.com/L3A-Protocol"
+                      target="_blank"
                       key={index}
-                      className={`cursor-pointer text-[#000] hover:text-[#757575]`}
+                      rel="noreferrer"
                     >
-                      {useCase}
-                    </div>
+                      <div
+                        className={`cursor-pointer text-[#000] hover:text-[#757575]`}
+                      >
+                        {useCase}
+                      </div>
+                    </a>
                   ))}
                 </div>
               </div>

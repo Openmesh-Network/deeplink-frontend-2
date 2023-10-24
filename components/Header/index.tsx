@@ -212,29 +212,36 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
-                <div className="ml-[5px] hidden cursor-pointer items-center justify-center gap-x-[5px] rounded-[10px] border border-[#0354EC] px-[11px]  py-[5.25px]  font-semibold text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:gap-x-[6px] md:px-[13px] md:py-[6.3px] lg:flex lg:gap-x-[7px] lg:px-[15.5px] lg:py-[7.35px] xl:gap-x-[8px] xl:px-[17.5px] xl:py-[8.4px] 2xl:gap-x-[10px] 2xl:px-[21.5px] 2xl:py-[10.5px]">
-                  <img
-                    src={`${
-                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                        ? process.env.NEXT_PUBLIC_BASE_PATH
-                        : ''
-                    }/images/header/check-blue.svg`}
-                    alt="image"
-                    className={`w-[10px] md:w-[12px] lg:w-[14px] xl:w-[16px] 2xl:w-[20px]`}
-                  />
-                  <a
-                    href={`${
-                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                        ? `/openrd/verified-contributor`
-                        : `/verified-contributor`
-                    }`}
-                    target="_blank"
-                    rel="nofollow noreferrer"
-                    className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[14px]"
-                  >
-                    Become a Contributor
-                  </a>
-                </div>
+                <a
+                  href={`https://open-mesh.gitbook.io/l3a-dao-documentation/verified-contributor-guide/apply-as-verified-contributor`}
+                  target="_blank"
+                  rel="nofollow noreferrer"
+                >
+                  <div className="ml-[5px] hidden cursor-pointer items-center justify-center gap-x-[5px] rounded-[10px] border border-[#0354EC] px-[11px]  py-[5.25px]  font-semibold text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:gap-x-[6px] md:px-[13px] md:py-[6.3px] lg:flex lg:gap-x-[7px] lg:px-[15.5px] lg:py-[7.35px] xl:gap-x-[8px] xl:px-[17.5px] xl:py-[8.4px] 2xl:gap-x-[10px] 2xl:px-[21.5px] 2xl:py-[10.5px]">
+                    <img
+                      src={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? process.env.NEXT_PUBLIC_BASE_PATH
+                          : ''
+                      }/images/header/check-blue.svg`}
+                      alt="image"
+                      className={`w-[10px] md:w-[12px] lg:w-[14px] xl:w-[16px] 2xl:w-[20px]`}
+                    />
+                    <a
+                      href={`${
+                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                          ? `/openrd/verified-contributor`
+                          : `/verified-contributor`
+                      }`}
+                      target="_blank"
+                      rel="nofollow noreferrer"
+                      className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[14px]"
+                    >
+                      Become a Contributor
+                    </a>
+                  </div>
+                </a>
+
                 <div className="">
                   <div className="hidden lg:block">{<Web3Button />}</div>
                   <div className="">
