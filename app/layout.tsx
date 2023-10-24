@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
 'use client'
 
-import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import 'node_modules/react-modal-video/css/modal-video.css'
 import '../styles/index.css'
 
 import { Providers } from './providers'
+import NewFooter from '@/components/NewFooter'
 
 export default function RootLayout({
   children,
@@ -26,7 +26,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
-          <Footer />
+          <NewFooter />
           <ScrollToTop />
         </Providers>
       </body>

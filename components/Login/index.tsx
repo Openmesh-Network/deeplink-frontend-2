@@ -100,7 +100,6 @@ const Login = () => {
       setUser(res)
       console.log('setting false')
       setIsLoading(false)
-      push('/oec')
     } catch (err) {
       console.log(err)
       if (err.response.data.message === 'Unconfirmed Email') {
