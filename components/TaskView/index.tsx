@@ -410,7 +410,19 @@ const TaskView = (id: any) => {
                             transform,
                           })
 
-                          return <div>{htmlTransformado}</div>
+                          return (
+                            <div>
+                              {taskMetadata.engineersRequirement && (
+                                <div className="mb-[5px] md:mb-[6px] lg:mb-[7px] xl:mb-[8px] 2xl:mb-[10px]">
+                                  <span className="font-bold">
+                                    Engineers Needed:
+                                  </span>{' '}
+                                  {taskMetadata.engineersRequirement}
+                                </div>
+                              )}
+                              {htmlTransformado}
+                            </div>
+                          )
                         })()}
                       </div>
                     ) : (

@@ -79,6 +79,7 @@ export type TasksOverview = {
   id: number
   title: string
   description: string
+  engineersRequirement: string
   deadline: string
   daysLeft: string
   metadataEdited: boolean
