@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import Checkbox from '@material-ui/core/Checkbox'
 import { useForm, Controller } from 'react-hook-form'
@@ -30,6 +30,8 @@ import HeroTask from '../TaskView/HeroTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import ConnectYourWallet from '../ConnectYouWallet'
+import { AccountContext } from '../../contexts/AccountContext'
+import nookies, { parseCookies, setCookie } from 'nookies'
 
 type TaskApplicationForm = {
   displayName: string
@@ -119,6 +121,7 @@ const TaskApplication = (id: any) => {
 
   const { address } = useAccount()
   const { chain, chains } = useNetwork()
+  const { user, setUser } = useContext(AccountContext)
 
   const { push } = useRouter()
 
@@ -340,7 +343,63 @@ const TaskApplication = (id: any) => {
     }
   }
 
-  async function onSubmit(data: TaskApplicationForm) {
+  async function onSubmitWeb2(data: TaskApplicationForm) {
+    const { additionalLink, description } = data
+    const { userSessionToken } = parseCookies()
+
+    const finalData = {
+      taskId: id.id,
+      howLikelyToMeetTheDeadline: 'Likely',
+      displayName: user.companyName ? user.companyName : user.firstName,
+      additionalLink,
+      description,
+      budgetPercentageRequested: budgetPercentage,
+      links,
+    }
+
+    const config = {
+      method: 'post' as 'post',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/createTaskApplicationWeb2`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+        'X-Parse-Session-Token': userSessionToken,
+        'Content-Type': 'application/json',
+      },
+      data: finalData,
+    }
+
+    let dado
+
+    try {
+      await axios(config).then(function (response) {
+        if (response.data) {
+          dado = response.data
+          console.log('api response')
+          console.log(dado)
+          toast.success('Application created succesfully!')
+          push(
+            `${
+              process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                ? `/openrd/task/${id.id}`
+                : `/task/${id.id}`
+            }`,
+          )
+        }
+      })
+    } catch (err) {
+      if (
+        err.response.data.message ===
+        'Already exists an application for this user'
+      ) {
+        toast.error('Application already created')
+      } else {
+        toast.error('Error during the task application')
+      }
+    }
+    setIsApplicationLoading(false)
+  }
+
+  async function onSubmitWeb3(data: TaskApplicationForm) {
     console.log('submit called')
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
@@ -392,7 +451,7 @@ const TaskApplication = (id: any) => {
         ipfsHashData,
         newPaymentsBasedOnPercentage,
       )
-      toast.success('Application done succesfully!')
+      toast.success('Application created succesfully!')
       push(
         `${
           process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
@@ -405,6 +464,14 @@ const TaskApplication = (id: any) => {
       toast.error('Error during the task application')
       console.log(err)
       setIsApplicationLoading(false)
+    }
+  }
+
+  async function onSubmit(data: TaskApplicationForm) {
+    if (address) {
+      onSubmitWeb3(data)
+    } else if (user) {
+      onSubmitWeb2(data)
     }
   }
 
@@ -421,7 +488,7 @@ const TaskApplication = (id: any) => {
     }
   }, [id])
 
-  if (!address) {
+  if (!address && !user) {
     return (
       <div className="pb-[10px] lg:pb-[500px]">
         <ConnectYourWallet />
@@ -477,19 +544,31 @@ const TaskApplication = (id: any) => {
                   <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
                     Display Name
                   </p>
-                  <p
-                    title={address}
-                    className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
-                  >
-                    {formatAddress(address)}
-                  </p>
+                  {address && (
+                    <p
+                      title={address}
+                      className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
+                    >
+                      {formatAddress(address)}
+                    </p>
+                  )}
+                  {user && (
+                    <p
+                      title={
+                        user.companyName ? user.companyName : user.firstName
+                      }
+                      className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
+                    >
+                      {user.companyName ? user.companyName : user.firstName}
+                    </p>
+                  )}
                 </div>
                 <div className="mt-[30px]">
                   <p className="text-[14px] font-medium !leading-[17px] text-[#000000]">
                     Links
                   </p>
                   <p
-                    title={address}
+                    title={address && address}
                     className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
                   >
                     www.github.com

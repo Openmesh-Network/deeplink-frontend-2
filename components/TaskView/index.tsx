@@ -498,6 +498,7 @@ const TaskView = (id: any) => {
               ) : (
                 <ApplicantsSubmissionsList
                   dataApplication={taskMetadata.Application}
+                  dataApplicationOffchain={taskMetadata.ApplicationOffChain}
                   dataSubmission={taskMetadata.Submission}
                   taskId={String(taskMetadata.id)}
                   taskPayments={taskMetadata.payments}

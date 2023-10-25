@@ -13,7 +13,7 @@ import {
 } from '@web3modal/react'
 import { useNetwork, useAccount } from 'wagmi'
 import { AccountContext } from '@/contexts/AccountContext'
-import { parseCookies, destroyCookie } from 'nookies'
+import nookies, { parseCookies, destroyCookie } from 'nookies'
 import axios from 'axios'
 
 const Header = () => {
@@ -123,6 +123,8 @@ const Header = () => {
 
   function signOutUser() {
     destroyCookie(undefined, 'userSessionToken')
+    localStorage.removeItem('@scalable: user-state-1.0.0')
+    nookies.destroy(null, 'userSessionToken')
     setUser(null)
   }
 

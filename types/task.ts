@@ -59,6 +59,23 @@ export type Application = {
   accepted: boolean
 }
 
+export type ApplicationOffChain = {
+  metadataDisplayName: string
+  applicationId: string
+  proposer: string
+  reward: Reward[] | []
+  applicant: string
+  metadataDescription: string
+  metadataProposedBudget: string
+  timestamp: string
+  totalEarned: string | null
+  jobSuccess: string | null
+  profileImage: string | null
+  profileName: string | null
+  accepted: boolean
+  openmeshExpertUser: any
+}
+
 export type Submission = {
   id: string
   submissionId: string
@@ -101,6 +118,7 @@ export type TasksOverview = {
   manager: string
   contributors: ContributorInfo[] | null
   Application: Application[] | null
+  ApplicationOffChain: ApplicationOffChain[] | null
   Submission: Submission[] | null
   updatesCount: number | null
 }

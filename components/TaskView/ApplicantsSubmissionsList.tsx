@@ -25,12 +25,14 @@ import {
   Application,
   Payment,
   Submission,
+  ApplicationOffChain,
 } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { File, SmileySad, Info } from 'phosphor-react'
 
 type ApplicantsSubmissionsListProps = {
   dataApplication: Application[]
+  dataApplicationOffchain: ApplicationOffChain[]
   dataSubmission: Submission[]
   taskPayments: Payment[]
   taskDeadline: string
@@ -46,7 +48,7 @@ type ApplicantsSubmissionsListProps = {
 }
 
 // eslint-disable-next-line prettier/prettier
-const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, taskCreator, taskManager, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
+const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, taskCreator, taskManager, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
   const [applications, setApplications] = useState<Application[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
@@ -492,13 +494,22 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
     )
   }
 
+  function handleApplications(
+    dataAppplication: Application[],
+    dataApplicationOffchain: ApplicationOffChain[],
+  ) {
+    console.log('handleApplication recebi alguns detalhes')
+    console.log(dataAppplication)
+    console.log(dataApplicationOffchain)
+  }
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
     console.log('useEffect chamado')
-    setApplications(dataApplication)
+    handleApplications(dataApplication || [], dataApplicationOffchain || [])
     setSubmissions(dataSubmission)
     console.log('recebi application')
     console.log(dataApplication)
