@@ -493,7 +493,7 @@ const TaskApplication = (id: any) => {
     return (
       <div className="pb-[10px] lg:pb-[500px]">
         <ConnectYourWallet
-          redirect={`https://openrd.openmesh.network/task/${id.id}?applsub=true`}
+          redirect={`https://openmesh.network/oec/register?openRD=true&pageRedirect=https://openrd.openmesh.network/task/${id.id}?applsub=true`}
         />
       </div>
     )
