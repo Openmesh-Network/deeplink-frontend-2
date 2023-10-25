@@ -7,6 +7,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { ThemeProvider } from 'next-themes'
 import { ToastContainer } from 'react-toastify'
+import AccountContextProvider from '@/contexts/AccountContext'
 
 const chain =
   process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Polygon'
@@ -27,16 +28,18 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains)
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <WagmiConfig config={wagmiConfig}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={false}
-          defaultTheme="dark"
-        >
-          {children}
-        </ThemeProvider>
-        <ToastContainer />
-      </WagmiConfig>
+      <AccountContextProvider>
+        <WagmiConfig config={wagmiConfig}>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={false}
+            defaultTheme="dark"
+          >
+            {children}
+          </ThemeProvider>
+          <ToastContainer />
+        </WagmiConfig>
+      </AccountContextProvider>
 
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>

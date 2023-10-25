@@ -65,7 +65,7 @@ const Login = () => {
   async function loginUser(data: any) {
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/openmesh-experts/functions/login`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/openmesh-experts/functions/loginOpenRD`,
       headers: {
         'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
       },
@@ -91,7 +91,6 @@ const Login = () => {
     const finalData = {
       ...data,
     }
-    return
     try {
       const res = await loginUser(finalData)
       console.log(res)
@@ -102,11 +101,15 @@ const Login = () => {
       setUser(res)
       console.log('setting false')
       setIsLoading(false)
-      push('/')
+      window.location.reload()
     } catch (err) {
       console.log(err)
       if (err.response.data.message === 'Unconfirmed Email') {
         toast.error('Unconfirmed email')
+      } else if (err.response.data.message === 'User disabled') {
+        toast.error(
+          'Please allow 24 to 48 hours for the community to approve your application',
+        )
       } else {
         toast.error('Incorrect credentials')
       }
@@ -120,7 +123,7 @@ const Login = () => {
   return (
     <>
       <section className="text-[11px] font-medium !leading-[17px] text-[#000000] lg:text-[14px]">
-        <div className="mx-auto flex max-w-[300px] justify-center rounded-[8px] border border-[#cacaca] p-[20px] md:w-fit md:p-[100px]">
+        <div className="mx-auto flex max-w-[300px] justify-center rounded-[8px] border border-[#cacaca] p-[20px] md:w-fit md:max-w-none md:p-[100px]">
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="">
               <div>

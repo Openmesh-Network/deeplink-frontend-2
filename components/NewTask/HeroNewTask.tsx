@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import {
@@ -21,12 +21,18 @@ import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { BigNumberish } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import ConnectYourWallet from '../ConnectYouWallet'
+import { AccountContext } from '@/contexts/AccountContext'
 
 const HeroNewTasks = () => {
   const { address, isConnecting, isDisconnected } = useAccount()
+  const { user, setUser } = useContext(AccountContext)
 
   if (!address) {
     return <ConnectYourWallet />
+  }
+
+  if (!address && user) {
+    return <div>Only web3 users can create tasks</div>
   }
 
   return (

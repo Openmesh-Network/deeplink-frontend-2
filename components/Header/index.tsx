@@ -2,7 +2,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import ThemeToggler from './ThemeToggler'
 import menuData from './menuData'
 import { usePathname } from 'next/navigation'
@@ -12,6 +12,9 @@ import {
   Web3Button,
 } from '@web3modal/react'
 import { useNetwork, useAccount } from 'wagmi'
+import { AccountContext } from '@/contexts/AccountContext'
+import { parseCookies, destroyCookie } from 'nookies'
+import axios from 'axios'
 
 const Header = () => {
   const { address } = useAccount()
@@ -23,7 +26,13 @@ const Header = () => {
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen)
   }
+  const [userNavbarOpen, setUserNavbarOpen] = useState(false)
+
   const { theme, setTheme } = useWeb3ModalTheme()
+  const { user, setUser } = useContext(AccountContext)
+
+  const cookies = parseCookies()
+  const userHasAnyCookie = cookies.userSessionToken
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false)
@@ -57,6 +66,51 @@ const Header = () => {
     }
   }, [chain, isChainWrong, setTheme, address])
 
+  async function getUserData() {
+    const { userSessionToken } = parseCookies()
+    console.log('no user data')
+    console.log(userSessionToken)
+    if (userSessionToken) {
+      const config = {
+        method: 'post' as 'post',
+        url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/openmesh-experts/functions/getCurrentUser`,
+        headers: {
+          'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+          'X-Parse-Session-Token': userSessionToken,
+          'Content-Type': 'application/json',
+        },
+      }
+      let dado
+
+      await axios(config).then(function (response) {
+        if (response.data) {
+          dado = response.data
+          console.log(dado)
+          setUser(dado)
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    // if the user has the wallet connected and the login, we prioritize the wallet.
+    if (userHasAnyCookie && !address) {
+      console.log('user has cookis')
+      console.log(userHasAnyCookie)
+      console.log(cookies.userSessionToken)
+      try {
+        getUserData()
+      } catch (err) {
+        destroyCookie(undefined, 'userSessionToken')
+        setUser(null)
+      }
+    } else {
+      localStorage.removeItem('@scalable: user-state-1.0.0')
+      destroyCookie(undefined, 'userSessionToken')
+      setUser(null)
+    }
+  }, [])
+
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1)
   const handleSubmenu = (index) => {
@@ -65,6 +119,11 @@ const Header = () => {
     } else {
       setOpenIndex(index)
     }
+  }
+
+  function signOutUser() {
+    destroyCookie(undefined, 'userSessionToken')
+    setUser(null)
   }
 
   return (
@@ -241,13 +300,85 @@ const Header = () => {
                     </a>
                   </div>
                 </a>
-
-                <div className="">
-                  <div className="hidden lg:block">{<Web3Button />}</div>
-                  <div className="">
-                    {isChainWrong && <Web3NetworkSwitch />}
+                {user?.sessionToken ? (
+                  <div>
+                    <img
+                      src={
+                        !user.profilePictureHash
+                          ? `${
+                              process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                                ? process.env.NEXT_PUBLIC_BASE_PATH
+                                : ''
+                            }/images/header/user-circle.svg`
+                          : `https://cloudflare-ipfs.com/ipfs/${user.profilePictureHash}`
+                      }
+                      alt="image"
+                      onClick={() => {
+                        setUserNavbarOpen(!userNavbarOpen)
+                      }}
+                      className={`mr-[15px] h-[50px] w-[50px] cursor-pointer rounded-[100%] 2xl:mr-[15px]`}
+                    />
+                    <nav
+                      className={`navbar absolute right-[50px] z-50 flex w-[200px] rounded-[8px] border-[.5px] bg-[#e6e4e4] pt-[19px] pr-1 pl-[35px] pb-[30px] text-[13px] text-[#fff] duration-300  ${
+                        userNavbarOpen
+                          ? 'visibility top-20 opacity-100'
+                          : 'invisible top-20 opacity-0'
+                      }`}
+                    >
+                      <div className="mt-[10px]">
+                        {/* <div className=" grid gap-y-[15px] text-[15px]  font-medium !leading-[19px]">
+                          <div className="flex h-full items-center">
+                            <a
+                              href={`${
+                                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                                  ? `/oec/my-account`
+                                  : '/my-account'
+                              }`}
+                              className={`flex h-full cursor-pointer items-center text-[#000]  hover:text-[#313131]`}
+                            >
+                              My account
+                            </a>
+                          </div>
+                          <div className="flex h-full items-center">
+                            <a
+                              href={`${
+                                process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                                  ? `/oec/change-password`
+                                  : '/change-password'
+                              }`}
+                              className={`flex h-full cursor-pointer items-center text-[#000]  hover:text-[#313131]`}
+                            >
+                              Change password
+                            </a>
+                          </div>
+                        </div> */}
+                        <div className="">
+                          <a
+                            onClick={signOutUser}
+                            className=" cursor-pointer items-center rounded-[5px] border  border-[#000] bg-transparent py-[6px] px-[18px] text-[12px] font-bold !leading-[19px] text-[#575757] hover:bg-[#ececec]"
+                          >
+                            Sign out
+                          </a>
+                        </div>
+                      </div>
+                      <div
+                        onClick={() => {
+                          setUserNavbarOpen(false)
+                        }}
+                        className="ml-[20px]  flex cursor-pointer justify-end text-[16px] font-bold text-[#000] hover:text-[#313131]"
+                      >
+                        x
+                      </div>
+                    </nav>
                   </div>
-                </div>
+                ) : (
+                  <div className="">
+                    <div className="hidden lg:block">{<Web3Button />}</div>
+                    <div className="">
+                      {isChainWrong && <Web3NetworkSwitch />}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
