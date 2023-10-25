@@ -911,7 +911,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                   </div>
                   {renderViewMoreApplicationDesc(application)}
                 </div>
-                <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
+                <div className="mr-[52px] flex w-[155px] items-center pl-[5px]">
                   <p className="max-w-[120%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {returnsBudget(application.metadataProposedBudget)}
                   </p>
@@ -922,7 +922,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                 <div className="mr-[52px] flex w-[55px] items-center">
                   <p>{application.jobSuccess || ''}</p>
                 </div>
-                <div className="mr-[52px] flex min-w-[80px] items-center justify-center lg:w-[225px]">
+                <div className="mr-[12px] flex min-w-[80px] items-center justify-center lg:w-[225px]">
                   {' '}
                   {formatDeadline(application.timestamp)}
                 </div>
