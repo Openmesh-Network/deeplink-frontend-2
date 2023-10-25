@@ -64,6 +64,7 @@ const TaskApplication = (id: any) => {
   const [taskChainData, setTaskChainData] = useState<any>()
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
   const [budgetView, setBudgetView] = useState<boolean>(false)
+
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
     useState<String>('#009A50')
@@ -491,7 +492,9 @@ const TaskApplication = (id: any) => {
   if (!address && !user) {
     return (
       <div className="pb-[10px] lg:pb-[500px]">
-        <ConnectYourWallet />
+        <ConnectYourWallet
+          redirect={`https://openrd.openmesh.network/task/${id.id}?applsub=true`}
+        />
       </div>
     )
   }

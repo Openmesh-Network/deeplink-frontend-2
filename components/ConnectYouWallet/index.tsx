@@ -23,7 +23,11 @@ import { useAccount, useNetwork } from 'wagmi'
 import { Web3Button } from '@web3modal/react'
 import Login from '../Login'
 
-const ConnectYourWallet = () => {
+interface ModalProps {
+  redirect?: string
+}
+
+const ConnectYourWallet = ({ redirect }: ModalProps) => {
   const [isLogin, setIsLogin] = useState(false)
   const { address, isConnecting, isDisconnected } = useAccount()
 
@@ -66,7 +70,7 @@ const ConnectYourWallet = () => {
               </div>
               <div className="mt-[12px] md:mt-[14.5px] lg:mt-[17px] xl:mt-[19.2px] 2xl:mt-[24px]">
                 <a
-                  href="https://www.openmesh.network/oen"
+                  href={`${redirect || 'https://www.openmesh.network/oen'}`}
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -52,6 +52,9 @@ const TaskView = (id: any) => {
     { state: 'Closed', img: 'circle-gray-task.svg' },
   ]
 
+  const searchParams = useSearchParams()
+  const applsub = searchParams.get('applsub')
+
   async function getTask(id: any) {
     const dataBody = {
       id,
@@ -213,6 +216,14 @@ const TaskView = (id: any) => {
     }
     return convertNodeToElement(node, index, transform)
   }
+
+  useEffect(() => {
+    if (applsub === 'true') {
+      setViewOption('submissions')
+      console.log('sim senhorio meu')
+      // Faça algo quando isOpenrd for true
+    }
+  }, [applsub])
 
   if (isLoading || !taskMetadata) {
     return (
