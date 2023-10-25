@@ -258,7 +258,7 @@ const TransactionList = () => {
   return (
     <>
       <div className="flex">
-        <div>
+        {/* <div>
           <SidebarNav
             onUpdate={handleUpdate}
             scrollManually={scrollManually}
@@ -267,7 +267,7 @@ const TransactionList = () => {
             completedProjectsNumber={counting ? counting.completed : 0}
             draftProjectsNumber={counting ? counting.draft : 0}
           />
-        </div>
+        </div> */}
         <div>
           <HeroTasks />
           <SearchModal
