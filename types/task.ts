@@ -74,6 +74,7 @@ export type ApplicationOffChain = {
   profileName: string | null
   accepted: boolean
   openmeshExpertUser: any
+  offChain: boolean
 }
 
 export type Submission = {

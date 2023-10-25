@@ -50,7 +50,9 @@ type ApplicantsSubmissionsListProps = {
 // eslint-disable-next-line prettier/prettier
 const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, taskPayments, dataSubmission, taskDeadline, taskProjectLength, taskId, budget, address, taskExecutor, taskCreator, taskManager, contributorsAllowed, status}: ApplicantsSubmissionsListProps) => {
   const [filteredTasks, setFilteredTasks] = useState<TasksOverview[]>([])
-  const [applications, setApplications] = useState<Application[]>([])
+  const [applications, setApplications] = useState<
+    Application[] | ApplicationOffChain[]
+  >([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [departament, setDepartament] = useState('All')
   const [orderByTimestamp, setOrderByTimestamp] = useState('oldest')
@@ -136,14 +138,20 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   function formatDeadline(timestamp) {
-    const date = new Date(Number(timestamp) * 1000)
-    let difference = formatDistanceToNow(date)
+    console.log('timestamp recebida por mim')
+    console.log(timestamp)
+    if (timestamp) {
+      const date = new Date(Number(timestamp) * 1000)
+      let difference = formatDistanceToNow(date)
 
-    // Aqui estamos tratando a frase para exibir 'today' se a task foi criada no mesmo dia
-    difference = `${difference.charAt(0).toUpperCase()}${difference.slice(
-      1,
-    )} ago`
-    return difference
+      // Aqui estamos tratando a frase para exibir 'today' se a task foi criada no mesmo dia
+      difference = `${difference.charAt(0).toUpperCase()}${difference.slice(
+        1,
+      )} ago`
+      return difference
+    } else {
+      return ''
+    }
   }
 
   // Função para atualizar a URL
@@ -495,14 +503,33 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   function handleApplications(
-    dataAppplication: Application[],
+    dataApplication: Application[],
     dataApplicationOffchain: ApplicationOffChain[],
   ) {
-    console.log('handleApplication recebi alguns detalhes')
-    console.log(dataAppplication)
-    console.log(dataApplicationOffchain)
-  }
+    // Concatenar os arrays
+    const mergedApplications = dataApplication.concat(dataApplicationOffchain)
 
+    console.log(mergedApplications)
+    // Função para converter timestamp em Date
+    const convertTimestampToDate = (timestamp: string): Date => {
+      const defaultDate = new Date('1970-01-01T00:00:00Z')
+      if (!timestamp) return defaultDate
+      const date = new Date(timestamp)
+      return isNaN(date.getTime()) ? defaultDate : date
+    }
+
+    // Ordenar pelo timestamp
+    mergedApplications.sort((a, b) => {
+      return (
+        convertTimestampToDate(a.timestamp).getTime() -
+        convertTimestampToDate(b.timestamp).getTime()
+      )
+    })
+
+    console.log('handleApplication recebi alguns detalhes')
+    console.log(mergedApplications)
+    setApplications(mergedApplications)
+  }
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -520,6 +547,151 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     console.log(taskExecutor)
     handleUpdate()
   }, [dataApplication])
+
+  // functions to render both on chain e off chain applicaitons values
+  function renderApplicationImage(application: any) {
+    if (application.offChain) {
+      return application.openmeshExpertUser?.profilePictureHash
+        ? `https://cloudflare-ipfs.com/ipfs/${application.openmeshExpertUser.profilePictureHash}`
+        : `https://effigy.im/a/0x1019338c8D59020B8320EE0CE6875FeeD286b398.svg`
+    } else {
+      return application.profileImage
+        ? `https://cloudflare-ipfs.com/ipfs/${application.profileImage}`
+        : `https://effigy.im/a/${application.applicant}.svg`
+    }
+  }
+
+  function renderApplicationName(application: any) {
+    if (application.offChain) {
+      return application.openmeshExpertUser?.isCompany
+        ? `${application.openmeshExpertUser.companyName}`
+        : `${application.openmeshExpertUser.firstName}`
+    } else {
+      return (
+        formatName(application.profileName) ||
+        formatAddress(application.applicant)
+      )
+    }
+  }
+
+  function renderViewMoreApplicationDesc(application: any) {
+    if (application.offChain) {
+      if (viewMoreApplication && viewMoreApplication === application.id) {
+        return (
+          <div
+            title={application.metadataDescription}
+            className="mt-[13px] max-h-[500px] overflow-y-auto text-[11px] font-normal !leading-[150%] lg:text-[14px]"
+          >
+            {application.metadataDescription}
+          </div>
+        )
+      } else {
+        return (
+          <div
+            title={application.metadataDescription}
+            className="mt-[13px] text-[11px] font-normal !leading-[150%] line-clamp-2 lg:text-[14px]"
+          >
+            {application.metadataDescription}
+          </div>
+        )
+      }
+    } else {
+      if (
+        viewMoreApplication &&
+        viewMoreApplication === application.applicationId
+      ) {
+        return (
+          <div
+            title={application.metadataDescription}
+            className="mt-[13px] max-h-[500px] overflow-y-auto text-[11px] font-normal !leading-[150%] lg:text-[14px]"
+          >
+            {application.metadataDescription}
+          </div>
+        )
+      } else {
+        return (
+          <div
+            title={application.metadataDescription}
+            className="mt-[13px] text-[11px] font-normal !leading-[150%] line-clamp-2 lg:text-[14px]"
+          >
+            {application.metadataDescription}
+          </div>
+        )
+      }
+    }
+  }
+
+  function renderViewMoreApplication(application: any) {
+    if (application.offChain) {
+      if (viewMoreApplication === application.id) {
+        return (
+          <div className="flex">
+            <a
+              // href={`/task/${task.id}`}
+              onClick={() => {
+                setViewMoreApplication(null)
+              }}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
+            >
+              View less
+            </a>
+          </div>
+        )
+      } else {
+        return (
+          <div className="flex">
+            <a
+              // href={`/task/${task.id}`}
+              onClick={() => {
+                setViewMoreApplication(application.id)
+              }}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
+            >
+              View more
+            </a>
+          </div>
+        )
+      }
+    } else {
+      if (viewMoreApplication === application.applicationId) {
+        return (
+          <div className="flex">
+            <a
+              // href={`/task/${task.id}`}
+              onClick={() => {
+                setViewMoreApplication(null)
+              }}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
+            >
+              View less
+            </a>
+          </div>
+        )
+      } else {
+        return (
+          <div className="flex">
+            <a
+              // href={`/task/${task.id}`}
+              onClick={() => {
+                setViewMoreApplication(application.applicationId)
+              }}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
+            >
+              View more
+            </a>
+          </div>
+        )
+      }
+    }
+  }
 
   return (
     <div className="text-[12px] font-medium !leading-[19px] text-[#505050] lg:text-[16px]">
@@ -696,11 +868,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                     <div className="mr-[10px]">
                       <img
                         alt="ethereum avatar"
-                        src={
-                          application.profileImage
-                            ? `https://cloudflare-ipfs.com/ipfs/${application.profileImage}`
-                            : `https://effigy.im/a/${application.applicant}.svg`
-                        }
+                        src={renderApplicationImage(application)}
                         className="min-w-[25px] rounded-full lg:w-[50px]"
                       ></img>
                     </div>
@@ -708,12 +876,13 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                       <div className="flex">
                         <p
                           title={
-                            application.profileName || application.applicant
+                            application.profileName ||
+                            application.applicant ||
+                            application.companyName
                           }
                           className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap font-bold text-[#0354EC] lg:pb-2"
                         >
-                          {formatName(application.profileName) ||
-                            formatAddress(application.applicant)}
+                          {renderApplicationName(application)}
                         </p>
                         {application.accepted && (
                           <p
@@ -727,33 +896,20 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                           </p>
                         )}
                       </div>
-                      <a
-                        title={formatAddress(application.applicant)}
-                        className="cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:mt-[8px] lg:text-[14px]"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`https://polygonscan.com/address/${application.applicant}`}
-                      >
-                        {formatAddress(application.applicant)}
-                      </a>
+                      {!application.offChain && (
+                        <a
+                          title={formatAddress(application.applicant)}
+                          className="cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:mt-[8px] lg:text-[14px]"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`https://polygonscan.com/address/${application.applicant}`}
+                        >
+                          {formatAddress(application.applicant)}
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {viewMoreApplication &&
-                  viewMoreApplication === application.applicationId ? (
-                    <div
-                      title={application.metadataDescription}
-                      className="mt-[13px] max-h-[500px] overflow-y-auto text-[11px] font-normal !leading-[150%] lg:text-[14px]"
-                    >
-                      {application.metadataDescription}
-                    </div>
-                  ) : (
-                    <div
-                      title={application.metadataDescription}
-                      className="mt-[13px] text-[11px] font-normal !leading-[150%] line-clamp-2 lg:text-[14px]"
-                    >
-                      {application.metadataDescription}
-                    </div>
-                  )}
+                  {renderViewMoreApplicationDesc(application)}
                 </div>
                 <div className="mr-[52px] flex w-[125px] items-center pl-[5px]">
                   <p className="max-w-[120%] overflow-hidden text-ellipsis whitespace-nowrap">
@@ -761,47 +917,18 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                   </p>
                 </div>
                 <div className="mr-[52px] flex w-[55px] items-center">
-                  <p>{application.jobSuccess || 'Undefined'}</p>
+                  <p>{application.jobSuccess || ''}</p>
                 </div>
                 <div className="mr-[52px] flex w-[55px] items-center">
-                  <p>{application.jobSuccess || 'Undefined'}</p>
+                  <p>{application.jobSuccess || ''}</p>
                 </div>
                 <div className="mr-[52px] flex min-w-[80px] items-center justify-center lg:w-[225px]">
+                  {' '}
                   {formatDeadline(application.timestamp)}
                 </div>
 
                 <div>
-                  {viewMoreApplication &&
-                  viewMoreApplication === application.applicationId ? (
-                    <div className="flex">
-                      <a
-                        // href={`/task/${task.id}`}
-                        onClick={() => {
-                          setViewMoreApplication(null)
-                        }}
-                        target="_blank"
-                        rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
-                      >
-                        View less
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="flex">
-                      <a
-                        // href={`/task/${task.id}`}
-                        onClick={() => {
-                          setViewMoreApplication(application.applicationId)
-                        }}
-                        target="_blank"
-                        rel="nofollow noreferrer"
-                        className="ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[11px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]"
-                      >
-                        View more
-                      </a>
-                    </div>
-                  )}
-
+                  {renderViewMoreApplication(application)}
                   {status === 'open' &&
                     !application.accepted &&
                     address &&

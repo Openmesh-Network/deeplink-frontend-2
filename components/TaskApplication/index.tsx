@@ -395,8 +395,8 @@ const TaskApplication = (id: any) => {
       } else {
         toast.error('Error during the task application')
       }
+      setIsApplicationLoading(false)
     }
-    setIsApplicationLoading(false)
   }
 
   async function onSubmitWeb3(data: TaskApplicationForm) {
