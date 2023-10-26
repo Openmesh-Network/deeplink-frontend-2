@@ -574,7 +574,14 @@ const TaskApplication = (id: any) => {
                     title={address && address}
                     className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
                   >
-                    www.github.com
+                    {user && (
+                      <p
+                        title={user.website ? user.website : ''}
+                        className="mt-[10px] text-[14px] font-medium !leading-[17px] text-[#959595]"
+                      >
+                        {user.website ? user.website : ''}
+                      </p>
+                    )}
                   </p>
                 </div>
               </div>
