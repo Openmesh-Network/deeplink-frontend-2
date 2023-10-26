@@ -323,7 +323,7 @@ const TaskDraftView = (id: any) => {
                             <div className="mt-[25px]">
                               <p>Reach out to a</p>
                               <a
-                                href="https://github.com/"
+                                href="https://calendly.com/openmesh"
                                 target="_blank"
                                 rel="nofollow noreferrer"
                                 className="border-b border-[#0354EC] text-[#0354EC]"
@@ -349,7 +349,7 @@ const TaskDraftView = (id: any) => {
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
-                          href="https://polygonscan.com/"
+                          href="https://calendly.com/openmesh"
                           target="_blank"
                           rel="noreferrer"
                           className="border-b border-[#0084FE] text-[#0084FE]"
