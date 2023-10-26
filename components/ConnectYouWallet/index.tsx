@@ -70,7 +70,9 @@ const ConnectYourWallet = ({ redirect }: ModalProps) => {
               </div>
               <div className="mt-[12px] md:mt-[14.5px] lg:mt-[17px] xl:mt-[19.2px] 2xl:mt-[24px]">
                 <a
-                  href={`${redirect || 'https://www.openmesh.network/oen'}`}
+                  href={`${
+                    redirect || 'https://www.openmesh.network/oec/register'
+                  }`}
                   target="_blank"
                   rel="noreferrer"
                 >

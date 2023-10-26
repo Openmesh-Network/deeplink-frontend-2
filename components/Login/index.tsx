@@ -215,7 +215,7 @@ const Login = () => {
             <div className="lg:mt-[50px]">
               Does not have an account yet?{' '}
               <a
-                href={`https://www.openmesh.network/oen`}
+                href={`https://www.openmesh.network/oec/register`}
                 target="_blank"
                 rel="noreferrer"
                 className="border-b-1 cursor-pointer border-b text-[#3253FE]"
@@ -226,7 +226,7 @@ const Login = () => {
             <div className="lg:mt-[20px]">
               Forgot your password?{' '}
               <a
-                href={`https://www.openmesh.network/oen/recover-password`}
+                href={`https://www.openmesh.network/oec/recover-password`}
                 target="_blank"
                 rel="noreferrer"
                 className="border-b-1 cursor-pointer border-b text-[#3253FE]"
