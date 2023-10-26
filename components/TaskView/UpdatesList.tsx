@@ -16,7 +16,7 @@ import {
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Event } from '@/types/task'
+import { ApplicationOffChain, Event } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
 import { File, SmileySad, Info } from 'phosphor-react'
 
@@ -26,7 +26,7 @@ type UpdatesListProps = {
 
 // eslint-disable-next-line prettier/prettier
 const UpdatesList = ({taskId}: UpdatesListProps) => {
-  const [events, setEvents] = useState<Event[]>([])
+  const [events, setEvents] = useState<Event[] | ApplicationOffChain[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const pathname = usePathname()
@@ -116,6 +116,28 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
     return NoEvents()
   }
 
+  // functions to render both on chain e off chain applicaitons values
+  function renderEventImage(event: any) {
+    if (event.offChain) {
+      return event.openmeshExpertUser?.profilePictureHash
+        ? `https://cloudflare-ipfs.com/ipfs/${event.openmeshExpertUser.profilePictureHash}`
+        : `https://effigy.im/a/0x1019338c8D59020B8320EE0CE6875FeeD286b398.svg`
+    } else {
+      return `https://effigy.im/a/${event.address}.svg`
+    }
+  }
+
+  function renderEventName(event: any) {
+    if (event.offChain) {
+      return `${
+        event.openmeshExpertUser.isCompany
+          ? event.openmeshExpertUser.companyName
+          : event.openmeshExpertUser.firstName
+      } applied`
+    } else {
+      return eventsNameFormatted[event.name]
+    }
+  }
   return (
     <div className="mr-[50px] max-h-[1200px] w-full overflow-auto text-[11px] font-medium !leading-[19px] text-[#505050] lg:text-[14px]">
       {!isLoading &&
@@ -132,17 +154,19 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
                 <div className="flex">
                   <img
                     alt="ethereum avatar"
-                    src={`https://effigy.im/a/${event.address}.svg`}
+                    src={renderEventImage(event)}
                     className="mr-[10px] w-[25px] rounded-full"
                   ></img>
-                  <a
-                    className=" flex items-center text-[#505050] hover:text-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`https://polygonscan.com/address/${event.address}`}
-                  >
-                    {formatAddress(event.address)}
-                  </a>
+                  {!event.offChain && (
+                    <a
+                      className=" flex items-center text-[#505050] hover:text-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://polygonscan.com/address/${event.address}`}
+                    >
+                      {formatAddress(event.address)}
+                    </a>
+                  )}
                 </div>
                 <div className="ml-auto mt-[15px] flex items-center font-normal lg:mt-0">
                   {formatDeadlineComplet(event.timestamp)}
@@ -151,18 +175,20 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
               <div className="mt-[15px] lg:flex">
                 <div className="flex">
                   <p className="flex text-[#000000] lg:ml-[35px] lg:items-center ">
-                    {eventsNameFormatted[event.name]}
+                    {renderEventName(event)}
                   </p>
                 </div>
                 <div className="ml-auto mt-[15px] flex items-center lg:mt-0">
-                  <a
-                    className=" flex items-center border-b-[1px] border-[#0354EC] text-[#0354EC] hover:text-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`https://polygonscan.com/tx/${event.transactionHash}`}
-                  >
-                    View on Etherscan
-                  </a>
+                  {!event.offChain && (
+                    <a
+                      className=" flex items-center border-b-[1px] border-[#0354EC] text-[#0354EC] hover:text-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://polygonscan.com/tx/${event.transactionHash}`}
+                    >
+                      View on Etherscan
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
