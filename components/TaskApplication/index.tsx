@@ -768,7 +768,7 @@ const TaskApplication = (id: any) => {
               <p>
                 | Have more questions? Reach out to{' '}
                 <a
-                  href="https://calendly.com/openmesh"
+                  href="https://discord.gg/e3XMT8846F"
                   target="_blank"
                   rel="noreferrer"
                   className="border-b border-[#0084FE] text-[#0084FE]"

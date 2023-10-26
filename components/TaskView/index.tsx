@@ -447,7 +447,7 @@ const TaskView = (id: any) => {
                         <div className="flex h-[270px] items-center px-[30px]">
                           <div>
                             <a
-                              href="https://github.com/"
+                              href="https://github.com/Openmesh-Network"
                               target="_blank"
                               rel="nofollow noreferrer"
                               className="border-b border-[#0354EC] font-normal text-[#0354EC]"
@@ -469,7 +469,7 @@ const TaskView = (id: any) => {
                             <div className="mt-[25px]">
                               <p>Reach out to a</p>
                               <a
-                                href="https://calendly.com/openmesh"
+                                href="https://discord.gg/e3XMT8846F"
                                 target="_blank"
                                 rel="nofollow noreferrer"
                                 className="border-b border-[#0354EC] text-[#0354EC]"
@@ -495,7 +495,7 @@ const TaskView = (id: any) => {
                       <p>
                         | Have more questions? Reach out to{' '}
                         <a
-                          href="https://calendly.com/openmesh"
+                          href="https://discord.gg/e3XMT8846F"
                           target="_blank"
                           rel="noreferrer"
                           className="border-b border-[#0084FE] text-[#0084FE]"

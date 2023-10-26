@@ -117,6 +117,12 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
+  async function handleCopy() {
+    const textToCopy = `https://openrd.openmesh.network/task/${task.id}`
+    await navigator.clipboard.writeText(textToCopy)
+    toast.success('Link copied')
+  }
+
   return (
     <section className="border-b border-[#CFCFCF] px-[20px] pt-[40px] pb-[50px] lg:px-[100px] lg:pb-[70px] lg:pt-[59px]">
       <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
@@ -252,7 +258,8 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`${findGithubLink(task.links)}`}
+                      // href={`${findGithubLink(task.links)}`}
+                      href="https://github.com/Openmesh-Network"
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img
@@ -266,9 +273,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       />
                     </a>
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://polygonscan.com`}
+                      onClick={handleCopy}
                       className="mr-[18px]  cursor-pointer hover:text-primary"
                     >
                       <img

@@ -73,8 +73,6 @@ const ConnectYourWallet = ({ redirect }: ModalProps) => {
                   href={`${
                     redirect || 'https://www.openmesh.network/oec/register'
                   }`}
-                  target="_blank"
-                  rel="noreferrer"
                 >
                   <div className="cursor-pointer rounded-[5px] border-[1px] border-[#0354EC] bg-[#fff] px-[45px] py-[6px] text-[#0354EC] hover:bg-[#0247c0] hover:text-[#fff] md:px-[53.4px] md:py-[7.2px] lg:px-[62.3px] lg:py-[8.4px] xl:px-[71.2px] xl:py-[9.5px] 2xl:px-[89px] 2xl:py-[12px]">
                     Register
