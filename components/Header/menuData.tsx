@@ -16,7 +16,7 @@ const menuData: Menu[] = [
   {
     id: 3,
     title: 'Governance & Forum',
-    path: 'https://www.discourse.org/',
+    path: 'https://discord.gg/e3XMT8846F',
     newTab: true,
   },
   {
