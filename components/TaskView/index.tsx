@@ -468,24 +468,22 @@ const TaskView = (id: any) => {
                             </div>
                             <div className="mt-[5px]">
                               <p>Reach out to a</p>
-                              <a
-                                className="border-b border-[#000] text-[#000]"
-                              >
+                              <a className="border-b border-[#000] text-[#000]">
                                 verified contributor
                               </a>
                             </div>
                             <div className="mt-[10px] flex gap-x-[20px]">
-                        <img
-                          src="/images/task/discord-logo.svg"
-                          alt="image"
-                          className={`w-[20px]`}
-                        />
-                        <img
-                          src="/images/task/slack-logo.svg"
-                          alt="image"
-                          className={`w-[20px]`}
-                        />
-                      </div>
+                              <img
+                                src="/images/task/discord-logo.svg"
+                                alt="image"
+                                className={`w-[20px]`}
+                              />
+                              <img
+                                src="/images/task/slack-logo.svg"
+                                alt="image"
+                                className={`w-[20px]`}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
