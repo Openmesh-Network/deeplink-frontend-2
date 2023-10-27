@@ -327,11 +327,17 @@ const TaskDraftView = (id: any) => {
                               </a>
                             </div>
                             <div className="mt-[10px] flex gap-x-[20px]">
-                              <img
-                                src="/images/task/discord-logo.svg"
-                                alt="image"
-                                className={`w-[20px]`}
-                              />
+                              <a
+                                href={'https://discord.com/invite/YpaebaVpdx'}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <img
+                                  src="/images/task/discord-logo.svg"
+                                  alt="image"
+                                  className={`w-[20px]`}
+                                />
+                              </a>
                               <img
                                 src="/images/task/slack-logo.svg"
                                 alt="image"
