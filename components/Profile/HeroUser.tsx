@@ -141,7 +141,7 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
       <section className="border-b border-[#CFCFCF] px-[20px] pb-[50px] pt-[40px] lg:px-[100px] lg:pt-[59px] lg:pb-[70px]">
         <div className="container px-[0px] text-[12px] font-medium !leading-[19px] text-[#000000] lg:text-[16px]">
           <div className="flex">
-            <div className="flex cursor-pointer items-center">
+            <div className="cursor-pointer items-center gap-y-[5px] md:flex">
               {user.profilePictureHash ? (
                 <img
                   alt="ethereum avatar"
