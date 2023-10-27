@@ -466,17 +466,26 @@ const TaskView = (id: any) => {
                               <p className="font-bold">Next meeting:</p>
                               <p>-</p>
                             </div>
-                            <div className="mt-[25px]">
+                            <div className="mt-[5px]">
                               <p>Reach out to a</p>
                               <a
-                                href="https://discord.gg/e3XMT8846F"
-                                target="_blank"
-                                rel="nofollow noreferrer"
-                                className="border-b border-[#0354EC] text-[#0354EC]"
+                                className="border-b border-[#000] text-[#000]"
                               >
                                 verified contributor
                               </a>
                             </div>
+                            <div className="mt-[10px] flex gap-x-[20px]">
+                        <img
+                          src="/images/task/discord-logo.svg"
+                          alt="image"
+                          className={`w-[20px]`}
+                        />
+                        <img
+                          src="/images/task/slack-logo.svg"
+                          alt="image"
+                          className={`w-[20px]`}
+                        />
+                      </div>
                           </div>
                         </div>
                       </div>
@@ -494,15 +503,22 @@ const TaskView = (id: any) => {
                     <div className=" mt-[50px] flex rounded-md bg-[#F5F5F5] py-[43px] px-[10px] text-center text-[12px]  font-medium !leading-[19px] text-[#505050] lg:mr-[400px] lg:px-0 lg:pl-[49px] lg:text-[16px]">
                       <p>
                         | Have more questions? Reach out to{' '}
-                        <a
-                          href="https://discord.gg/e3XMT8846F"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="border-b border-[#0084FE] text-[#0084FE]"
-                        >
+                        <a className="border-b border-[#000] text-[#000]">
                           a verified contributor
                         </a>
                       </p>
+                      <div className="ml-[30px] flex gap-x-[20px]">
+                        <img
+                          src="/images/task/discord-logo.svg"
+                          alt="image"
+                          className={`w-[20px]`}
+                        />
+                        <img
+                          src="/images/task/slack-logo.svg"
+                          alt="image"
+                          className={`w-[20px]`}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

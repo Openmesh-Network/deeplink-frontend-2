@@ -771,11 +771,23 @@ const TaskApplication = (id: any) => {
                   href="https://discord.gg/e3XMT8846F"
                   target="_blank"
                   rel="noreferrer"
-                  className="border-b border-[#0084FE] text-[#0084FE]"
+                  className="cursor-default border-b border-[#000] text-[#000]"
                 >
                   a verified contributor
                 </a>
               </p>
+              <div className="ml-[30px] flex gap-x-[20px]">
+                <img
+                  src="/images/task/discord-logo.svg"
+                  alt="image"
+                  className={`w-[20px]`}
+                />
+                <img
+                  src="/images/task/slack-logo.svg"
+                  alt="image"
+                  className={`w-[20px]`}
+                />
+              </div>
             </div>
           </form>
         </div>
