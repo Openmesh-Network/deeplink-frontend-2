@@ -149,9 +149,9 @@ const Header = () => {
                     process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                       ? process.env.NEXT_PUBLIC_BASE_PATH
                       : ''
-                  }/images/header/logo.svg`}
+                  }/images/header/header.png`}
                   alt="image"
-                  className={`header-logo w-[240px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px] 2xl:mr-[102px] 2xl:w-[136px] `}
+                  className={`w-[200px] md:mr-[62px]  lg:mr-[71px]  xl:mr-[81.6px] 2xl:mr-[102px]`}
                 />
               </a>
             </div>

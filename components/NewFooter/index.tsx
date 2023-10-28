@@ -21,9 +21,9 @@ const NewFooter = () => {
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? process.env.NEXT_PUBLIC_BASE_PATH
                   : ''
-              }/images/header/logo.svg`}
+              }/images/header/header.png`}
               alt="image"
-              className={`w-[240px] md:w-[110px] lg:w-[128px] xl:w-[146px] 2xl:w-[183px]`}
+              className={`w-[200px]`}
             />
             <div className="mt-[15px] text-[12px] font-normal md:mt-[18px] md:text-[14.5px] lg:mt-[21px] lg:text-[17px] lg:!leading-[29px] xl:mt-[24px] xl:text-[19px] 2xl:mt-[30px] 2xl:text-[24px]">
               Building open-source decentralized data infrastructure in Web2 and
