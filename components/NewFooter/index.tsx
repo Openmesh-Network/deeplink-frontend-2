@@ -48,7 +48,7 @@ const NewFooter = () => {
               alt="image"
               className={`w-[200px]`}
             />
-            <div className="mt-[15px] text-[12px] font-normal md:mt-[18px] md:text-[14.5px] lg:mt-[21px] lg:text-[17px] lg:!leading-[29px] xl:mt-[24px] xl:text-[19px] 2xl:mt-[30px] 2xl:text-[24px]">
+            <div className="mt-[15px] text-[8px] font-normal md:mt-[18px] md:text-[9.6px] lg:mt-[21px] lg:text-[11.2px] lg:!leading-[29px] xl:mt-[24px] xl:text-[12.8px] 2xl:mt-[30px] 2xl:text-[16px]">
               Open-source platform designed to empower decentralized teams to
               collaborate seamlessly.
             </div>
@@ -62,7 +62,7 @@ const NewFooter = () => {
                 <div className="pb-[8px]  font-bold text-[#000] lg:pb-[12px] lg:leading-[19px] 2xl:pb-[15px]">
                   Use Cases
                 </div>
-                <div className="grid grid-cols-2 justify-between gap-y-[5px] md:block md:!leading-[160%] lg:!leading-[220%]">
+                <div className="grid grid-cols-2 justify-between gap-y-[5px] text-[7px] font-light text-[#505050] md:block md:text-[8.4px]   md:!leading-[160%] lg:text-[9.8px] lg:!leading-[220%]  xl:text-[11.2px] 2xl:text-[14px] ">
                   {useCasesOptions.map((useCase, index) => (
                     <a
                       href={useCase.link}
@@ -86,7 +86,7 @@ const NewFooter = () => {
                   Suggest a new feature
                 </div>
                 <div className=" lg:!leading-[150%]">
-                  <a className="border-b-[1px] font-medium text-[#0354EC]">
+                  <a className="border-b-[1px] text-[7px] font-light text-[#0354EC] md:text-[8.4px]  lg:text-[9.8px] xl:text-[11.2px] 2xl:text-[14px]">
                     Join our community and let us know what you’d like to add!
                   </a>
                 </div>
@@ -127,7 +127,7 @@ const NewFooter = () => {
                     href="https://calendly.com/openmesh/ashton-call"
                     target="_blank"
                     rel="noreferrer"
-                    className="border-b-[1px] font-medium text-[#0354EC]"
+                    className="border-b-[1px] text-[7px] font-light text-[#0354EC] md:text-[8.4px]  lg:text-[9.8px] xl:text-[11.2px] 2xl:text-[14px]"
                   >
                     Schedule a call with an Openmesh Expert
                   </a>
