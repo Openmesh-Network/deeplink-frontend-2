@@ -46,7 +46,7 @@ const NewFooter = () => {
                   : ''
               }/images/header/header.png`}
               alt="image"
-              className={`w-[200px]`}
+              className={`w-[100px] md:w-[200px]`}
             />
             <div className="mt-[15px] text-[8px] font-normal md:mt-[18px] md:text-[9.6px] lg:mt-[21px] lg:text-[11.2px] lg:!leading-[29px] xl:mt-[24px] xl:text-[12.8px] 2xl:mt-[30px] 2xl:text-[16px]">
               Open-source platform designed to empower decentralized teams to
