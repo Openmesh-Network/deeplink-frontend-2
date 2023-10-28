@@ -162,7 +162,7 @@ const SidebarNav = ({
   if (!isOpen) {
     return (
       <>
-        <div className="z-50 text-[#000] shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
+        <div className="z-40 text-[#000] shadow-[0_4px_4px_0px_rgba(0,0,0,0.25)]">
           <div className="">
             <div className="px-[9.5px] pb-[24px] pt-[17px] md:px-[11.5px] md:pb-[30px] md:pt-[20px] lg:px-[13.5px] lg:pb-[34px] lg:pt-[24px] xl:px-[15px] xl:pb-[39px] xl:pt-[27px] 2xl:px-[19px] 2xl:pb-[49px] 2xl:pt-[34px]">
               <img

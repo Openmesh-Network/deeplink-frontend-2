@@ -131,18 +131,18 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header z-50 flex w-full items-center bg-[#fff] shadow-[0_4px_20px_0px_rgba(0,0,0,0.08)]`}
+        className={`header z-50 flex w-full items-center bg-[#yellow] shadow-[0_4px_20px_0px_rgba(0,0,0,0.08)]`}
       >
         <div className="w-full px-[16px] md:px-[19.2px] lg:px-[22.4px] xl:px-[25.5px] 2xl:px-[34px]">
           <div className="relative  flex items-center  text-black">
             <div className="">
-              <Link
+              <a
                 href={`${
                   process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                     ? `/openrd/`
                     : `/`
                 }`}
-                className={`header-logo block w-[90px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px]  2xl:mr-[102px] 2xl:w-[136px]`}
+                className={``}
               >
                 <img
                   src={`${
@@ -151,9 +151,9 @@ const Header = () => {
                       : ''
                   }/images/header/logo.svg`}
                   alt="image"
-                  className={`w-[90px] md:w-[80px] lg:w-[95px] xl:w-[109px] 2xl:w-[136px]`}
+                  className={`header-logo w-[110px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px] 2xl:mr-[102px] 2xl:w-[136px] `}
                 />
-              </Link>
+              </a>
             </div>
             <div className="flex w-full items-center justify-between py-[25px] lg:py-[0px]">
               <div>
@@ -181,13 +181,13 @@ const Header = () => {
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:mr-[95px] lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+                  className={`navbar absolute right-0 z-50 w-full rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:mr-[95px] lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
                     navbarOpen
                       ? 'visibility top-full opacity-100'
                       : 'invisible top-[120%] opacity-0'
                   }`}
                 >
-                  <ul className="block  pt-[17px] pb-[19.5px] md:gap-x-[39px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[45.5px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[52px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
+                  <ul className="grid  gap-y-[10px] pt-[17px] pb-[19.5px] md:gap-x-[39px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[45.5px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[52px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
@@ -210,7 +210,7 @@ const Header = () => {
                               }
                               target={menuItem.newTab ? '_blank' : ''}
                               rel={menuItem.newTab ? 'noopener noreferrer' : ''}
-                              className={`flex text-[7px] font-normal text-[#ffffff] group-hover:opacity-70 md:text-[8.4px] lg:mr-0 lg:inline-flex lg:px-0 lg:text-[9.8px] lg:text-[#000000] xl:text-[11.2px] 2xl:text-[14px] ${
+                              className={`flex text-[14px] font-normal text-[#ffffff] group-hover:opacity-70 md:text-[8.4px] lg:mr-0 lg:inline-flex lg:px-0 lg:text-[9.8px] lg:text-[#000000] xl:text-[11.2px] 2xl:text-[14px] ${
                                 pathname.includes(menuItem.path)
                                   ? 'font-bold'
                                   : ''
