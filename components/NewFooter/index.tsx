@@ -1,11 +1,34 @@
 /* eslint-disable react/no-unescaped-entities */
 const NewFooter = () => {
   const useCasesOptions = [
-    'Financial Analysis',
-    'Blockchain Transactions',
-    'DEXs and CEXs',
-    'Gas Optimization',
-    'Crypto Liquidity',
+    {
+      name: 'OpenR&D 101',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/about/openr-and-d-101',
+    },
+    {
+      name: 'Apply to Projects',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/getting-started/apply-to-projects',
+    },
+    {
+      name: 'Create a Project',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/getting-started/create-a-project',
+    },
+    {
+      name: 'Apply as a Verified Contributor',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/verified-contributor-guide/apply-as-verified-contributor',
+    },
+    {
+      name: 'OpenR&D v1 Architecture',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/technical/openr-and-d-v1-architecture',
+    },
+    {
+      name: 'Governance',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/governance/overview',
+    },
+    {
+      name: 'FAQs',
+      link: 'https://open-mesh.gitbook.io/l3a-dao-documentation/faqs',
+    },
   ]
 
   return (
@@ -26,8 +49,8 @@ const NewFooter = () => {
               className={`w-[200px]`}
             />
             <div className="mt-[15px] text-[12px] font-normal md:mt-[18px] md:text-[14.5px] lg:mt-[21px] lg:text-[17px] lg:!leading-[29px] xl:mt-[24px] xl:text-[19px] 2xl:mt-[30px] 2xl:text-[24px]">
-              Building open-source decentralized data infrastructure in Web2 and
-              Web3 data
+              Open-source platform designed to empower decentralized teams to
+              collaborate seamlessly.
             </div>
             <div className="mt-[32px] text-[8px] font-normal   md:mt-[38.5px]  md:text-[9px] lg:mt-[45px] lg:text-[11px]  lg:!leading-[19px] xl:mt-[51px] xl:text-[13px] 2xl:mt-[64px] 2xl:text-[16px]">
               Openmesh, 2023
@@ -42,7 +65,7 @@ const NewFooter = () => {
                 <div className="grid grid-cols-2 justify-between gap-y-[5px] md:block md:!leading-[160%] lg:!leading-[220%]">
                   {useCasesOptions.map((useCase, index) => (
                     <a
-                      href="https://github.com/L3A-Protocol"
+                      href={useCase.link}
                       target="_blank"
                       key={index}
                       rel="noreferrer"
@@ -50,7 +73,7 @@ const NewFooter = () => {
                       <div
                         className={`cursor-pointer text-[#000] hover:text-[#757575]`}
                       >
-                        {useCase}
+                        {useCase.name}
                       </div>
                     </a>
                   ))}
@@ -63,13 +86,34 @@ const NewFooter = () => {
                   Suggest a new feature
                 </div>
                 <div className=" lg:!leading-[150%]">
+                  <a className="border-b-[1px] font-medium text-[#0354EC]">
+                    Join our community and let us know what you’d like to add!
+                  </a>
+                </div>
+                <div className="mt-[10px] flex gap-x-[20px]">
                   <a
-                    href="https://www.openmesh.network/oen"
+                    href={'https://discord.com/invite/YpaebaVpdx'}
                     target="_blank"
                     rel="noreferrer"
-                    className="border-b-[1px] font-medium text-[#0354EC]"
                   >
-                    Join our community and let us know what you’d like to add!
+                    <img
+                      src="/images/task/discord-logo.svg"
+                      alt="image"
+                      className={`w-[20px]`}
+                    />
+                  </a>
+                  <a
+                    href={
+                      'https://join.slack.com/t/openmesh-network/shared_invite/zt-264jtwykh-q0LgEz6EQPKRud1mN8Z_sg'
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      src="/images/task/slack-logo.svg"
+                      alt="image"
+                      className={`w-[20px]`}
+                    />
                   </a>
                 </div>
               </div>
@@ -80,7 +124,7 @@ const NewFooter = () => {
                 <div className=" lg:!leading-[150%]">
                   {' '}
                   <a
-                    href="https://www.openmesh.network/oen"
+                    href="https://calendly.com/openmesh/ashton-call"
                     target="_blank"
                     rel="noreferrer"
                     className="border-b-[1px] font-medium text-[#0354EC]"
