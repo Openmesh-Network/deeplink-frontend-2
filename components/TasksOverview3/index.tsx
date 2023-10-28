@@ -448,16 +448,18 @@ const TransactionList = () => {
                   </div>
                 )}
                 {!isLoading && finalTasks.length === 0 && <NoTasks />}
-                {!isLoading &&
-                  finalTasks.length > 0 &&
-                  finalTasks.map((task, index) => (
-                    <TasksModal
-                      key={task.id}
-                      index={index}
-                      task={task}
-                      isLoading={false}
-                    />
-                  ))}
+                <div className="overflow-x-auto">
+                  {!isLoading &&
+                    finalTasks.length > 0 &&
+                    finalTasks.map((task, index) => (
+                      <TasksModal
+                        key={task.id}
+                        index={index}
+                        task={task}
+                        isLoading={false}
+                      />
+                    ))}
+                </div>
                 {!isLoading && finalTasks.length > 0 && pagination && (
                   <div className="flex items-center justify-center pt-16 pb-[40px] text-[14px] font-normal md:pb-[180px] lg:text-[18px]">
                     {pagination.currentPage !== 1 && (

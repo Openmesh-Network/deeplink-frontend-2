@@ -63,7 +63,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
       <div
         className={`relative mr-1 ${
           index === 0 ? 'mt-[34px]' : 'mt-[25px]'
-        } flex items-start justify-between overflow-x-auto border-b border-[#D4D4D4] pb-6 text-[8px] font-normal md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]`}
+        } flex items-start justify-between border-b border-[#D4D4D4] pb-6 text-[8px] font-normal md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]`}
       >
         <div className="mr-4 w-[400px] items-center lg:w-[35%]">
           <a

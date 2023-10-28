@@ -151,7 +151,7 @@ const Header = () => {
                       : ''
                   }/images/header/header.png`}
                   alt="image"
-                  className={`w-[200px] md:mr-[62px] md:w-[66px] lg:mr-[71px] lg:w-[77px] xl:mr-[81.6px] xl:w-[88px] 2xl:mr-[50px] 2xl:w-[110px]`}
+                  className={`mt-[10px] w-[100px] md:mt-0 md:mr-[62px] md:w-[66px] lg:mr-[71px] lg:w-[77px] xl:mr-[81.6px] xl:w-[88px] 2xl:mr-[50px] 2xl:w-[110px]`}
                 />
               </a>
             </div>
