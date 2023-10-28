@@ -151,7 +151,7 @@ const Header = () => {
                       : ''
                   }/images/header/logo.svg`}
                   alt="image"
-                  className={`header-logo w-[110px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px] 2xl:mr-[102px] 2xl:w-[136px] `}
+                  className={`header-logo w-[200px] md:mr-[62px] md:w-[80px] lg:mr-[71px] lg:w-[95px] xl:mr-[81.6px] xl:w-[109px] 2xl:mr-[102px] 2xl:w-[136px] `}
                 />
               </a>
             </div>
