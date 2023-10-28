@@ -768,7 +768,7 @@ const TaskApplication = (id: any) => {
               <p>
                 | Have more questions? Reach out to{' '}
                 <a
-                  href="https://discord.gg/e3XMT8846F"
+                  href="https://discord.com/invite/YpaebaVpdx"
                   target="_blank"
                   rel="noreferrer"
                   className="cursor-default border-b border-[#000] text-[#000]"
@@ -777,16 +777,31 @@ const TaskApplication = (id: any) => {
                 </a>
               </p>
               <div className="ml-[30px] flex gap-x-[20px]">
-                <img
-                  src="/images/task/discord-logo.svg"
-                  alt="image"
-                  className={`w-[20px]`}
-                />
-                <img
-                  src="/images/task/slack-logo.svg"
-                  alt="image"
-                  className={`w-[20px]`}
-                />
+                <a
+                  href={'https://discord.com/invite/YpaebaVpdx'}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src="/images/task/discord-logo.svg"
+                    alt="image"
+                    className={`w-[20px]`}
+                  />{' '}
+                </a>
+                <a
+                  href={
+                    'https://join.slack.com/t/openmesh-network/shared_invite/zt-264jtwykh-q0LgEz6EQPKRud1mN8Z_sg'
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {' '}
+                  <img
+                    src="/images/task/slack-logo.svg"
+                    alt="image"
+                    className={`w-[20px]`}
+                  />
+                </a>
               </div>
             </div>
           </form>

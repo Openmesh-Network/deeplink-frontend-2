@@ -338,11 +338,19 @@ const TaskDraftView = (id: any) => {
                                   className={`w-[20px]`}
                                 />
                               </a>
-                              <img
-                                src="/images/task/slack-logo.svg"
-                                alt="image"
-                                className={`w-[20px]`}
-                              />
+                              <a
+                                href={
+                                  'https://join.slack.com/t/openmesh-network/shared_invite/zt-264jtwykh-q0LgEz6EQPKRud1mN8Z_sg'
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <img
+                                  src="/images/task/slack-logo.svg"
+                                  alt="image"
+                                  className={`w-[20px]`}
+                                />
+                              </a>
                             </div>
                           </div>
                         </div>
