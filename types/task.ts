@@ -136,6 +136,7 @@ export type Event = {
   transactionHash: string
   address: string
   timestamp: string
+  taskId: string
 }
 
 export type TransactionHistory = {

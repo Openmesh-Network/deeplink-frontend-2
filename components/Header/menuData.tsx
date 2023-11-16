@@ -27,6 +27,12 @@ const menuData: Menu[] = [
   },
   {
     id: 5,
+    title: 'Activies',
+    path: `https://open-mesh.gitbook.io/l3a-dao-documentation/activities`,
+    newTab: true,
+  },
+  {
+    id: 6,
     title: 'Profile',
     path: `${
       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'

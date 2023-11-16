@@ -186,6 +186,18 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                       ${Number(task.estimatedBudget).toLocaleString('en-US')}
                     </span>
                   </div>
+                  <div className="ml-[42px] flex">
+                    Project owned by:{' '}
+                    <a
+                      href="https://www.openmesh.network/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <p className="ml-[5px] text-[#0354EC] hover:text-[#033ba5]">
+                        Openmesh Network
+                      </p>
+                    </a>
+                  </div>
 
                   <div className="flex items-center text-[12px] font-normal lg:text-[16px]">
                     {task.payments.map((payment, index) => (
