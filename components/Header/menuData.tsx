@@ -37,6 +37,16 @@ const menuData: Menu[] = [
   },
   {
     id: 6,
+    title: 'Staking & Rewards',
+    path: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? `/openrd/staking`
+        : `/staking`
+    }`,
+    newTab: false,
+  },
+  {
+    id: 7,
     title: 'Profile',
     path: `${
       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
