@@ -69,7 +69,7 @@ const ProfileView = (id: any) => {
 
   const handleOrderByEstimatedBudgetSelection = () => {
     if (typeof window !== 'undefined') {
-      console.log('window is undefined tn')
+      // console.log('window is undefined tn')
       const url = new URL(window.location.href)
       url.searchParams.delete('orderBy')
       window.history.pushState({}, '', url.toString())
@@ -130,7 +130,7 @@ const ProfileView = (id: any) => {
       })
     } catch (err) {
       toast.error('Error getting the user info!')
-      console.log(err)
+      // console.log(err)
     }
 
     setIsLoading(false)
@@ -146,7 +146,7 @@ const ProfileView = (id: any) => {
   }
 
   const handleUpdate = () => {
-    console.log('updated url happening')
+    // console.log('updated url happening')
     setDepartament('All')
 
     // let urlHasAllParamDepartament = false
@@ -165,14 +165,14 @@ const ProfileView = (id: any) => {
       }
 
       const orderBy = url.searchParams.get('orderBy')
-      console.log(orderBy)
+      // console.log(orderBy)
       if (orderBy && orderByOptions.includes(orderBy)) {
         dataBody['deadlineSorting'] = orderBy
         setOrderByDeadline(orderBy)
       }
 
       const budgetOrderBy = url.searchParams.get('budgetOrderBy')
-      console.log(budgetOrderBy)
+      // console.log(budgetOrderBy)
       if (budgetOrderBy && budgetOrderByOptions.includes(budgetOrderBy)) {
         dataBody['estimatedBudgetSorting'] = budgetOrderBy
         // cannot have two ordersby - so estimatedBudgetSorting has priority over deadlineSorting
@@ -208,7 +208,7 @@ const ProfileView = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
+      // console.log('search for the task info on blockchain')
       handleUpdate()
     } else if (address) {
       push(

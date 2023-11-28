@@ -65,8 +65,8 @@ const UpdatesOverview = () => {
 
     try {
       await axios(config).then(function (response) {
-        console.log('minhas responses')
-        console.log(response)
+        // console.log('minhas responses')
+        // console.log(response)
         if (response.data) {
           setEvents(response.data.sort((a, b) => b.timestamp - a.timestamp))
         }
@@ -97,7 +97,7 @@ const UpdatesOverview = () => {
       top: 0,
       behavior: 'smooth',
     })
-    console.log('useEffect chamado')
+    // console.log('useEffect chamado')
     handleEvents()
   }, [])
 

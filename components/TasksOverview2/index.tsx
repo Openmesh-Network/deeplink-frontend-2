@@ -85,7 +85,7 @@ const TransactionList = () => {
 
   const handleOrderByEstimatedBudgetSelection = () => {
     if (typeof window !== 'undefined') {
-      console.log('window is undefined tn')
+      // console.log('window is undefined tn')
       const url = new URL(window.location.href)
       url.searchParams.delete('orderBy')
       window.history.pushState({}, '', url.toString())
@@ -142,7 +142,7 @@ const TransactionList = () => {
   }
 
   const handleUpdate = () => {
-    console.log('updated url happening')
+    // console.log('updated url happening')
     setDepartament('All')
 
     let urlHasAllParamDepartament = false
@@ -151,7 +151,7 @@ const TransactionList = () => {
     const dataBody = {}
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href)
-      console.log(`pegando os filtros pela window ${finalTasks}`)
+      // console.log(`pegando os filtros pela window ${finalTasks}`)
 
       const status = url.searchParams.get('status')
       if (status) {
@@ -175,14 +175,14 @@ const TransactionList = () => {
       }
 
       const orderBy = url.searchParams.get('orderBy')
-      console.log(orderBy)
+      // console.log(orderBy)
       if (orderBy && orderByOptions.includes(orderBy)) {
         dataBody['deadlineSorting'] = orderBy
         setOrderByDeadline(orderBy)
       }
 
       const budgetOrderBy = url.searchParams.get('budgetOrderBy')
-      console.log(budgetOrderBy)
+      // console.log(budgetOrderBy)
       if (budgetOrderBy && budgetOrderByOptions.includes(budgetOrderBy)) {
         dataBody['estimatedBudgetSorting'] = budgetOrderBy
         // cannot have two ordersby - so estimatedBudgetSorting has priority over deadlineSorting
@@ -193,7 +193,7 @@ const TransactionList = () => {
       const searchBar = url.searchParams.get('searchBar')
       if (searchBar) {
         const searchPhrase = Array.isArray(searchBar) ? searchBar[0] : searchBar
-        console.log('a search bar ' + searchPhrase)
+        // console.log('a search bar ' + searchPhrase)
         dataBody['searchBar'] = String(searchPhrase)
       }
 
@@ -225,8 +225,8 @@ const TransactionList = () => {
     let dado
     try {
       await axios(config).then(function (response) {
-        console.log('as respostas das taskss')
-        console.log(response.data)
+        // console.log('as respostas das taskss')
+        // console.log(response.data)
         if (response.data) {
           setFinalTasks(response.data.tasks)
           setPagination(response.data.pagination)
@@ -234,8 +234,8 @@ const TransactionList = () => {
         }
       })
     } catch (err) {
-      console.log('erro na setagem de tasks')
-      console.log(err)
+      // console.log('erro na setagem de tasks')
+      // console.log(err)
     }
 
     setIsLoading(false)
@@ -251,7 +251,7 @@ const TransactionList = () => {
   }
 
   useEffect(() => {
-    console.log('useEffect chamado')
+    // console.log('useEffect chamado')
     handleUpdate()
   }, [pathname])
 
@@ -288,10 +288,10 @@ const TransactionList = () => {
                   <div className="mr-4 flex w-[100px] items-center lg:w-[35%]">
                     <p
                       onClick={() => {
-                        console.log('as tasks')
-                        console.log(finalTasks)
-                        console.log('filtered tasks')
-                        console.log(filteredTasks)
+                        // console.log('as tasks')
+                        // console.log(finalTasks)
+                        // console.log('filtered tasks')
+                        // console.log(filteredTasks)
                       }}
                       className="pr-[55px] lg:pr-2"
                     >

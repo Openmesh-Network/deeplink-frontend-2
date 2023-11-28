@@ -101,7 +101,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
   }
 
   useEffect(() => {
-    console.log('useEffect chamado')
+    // console.log('useEffect chamado')
     handleEvents(taskId)
   }, [taskId])
 

@@ -55,8 +55,8 @@ const TransactionList = (id: any) => {
         const url = `${apiCovalentBase}/events/address/${taskAddress}/?starting-block=37900503&ending-block=latest&page-number=${count}&page-size=1000000000&key=${apiCovalentKey}`;
         try {
             const response = await axios.get(url);
-            console.log(response.data);
-            console.log('validation')
+            // console.log(response.data);
+            // console.log('validation')
             if (response.data.data.items && response.data.data.items.length > 0) {
                 for (const item of response.data.data.items) {
 
@@ -64,7 +64,7 @@ const TransactionList = (id: any) => {
                     const dataEvent = item['raw_log_data']
                     const topicsEvent = item['raw_log_topics']
                     const parsedLog = contract.interface.parseLog({data: dataEvent, topics: topicsEvent});
-                    console.log(parsedLog)
+                    // console.log(parsedLog)
 
                     // hash of the event "TaskCreate()" decoded
                     if ((parsedLog.name === "TaskCreated") && (Number(parsedLog.args[0]) === Number(id.id))) {
@@ -98,7 +98,7 @@ const TransactionList = (id: any) => {
                 count++;
             }
         } catch (err) {
-            console.log('error during api covalent exec');
+            // console.log('error during api covalent exec');
             console.log(err);
             hasMore = false
         }
@@ -109,8 +109,8 @@ const TransactionList = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getEventsFromTransaction(id.id)
     }
   }, [id])

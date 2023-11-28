@@ -186,7 +186,7 @@ const TaskApplication = (id: any) => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -199,7 +199,7 @@ const TaskApplication = (id: any) => {
 
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
-    console.log('getting data from task')
+    // console.log('getting data from task')
     let data
     try {
       data = await readContract({
@@ -215,8 +215,8 @@ const TaskApplication = (id: any) => {
       setIsLoading(false)
     }
 
-    console.log('the data:')
-    console.log(data)
+    // console.log('the data:')
+    // console.log(data)
   }
 
   async function getTask(taskId: string) {
@@ -235,8 +235,8 @@ const TaskApplication = (id: any) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          console.log('here is the task')
-          console.log(response.data)
+          // console.log('here is the task')
+          // console.log(response.data)
           setTaskMetadata(response.data)
           setTaskChainData(response.data)
           setEstimatedBudgetRequested(
@@ -287,8 +287,8 @@ const TaskApplication = (id: any) => {
     try {
       const response = await axios(config)
       if (response.data) {
-        console.log('here is the answer')
-        console.log(response.data)
+        // console.log('here is the answer')
+        // console.log(response.data)
         // Treating payments
         const payments = response.data.payments.map((payment) => {
           const amountInNumber = Number(payment.amount)
@@ -310,7 +310,7 @@ const TaskApplication = (id: any) => {
         return null // return empty array when no data
       }
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       toast.error('error!')
       return null // return empty array in case of an error
     }
@@ -321,10 +321,10 @@ const TaskApplication = (id: any) => {
     metadata: string,
     budget: Payment[],
   ) {
-    console.log('value to be sent')
-    console.log(taskId['id'])
-    console.log(metadata)
-    console.log(budget)
+    // console.log('value to be sent')
+    // console.log(taskId['id'])
+    // console.log(metadata)
+    // console.log(budget)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -336,8 +336,8 @@ const TaskApplication = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
@@ -375,8 +375,8 @@ const TaskApplication = (id: any) => {
       await axios(config).then(function (response) {
         if (response.data) {
           dado = response.data
-          console.log('api response')
-          console.log(dado)
+          // console.log('api response')
+          // console.log(dado)
           toast.success('Application created succesfully!')
           push(
             `${
@@ -401,7 +401,7 @@ const TaskApplication = (id: any) => {
   }
 
   async function onSubmitWeb3(data: TaskApplicationForm) {
-    console.log('submit called')
+    // console.log('submit called')
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -424,12 +424,12 @@ const TaskApplication = (id: any) => {
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log(res)
+      // console.log(res)
       ipfsHashData = res
     } catch (err) {
-      console.log('ipfs error')
+      // console.log('ipfs error')
       toast.error('Error during the task application')
-      console.log(err)
+      // console.log(err)
       setIsApplicationLoading(false)
       return
     }
@@ -439,8 +439,8 @@ const TaskApplication = (id: any) => {
       id.id,
       budgetPercentage,
     )
-    console.log('final newPayment')
-    console.log(newPaymentsBasedOnPercentage)
+    // console.log('final newPayment')
+    // console.log(newPaymentsBasedOnPercentage)
     if (!newPaymentsBasedOnPercentage) {
       setIsApplicationLoading(false)
       toast.error('Budget estimation')
@@ -483,8 +483,8 @@ const TaskApplication = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getTask(id.id)
     }
   }, [id])

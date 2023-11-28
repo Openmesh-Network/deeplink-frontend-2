@@ -41,7 +41,7 @@ const HeroTasks = () => {
   const taskAddress = process.env.NEXT_PUBLIC_TASK_ADDRESS
 
   async function getTasksStats() {
-    console.log('getting task stats')
+    // console.log('getting task stats')
     const data = await readContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -53,8 +53,8 @@ const HeroTasks = () => {
       )
       await new Promise((resolve) => setTimeout(resolve, 1000))
     }
-    console.log('stats recebido')
-    console.log(data)
+    // console.log('stats recebido')
+    // console.log(data)
     if (Array.isArray(data)) {
       const convertedData = data.map((item: BigNumberish) => Number(item))
       setTasksStats(convertedData)

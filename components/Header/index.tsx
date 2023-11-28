@@ -68,8 +68,8 @@ const Header = () => {
 
   async function getUserData() {
     const { userSessionToken } = parseCookies()
-    console.log('no user data')
-    console.log(userSessionToken)
+    // console.log('no user data')
+    // console.log(userSessionToken)
     if (userSessionToken) {
       const config = {
         method: 'post' as 'post',
@@ -85,7 +85,7 @@ const Header = () => {
       await axios(config).then(function (response) {
         if (response.data) {
           dado = response.data
-          console.log(dado)
+          // console.log(dado)
           setUser(dado)
         }
       })
@@ -95,9 +95,9 @@ const Header = () => {
   useEffect(() => {
     // if the user has the wallet connected and the login, we prioritize the wallet.
     if (userHasAnyCookie && !address) {
-      console.log('user has cookis')
-      console.log(userHasAnyCookie)
-      console.log(cookies.userSessionToken)
+      // console.log('user has cookis')
+      // console.log(userHasAnyCookie)
+      // console.log(cookies.userSessionToken)
       try {
         getUserData()
       } catch (err) {

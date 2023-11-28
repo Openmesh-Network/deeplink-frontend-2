@@ -193,8 +193,8 @@ const TaskDraftView = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getTask(id.id)
     }
   }, [id])

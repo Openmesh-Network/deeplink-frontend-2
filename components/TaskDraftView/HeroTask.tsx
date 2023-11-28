@@ -83,12 +83,12 @@ const HeroTask = ({
 
   async function handleApprove() {
     setIsLoading(true)
-    console.log('value to be sent')
-    console.log('the proposal id')
-    console.log(task)
-    console.log(task.proposalId)
-    console.log('the user draft')
-    console.log(userToDraftTaskData)
+    // console.log('value to be sent')
+    // console.log('the proposal id')
+    // console.log(task)
+    // console.log(task.proposalId)
+    // console.log('the user draft')
+    // console.log(userToDraftTaskData)
     const { request } = await prepareWriteContract({
       address: `0x${departamentOptionsToTokenListGovernance[
         task.departament
@@ -107,8 +107,8 @@ const HeroTask = ({
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 2500))
     window.location.reload()
     setIsLoading(false)

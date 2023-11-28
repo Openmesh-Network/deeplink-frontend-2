@@ -186,8 +186,8 @@ const EditTask = (id: any) => {
       setEditorHtml(value)
     }
 
-    console.log('the value markdown')
-    console.log(value)
+    // console.log('the value markdown')
+    // console.log(value)
   }
 
   const handleLink = (
@@ -272,9 +272,9 @@ const EditTask = (id: any) => {
     field: keyof Payment,
     valueReceived: string,
   ) => {
-    console.log('os currently payments')
-    console.log(currentlyPayments)
-    console.log('os currently data')
+    // console.log('os currently payments')
+    // console.log(currentlyPayments)
+    // console.log('os currently data')
     const newPayment = [...payments]
 
     if (
@@ -379,13 +379,13 @@ const EditTask = (id: any) => {
       })
     } catch (err) {
       toast.error('Error getting the departaments options!')
-      console.log(err)
+      // console.log(err)
     }
     setIsLoading(false)
   }
 
   async function getTask(taskId: string) {
-    console.log('get task chamado')
+    // console.log('get task chamado')
     const data = {
       id: taskId,
     }
@@ -401,8 +401,8 @@ const EditTask = (id: any) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          console.log('here is the task')
-          console.log(response.data)
+          // console.log('here is the task')
+          // console.log(response.data)
           setTaskMetadata(response.data)
           setTaskChainData(response.data)
           setEstimatedBudgetRequested(
@@ -430,9 +430,9 @@ const EditTask = (id: any) => {
           setCurrentlyPayments(
             JSON.parse(JSON.stringify(response.data.payments)),
           )
-          console.log('os currently payments')
-          console.log(response.data.payments)
-          console.log(currentlyPayments)
+          // console.log('os currently payments')
+          // console.log(response.data.payments)
+          // console.log(currentlyPayments)
           setBudgetValue([response.data.estimatedBudget])
           // Treating payments
           // const payments = response.data.payments.map((payment) => {
@@ -496,7 +496,7 @@ const EditTask = (id: any) => {
   }
 
   async function onSubmit(data: TaskSubmitForm) {
-    console.log('submit initiate')
+    // console.log('submit initiate')
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -527,7 +527,7 @@ const EditTask = (id: any) => {
     }
     setIsEditionLoading(true)
     // First, checking if deadline and/or budget had any changes, if so its needed to called its respective functions on smart-contract to change it, besides of justing changing the metadata description
-    console.log('changing the deadline')
+    // console.log('changing the deadline')
     try {
       await checkDeadline(currentlyDeadline, data.deadline)
     } catch (err) {
@@ -535,7 +535,7 @@ const EditTask = (id: any) => {
       return
     }
 
-    console.log('changing the budget')
+    // console.log('changing the budget')
     try {
       await checkBudget(currentlyPayments, payments)
     } catch (err) {
@@ -555,22 +555,22 @@ const EditTask = (id: any) => {
       file: '',
     }
 
-    console.log('changing the ipfs')
+    // console.log('changing the ipfs')
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log('a resposta:')
-      console.log(res)
+      // console.log('a resposta:')
+      // console.log(res)
       ipfsHashData = res
       setIpfsHashTaskData(res)
     } catch (err) {
       toast.error('something ocurred')
-      console.log(err)
+      // console.log(err)
       setIsEditionLoading(false)
       return
     }
 
-    console.log('changing the task creation')
+    // console.log('changing the task creation')
     try {
       await handleEditMetadata(Number(id.id), ipfsHashData)
       await new Promise((resolve) => setTimeout(resolve, 11500))
@@ -584,7 +584,7 @@ const EditTask = (id: any) => {
       )
     } catch (err) {
       toast.error('Error metadata change')
-      console.log(err)
+      // console.log(err)
       setIsEditionLoading(false)
       return
     }
@@ -617,8 +617,8 @@ const EditTask = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 2500))
     if (data.status !== 'success') {
       throw data
@@ -656,8 +656,8 @@ const EditTask = (id: any) => {
       const data = await waitForTransaction({
         hash,
       })
-      console.log('the data')
-      console.log(data)
+      // console.log('the data')
+      // console.log(data)
       await new Promise((resolve) => setTimeout(resolve, 1500))
       if (data.status !== 'success') {
         throw data
@@ -680,7 +680,7 @@ const EditTask = (id: any) => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -693,12 +693,12 @@ const EditTask = (id: any) => {
     const newPaymentsAllowance = []
 
     if (newBudget.length > 0) {
-      console.log('reward exists')
+      // console.log('reward exists')
       for (let i = 0; i < newBudget.length; i++) {
-        console.log('payment amount')
-        console.log(newBudget[i].amount)
-        console.log('requested amount')
-        console.log(Number(currentlyBudget[i].amount))
+        // console.log('payment amount')
+        // console.log(newBudget[i].amount)
+        // console.log('requested amount')
+        // console.log(Number(currentlyBudget[i].amount))
         if (Number(newBudget[i].amount) > Number(currentlyBudget[i].amount)) {
           // eslint-disable-next-line prettier/prettier
           amountToBeIncreased.push(Number(newBudget[i].amount) - Number(currentlyBudget[i].amount))
@@ -709,29 +709,29 @@ const EditTask = (id: any) => {
         }
       }
     }
-    console.log('final result')
-    console.log(hasToIncreaseBudget)
+    // console.log('final result')
+    // console.log(hasToIncreaseBudget)
     if (hasToIncreaseBudget) {
       try {
         await handleAllowanceFromTokens(newPaymentsAllowance)
       } catch (err) {
         toast.error('Error during the budget increase')
         setIsLoading(false)
-        console.log(err)
+        // console.log(err)
         throw err
       }
       try {
         await handleIncreaseTaskBudget(id.id, amountToBeIncreased)
       } catch (err) {
         toast.error('Error during the budget increase')
-        console.log(err)
+        // console.log(err)
         throw err
       }
     }
   }
 
   async function handleIncreaseTaskBudget(taskId: string, amounts: number[]) {
-    console.log('value to be sent')
+    // console.log('value to be sent')
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -743,8 +743,8 @@ const EditTask = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 1500))
     if (data.status !== 'success') {
       throw data
@@ -759,10 +759,10 @@ const EditTask = (id: any) => {
         args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
-      console.log('o valor q recebi')
-      console.log(data)
+      // console.log('o valor q recebi')
+      // console.log(data)
       if (Number(data) < Number(payments[i].amount)) {
-        console.log('required to increase allowance')
+        // console.log('required to increase allowance')
         const { request } = await prepareWriteContract({
           address: `0x${payments[i].tokenContract.substring(2)}`,
           abi: erc20ContractABI,
@@ -776,8 +776,8 @@ const EditTask = (id: any) => {
         const data = await waitForTransaction({
           hash,
         })
-        console.log('the data')
-        console.log(data)
+        // console.log('the data')
+        // console.log(data)
         await new Promise((resolve) => setTimeout(resolve, 1500))
         if (data.status !== 'success') {
           throw data
@@ -797,8 +797,8 @@ const EditTask = (id: any) => {
     })
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getTask(id.id)
     }
   }, [id])
@@ -921,7 +921,7 @@ const EditTask = (id: any) => {
                             if (newValue.length <= 8) {
                               field.onChange(newValue)
                             } else {
-                              console.log('not aloweed')
+                              // console.log('not aloweed')
                               toast.error('Only 8 tags per task', {
                                 position: toast.POSITION.TOP_RIGHT,
                               })

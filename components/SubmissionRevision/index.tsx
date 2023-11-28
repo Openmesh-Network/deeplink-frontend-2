@@ -172,7 +172,7 @@ const SubmissionRevision = (id: any) => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -195,8 +195,8 @@ const SubmissionRevision = (id: any) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          console.log('here is the submission')
-          console.log(response.data)
+          // console.log('here is the submission')
+          // console.log(response.data)
           setTaskMetadata(response.data.task)
           setTaskChainData(response.data.task)
           // eslint-disable-next-line prettier/prettier
@@ -249,16 +249,16 @@ const SubmissionRevision = (id: any) => {
     metadata: string,
     judgment: string,
   ) {
-    console.log('judgmetn here')
-    console.log(judgment)
-    console.log('value to be sent')
-    console.log(taskId)
-    console.log('value to be sent')
-    console.log(metadata)
-    console.log('value to be sent')
-    console.log(judgmentToIndexOptions[judgment])
-    console.log('value to be sent')
-    console.log(submissionId)
+    // console.log('judgmetn here')
+    // console.log(judgment)
+    // console.log('value to be sent')
+    // console.log(taskId)
+    // console.log('value to be sent')
+    // console.log(metadata)
+    // console.log('value to be sent')
+    // console.log(judgmentToIndexOptions[judgment])
+    // console.log('value to be sent')
+    // console.log(submissionId)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -275,8 +275,8 @@ const SubmissionRevision = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
@@ -284,7 +284,7 @@ const SubmissionRevision = (id: any) => {
   }
 
   async function onSubmit(data: SubmissionRevisionForm) {
-    console.log('submit called')
+    // console.log('submit called')
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -303,12 +303,12 @@ const SubmissionRevision = (id: any) => {
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log(res)
+      // console.log(res)
       ipfsHashData = res
     } catch (err) {
-      console.log('ipfs error')
+      // console.log('ipfs error')
       toast.error('Error during the submission')
-      console.log(err)
+      // console.log(err)
       setIsApplicationLoading(false)
       return
     }
@@ -331,7 +331,7 @@ const SubmissionRevision = (id: any) => {
       setIsApplicationLoading(false)
     } catch (err) {
       toast.error('Error during the execution')
-      console.log(err)
+      // console.log(err)
       setIsApplicationLoading(false)
     }
   }
@@ -343,8 +343,8 @@ const SubmissionRevision = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the submission info on blockchain')
-      console.log(id.id)
+      // console.log('search for the submission info on blockchain')
+      // console.log(id.id)
       getSubmission(id.id)
     }
   }, [id])
@@ -358,7 +358,7 @@ const SubmissionRevision = (id: any) => {
       <div className="pb-[500px]">
         <div
           onClick={() => {
-            console.log(taskMetadata)
+            // console.log(taskMetadata)
           }}
           className="mt-[60px] flex items-center justify-center text-[#000000]"
         >

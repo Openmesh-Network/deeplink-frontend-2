@@ -203,10 +203,10 @@ const VerifiedContributor = (id: any) => {
     metadata: string,
     budget: Payment[],
   ) {
-    console.log('value to be sent')
-    console.log(taskId['id'])
-    console.log(metadata)
-    console.log(budget)
+    // console.log('value to be sent')
+    // console.log(taskId['id'])
+    // console.log(metadata)
+    // console.log(budget)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -218,8 +218,8 @@ const VerifiedContributor = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 1500))
     if (data.status !== 'success') {
       throw data
@@ -228,7 +228,7 @@ const VerifiedContributor = (id: any) => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      console.log('fazendo a chamada do file')
+      // console.log('fazendo a chamada do file')
       const newFiles = Array.from(event.target.files)
       let validFiles = true
       const allowedMimeTypes = ['image/jpeg', 'image/png']
@@ -279,7 +279,7 @@ const VerifiedContributor = (id: any) => {
     // O hash é o identificador exclusivo do arquivo no IPFS
     const ipfsHash = response.data.IpfsHash
 
-    console.log('File uploaded to IPFS with hash', ipfsHash)
+    // console.log('File uploaded to IPFS with hash', ipfsHash)
 
     return ipfsHash
   }
@@ -337,7 +337,7 @@ const VerifiedContributor = (id: any) => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -370,18 +370,18 @@ const VerifiedContributor = (id: any) => {
     try {
       /* empty */
       // signing the message:
-      console.log('data to be hashed')
-      console.log(finalData)
-      console.log(JSON.stringify(finalData))
+      // console.log('data to be hashed')
+      // console.log(finalData)
+      // console.log(JSON.stringify(finalData))
       const hash = hashObject(finalData)
-      console.log('message to hash')
-      console.log(hash)
+      // console.log('message to hash')
+      // console.log(hash)
       const finalHash = `0x${hash}`
       const signature = await signMessage({
         message: finalHash,
       })
-      console.log(' mensagem')
-      console.log(signature)
+      // console.log(' mensagem')
+      // console.log(signature)
       finalData['signature'] = signature
     } catch (err) {
       toast.error('Error during the message signing')
@@ -421,7 +421,7 @@ const VerifiedContributor = (id: any) => {
 
     try {
       await axios(config).then(function (response) {
-        console.log('data that received back')
+        // console.log('data that received back')
         console.log(response.data)
         setGithubData(response.data)
       })
@@ -435,8 +435,8 @@ const VerifiedContributor = (id: any) => {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     const codeParam = urlParams.get('code')
-    console.log('my code github')
-    console.log(codeParam)
+    // console.log('my code github')
+    // console.log(codeParam)
 
     if (codeParam && !githubData) {
       getGithubData(codeParam)

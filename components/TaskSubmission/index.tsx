@@ -171,7 +171,7 @@ const TaskSubmission = (id: any) => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -180,7 +180,7 @@ const TaskSubmission = (id: any) => {
 
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
-    console.log('getting data from task')
+    // console.log('getting data from task')
     let data
     try {
       data = await readContract({
@@ -196,8 +196,8 @@ const TaskSubmission = (id: any) => {
       setIsLoading(false)
     }
 
-    console.log('the data:')
-    console.log(data)
+    // console.log('the data:')
+    // console.log(data)
   }
 
   async function getTask(taskId: string) {
@@ -216,8 +216,8 @@ const TaskSubmission = (id: any) => {
     try {
       await axios(config).then(function (response) {
         if (response.data) {
-          console.log('here is the task')
-          console.log(response.data)
+          // console.log('here is the task')
+          // console.log(response.data)
           setTaskMetadata(response.data)
           setTaskChainData(response.data)
           setEstimatedBudgetRequested(
@@ -259,9 +259,9 @@ const TaskSubmission = (id: any) => {
   }
 
   async function handleCreateSubmission(taskId: number, metadata: string) {
-    console.log('value to be sent')
-    console.log(taskId['id'])
-    console.log(metadata)
+    // console.log('value to be sent')
+    // console.log(taskId['id'])
+    // console.log(metadata)
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -273,8 +273,8 @@ const TaskSubmission = (id: any) => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
@@ -282,7 +282,7 @@ const TaskSubmission = (id: any) => {
   }
 
   async function onSubmit(data: TaskApplicationForm) {
-    console.log('submit called')
+    // console.log('submit called')
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
       toast.error('Please switch chain before interacting with the protocol.')
       return
@@ -301,12 +301,12 @@ const TaskSubmission = (id: any) => {
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log(res)
+      // console.log(res)
       ipfsHashData = res
     } catch (err) {
-      console.log('ipfs error')
+      // console.log('ipfs error')
       toast.error('Error during the submission')
-      console.log(err)
+      // console.log(err)
       setIsApplicationLoading(false)
       return
     }
@@ -324,7 +324,7 @@ const TaskSubmission = (id: any) => {
       setIsApplicationLoading(false)
     } catch (err) {
       toast.error('Error during the Submission')
-      console.log(err)
+      // console.log(err)
       setIsApplicationLoading(false)
     }
   }
@@ -336,8 +336,8 @@ const TaskSubmission = (id: any) => {
   useEffect(() => {
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getTask(id.id)
     }
   }, [id])

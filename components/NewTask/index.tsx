@@ -419,8 +419,8 @@ const NewTask = () => {
       setEditorHtml(value)
     }
 
-    console.log('the value markdown')
-    console.log(value)
+    // console.log('the value markdown')
+    // console.log(value)
   }
 
   const FileList: FC<FileListProps> = ({ files, onRemove }) => {
@@ -450,7 +450,7 @@ const NewTask = () => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      console.log('fazendo a chamada do file')
+      // console.log('fazendo a chamada do file')
       const newFiles = Array.from(event.target.files)
       let validFiles = true
       const allowedMimeTypes = ['image/jpeg', 'image/png']
@@ -501,7 +501,7 @@ const NewTask = () => {
     // O hash é o identificador exclusivo do arquivo no IPFS
     const ipfsHash = response.data.IpfsHash
 
-    console.log('File uploaded to IPFS with hash', ipfsHash)
+    // console.log('File uploaded to IPFS with hash', ipfsHash)
 
     return ipfsHash
   }
@@ -521,7 +521,7 @@ const NewTask = () => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -543,7 +543,7 @@ const NewTask = () => {
     await axios(config).then(function (response) {
       if (response.data) {
         dado = response.data
-        console.log(dado)
+        // console.log(dado)
       }
     })
 
@@ -558,10 +558,10 @@ const NewTask = () => {
         args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
-      console.log('o valor q recebi')
-      console.log(data)
+      // console.log('o valor q recebi')
+      // console.log(data)
       if (Number(data) < Number(payments[i].amount)) {
-        console.log('required to increase allowance')
+        // console.log('required to increase allowance')
         const { request } = await prepareWriteContract({
           address: `0x${payments[i].tokenContract.substring(2)}`,
           abi: erc20ContractABI,
@@ -575,8 +575,8 @@ const NewTask = () => {
         const data = await waitForTransaction({
           hash,
         })
-        console.log('the data')
-        console.log(data)
+        // console.log('the data')
+        // console.log(data)
         await new Promise((resolve) => setTimeout(resolve, 4500))
         if (data.status !== 'success') {
           throw data
@@ -616,8 +616,8 @@ const NewTask = () => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 25500))
     push(
       `${
@@ -640,46 +640,46 @@ const NewTask = () => {
     budget: Payment[],
     preapproved: PreapprovedApplication[],
   ) {
-    console.log('here creating')
-    console.log(metadataFinal)
-    console.log('here creating2')
-    console.log(startDate)
-    console.log('here creating3')
-    console.log(endDate)
-    console.log('here creating4')
-    console.log(metadata)
-    console.log('here creating5')
-    console.log(deadline)
-    console.log('here creating6')
-    console.log(budget)
-    console.log('here creating7')
-    console.log(address)
+    // console.log('here creating')
+    // console.log(metadataFinal)
+    // console.log('here creating2')
+    // console.log(startDate)
+    // console.log('here creating3')
+    // console.log(endDate)
+    // console.log('here creating4')
+    // console.log(metadata)
+    // console.log('here creating5')
+    // console.log(deadline)
+    // console.log('here creating6')
+    // console.log(budget)
+    // console.log('here creating7')
+    // console.log(address)
     const addressTaskDraft = '0xB6070f39c7d9Ffc66af8203cFC9893715e7D3759'
     const obj = [metadata, deadline, budget, address, preapproved]
     const hashMetadataFinal = createHash('sha256')
     hashMetadataFinal.update(metadataFinal)
-    console.log('the hash')
-    console.log(hashMetadataFinal.digest('hex'))
-    console.log('final')
-    console.log([
-      '0xc185B032C39544060D57E3304bE0fFb0c235118e',
-      startDate,
-      endDate,
-      obj,
-    ])
-    console.log('ENDDATA')
-    console.log(endDate)
-    console.log('deadline')
-    console.log(deadline)
-    console.log('departament option')
-    console.log(`0x${departamentOptionsToAddress[departament].substring(2)}`)
+    // console.log('the hash')
+    // console.log(hashMetadataFinal.digest('hex'))
+    // console.log('final')
+    // console.log([
+    //   '0xc185B032C39544060D57E3304bE0fFb0c235118e',
+    //   startDate,
+    //   endDate,
+    //   obj,
+    // ])
+    // console.log('ENDDATA')
+    // console.log(endDate)
+    // console.log('deadline')
+    // console.log(deadline)
+    // console.log('departament option')
+    // console.log(`0x${departamentOptionsToAddress[departament].substring(2)}`)
     const { request } = await prepareWriteContract({
       address: `0x${departamentOptionsToAddress[departament].substring(2)}`,
       abi: tasksDraftsContractABI,
       args: ['0x', 0, endDate, obj],
       functionName: 'createDraftTask',
     })
-    console.log('after')
+    // console.log('after')
 
     const { hash } = await writeContract(request)
     // const unwatch = watchContractEvent(
@@ -700,8 +700,8 @@ const NewTask = () => {
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 4500))
     push(
       `${
@@ -735,7 +735,7 @@ const NewTask = () => {
     for (const payment of payments) {
       if (!ethers.isAddress(payment.tokenContract)) {
         // this is not a valid address
-        console.log('invalid address here')
+        // console.log('invalid address here')
         return false
       }
     }
@@ -745,7 +745,7 @@ const NewTask = () => {
   function handleIsAddressValid(address: string) {
     if (!ethers.isAddress(address)) {
       // this is not a valid address
-      console.log('invalid address here')
+      // console.log('invalid address here')
       return false
     }
     // all addresses are valid
@@ -831,7 +831,7 @@ const NewTask = () => {
         fileIPFSHash = await handleFileUploadIPFS()
       } catch (err) {
         toast.error('Something ocurred')
-        console.log(err)
+        // console.log(err)
         setIsLoading(false)
         return
       }
@@ -851,8 +851,8 @@ const NewTask = () => {
     let ipfsHashData
     try {
       const res = await formsUploadIPFS(finalData)
-      console.log('a resposta:')
-      console.log(res)
+      // console.log('a resposta:')
+      // console.log(res)
       ipfsHashData = res
       setIpfsHashTaskData(res)
     } catch (err) {
@@ -897,7 +897,7 @@ const NewTask = () => {
       let ipfsHashDataFinal
       try {
         const res = await formsUploadIPFSTaskDraft(ipfsAragonMetadata)
-        console.log('a resposta:')
+        // console.log('a resposta:')
         console.log(res)
         ipfsHashDataFinal = res
       } catch (err) {
@@ -906,7 +906,7 @@ const NewTask = () => {
         setIsLoading(false)
         return
       }
-      console.log('creating draft Task now')
+      // console.log('creating draft Task now')
       try {
         await handleCreateTaskDraft(
           ipfsHashDataFinal,
@@ -1053,7 +1053,7 @@ const NewTask = () => {
                             if (newValue.length <= 8) {
                               field.onChange(newValue)
                             } else {
-                              console.log('not aloweed')
+                              // console.log('not aloweed')
                               toast.error('Only 8 tags per task', {
                                 position: toast.POSITION.TOP_RIGHT,
                               })

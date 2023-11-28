@@ -129,11 +129,11 @@ const FilterModal = ({
 
   // Função para atualizar a URL
   const updateUrl = (param: string, value: string | null) => {
-    console.log('update chamado com sucesso')
+    // console.log('update chamado com sucesso')
     if (param !== 'page') {
-      console.log('nao é page')
+      // console.log('nao é page')
       if (typeof window !== 'undefined') {
-        console.log('nao é page2')
+        // console.log('nao é page2')
         const url = new URL(window.location.href)
         url.searchParams.delete('page')
         window.history.pushState({}, '', url.toString())

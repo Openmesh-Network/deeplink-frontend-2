@@ -170,8 +170,8 @@ const TaskView = (id: any) => {
     })
     if (id) {
       setIsLoading(true)
-      console.log('search for the task info on blockchain')
-      console.log(id.id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id.id)
       getTask(id.id)
       handleEvents(id.id)
     }
@@ -220,7 +220,7 @@ const TaskView = (id: any) => {
   useEffect(() => {
     if (applsub === 'true') {
       setViewOption('submissions')
-      console.log('sim senhorio meu')
+      // console.log('sim senhorio meu')
       // Faça algo quando isOpenrd for true
     }
   }, [applsub])

@@ -52,15 +52,15 @@ const TaskView = (id: any) => {
 
   async function getTaskFromChain(id: any) {
     setIsLoading(true)
-    console.log('getting data from task')
+    // console.log('getting data from task')
     const data = await readContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
       args: [Number(id)],
       functionName: 'getTask',
     })
-    console.log('the data:')
-    console.log(data)
+    // console.log('the data:')
+    // console.log(data)
   }
 
   async function getDataFromIPFS(hash: string) {
@@ -69,8 +69,8 @@ const TaskView = (id: any) => {
     await axios
       .get(url)
       .then((response) => {
-        console.log('the metadata:')
-        console.log(response.data)
+        // console.log('the metadata:')
+        // console.log(response.data)
         if (response.data.file) {
           setImgTaskIPFS(response.data.file)
         }
@@ -84,8 +84,8 @@ const TaskView = (id: any) => {
 
   useEffect(() => {
     if (id) {
-      console.log('search for the task info on blockchain')
-      console.log(id)
+      // console.log('search for the task info on blockchain')
+      // console.log(id)
       getTaskFromChain(id)
     }
   }, [id])

@@ -138,8 +138,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   function formatDeadline(timestamp) {
-    console.log('timestamp recebida por mim')
-    console.log(timestamp)
+    // console.log('timestamp recebida por mim')
+    // console.log(timestamp)
     if (timestamp) {
       const date = new Date(Number(timestamp) * 1000)
       let difference = formatDistanceToNow(date)
@@ -188,7 +188,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   async function handleCreateNomination(taskId: string, applicationId: string) {
-    console.log('value to be sent')
+    // console.log('value to be sent')
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -200,8 +200,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
@@ -209,7 +209,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   async function handleIncreaseTaskBudget(taskId: string, amounts: number[]) {
-    console.log('value to be sent')
+    // console.log('value to be sent')
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -221,8 +221,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 1500))
     if (data.status !== 'success') {
       throw data
@@ -230,7 +230,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
   }
 
   async function handleCreateTakingTask(taskId: string, applicationId: string) {
-    console.log('value to be sent')
+    // console.log('value to be sent')
     const { request } = await prepareWriteContract({
       address: `0x${taskAddress.substring(2)}`,
       abi: taskContractABI,
@@ -242,8 +242,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     const data = await waitForTransaction({
       hash,
     })
-    console.log('the data')
-    console.log(data)
+    // console.log('the data')
+    // console.log(data)
     await new Promise((resolve) => setTimeout(resolve, 5500))
     if (data.status !== 'success') {
       throw data
@@ -258,10 +258,10 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
         args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
-      console.log('o valor q recebi')
-      console.log(data)
+      // console.log('o valor q recebi')
+      // console.log(data)
       if (Number(data) < Number(payments[i].amount)) {
-        console.log('required to increase allowance')
+        // console.log('required to increase allowance')
         const { request } = await prepareWriteContract({
           address: `0x${payments[i].tokenContract.substring(2)}`,
           abi: erc20ContractABI,
@@ -275,8 +275,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
         const data = await waitForTransaction({
           hash,
         })
-        console.log('the data')
-        console.log(data)
+        // console.log('the data')
+        // console.log(data)
         await new Promise((resolve) => setTimeout(resolve, 1500))
         if (data.status !== 'success') {
           throw data
@@ -291,28 +291,28 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     const amountToBeIncreased = []
     const newPaymentsAllowance = []
 
-    console.log('reward')
-    console.log(dataApplication[Number(applicationIdValue)].reward)
-    console.log('reward test')
-    console.log(
-      Number(dataApplication[Number(applicationIdValue)].reward[0][2].hex),
-    )
-    console.log('payments')
-    console.log(taskPayments)
+    // console.log('reward')
+    // console.log(dataApplication[Number(applicationIdValue)].reward)
+    // console.log('reward test')
+    // console.log(
+    //   Number(dataApplication[Number(applicationIdValue)].reward[0][2].hex),
+    // )
+    // console.log('payments')
+    // console.log(taskPayments)
 
     if (dataApplication[Number(applicationIdValue)].reward.length > 0) {
-      console.log('reward exists')
+      // console.log('reward exists')
       for (
         let i = 0;
         i < dataApplication[Number(applicationIdValue)].reward.length;
         i++
       ) {
-        console.log('payment amount')
-        console.log(taskPayments[i].amount)
-        console.log('requested amount')
-        console.log(
-          Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex),
-        )
+        // console.log('payment amount')
+        // console.log(taskPayments[i].amount)
+        // console.log('requested amount')
+        // console.log(
+        //   Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex),
+        // )
         if (
           Number(taskPayments[i].amount) <
           Number(dataApplication[Number(applicationIdValue)].reward[i][2].hex)
@@ -326,8 +326,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
         }
       }
     }
-    console.log('final result')
-    console.log(hasToIncreaseBudget)
+    // console.log('final result')
+    // console.log(hasToIncreaseBudget)
     if (hasToIncreaseBudget) {
       try {
         await handleAllowanceFromTokens(newPaymentsAllowance)
@@ -342,11 +342,11 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
         setIsNominationLoading(false)
       } catch (err) {
         toast.error('Error during the budget increase')
-        console.log(err)
+        // console.log(err)
         setIsNominationLoading(false)
       }
     }
-    console.log('doing nomination')
+    // console.log('doing nomination')
     try {
       await handleCreateNomination(taskId, applicationIdValue)
       window.location.reload()
@@ -361,7 +361,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
 
   async function handleTakeTask(applicationIdValue: string) {
     setIsTakingTaskLoading(true)
-    console.log('doing taking')
+    // console.log('doing taking')
     try {
       await handleCreateTakingTask(taskId, applicationIdValue)
       window.location.reload()
@@ -395,12 +395,12 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     // Converte a diferença em dias (1000 milissegundos * 60 segundos * 60 minutos * 24 horas)
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24)
 
-    console.log('the deadline')
-    console.log(taskDeadline)
-    console.log('the project length')
-    console.log(taskProjectLengthToDays[taskProjectLength])
-    console.log('difference in days')
-    console.log(differenceInDays)
+    // console.log('the deadline')
+    // console.log(taskDeadline)
+    // console.log('the project length')
+    // console.log(taskProjectLengthToDays[taskProjectLength])
+    // console.log('difference in days')
+    // console.log(differenceInDays)
 
     // Retorna true se a diferença em dias for maior ou igual a taskProjectLength, senão false
     setIsDeadlineEnough(
@@ -408,7 +408,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     )
   }
   const handleUpdate = () => {
-    console.log('updated url happening')
+    // console.log('updated url happening')
     setDepartament('All')
 
     let urlHasAllParamDepartament = false
@@ -417,7 +417,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     const dataBody = {}
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href)
-      console.log(`pegando os filtros pela window ${finalTasks}`)
+      // console.log(`pegando os filtros pela window ${finalTasks}`)
 
       const status = url.searchParams.get('status')
       if (status) {
@@ -441,7 +441,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
       }
 
       const orderBy = url.searchParams.get('orderBy')
-      console.log(orderBy)
+      // console.log(orderBy)
       if (orderBy && orderByOptions.includes(orderBy)) {
         dataBody['deadlineSorting'] = orderBy
       }
@@ -449,7 +449,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
       const searchBar = url.searchParams.get('searchBar')
       if (searchBar) {
         const searchPhrase = Array.isArray(searchBar) ? searchBar[0] : searchBar
-        console.log('a search bar ' + searchPhrase)
+        // console.log('a search bar ' + searchPhrase)
         dataBody['searchBar'] = String(searchPhrase)
       }
 
@@ -509,7 +509,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
     // Concatenar os arrays
     const mergedApplications = dataApplication.concat(dataApplicationOffchain)
 
-    console.log(mergedApplications)
+    // console.log(mergedApplications)
     // Função para converter timestamp em Date
     const convertTimestampToDate = (timestamp: string): Date => {
       const defaultDate = new Date('1970-01-01T00:00:00Z')
@@ -526,8 +526,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
       )
     })
 
-    console.log('handleApplication recebi alguns detalhes')
-    console.log(mergedApplications)
+    // console.log('handleApplication recebi alguns detalhes')
+    // console.log(mergedApplications)
     setApplications(mergedApplications)
   }
   useEffect(() => {
@@ -535,16 +535,16 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
       top: 0,
       behavior: 'smooth',
     })
-    console.log('useEffect chamado')
+    // console.log('useEffect chamado')
     handleApplications(dataApplication || [], dataApplicationOffchain || [])
     setSubmissions(dataSubmission)
-    console.log('recebi application')
-    console.log(dataApplication)
-    console.log('recebi submission')
-    console.log(dataSubmission)
+    // console.log('recebi application')
+    // console.log(dataApplication)
+    // console.log('recebi submission')
+    // console.log(dataSubmission)
     getIfDeadlineIsEnough()
-    console.log('the task executor')
-    console.log(taskExecutor)
+    // console.log('the task executor')
+    // console.log(taskExecutor)
     handleUpdate()
   }, [dataApplication])
 

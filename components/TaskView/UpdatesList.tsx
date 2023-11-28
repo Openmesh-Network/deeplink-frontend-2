@@ -75,7 +75,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
       })
     } catch (err) {
       toast.error('Error getting the updates!')
-      console.log(err)
+      // console.log(err)
     }
 
     setIsLoading(false)
@@ -99,7 +99,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
       top: 0,
       behavior: 'smooth',
     })
-    console.log('useEffect chamado')
+    // console.log('useEffect chamado')
     handleEvents(taskId)
   }, [taskId])
 
