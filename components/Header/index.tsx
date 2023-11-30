@@ -187,7 +187,7 @@ const Header = () => {
                       : 'invisible top-[120%] opacity-0'
                   }`}
                 >
-                  <ul className="grid  gap-y-[10px] pt-[17px] pb-[19.5px] md:gap-x-[39px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[45.5px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[52px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
+                  <ul className="grid  gap-y-[10px] pt-[17px] pb-[19.5px] md:gap-x-[12px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[22px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[32px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
@@ -210,7 +210,7 @@ const Header = () => {
                               }
                               target={menuItem.newTab ? '_blank' : ''}
                               rel={menuItem.newTab ? 'noopener noreferrer' : ''}
-                              className={`flex text-[14px] font-normal text-[#ffffff] group-hover:opacity-70 md:text-[8.4px] lg:mr-0 lg:inline-flex lg:px-0 lg:text-[9.8px] lg:text-[#000000] xl:text-[11.2px] 2xl:text-[14px] ${
+                              className={`flex text-[14px] font-normal text-[#ffffff] group-hover:opacity-70 md:text-[8.4px] lg:mr-0 lg:inline-flex lg:px-0 lg:text-[7.8px] lg:text-[#000000] xl:text-[9.8px] 2xl:text-[14px] ${
                                 pathname.includes(menuItem.path)
                                   ? 'font-bold'
                                   : ''
