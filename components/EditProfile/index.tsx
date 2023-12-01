@@ -61,6 +61,7 @@ type IPFSSubmition = {
   links: Link[] | null
 }
 
+// user is available to edit a profile and create a new task
 const EditProfile = (id: any) => {
   Decimal.set({ precision: 60 })
   const [isLoading, setIsLoading] = useState<boolean>(false)
