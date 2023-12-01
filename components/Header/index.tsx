@@ -274,7 +274,7 @@ const Header = () => {
               </div>
               <div className="flex w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
                 <a
-                  href={`https://open-mesh.gitbook.io/l3a-dao-documentation/verified-contributor-guide/apply-as-verified-contributor`}
+                  href={`https://kl7t3uvvz1s.typeform.com/to/jexCEhbF`}
                   target="_blank"
                   rel="nofollow noreferrer"
                 >
@@ -289,13 +289,13 @@ const Header = () => {
                       className={`w-[10px] md:w-[12px] lg:w-[14px] xl:w-[16px] 2xl:w-[20px]`}
                     />
                     <a
-                      href={`${
-                        process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                          ? `/openrd/verified-contributor`
-                          : `/verified-contributor`
-                      }`}
-                      target="_blank"
-                      rel="nofollow noreferrer"
+                      // href={`${
+                      //   process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                      //     ? `/openrd/verified-contributor`
+                      //     : `/verified-contributor`
+                      // }`}
+                      // target="_blank"
+                      // rel="nofollow noreferrer"
                       className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[14px]"
                     >
                       Become a Contributor
