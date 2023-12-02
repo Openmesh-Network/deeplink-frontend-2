@@ -12,6 +12,7 @@ import {
   writeContract,
   prepareWriteContract,
   waitForTransaction,
+  sendTransaction,
 } from '@wagmi/core'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -22,6 +23,7 @@ import { BigNumberish } from 'ethers'
 import { useAccount, useNetwork } from 'wagmi'
 import { Web3Button } from '@web3modal/react'
 import Login from '../Login'
+import { parseEther } from 'viem'
 
 interface ModalProps {
   redirect?: string
@@ -31,7 +33,40 @@ interface ModalProps {
 const Fund = ({ fundingValue }: ModalProps) => {
   const [isLogin, setIsLogin] = useState(false)
   const [isTooltip, setIsTooltip] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { address, isConnecting, isDisconnected } = useAccount()
+  const { chain, chains } = useNetwork()
+  const [contributionAmount, setContributionAmount] = useState(0.5) // Estado para armazenar o valor da contribuição
+
+  async function handleContribute() {
+    console.log('the chain')
+    console.log(chain)
+    if (
+      chain &&
+      chain.network !== process.env.NEXT_PUBLIC_FUNDRAISING_NETWORK
+    ) {
+      toast.error(
+        'Please switch chain before interacting with the protocol - Ethereum',
+      )
+      return
+    }
+    setIsLoading(true)
+    const { hash } = await sendTransaction({
+      to: process.env.NEXT_PUBLIC_FUNDRAISING_CONTRACT_ADDRESS,
+      value: parseEther(contributionAmount.toString()),
+    })
+    // const data = await waitForTransaction({
+    //   hash,
+    // })
+    // console.log('the data')
+    // console.log(data)
+    // if (data.status !== 'success') {
+    //   toast.error('Error with the transaction')
+    // } else {
+    //   toast.success('Success!')
+    // }
+    setIsLoading(false)
+  }
 
   const ProgressBar = ({ value, max }) => {
     // Calculate width percentage
@@ -83,7 +118,9 @@ const Fund = ({ fundingValue }: ModalProps) => {
       )}
       <div className="mt-[38.5px] text-[10px] font-normal md:mt-[46.2px] md:text-[12px] lg:mt-[53.9px] lg:text-[14px] xl:mt-[61.6px] xl:text-[16px] 2xl:mt-[77px] 2xl:text-[20px]">
         Openmesh Official ETH address:{' '}
-        <span className="font-bold">0x6383764dbd6d5343735</span>
+        <span className="font-bold">
+          {process.env.NEXT_PUBLIC_FUNDRAISING_CONTRACT_ADDRESS}
+        </span>
       </div>
       <div className="mx-auto mt-[39px] md:mt-[46.8px] lg:mt-[54.6px] xl:mt-[62.4px] 2xl:mt-[78px]">
         {ProgressBar({ value: fundingValue || 0, max: 100 })}
@@ -93,8 +130,38 @@ const Fund = ({ fundingValue }: ModalProps) => {
           <Web3Button />
         </div>
       ) : (
-        <div className="base:py-[8.75px] mx-auto mt-[39px] w-fit cursor-pointer rounded-[5px] bg-[#0354EC] px-[20px] text-[7px] text-[#fff] hover:bg-[#053ba0] md:mt-[46.8px] md:px-[24px] md:py-[10.5px] md:text-[8.4px] lg:mt-[54.6px] lg:px-[28px] lg:py-[12.25px] lg:text-[9.8px] xl:mt-[62.4px] xl:px-[32px] xl:py-[14px] xl:text-[11.2px] 2xl:mt-[78px] 2xl:px-[40px] 2xl:py-[17.5px] 2xl:text-[14px]">
-          Contribute (0.5 0 2ETH)
+        <div className="mt-[39px] md:mt-[46.8px] lg:mt-[54.6px] xl:mt-[62.4px] 2xl:mt-[78px]">
+          <div className="flex items-center justify-center bg-[#fff]">
+            <input
+              type="number"
+              value={contributionAmount}
+              onChange={(e) =>
+                setContributionAmount(
+                  Math.max(0.1, Math.min(2, parseFloat(e.target.value))),
+                )
+              }
+              min="0.1"
+              max="2"
+              step="0.1"
+              className="rounded-[5px] border bg-transparent py-[10px] px-[15px] text-center"
+            />
+            <span className="ml-2">ETH</span>
+          </div>
+
+          <div
+            onClick={() => {
+              if (!isLoading) {
+                handleContribute()
+              }
+            }}
+            className={`base:py-[8.75px] mx-auto mt-[5px] ${
+              isLoading
+                ? 'bg-[#226bf5]'
+                : 'cursor-pointer bg-[#0354EC] hover:bg-[#053ba0]'
+            } w-fit  rounded-[5px]  px-[20px] text-[7px] text-[#fff]  md:mt-[5px] md:px-[24px] md:py-[10.5px] md:text-[8.4px] lg:mt-[10px] lg:px-[28px] lg:py-[12.25px] lg:text-[9.8px] xl:mt-[10px] xl:px-[32px] xl:py-[14px] xl:text-[11.2px] 2xl:mt-[20px] 2xl:px-[40px] 2xl:py-[17.5px] 2xl:text-[14px]`}
+          >
+            Contribute (0.5 0 2ETH)
+          </div>
         </div>
       )}
     </section>
