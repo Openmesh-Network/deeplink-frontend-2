@@ -84,7 +84,7 @@ const Stats = ({ ...data }: ModalProps) => {
           </thead>
           <div className="mt-[25px]"></div>
           <tbody className="">
-            {data.transactions.map((transaction) => (
+            {data?.transactions?.map((transaction) => (
               <tr key={transaction.id}>
                 <td className={`${commonClasses}`}>
                   <div>{formatAddress(transaction.wallet)}</div>

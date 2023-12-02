@@ -32,6 +32,7 @@ const Fundraising = () => {
   const [events, setEvents] = useState<Event[] | ApplicationOffChain[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [fundingValue, setFundingValue] = useState<any>()
+  const [fundingTransaction, setFundingTransaction] = useState<any>()
 
   const pathname = usePathname()
 
@@ -65,13 +66,38 @@ const Fundraising = () => {
         // console.log('as respostas das taskss')
         // console.log(response.data)
         if (response.data) {
-          setFinalTasks(response.data.tasks)
-          setPagination(response.data.pagination)
-          setCounting(response.data.counting)
+          setFundingValue(response.data)
         }
       })
     } catch (err) {
-      // console.log('erro na setagem de tasks')
+      toast.error('error getting the contract funding amount')
+      console.log(err)
+    }
+
+    setIsLoading(false)
+  }
+
+  async function getFundingTransactions() {
+    setIsLoading(true)
+    const config = {
+      method: 'get' as 'get',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getFundraisingTransactions`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+      },
+    }
+
+    let dado
+    try {
+      await axios(config).then(function (response) {
+        // console.log('as respostas das taskss')
+        // console.log(response.data)
+        if (response.data) {
+          setFundingTransaction(response.data)
+        }
+      })
+    } catch (err) {
+      toast.error('error getting the contract funding transactions')
       console.log(err)
     }
 
@@ -80,15 +106,16 @@ const Fundraising = () => {
 
   useEffect(() => {
     // console.log('useEffect chamado')
-    handleUpdate()
+    getFundingValue()
+    getFundingTransactions()
   }, [pathname])
 
   return (
     <div className="flex justify-center pb-[10px] pt-[54.5px] md:pt-[65.4px] lg:pb-[500px] lg:pt-[76.3px] xl:pt-[87.2px] 2xl:pt-[109px]">
       <div>
-        <Fund />
+        <Fund fundingValue={fundingValue} />
         <div className="base:mt-[72px] md:mt-[86.4px] lg:mt-[100.8px] xl:mt-[115.2px] 2xl:mt-[144px]">
-          <Stats transactions={transactionsList} />
+          <Stats transactions={fundingTransaction} />
         </div>
       </div>
     </div>

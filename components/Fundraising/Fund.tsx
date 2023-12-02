@@ -25,9 +25,10 @@ import Login from '../Login'
 
 interface ModalProps {
   redirect?: string
+  fundingValue?: Number
 }
 
-const Fund = ({ redirect }: ModalProps) => {
+const Fund = ({ fundingValue }: ModalProps) => {
   const [isLogin, setIsLogin] = useState(false)
   const [isTooltip, setIsTooltip] = useState(false)
   const { address, isConnecting, isDisconnected } = useAccount()
@@ -85,7 +86,7 @@ const Fund = ({ redirect }: ModalProps) => {
         <span className="font-bold">0x6383764dbd6d5343735</span>
       </div>
       <div className="mx-auto mt-[39px] md:mt-[46.8px] lg:mt-[54.6px] xl:mt-[62.4px] 2xl:mt-[78px]">
-        {ProgressBar({ value: 20, max: 100 })}
+        {ProgressBar({ value: fundingValue || 0, max: 100 })}
       </div>
       {!address ? (
         <div className="mt-[39px] md:mt-[46.8px] lg:mt-[54.6px] xl:mt-[62.4px] 2xl:mt-[78px]">
