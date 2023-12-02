@@ -72,7 +72,7 @@ const Fund = ({ redirect }: ModalProps) => {
         </div>
       </div>
       {isTooltip && (
-        <div className="base:-right-[120px] absolute -top-[55px] max-w-[160px] bg-[#F5F5F5] p-[20px] text-[9px] font-normal md:-right-[144px] md:-top-[66px] md:max-w-[192px] md:text-[10.8px]  lg:-right-[168px] lg:-top-[77px] lg:max-w-[224px]   lg:text-[12.6px] lg:!leading-[120%] xl:-right-[192px] xl:-top-[88px] xl:max-w-[256px] xl:text-[14.4px] 2xl:-top-[110px] 2xl:-right-[240px] 2xl:max-w-[320px] 2xl:text-[18px]">
+        <div className="absolute -right-[20px] -top-[20px] max-w-[160px] bg-[#F5F5F5] p-[20px] text-[9px] font-normal md:-right-[20px] md:-top-[40px] md:max-w-[192px] md:text-[10.8px]  lg:-right-[25px] lg:-top-[45px] lg:max-w-[224px]   lg:text-[12.6px] lg:!leading-[120%] xl:-right-[30px] xl:-top-[50px] xl:max-w-[256px] xl:text-[14.4px] 2xl:-top-[60px] 2xl:-right-[40px] 2xl:max-w-[320px] 2xl:text-[18px]">
           Openmesh is a distributed network. To achieve this, many independent
           active validators are required. As an early support benefit, anyone
           who contributed at least 2ETH will receive a Genesis validator pass.

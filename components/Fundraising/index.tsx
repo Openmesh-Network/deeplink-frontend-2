@@ -31,6 +31,7 @@ type UpdatesListProps = {
 const Fundraising = () => {
   const [events, setEvents] = useState<Event[] | ApplicationOffChain[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [fundingValue, setFundingValue] = useState<any>()
 
   const pathname = usePathname()
 
@@ -47,6 +48,40 @@ const Fundraising = () => {
     //   validatorNodePass: 'string',
     // },
   ]
+
+  async function getFundingValue() {
+    setIsLoading(true)
+    const config = {
+      method: 'get' as 'get',
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/functions/getFundraisingInfo`,
+      headers: {
+        'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
+      },
+    }
+
+    let dado
+    try {
+      await axios(config).then(function (response) {
+        // console.log('as respostas das taskss')
+        // console.log(response.data)
+        if (response.data) {
+          setFinalTasks(response.data.tasks)
+          setPagination(response.data.pagination)
+          setCounting(response.data.counting)
+        }
+      })
+    } catch (err) {
+      // console.log('erro na setagem de tasks')
+      console.log(err)
+    }
+
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    // console.log('useEffect chamado')
+    handleUpdate()
+  }, [pathname])
 
   return (
     <div className="flex justify-center pb-[10px] pt-[54.5px] md:pt-[65.4px] lg:pb-[500px] lg:pt-[76.3px] xl:pt-[87.2px] 2xl:pt-[109px]">

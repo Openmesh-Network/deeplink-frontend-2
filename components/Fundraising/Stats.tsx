@@ -171,15 +171,35 @@ const Stats = ({ ...data }: ModalProps) => {
         <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
           More details Openmesh Genesis
         </div>
-        <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
-          Openmesh Vision{' '}
-        </div>
-        <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
-          Openmesh Career{' '}
-        </div>
-        <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
-          Openmesh Technology{' '}
-        </div>
+        <a
+          href="https://docs.openmesh.network/openmesh/openmesh-overview"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
+            Openmesh Vision{' '}
+          </div>
+        </a>
+
+        <a
+          href="https://boards.greenhouse.io/openmesh"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
+            Openmesh Career{' '}
+          </div>
+        </a>
+
+        <a
+          href="https://docs.openmesh.network/products/xnode"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
+            Openmesh Technology{' '}
+          </div>
+        </a>
       </div>
       <div className="mx-auto w-fit">
         <div className="mt-[75px] text-[8px] font-bold md:mt-[90px] md:text-[9.6px] lg:mt-[105px] lg:text-[11.2px] xl:mt-[120px] xl:text-[12.8px] 2xl:mt-[150px] 2xl:text-[16px]">
