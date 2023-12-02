@@ -3,15 +3,15 @@
 /* eslint-disable no-unused-vars */
 'use client'
 import { FundingTx } from '@/types/fundingTx'
-import { formatAddress } from '@/utils/functions'
+import { formatAddress, formatHash } from '@/utils/functions'
 import { formatDistanceToNow, format } from 'date-fns'
 
 interface ModalProps {
-  transactions: FundingTx[]
+  transactions: any
 }
 
 const Stats = ({ ...data }: ModalProps) => {
-  function formatDeadline(dateReceived: string) {
+  function formatDeadline(dateReceived) {
     if (dateReceived) {
       const date = new Date(dateReceived)
       let difference = formatDistanceToNow(date)
@@ -74,32 +74,45 @@ const Stats = ({ ...data }: ModalProps) => {
               >
                 Status tx{' '}
               </th>
-              <th
+              {/* <th
                 scope="col"
                 className="text-left text-[9px]  font-normal  tracking-wider md:text-[10.8px] lg:text-[12.6px] xl:text-[14.4px] 2xl:text-[18px]"
               >
                 Early Validator Node Pass{' '}
-              </th>
+              </th> */}
             </tr>
           </thead>
           <div className="mt-[25px]"></div>
           <tbody className="">
             {data?.transactions?.map((transaction) => (
-              <tr key={transaction.id}>
+              <tr key={transaction.hash}>
                 <td className={`${commonClasses}`}>
-                  <div>{formatAddress(transaction.wallet)}</div>
+                  <div>{formatAddress(transaction.from)}</div>
                 </td>
                 <td className={commonClasses}>
-                  {`${formatDeadline(transaction.createdAt)}, ${formatDeadline2(
-                    transaction.createdAt,
-                  )}`}
+                  {`${formatDeadline(
+                    transaction.timestamp * 1000,
+                  )}, ${formatDeadline2(transaction.timestamp * 1000)}`}
                 </td>
-                <td className={commonClasses}>{transaction.amount}</td>
-                <td className={commonClasses}>{transaction.openTokenAmount}</td>
-                <td className={commonClasses}>{transaction.status}</td>
                 <td className={commonClasses}>
+                  {Number(transaction.valueFormatted)}
+                </td>
+                <td className={commonClasses}>
+                  {Number(transaction.valueFormatted) * 30000}
+                </td>
+                <td className={commonClasses}>
+                  <a
+                    className="text-[#0354EC] hover:text-[#023ba5]"
+                    href={`https://etherscan.io/tx/${transaction.hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {formatHash(transaction.hash)}
+                  </a>
+                </td>
+                {/* <td className={commonClasses}>
                   {transaction.validatorNodePass}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
