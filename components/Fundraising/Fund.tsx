@@ -37,6 +37,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
   const { address, isConnecting, isDisconnected } = useAccount()
   const { chain, chains } = useNetwork()
   const [contributionAmount, setContributionAmount] = useState(0.5) // Estado para armazenar o valor da contribuição
+  const [tooltipValue, setTooltipValue] = useState('')
 
   async function handleContribute() {
     console.log('the chain')
@@ -71,15 +72,26 @@ const Fund = ({ fundingValue }: ModalProps) => {
   const ProgressBar = ({ value, max }) => {
     // Calculate width percentage
     const width = (value / max) * 100
-
+    const handleMouseOver = (e) => {
+      const newValue = (
+        (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+        max
+      ).toFixed(2)
+      setTooltipValue(`${fundingValue} ETH`)
+    }
     return (
-      <div className="mx-auto h-[18px] w-[765px] rounded-full bg-[#DADBDD]">
+      <div
+        className="relative mx-auto h-[18px] w-[765px] rounded-full bg-[#DADBDD]"
+        onMouseMove={handleMouseOver}
+        onMouseLeave={() => setTooltipValue('')}
+      >
         <div
-          className="text-blue-100  h-[18px] rounded-full bg-[#1D78FF] p-0.5 text-center text-xs font-medium leading-none"
+          className="text-blue-100 h-[18px] rounded-full bg-[#1D78FF] p-0.5 text-center text-xs font-medium leading-none"
           style={{ width: `${width}%` }}
         >
-          {/* {' '}
-          {width}%{' '} */}
+          {tooltipValue && (
+            <div className="absolute top-[35px]">{tooltipValue}</div>
+          )}
         </div>
       </div>
     )
@@ -137,12 +149,12 @@ const Fund = ({ fundingValue }: ModalProps) => {
               value={contributionAmount}
               onChange={(e) =>
                 setContributionAmount(
-                  Math.max(0.1, Math.min(2, parseFloat(e.target.value))),
+                  Math.max(0.5, Math.min(2, parseFloat(e.target.value))),
                 )
               }
               min="0.1"
               max="2"
-              step="0.1"
+              step="0.5"
               className="rounded-[5px] border bg-transparent py-[10px] px-[15px] text-center"
             />
             <span className="ml-2">ETH</span>
