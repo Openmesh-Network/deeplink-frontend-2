@@ -70,7 +70,7 @@ const Fundraising = () => {
         }
       })
     } catch (err) {
-      toast.error('error getting the contract funding amount')
+      // toast.error('error getting the contract funding amount')
       console.log(err)
     }
 
@@ -97,7 +97,7 @@ const Fundraising = () => {
         }
       })
     } catch (err) {
-      toast.error('error getting the contract funding transactions')
+      // toast.error('error getting the contract funding transactions')
       console.log(err)
     }
 
