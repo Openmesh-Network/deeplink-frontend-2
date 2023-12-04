@@ -130,9 +130,16 @@ const Fund = ({ fundingValue }: ModalProps) => {
       )}
       <div className="mt-[38.5px] text-[10px] font-normal md:mt-[46.2px] md:text-[12px] lg:mt-[53.9px] lg:text-[14px] xl:mt-[61.6px] xl:text-[16px] 2xl:mt-[77px] 2xl:text-[20px]">
         Openmesh Official ETH address:{' '}
-        <span className="font-bold">
-          {process.env.NEXT_PUBLIC_FUNDRAISING_CONTRACT_ADDRESS}
-        </span>
+        <a
+          className="hover:text-[#0354EC]"
+          href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FUNDRAISING_CONTRACT_ADDRESS}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="font-bold">
+            {process.env.NEXT_PUBLIC_FUNDRAISING_CONTRACT_ADDRESS}
+          </span>
+        </a>
       </div>
       <div className="mx-auto mt-[39px] md:mt-[46.8px] lg:mt-[54.6px] xl:mt-[62.4px] 2xl:mt-[78px]">
         {ProgressBar({ value: fundingValue || 0, max: 100 })}
