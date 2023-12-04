@@ -15,16 +15,16 @@ const menuData: Menu[] = [
   },
   {
     id: 3,
-    title: 'Governance & Forum',
+    title: 'Forum',
     path: 'https://discord.gg/e3XMT8846F',
     newTab: true,
   },
-  {
-    id: 4,
-    title: 'FAQs',
-    path: `https://open-mesh.gitbook.io/l3a-dao-documentation/faqs`,
-    newTab: true,
-  },
+  // {
+  //   id: 4,
+  //   title: 'FAQs',
+  //   path: `https://open-mesh.gitbook.io/l3a-dao-documentation/faqs`,
+  //   newTab: true,
+  // },
   {
     id: 5,
     title: 'Activies',
@@ -37,7 +37,7 @@ const menuData: Menu[] = [
   },
   {
     id: 6,
-    title: 'Staking & Rewards',
+    title: 'Staking',
     path: `${
       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
         ? `/openrd/staking`
@@ -47,6 +47,16 @@ const menuData: Menu[] = [
   },
   {
     id: 7,
+    title: 'Fundraising',
+    path: `${
+      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+        ? `/openrd/fundraising`
+        : `/fundraising`
+    }`,
+    newTab: false,
+  },
+  {
+    id: 8,
     title: 'Profile',
     path: `${
       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'

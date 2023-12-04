@@ -156,7 +156,7 @@ const Header = () => {
               </a>
             </div>
             <div className="flex w-full items-center justify-between py-[25px] lg:py-[0px]">
-              <div>
+              <div className="w-fit">
                 <button
                   onClick={navbarToggleHandler}
                   id="navbarToggler"
@@ -187,7 +187,7 @@ const Header = () => {
                       : 'invisible top-[120%] opacity-0'
                   }`}
                 >
-                  <ul className="grid  gap-y-[10px] pt-[17px] pb-[19.5px] md:gap-x-[12px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[22px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[32px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
+                  <ul className="gridgap-y-[10px] pt-[17px] pb-[19.5px] md:gap-x-[12px] md:pt-[20.5px] md:pb-[23.5px]  lg:flex lg:gap-x-[22px] lg:pt-[24px] lg:pb-[27px] xl:gap-x-[32px] xl:pt-[27px] xl:pb-[31px] 2xl:gap-x-[65px] 2xl:pt-[34px] 2xl:pb-[39px]">
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
@@ -272,13 +272,13 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="flex w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
+              <div className="flex  w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
                 <a
                   href={`https://kl7t3uvvz1s.typeform.com/to/jexCEhbF`}
                   target="_blank"
                   rel="nofollow noreferrer"
                 >
-                  <div className="ml-[5px] hidden cursor-pointer items-center justify-center gap-x-[5px] rounded-[10px] border border-[#0354EC] px-[11px]  py-[5.25px]  font-semibold text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:gap-x-[6px] md:px-[13px] md:py-[6.3px] lg:flex lg:gap-x-[7px] lg:px-[15.5px] lg:py-[7.35px] xl:gap-x-[8px] xl:px-[17.5px] xl:py-[8.4px] 2xl:gap-x-[10px] 2xl:px-[21.5px] 2xl:py-[10.5px]">
+                  <div className="hidden w-fit cursor-pointer items-center justify-center gap-x-[5px] rounded-[10px] border border-[#0354EC] px-[11px]  py-[5.25px]  font-semibold text-[#0354EC] hover:bg-[#0354EC] hover:text-[#fff] md:gap-x-[6px] md:px-[13px] md:py-[6.3px] lg:flex lg:gap-x-[7px] lg:px-[15.5px] lg:py-[7.35px] xl:gap-x-[8px] xl:px-[17.5px] xl:py-[8.4px] 2xl:gap-x-[10px] 2xl:px-[21.5px] 2xl:py-[10.5px]">
                     <img
                       src={`${
                         process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
@@ -296,7 +296,7 @@ const Header = () => {
                       // }`}
                       // target="_blank"
                       // rel="nofollow noreferrer"
-                      className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[14px]"
+                      className="text-[7px] font-semibold md:text-[8.4px] lg:text-[10px] xl:text-[11.2px] 2xl:text-[12px]"
                     >
                       Become a Contributor
                     </a>
@@ -374,7 +374,7 @@ const Header = () => {
                     </nav>
                   </div>
                 ) : (
-                  <div className="">
+                  <div className="2xl:w-[100px]">
                     <div className="hidden lg:block">{<Web3Button />}</div>
                     <div className="">
                       {isChainWrong && <Web3NetworkSwitch />}
