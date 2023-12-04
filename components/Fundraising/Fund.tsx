@@ -154,7 +154,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
               }
               min="0.1"
               max="2"
-              step="0.5"
+              step="0.1"
               className="rounded-[5px] border bg-transparent py-[10px] px-[15px] text-center"
             />
             <span className="ml-2">ETH</span>
