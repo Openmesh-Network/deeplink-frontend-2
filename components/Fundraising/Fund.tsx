@@ -47,7 +47,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
       chain.network !== process.env.NEXT_PUBLIC_FUNDRAISING_NETWORK
     ) {
       toast.error(
-        'Please switch chain before interacting with the protocol - Ethereum',
+        'Please switch chain before interacting with the protocol - Sepolia',
       )
       return
     }
