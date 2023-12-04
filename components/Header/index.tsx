@@ -149,7 +149,7 @@ const Header = () => {
                     process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                       ? process.env.NEXT_PUBLIC_BASE_PATH
                       : ''
-                  }/images/header/header.png`}
+                  }/images/header/header-blue.png`}
                   alt="image"
                   className={`w-[200px] md:mr-[62px] md:w-[66px] lg:mr-[71px] lg:w-[77px] xl:mr-[81.6px] xl:w-[88px] 2xl:mr-[50px] 2xl:w-[110px]`}
                 />

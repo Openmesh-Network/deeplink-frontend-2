@@ -44,7 +44,7 @@ const NewFooter = () => {
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? process.env.NEXT_PUBLIC_BASE_PATH
                   : ''
-              }/images/header/header.png`}
+              }/images/header/header-blue.png`}
               alt="image"
               className={`w-[100px] md:w-[200px]`}
             />
