@@ -46,6 +46,8 @@ const Fund = ({ fundingValue }: ModalProps) => {
       chain &&
       chain.network !== process.env.NEXT_PUBLIC_FUNDRAISING_NETWORK
     ) {
+      console.log('the chain')
+      console.log(chain)
       toast.error(
         'Please switch chain before interacting with the protocol - Ethereum',
       )
