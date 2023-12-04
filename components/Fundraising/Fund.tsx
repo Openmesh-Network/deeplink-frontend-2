@@ -44,7 +44,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
     console.log(chain)
     if (
       chain &&
-      chain.network !== process.env.NEXT_PUBLIC_FUNDRAISING_NETWORK
+      JSON.stringify(chain.id) !== process.env.NEXT_PUBLIC_FUNDRAISING_NETWORK
     ) {
       console.log('the chain')
       console.log(chain)
