@@ -9,9 +9,13 @@ import { ThemeProvider } from 'next-themes'
 import { ToastContainer } from 'react-toastify'
 import AccountContextProvider from '@/contexts/AccountContext'
 
+// const chain =
+//   process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Polygon'
+//     ? polygon
+//     : polygonMumbai
 const chain =
-  process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Polygon'
-    ? polygon
+  process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Ethereum'
+    ? mainnet
     : polygonMumbai
 const chains = [chain]
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
