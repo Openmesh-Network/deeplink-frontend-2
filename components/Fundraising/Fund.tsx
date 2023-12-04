@@ -77,7 +77,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
         (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
         max
       ).toFixed(2)
-      setTooltipValue(`${fundingValue} ETH`)
+      setTooltipValue(`${fundingValue || 0} ETH`)
     }
     return (
       <div
