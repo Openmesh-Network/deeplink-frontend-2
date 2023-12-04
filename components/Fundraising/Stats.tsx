@@ -40,7 +40,7 @@ const Stats = ({ ...data }: ModalProps) => {
 
   const renderTable = () => {
     return (
-      <div className=" mx-auto flex w-full justify-between text-[#000]  xl:w-[1052px] 2xl:w-[1315px]">
+      <div className="mx-auto flex w-full justify-between text-[#000]  xl:w-[1052px] 2xl:w-[1315px]">
         <table className="mx-auto w-full">
           <thead className="">
             <tr>
