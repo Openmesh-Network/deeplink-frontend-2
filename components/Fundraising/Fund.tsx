@@ -81,7 +81,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
     }
     return (
       <div
-        className="relative mx-auto h-[18px] w-[765px] rounded-full bg-[#DADBDD]"
+        className="relative mx-auto h-[18px] w-full rounded-full bg-[#DADBDD] xl:w-[665px] 2xl:w-[765px]"
         onMouseMove={handleMouseOver}
         onMouseLeave={() => setTooltipValue('')}
       >

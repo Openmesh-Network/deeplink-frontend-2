@@ -123,13 +123,13 @@ const Stats = ({ ...data }: ModalProps) => {
 
   return (
     <section className="mx-auto w-full font-normal tracking-tight text-[#000]">
-      <div className="mx-auto flex w-full justify-between text-center xl:w-[992px] 2xl:w-[1240px] 2xl:gap-x-[10px]">
+      <div className="mx-auto mt-[60px] grid w-full gap-y-[30px] text-center md:mt-0 md:flex md:justify-between xl:w-[892px] 2xl:w-[1040px] 2xl:gap-x-[10px]">
         <div className="relative">
           <div className="text-[10px] font-bold md:text-[12px] lg:text-[14px] lg:!leading-[120%] xl:text-[16px] 2xl:text-[20px]">
             Week 01
           </div>
           <div className="mx-auto mt-[6px] text-[7px] font-normal md:text-[8.4px] lg:text-[9.8px] lg:!leading-[120%] xl:max-w-[136px] xl:text-[11.2px] 2xl:max-w-[170px] 2xl:text-[14px]">
-            11:59PM UTC, 28th Nov - 11:59PM UTC, 05th Dec
+            Until 11th of December 23:59 UTC
           </div>
           <div className="mt-[12.5px] text-[10px] font-normal md:mt-[15px] md:text-[12px] lg:mt-[17.5px] lg:text-[14px] lg:!leading-[120%] xl:mt-[18px] xl:text-[16px] 2xl:mt-[22px] 2xl:text-[20px]">
             1ETH = 30,000 OPEN
@@ -151,10 +151,10 @@ const Stats = ({ ...data }: ModalProps) => {
             Week 02
           </div>
           <div className="mx-auto mt-[6px] text-[7px] font-normal md:text-[8.4px] lg:text-[9.8px] lg:!leading-[120%] xl:max-w-[136px] xl:text-[11.2px] 2xl:max-w-[170px] 2xl:text-[14px]">
-            11:59PM UTC, 28th Nov - 11:59PM UTC, 05th Dec
+            Until 18th of December 23:59 UTC
           </div>
           <div className="mt-[12.5px] text-[10px] font-normal md:mt-[15px] md:text-[12px] lg:mt-[17.5px] lg:text-[14px] lg:!leading-[120%] xl:mt-[18px] xl:text-[16px] 2xl:mt-[22px] 2xl:text-[20px]">
-            1ETH = 30,000 OPEN
+            1ETH = 27,500 OPEN
           </div>
         </div>
         <div>
@@ -162,13 +162,13 @@ const Stats = ({ ...data }: ModalProps) => {
             Week 03
           </div>
           <div className="mx-auto mt-[6px] text-[7px] font-normal md:text-[8.4px] lg:text-[9.8px] lg:!leading-[120%] xl:max-w-[136px] xl:text-[11.2px] 2xl:max-w-[170px] 2xl:text-[14px]">
-            11:59PM UTC, 28th Nov - 11:59PM UTC, 05th Dec
+            Until 1st of January 23:59 UTC
           </div>
           <div className="mt-[12.5px] text-[10px] font-normal md:mt-[15px] md:text-[12px] lg:mt-[17.5px] lg:text-[14px] lg:!leading-[120%] xl:mt-[18px] xl:text-[16px] 2xl:mt-[22px] 2xl:text-[20px]">
-            1ETH = 30,000 OPEN
+            1ETH = 25,000 OPEN
           </div>
         </div>
-        <div>
+        {/* <div>
           <div className="text-[10px] font-bold md:text-[12px] lg:text-[14px] lg:!leading-[120%] xl:text-[16px] 2xl:text-[20px]">
             Week 04
           </div>
@@ -178,9 +178,9 @@ const Stats = ({ ...data }: ModalProps) => {
           <div className="mt-[12.5px] text-[10px] font-normal md:mt-[15px] md:text-[12px] lg:mt-[17.5px] lg:text-[14px] lg:!leading-[120%] xl:mt-[18px] xl:text-[16px] 2xl:mt-[22px] 2xl:text-[20px]">
             1ETH = 30,000 OPEN
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="base:mt-[88.5px] mx-auto flex w-full justify-between text-center md:mt-[106.2px] lg:mt-[123.9px] xl:mt-[141.6px] xl:w-[992px] 2xl:mt-[177px] 2xl:w-[900px] 2xl:gap-x-[10px]">
+      <div className="base:mt-[88.5px] mx-auto mt-[50px] grid w-full gap-y-[10px] text-center md:mt-0 md:mt-[106.2px] md:flex md:justify-between lg:mt-[123.9px] xl:mt-[141.6px] xl:w-[992px] 2xl:mt-[177px] 2xl:w-[900px] 2xl:gap-x-[10px]">
         <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
           More details Openmesh Genesis
         </div>
