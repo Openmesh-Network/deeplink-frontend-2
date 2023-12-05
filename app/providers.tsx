@@ -17,7 +17,7 @@ const chain =
   process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT === 'Ethereum'
     ? mainnet
     : polygonMumbai
-const chains = [chain, polygon]
+const chains = [mainnet, polygon]
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
