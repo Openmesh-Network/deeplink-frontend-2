@@ -159,7 +159,7 @@ const Stats = ({ ...data }: ModalProps) => {
         </div>
         <div>
           <div className="text-[10px] font-bold md:text-[12px] lg:text-[14px] lg:!leading-[120%] xl:text-[16px] 2xl:text-[20px]">
-            Week 03
+            Week 03 & Week 04
           </div>
           <div className="mx-auto mt-[6px] text-[7px] font-normal md:text-[8.4px] lg:text-[9.8px] lg:!leading-[120%] xl:max-w-[136px] xl:text-[11.2px] 2xl:max-w-[170px] 2xl:text-[14px]">
             Until 1st of January 23:59 UTC
