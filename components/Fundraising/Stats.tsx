@@ -180,10 +180,16 @@ const Stats = ({ ...data }: ModalProps) => {
           </div>
         </div> */}
       </div>
-      <div className="base:mt-[88.5px] mx-auto mt-[50px] grid w-full gap-y-[10px] text-center md:mt-0 md:mt-[106.2px] md:flex md:justify-between lg:mt-[123.9px] xl:mt-[141.6px] xl:w-[992px] 2xl:mt-[177px] 2xl:w-[900px] 2xl:gap-x-[10px]">
-        <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
-          More details Openmesh Genesis
-        </div>
+      <div className="mx-auto mt-[50px] grid w-full gap-y-[10px] text-center md:mt-[106.2px] md:flex md:justify-between lg:mt-[123.9px] xl:mt-[141.6px] xl:w-[992px] 2xl:mt-[177px] 2xl:w-[900px] 2xl:gap-x-[10px]">
+        <a
+          href=" https://blog.openmesh.network/openmesh-genesis-period-a1a08380e3f6"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="cursor-pointer text-[8px] underline underline-offset-4 hover:text-[#0354EC] md:text-[9.6px] lg:text-[11.2px] xl:text-[12.8px] 2xl:text-[16px]">
+            More details Openmesh Genesis
+          </div>
+        </a>
         <a
           href="https://docs.openmesh.network/openmesh/openmesh-overview"
           target="_blank"
