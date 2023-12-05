@@ -49,7 +49,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
       console.log('the chain')
       console.log(chain)
       toast.error(
-        'Please switch chain before interacting with the protocol - Ethereum',
+        'Please switch chain before interacting with the fundraising - Ethereum',
       )
       return
     }

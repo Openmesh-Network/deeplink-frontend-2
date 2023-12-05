@@ -46,24 +46,31 @@ const Header = () => {
   // Este useEffect está travando a aplicação, econtrar maneira de tratar isto.
   useEffect(() => {
     window.addEventListener('scroll', handleStickyNavbar)
-    if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
-      setIsChainWrong(true)
-      setTheme({
-        themeMode: 'dark',
-        themeVariables: {
-          '--w3m-accent-color': `${isChainWrong ? '#bf0d0d' : ''}`,
-          // ...
-        },
-      })
-    } else {
-      setIsChainWrong(false)
-      setTheme({
-        themeVariables: {
-          '--w3m-accent-color': '#000000',
-          // ...
-        },
-      })
-    }
+    // if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
+    //   setIsChainWrong(true)
+    //   setTheme({
+    //     themeMode: 'dark',
+    //     themeVariables: {
+    //       '--w3m-accent-color': `${isChainWrong ? '#bf0d0d' : ''}`,
+    //       // ...
+    //     },
+    //   })
+    // } else {
+    //   setIsChainWrong(false)
+    //   setTheme({
+    //     themeVariables: {
+    //       '--w3m-accent-color': '#000000',
+    //       // ...
+    //     },
+    //   })
+    // }
+    setIsChainWrong(false)
+    setTheme({
+      themeVariables: {
+        '--w3m-accent-color': '#000000',
+        // ...
+      },
+    })
   }, [chain, isChainWrong, setTheme, address])
 
   async function getUserData() {

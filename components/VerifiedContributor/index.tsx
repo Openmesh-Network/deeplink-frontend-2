@@ -352,7 +352,9 @@ const VerifiedContributor = (id: any) => {
     }
 
     if (chain && chain.name !== process.env.NEXT_PUBLIC_WALLET_ENVIRONMENT) {
-      toast.error('Please switch chain before interacting with the protocol.')
+      toast.error(
+        'Please switch chain before interacting with the protocol. - Polygon',
+      )
       return
     }
 
