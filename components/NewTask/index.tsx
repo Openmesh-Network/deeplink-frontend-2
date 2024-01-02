@@ -868,7 +868,9 @@ const NewTask = () => {
       try {
         await handleAllowanceFromTokens()
       } catch (err) {
-        toast.error('Something happened, please try again')
+        toast.error(
+          'Something happened when handling allowance from the tokens, please ensure you have the required amount of budget tokens        ',
+        )
         setIsLoading(false)
         return
       }
