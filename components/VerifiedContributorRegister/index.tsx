@@ -323,7 +323,7 @@ const VerifiedContributorRegister = () => {
   async function createUser(data: any) {
     const config = {
       method: 'post' as 'post',
-      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/openmesh-experts/functions/createUser`,
+      url: `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/openmesh-experts/functions/createUserByVerifiedContributor`,
       headers: {
         'x-parse-application-id': `${process.env.NEXT_PUBLIC_API_BACKEND_KEY}`,
       },
@@ -466,7 +466,7 @@ const VerifiedContributorRegister = () => {
             </div>
           </div>
         </section>
-        <section className="mt-12 mb-[0px] flex justify-center px-[20px] pt-[15px] text-center text-[11px]  font-medium !leading-[17px] text-[#000000] lg:mb-24 lg:px-[100px] lg:pt-[30px]  lg:text-[14px]">
+        <section className="mt-12 mb-[0px] flex justify-center px-[20px] pb-[100px] pt-[15px] text-center text-[11px]  font-medium !leading-[17px] text-[#000000] lg:mb-24 lg:px-[100px] lg:pt-[30px]  lg:text-[14px]">
           <div>
             <div className="text-[15px] font-bold !leading-[150%] text-[#000000] lg:text-[24px]">
               Account set up succesfully!
@@ -701,7 +701,10 @@ const VerifiedContributorRegister = () => {
                   )}
                   <div className={`mt-[20px]`}>
                     <span className="flex flex-row">
-                      Your background (select min 3)
+                      {isCompany
+                        ? 'Expertise & background (select min 3)'
+                        : ' Your background (select min 3)'}
+
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.tags?.message}
                       </p>
