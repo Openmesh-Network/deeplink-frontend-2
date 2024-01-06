@@ -36,6 +36,7 @@ type RegisterForm = {
   website: string
   personalBlog?: string
   githubLink?: string
+  walletAddress?: string
   tags: string[]
   description: string
   password: string
@@ -200,6 +201,7 @@ const VerifiedContributorRegister = () => {
     website: Yup.string().notRequired(),
     description: Yup.string().required('Description is required'),
     location: Yup.string().notRequired(),
+    walletAddress: Yup.string().notRequired(),
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Min of 8 digits'),
@@ -371,11 +373,6 @@ const VerifiedContributorRegister = () => {
         element.scrollIntoView({ behavior: 'smooth' })
       }
     } else {
-      if (!data.githubLink) {
-        toast.error('Github is mandatory.')
-        const element = document.getElementById('githubId')
-        element.scrollIntoView({ behavior: 'smooth' })
-      }
       if (!data.firstName) {
         toast.error('First name is mandatory.')
         const element = document.getElementById('firstNameId')
@@ -664,7 +661,7 @@ const VerifiedContributorRegister = () => {
                   {!isCompany && (
                     <div className="mt-[20px]">
                       <span className="flex flex-row">
-                        Personal blog
+                        Linkedin
                         <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                           {errors.personalBlog?.message}
                         </p>
@@ -682,7 +679,7 @@ const VerifiedContributorRegister = () => {
                   {!isCompany && (
                     <div className="mt-[20px]">
                       <span className="flex flex-row">
-                        Github*
+                        Github
                         <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                           {errors.githubLink?.message}
                         </p>
@@ -704,7 +701,7 @@ const VerifiedContributorRegister = () => {
                   )}
                   <div className={`mt-[20px]`}>
                     <span className="flex flex-row">
-                      Service tags
+                      Your background (select min 3)
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.tags?.message}
                       </p>
@@ -790,26 +787,21 @@ const VerifiedContributorRegister = () => {
                       {...register('description')}
                     />
                   </div>
-                  <div className="mt-[20px]">
+                  <div id="tagsId" className="mt-[20px]">
                     <span className="flex flex-row">
-                      Add your Calendly link to display on your profile
+                      Your wallet address
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
-                        {errors.scheduleCalendlyLink?.message}
+                        {errors.walletAddress?.message}
                       </p>
                     </span>
-                    <div className="relative flex items-center">
-                      <span className="absolute left-3 top-[25px] self-center text-[17px] font-normal">
-                        calendly.com/
-                      </span>
-                      <input
-                        disabled={isLoading}
-                        className="mt-[10px] h-[45px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white pl-[123px] pr-[10px] text-[17px] font-normal outline-0 lg:w-[500px]"
-                        type="text"
-                        maxLength={100}
-                        placeholder=""
-                        {...register('scheduleCalendlyLink')}
-                      />
-                    </div>
+                    <input
+                      disabled={isLoading}
+                      className="mt-[10px] h-[45px] w-[280px] rounded-[10px] border border-[#D4D4D4] bg-white px-[12px] text-[17px] font-normal outline-0 lg:w-[500px]"
+                      type="text"
+                      maxLength={100}
+                      placeholder="0x..."
+                      {...register('walletAddress')}
+                    />
                   </div>
                   <div id="passwordId" className="mt-[30px] lg:mt-[60px]">
                     <span className="flex flex-row">
