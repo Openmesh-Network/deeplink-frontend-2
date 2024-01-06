@@ -793,6 +793,15 @@ const VerifiedContributorRegister = () => {
                   <div id="tagsId" className="mt-[20px]">
                     <span className="flex flex-row">
                       Your wallet address
+                      <a
+                        href={`https://www.quicknode.com/guides/web3-fundamentals-security/basics-to-web3-wallets`}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                      >
+                        <p className="ml-[25px] text-[13px] font-normal text-[#0354EC] ">
+                          What is this?
+                        </p>
+                      </a>
                       <p className="ml-[8px] text-[10px] font-normal text-[#ff0000] ">
                         {errors.walletAddress?.message}
                       </p>
