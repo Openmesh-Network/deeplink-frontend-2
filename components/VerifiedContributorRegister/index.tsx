@@ -410,8 +410,8 @@ const VerifiedContributorRegister = () => {
       googleRecaptchaToken,
       profilePictureHash: fileIPFSHash,
       isCompany: isCompany,
-      registrationByOpenRD: isOpenRD,
-      pageRedirect,
+      registrationByOpenRD: true,
+      pageRedirect: 'https://openrd.openmesh.network',
     }
     try {
       const res = await createUser(finalData)
@@ -459,7 +459,7 @@ const VerifiedContributorRegister = () => {
               <div className="w-full px-4 lg:w-2/3">
                 <div className="mb-1">
                   <h3 className="text-[15px] font-bold !leading-[150%] text-[#000000] lg:text-[24px]">
-                    Create account
+                    Register to become a Verified Contributor
                   </h3>
                 </div>
               </div>
@@ -488,7 +488,7 @@ const VerifiedContributorRegister = () => {
             <div className="w-full px-4 lg:w-2/3">
               <div className="mb-1">
                 <h3 className="text-[15px] font-bold !leading-[150%] text-[#000000] lg:text-[24px]">
-                  Create account
+                  Register to become a Verified Contributor
                 </h3>
               </div>
             </div>
