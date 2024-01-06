@@ -281,7 +281,7 @@ const Header = () => {
               </div>
               <div className="flex  w-fit items-center justify-end gap-x-[15px]  pr-16 md:gap-x-[18px] lg:gap-x-[21px] lg:pr-0 xl:gap-x-[24px] 2xl:gap-x-[30px]">
                 <a
-                  href={`https://kl7t3uvvz1s.typeform.com/to/jexCEhbF`}
+                  href={`https://openrd.openmesh.network/verified-contributor-register`}
                   target="_blank"
                   rel="nofollow noreferrer"
                 >
