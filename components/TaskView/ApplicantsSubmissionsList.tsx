@@ -5,11 +5,10 @@
 // import { useState } from 'react'
 import { useEffect, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import {
   readContract,
-  readContracts,
   writeContract,
   prepareWriteContract,
   waitForTransaction,
@@ -18,17 +17,15 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
-  IPFSSubmition,
   TasksOverview,
   TasksPagination,
-  TasksCounting,
   Application,
   Payment,
   Submission,
   ApplicationOffChain,
 } from '@/types/task'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import { File, SmileySad, Info } from 'phosphor-react'
+import { SmileySad } from 'phosphor-react'
 
 type ApplicantsSubmissionsListProps = {
   dataApplication: Application[]
