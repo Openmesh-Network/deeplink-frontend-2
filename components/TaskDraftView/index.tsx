@@ -172,8 +172,6 @@ const TaskDraftView = (id: any) => {
               ></img>
               <a
                 title={contributor}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="hover:text-primary"
                 href={`${
                   process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'

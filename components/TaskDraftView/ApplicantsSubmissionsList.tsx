@@ -505,8 +505,6 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
           </div>
           <div className="flex justify-center">
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               href={`${
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? `/openrd/application/${taskId}`
@@ -538,8 +536,6 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
             and it appears you may not be able to complete it on time. We
             recommend reaching out to the{' '}
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               href={`${
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? `/openrd/profile/${taskExecutor}`
@@ -1003,8 +999,6 @@ const ApplicantsSubmissionsList = ({dataApplication, taskPayments, dataSubmissio
                               ? `/openrd/review-submission/${submission.id}`
                               : `/review-submission/${submission.id}`
                           }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[16px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white`}
                         >
                           Review

@@ -145,8 +145,6 @@ const TaskView = (id: any) => {
               ></img>
               <a
                 title={contributor}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="hover:text-primary"
                 href={`${
                   process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
@@ -297,8 +295,6 @@ const TaskView = (id: any) => {
                     We've detected that this task might be related to spam
                     activities. We recommend reaching out to a{' '}
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
                       href={`${
                         process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                           ? `/openrd/profile/${taskMetadata.executor}`

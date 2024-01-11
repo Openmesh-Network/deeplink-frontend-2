@@ -703,8 +703,6 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
           </div>
           <div className="flex justify-center">
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               href={`${
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? `/openrd/application/${taskId}`
@@ -1166,8 +1164,6 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                               ? `/openrd/review-submission/${submission.id}`
                               : `/review-submission/${submission.id}`
                           }`}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className={`ml-auto flex w-[125px] cursor-pointer justify-center rounded-[5px] border border-[#0354EC] bg-white py-[10px] text-[12px] font-normal text-[#0354EC] hover:bg-[#0354EC] hover:text-white lg:text-[16px]`}
                         >
                           Review

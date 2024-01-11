@@ -139,8 +139,6 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   </h3>
                   {task.manager === address && (
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
                       href={`${
                         process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                           ? `/openrd/edit-task/${task.id}`
@@ -329,8 +327,6 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                 {task.status === 'open' && (
                   <div className="mt-[25px] ">
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
                       href={`${
                         process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                           ? `/openrd/application/${task.id}`
@@ -348,8 +344,6 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                   contributorsAllowed.includes(address) && (
                     <div className="mt-[25px] ">
                       <a
-                        target="_blank"
-                        rel="noopener noreferrer"
                         href={`${
                           process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                             ? `/openrd/new-submission/${task.id}`

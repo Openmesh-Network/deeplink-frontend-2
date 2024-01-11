@@ -495,8 +495,6 @@ const VerifiedContributor = (id: any) => {
                     ? `/openrd/verified-contributor`
                     : '/verified-contributor'
                 }`}
-                target="_blank"
-                rel="nofollow noreferrer"
                 className=" "
               >
                 Pending Approval

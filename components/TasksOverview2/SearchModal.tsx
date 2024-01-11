@@ -313,8 +313,6 @@ const SearchModal = ({
                 ? `/openrd/new-task`
                 : `/new-task`
             }`}
-            target="_blank"
-            rel="nofollow noreferrer"
             className="ml-auto flex h-[35px] w-[100px] cursor-pointer items-center justify-center rounded-[10px]  bg-[#0354EC] hover:bg-primary lg:h-[43px] lg:w-[170px]"
           >
             + Add a project
