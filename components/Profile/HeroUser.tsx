@@ -106,9 +106,8 @@ const HeroUser = ({ user, id, ensName }: UsersModalProps) => {
   }
 
   const handleCopyClick = useCallback(() => {
-    // Usar API de clipboard para copiar o endereço
     navigator.clipboard.writeText(id)
-    // mensagem de erro
+    toast.success('Link copied')
   }, [id])
 
   if (user) {
