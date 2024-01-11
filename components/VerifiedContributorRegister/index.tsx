@@ -814,6 +814,10 @@ const VerifiedContributorRegister = () => {
                       placeholder="0x..."
                       {...register('walletAddress')}
                     />
+                    <p className="mt-[2px] text-[12px] font-normal">
+                      <span className="text-[#ff0000]">Attention</span>: your
+                      wallet can not be changed later
+                    </p>
                   </div>
                   <div id="passwordId" className="mt-[30px] lg:mt-[60px]">
                     <span className="flex flex-row">
