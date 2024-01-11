@@ -734,8 +734,6 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
             and it appears you may not be able to complete it on time. We
             recommend reaching out to the{' '}
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               href={`${
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
                   ? `/openrd/profile/${taskExecutor}`
