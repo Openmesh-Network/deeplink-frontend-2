@@ -736,8 +736,8 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
             <a
               href={`${
                 process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                  ? `/openrd/profile/${taskExecutor}`
-                  : `/profile/${taskExecutor}`
+                  ? `/openrd/profile/${taskCreator}`
+                  : `/profile/${taskCreator}`
               }`}
               className="mr-1 border-b border-[#0354EC] pl-1 text-[#0354EC]"
             >
