@@ -181,7 +181,7 @@ const Fund = ({ fundingValue }: ModalProps) => {
                 : 'cursor-pointer bg-[#0354EC] hover:bg-[#053ba0]'
             } w-fit  rounded-[5px]  px-[20px] text-[7px] text-[#fff]  md:mt-[5px] md:px-[24px] md:py-[10.5px] md:text-[8.4px] lg:mt-[10px] lg:px-[28px] lg:py-[12.25px] lg:text-[9.8px] xl:mt-[10px] xl:px-[32px] xl:py-[14px] xl:text-[11.2px] 2xl:mt-[20px] 2xl:px-[40px] 2xl:py-[17.5px] 2xl:text-[14px]`}
           >
-            Contribute
+            Contribute (0.5 0 2ETH)
           </div>
         </div>
       )}
