@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use client'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState, useContext } from 'react'
-import ThemeToggler from './ThemeToggler'
 import menuData from './menuData'
 import { usePathname } from 'next/navigation'
 import {
@@ -18,7 +16,7 @@ import axios from 'axios'
 
 const Header = () => {
   const { address } = useAccount()
-  const { chain, chains } = useNetwork()
+  const { chain } = useNetwork()
   const pathname = usePathname()
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false)
