@@ -1,12 +1,12 @@
 import { Menu } from '@/types/menu'
 
 const menuData: Menu[] = [
-  {
-    id: 1,
-    title: 'About',
-    path: `https://open-mesh.gitbook.io/l3a-dao-documentation/about/openr-and-d-101`,
-    newTab: false,
-  },
+  // {
+  //   id: 1,
+  //   title: 'About',
+  //   path: `https://open-mesh.gitbook.io/l3a-dao-documentation/about/openr-and-d-101`,
+  //   newTab: false,
+  // },
   {
     id: 2,
     title: 'Docs',
