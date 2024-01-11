@@ -2,23 +2,10 @@
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
-import { useEffect, useState } from 'react'
-import { formatDistanceToNow, format } from 'date-fns'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import taskContractABI from '@/utils/abi/taskContractABI.json'
-import {
-  readContract,
-  readContracts,
-  writeContract,
-  prepareWriteContract,
-  waitForTransaction,
-} from '@wagmi/core'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import 'react-toastify/dist/ReactToastify.css'
 import { ApplicationOffChain, Event } from '@/types/task'
-import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import { File, SmileySad, Info } from 'phosphor-react'
 import { useAccount, useNetwork } from 'wagmi'
 import ConnectYourWallet from './ConnectYourWallet'
 import Dashboard from './Dashboard'

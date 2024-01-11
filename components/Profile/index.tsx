@@ -83,7 +83,6 @@ const ProfileView = (id: any) => {
     }
   }
 
-  // Função para atualizar a URL
   const updateUrl = (param: string, value: string | null) => {
     if (param !== 'page') {
       if (typeof window !== 'undefined') {

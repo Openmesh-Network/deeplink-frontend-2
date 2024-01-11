@@ -4,26 +4,10 @@
 /* eslint-disable no-unused-vars */
 'use client'
 // import { useState } from 'react'
-import { useEffect, useState } from 'react'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import taskContractABI from '@/utils/abi/taskContractABI.json'
-import {
-  readContract,
-  writeContract,
-  prepareWriteContract,
-  waitForTransaction,
-} from '@wagmi/core'
-import axios from 'axios'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { IPFSSubmition } from '@/types/task'
-import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import { BigNumberish } from 'ethers'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 const HeroVerifiedContributor = () => {
-  const { address, isConnecting, isDisconnected } = useAccount()
-
   return (
     <section className="border-b border-[#CFCFCF] px-[20px] pb-[50px] pt-[40px] lg:px-[100px] lg:pb-[70px] lg:pt-[59px]">
       <div className="container px-0">
