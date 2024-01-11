@@ -27,7 +27,7 @@ const menuData: Menu[] = [
   // },
   {
     id: 5,
-    title: 'Activies',
+    title: 'Activities',
     path: `${
       process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
         ? `/openrd/activities`
