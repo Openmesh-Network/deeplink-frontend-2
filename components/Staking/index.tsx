@@ -9,6 +9,7 @@ import { ApplicationOffChain, Event } from '@/types/task'
 import { useAccount, useNetwork } from 'wagmi'
 import ConnectYourWallet from './ConnectYourWallet'
 import Dashboard from './Dashboard'
+import { Loader } from '../Loader/Loader'
 
 type UpdatesListProps = {
   taskId: string
@@ -31,7 +32,7 @@ const Staking = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center pb-[10px] lg:pb-[500px]">
-        <ConnectYourWallet />
+        <Loader />
       </div>
     )
   }
