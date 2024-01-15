@@ -871,6 +871,7 @@ const NewTask = () => {
         toast.error(
           'Something happened when handling allowance from the tokens, please ensure you have the required amount of budget tokens        ',
         )
+        console.log(err)
         setIsLoading(false)
         return
       }
