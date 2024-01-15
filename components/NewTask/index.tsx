@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import tasksDraftsContractABI from '@/utils/abi/tasksDraftsContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
+import erc20ContractABI2 from '@/utils/abi/erc20ContractABI2.json'
 import { Link, Contributor, PreapprovedApplication } from '@/types/task'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css' // import styles
@@ -554,7 +555,7 @@ const NewTask = () => {
     for (let i = 0; i < payments.length; i++) {
       const data = await readContract({
         address: `0x${payments[i].tokenContract.substring(2)}`,
-        abi: erc20ContractABI,
+        abi: erc20ContractABI2,
         args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
@@ -564,7 +565,7 @@ const NewTask = () => {
         // console.log('required to increase allowance')
         const { request } = await prepareWriteContract({
           address: `0x${payments[i].tokenContract.substring(2)}`,
-          abi: erc20ContractABI,
+          abi: erc20ContractABI2,
           args: [
             `0x${taskAddress.substring(2)}`,
             Number(payments[i].amount) * 10,
