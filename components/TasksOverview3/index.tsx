@@ -34,7 +34,7 @@ const TransactionList = () => {
   const [departament, setDepartament] = useState('All')
   const [orderByDeadline, setOrderByDeadline] = useState('')
   const [orderByEstimatedBudget, setOrderByEstimatedBudget] = useState('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [finalTasks, setFinalTasks] = useState<TasksOverview[]>([])
   const [pagination, setPagination] = useState<TasksPagination>()
   const [counting, setCounting] = useState<TasksCounting>()
