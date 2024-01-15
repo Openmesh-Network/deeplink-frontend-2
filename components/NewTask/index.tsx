@@ -15,7 +15,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
 import tasksDraftsContractABI from '@/utils/abi/tasksDraftsContractABI.json'
 import erc20ContractABI from '@/utils/abi/erc20ContractABI.json'
-import erc20ContractABI2 from '@/utils/abi/erc20ContractABI2.json'
 import { Link, Contributor, PreapprovedApplication } from '@/types/task'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css' // import styles
