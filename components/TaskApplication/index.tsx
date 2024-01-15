@@ -32,6 +32,7 @@ import * as Yup from 'yup'
 import ConnectYourWallet from '../ConnectYouWallet'
 import { AccountContext } from '../../contexts/AccountContext'
 import nookies, { parseCookies, setCookie } from 'nookies'
+import { Loader } from '../Loader/Loader'
 
 type TaskApplicationForm = {
   displayName: string
@@ -64,6 +65,7 @@ const TaskApplication = (id: any) => {
   const [taskChainData, setTaskChainData] = useState<any>()
   const [taskMetadata, setTaskMetadata] = useState<TasksOverview>()
   const [budgetView, setBudgetView] = useState<boolean>(false)
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true)
 
   const [budgetValue, setBudgetValue] = useState([100])
   const [budgetValueInputColor, setBudgetValueInputColor] =
@@ -490,6 +492,18 @@ const TaskApplication = (id: any) => {
       getTask(id.id)
     }
   }, [id])
+
+  useEffect(() => {
+    setIsLoadingPage(false)
+  }, [address])
+
+  if (isLoadingPage) {
+    return (
+      <div className="flex justify-center pb-[10px] lg:pb-[500px]">
+        <Loader />
+      </div>
+    )
+  }
 
   if (!address && !user) {
     return (
