@@ -555,7 +555,7 @@ const NewTask = () => {
     for (let i = 0; i < payments.length; i++) {
       const data = await readContract({
         address: `0x${payments[i].tokenContract.substring(2)}`,
-        abi: erc20ContractABI2,
+        abi: erc20ContractABI,
         args: [address, `0x${taskAddress.substring(2)}`],
         functionName: 'allowance',
       })
@@ -565,7 +565,7 @@ const NewTask = () => {
         // console.log('required to increase allowance')
         const { request } = await prepareWriteContract({
           address: `0x${payments[i].tokenContract.substring(2)}`,
-          abi: erc20ContractABI2,
+          abi: erc20ContractABI,
           args: [
             `0x${taskAddress.substring(2)}`,
             Number(payments[i].amount) * 10,
