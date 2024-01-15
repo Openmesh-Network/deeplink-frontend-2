@@ -35,6 +35,7 @@ import {
 } from '@wagmi/core'
 import HeroNewTasks from './HeroNewTask'
 import { createHash } from 'crypto'
+import { Loader } from 'rsuite'
 
 type TaskSubmitForm = {
   title: string
@@ -87,6 +88,7 @@ const NewTask = () => {
   const [numberOfApplicants, setNumberOfApplicants] = useState('')
   const [type, setType] = useState('Individual')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true)
   const [fundingView, setFundingView] = useState<boolean>(false)
   const [payments, setPayments] = useState<Payment[]>([])
   const [contributors, setContributors] = useState<Contributor[]>([])
@@ -972,7 +974,16 @@ const NewTask = () => {
     if (address) {
       getDepartaments()
     }
+    setIsLoadingPage(false)
   }, [address])
+
+  if (isLoadingPage) {
+    return (
+      <div className="flex justify-center pb-[10px] lg:pb-[500px]">
+        <Loader />
+      </div>
+    )
+  }
 
   if (!address) {
     return (

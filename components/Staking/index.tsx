@@ -18,7 +18,7 @@ type UpdatesListProps = {
 // eslint-disable-next-line prettier/prettier
 const Staking = () => {
   const [events, setEvents] = useState<Event[] | ApplicationOffChain[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true)
 
   const pathname = usePathname()
 
@@ -26,10 +26,10 @@ const Staking = () => {
   const { address } = useAccount()
 
   useEffect(() => {
-    setIsLoading(false)
+    setIsLoadingPage(false)
   }, [address])
 
-  if (isLoading) {
+  if (isLoadingPage) {
     return (
       <div className="flex justify-center pb-[10px] lg:pb-[500px]">
         <Loader />
