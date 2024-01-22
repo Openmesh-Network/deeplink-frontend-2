@@ -59,7 +59,11 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
     return convertNodeToElement(node, index, transform)
   }
 
-  if (task.daysLeft === 'ended') {
+  // if (task.daysLeft === 'ended') {
+  //   return
+  // }
+
+  if (task.status === 'completed') {
     return
   }
   if (task.title) {
