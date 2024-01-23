@@ -21,6 +21,8 @@ interface TasksModalProps {
   isLoading: boolean
 }
 
+console.log('THE TASK STATUS 9893: ' + status)
+
 const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
   function transform(node, index) {
     // if (node.type === 'tag') {
