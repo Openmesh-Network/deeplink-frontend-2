@@ -214,7 +214,7 @@ const HeroTask = ({ task, contributorsAllowed, address }: TasksModalProps) => {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={`https://polygonscan.com/token/${payment.tokenContract}`}
+                          href={`https://${process.env.NEXT_PUBLIC_SCAN_BASE_URL}.com/token/${payment.tokenContract}`}
                           className="mt-[2px] border-b border-[#505050] hover:text-primary"
                         >
                           {(

@@ -895,7 +895,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                           className="cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:mt-[8px] lg:text-[14px]"
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={`https://polygonscan.com/address/${application.applicant}`}
+                          href={`https://${process.env.NEXT_PUBLIC_SCAN_BASE_URL}.com/address/${application.applicant}`}
                         >
                           {formatAddress(application.applicant)}
                         </a>
@@ -1075,7 +1075,7 @@ const ApplicantsSubmissionsList = ({dataApplication, dataApplicationOffchain, ta
                         className="mt-[8px] cursor-pointer text-[11px] font-normal text-[#505050] hover:text-primary lg:text-[14px]"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={`https://polygonscan.com/address/${submission.applicant}`}
+                        href={`https://${process.env.NEXT_PUBLIC_SCAN_BASE_URL}.com/address/${submission.applicant}`}
                       >
                         {formatAddress(submission.applicant)}
                       </a>

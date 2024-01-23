@@ -162,7 +162,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
                       className=" flex items-center text-[#505050] hover:text-primary"
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`https://polygonscan.com/address/${event.address}`}
+                      href={`https://${process.env.NEXT_PUBLIC_SCAN_BASE_URL}.com/address/${event.address}`}
                     >
                       {formatAddress(event.address)}
                     </a>
@@ -184,7 +184,7 @@ const UpdatesList = ({taskId}: UpdatesListProps) => {
                       className=" flex items-center border-b-[1px] border-[#0354EC] text-[#0354EC] hover:text-primary"
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={`https://polygonscan.com/tx/${event.transactionHash}`}
+                      href={`https://${process.env.NEXT_PUBLIC_SCAN_BASE_URL}.com/tx/${event.transactionHash}`}
                     >
                       View on Etherscan
                     </a>
