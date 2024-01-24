@@ -10,6 +10,7 @@ interface TasksModalProps {
     title: string
     description: string
     deadline: string
+    taskTaken: boolean
     daysLeft: string
     isDraft: boolean
     payments: Payment[]
@@ -153,7 +154,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
         <div className="mr-[10px]  flex items-center text-[7px] font-normal text-[#7A7575] md:text-[8.4px] lg:mr-0 lg:w-[8%] lg:text-[9.8px] xl:text-[11.2px] 2xl:text-[14px]">
           <p className="w-[100px] lg:w-full">{task.daysLeft}</p>
         </div>
-        {task.status !== 'completed' && (
+        {task.status !== 'completed' && !task.taskTaken && (
           <div className="flex w-[200px] lg:w-[12%]">
             <a
               href={

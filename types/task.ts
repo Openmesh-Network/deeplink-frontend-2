@@ -105,6 +105,7 @@ export type TasksOverview = {
   deadlineIncreased: boolean
   departament: string
   isDraft: boolean
+  taskTaken: boolean
   hasSpamLink: boolean
   status: string
   links: Link[] | null
