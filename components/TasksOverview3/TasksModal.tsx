@@ -68,6 +68,7 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
   // if (task.status === 'completed') {
   //   return
   // }
+
   if (task.title) {
     return (
       <div
