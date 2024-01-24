@@ -153,30 +153,32 @@ const TasksModal = ({ task, index, isLoading }: TasksModalProps) => {
         <div className="mr-[10px]  flex items-center text-[7px] font-normal text-[#7A7575] md:text-[8.4px] lg:mr-0 lg:w-[8%] lg:text-[9.8px] xl:text-[11.2px] 2xl:text-[14px]">
           <p className="w-[100px] lg:w-full">{task.daysLeft}</p>
         </div>
-        <div className="flex w-[200px] lg:w-[12%]">
-          <a
-            href={
-              !task.isDraft
-                ? `${
-                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                      ? `/openrd/task/${task.id}`
-                      : `/task/${task.id}`
-                  }`
-                : `${
-                    process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
-                      ? `/openrd/task-draft/${task.internalId}`
-                      : `/task-draft/${task.internalId}`
-                  }`
-            }
-            className={`ml-auto cursor-pointer rounded-[5px]  py-[8px] px-[15px] text-[7px] font-normal text-[#fff]  md:py-[6px] md:px-[26px] md:text-[8.4px] lg:py-[6px] lg:px-[30.8px]  lg:text-[9.8px] xl:py-[6px] xl:px-[35px] xl:text-[11.2px] 2xl:py-[7px] 2xl:px-[44px] 2xl:text-[14px] ${
-              task.isDraft
-                ? 'bg-[#FBB816] hover:bg-[#f0ab0b]'
-                : 'bg-[#27B11B] hover:bg-[#259e1a]'
-            }`}
-          >
-            {task.isDraft ? 'Draft' : 'Apply'}
-          </a>
-        </div>
+        {task.status !== 'completed' && (
+          <div className="flex w-[200px] lg:w-[12%]">
+            <a
+              href={
+                !task.isDraft
+                  ? `${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? `/openrd/task/${task.id}`
+                        : `/task/${task.id}`
+                    }`
+                  : `${
+                      process.env.NEXT_PUBLIC_ENVIRONMENT === 'PROD'
+                        ? `/openrd/task-draft/${task.internalId}`
+                        : `/task-draft/${task.internalId}`
+                    }`
+              }
+              className={`ml-auto cursor-pointer rounded-[5px]  py-[8px] px-[15px] text-[7px] font-normal text-[#fff]  md:py-[6px] md:px-[26px] md:text-[8.4px] lg:py-[6px] lg:px-[30.8px]  lg:text-[9.8px] xl:py-[6px] xl:px-[35px] xl:text-[11.2px] 2xl:py-[7px] 2xl:px-[44px] 2xl:text-[14px] ${
+                task.isDraft
+                  ? 'bg-[#FBB816] hover:bg-[#f0ab0b]'
+                  : 'bg-[#27B11B] hover:bg-[#259e1a]'
+              }`}
+            >
+              {task.isDraft ? 'Draft' : 'Apply'}
+            </a>
+          </div>
+        )}
       </div>
     )
   }
