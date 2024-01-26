@@ -3,7 +3,6 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-unused-vars */
 'use client'
-// import { useState } from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import taskContractABI from '@/utils/abi/taskContractABI.json'
