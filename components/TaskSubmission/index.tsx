@@ -332,7 +332,7 @@ const TaskSubmission = (id: any) => {
   }
 
   function formatAddress(address) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+    return `${address?.slice(0, 6)}...${address?.slice(-4)}`
   }
 
   useEffect(() => {

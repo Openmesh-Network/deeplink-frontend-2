@@ -175,7 +175,7 @@ const TaskView = (id: any) => {
     }
   }, [id])
   function formatAddress(address) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+    return `${address?.slice(0, 6)}...${address?.slice(-4)}`
   }
 
   function transform(node, index) {
@@ -387,7 +387,6 @@ const TaskView = (id: any) => {
                     className="cursor-pointer text-center hover:text-[#353535]"
                   >
                     Updates ({taskMetadata.updatesCount})
-                    {/* Aqui inserir o numero de updates (transactions events) que teve */}
                   </p>
                 </div>
               </div>

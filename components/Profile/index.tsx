@@ -49,7 +49,7 @@ const ProfileView = (id: any) => {
   const { address, isConnecting, isDisconnected } = useAccount()
   const { data: ensName } = useEnsName()
   function formatAddress(address) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+    return `${address?.slice(0, 6)}...${address?.slice(-4)}`
   }
 
   const handleOrderByDeadlineSelection = () => {

@@ -90,7 +90,7 @@ const TaskView = (id: any) => {
     }
   }, [id])
   function formatAddress(address) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+    return `${address?.slice(0, 6)}...${address?.slice(-4)}`
   }
   // mock data for task
   const task = [

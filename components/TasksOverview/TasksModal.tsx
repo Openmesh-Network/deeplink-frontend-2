@@ -15,7 +15,7 @@ interface TasksModalProps {
 
 const TasksModal = (task: TasksModalProps, isLoading: boolean) => {
   function formatAddress(address) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
+    return `${address?.slice(0, 6)}...${address?.slice(-4)}`
   }
   return (
     <div className="relative mb-8 ml-4 mr-1 items-start justify-between rounded-md bg-[#121A4D] p-4 text-xs lg:flex lg:text-sm">
