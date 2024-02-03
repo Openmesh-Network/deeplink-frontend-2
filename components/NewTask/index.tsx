@@ -25,7 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { TextField, Autocomplete } from '@mui/material'
 import { ethers, isAddress } from 'ethers'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount, useNetwork, useDisconnect } from 'wagmi'
 import {
   readContract,
   writeContract,
@@ -97,7 +97,7 @@ const NewTask = () => {
   const [departamentOptions, setDepartamentOptions] = useState([])
   const [editorHtml, setEditorHtml] = useState('')
 
-  const { disconnect } = useAccount()
+  const { disconnect } = useDisconnect()
 
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
@@ -981,8 +981,8 @@ const NewTask = () => {
 
   useEffect(() => {
     console.log('local storage called')
-    localStorage.clear()
     disconnect()
+    localStorage.clear()
   }, [])
 
   if (isLoadingPage) {
