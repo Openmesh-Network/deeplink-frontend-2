@@ -97,6 +97,8 @@ const NewTask = () => {
   const [departamentOptions, setDepartamentOptions] = useState([])
   const [editorHtml, setEditorHtml] = useState('')
 
+  const { disconnect } = useAccount()
+
   const [links, setLinks] = useState<Link[]>([
     { title: 'githubLink', url: '' },
     { title: 'calendarLink', url: '' },
@@ -978,7 +980,9 @@ const NewTask = () => {
   }, [address])
 
   useEffect(() => {
+    console.log('local storage called')
     localStorage.clear()
+    disconnect()
   }, [])
 
   if (isLoadingPage) {
