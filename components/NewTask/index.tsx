@@ -229,14 +229,21 @@ const NewTask = () => {
     'Developer Tools',
   ]
 
+  async function wait(milliseconds: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds))
+  }
   useEffect(() => {
-    console.log('local storage called')
-    disconnect()
-    localStorage.clear()
-    localStorage.removeItem('wagmi.cache')
-    localStorage.removeItem('wagmi.injected.shimDisconnect')
-    localStorage.removeItem('wagmi.store')
-    localStorage.removeItem('W3M_VERSION')
+    async function here() {
+      console.log('local storage called')
+      await wait(1000)
+      disconnect()
+      localStorage.clear()
+      localStorage.removeItem('wagmi.cache')
+      localStorage.removeItem('wagmi.injected.shimDisconnect')
+      localStorage.removeItem('wagmi.store')
+      localStorage.removeItem('W3M_VERSION')
+    }
+    here()
   }, [])
 
   const validSchema = Yup.object().shape({
