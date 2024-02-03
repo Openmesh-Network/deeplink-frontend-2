@@ -977,6 +977,10 @@ const NewTask = () => {
     setIsLoadingPage(false)
   }, [address])
 
+  useEffect(() => {
+    localStorage.clear()
+  }, [])
+
   if (isLoadingPage) {
     return (
       <div className="flex justify-center pb-[10px] lg:pb-[500px]">
