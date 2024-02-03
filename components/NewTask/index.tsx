@@ -229,6 +229,12 @@ const NewTask = () => {
     'Developer Tools',
   ]
 
+  useEffect(() => {
+    console.log('local storage called')
+    disconnect()
+    localStorage.clear()
+  }, [])
+
   const validSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     deadline: Yup.date()
@@ -978,12 +984,6 @@ const NewTask = () => {
     }
     setIsLoadingPage(false)
   }, [address])
-
-  useEffect(() => {
-    console.log('local storage called')
-    disconnect()
-    localStorage.clear()
-  }, [])
 
   if (isLoadingPage) {
     return (
