@@ -233,6 +233,10 @@ const NewTask = () => {
     console.log('local storage called')
     disconnect()
     localStorage.clear()
+    localStorage.removeItem('wagmi.cache')
+    localStorage.removeItem('wagmi.injected.shimDisconnect')
+    localStorage.removeItem('wagmi.store')
+    localStorage.removeItem('W3M_VERSION')
   }, [])
 
   const validSchema = Yup.object().shape({
