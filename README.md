@@ -3,7 +3,7 @@
 ![logo](MEDIA/logo.png)
 
 The UI for the Openmesh OpenR&D platform.
-Used to manage projects, payouts, and disputes using smart contracts and ERC-20 tokens all with no KYC.
+Used to manage projects, payouts, and disputes using smart contracts and ERC-20 tokens. All with no KYC.
 
 See it in action at [openrd.openmesh.network](https://openrd.openmesh.network).
 
